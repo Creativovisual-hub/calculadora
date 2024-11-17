@@ -1,0 +1,40 @@
+    /* Archivo styles.css */
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #282c34;
+        font-family: 'Arial', sans-serif;
+    }
+    
+    .container {
+        text-align: center;
+    }
+    
+    .logo img {
+        width: 150px;
+        height: auto;
+        margin-bottom: 20px;
+    }
+    
+    .animated-title {
+        font-size: 2.5rem;
+        color: #f7df1e; /* Color del logo de JavaScript */
+        animation: slideIn 2s ease-in-out infinite alternate;
+    }
+    
+    /* Animación */
+    @keyframes slideIn {
+        0% {
+        transform: translateY(-20px);
+        opacity: 0.5;
+        }
+        100% {
+        transform: translateY(20px);
+        opacity: 1;
+        }
+    }
+    
