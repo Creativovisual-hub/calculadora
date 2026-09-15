@@ -11,20 +11,38 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#1f2933; --ink-soft:#5a6570; --bg:#f5f6f8; --card:#ffffff; --line:#e6e9ec;
+  --ink:#16324a; --ink-soft:#5b7186; --bg:#eef5fb; --card:#ffffff; --line:#dce7f0;
   --discovery:#0f766e; --discovery-bg:#eefaf8;
   --arch:#4f46e5; --arch-bg:#f1f0fe;
   --ui:#b45309; --ui-bg:#fdf3e7;
   --test:#be123c; --test-bg:#fdedf1;
-  --ai:#7c3aed; --ai-soft:#f4effe; --ai-line:#ded4fb;
+  --ai:#1a56a3; --ai-soft:#eaf2fb; --ai-line:#cfe0f3;
   --export:#c0392b; --result:#16a34a;
+  --deco-yellow:#f6c945; --deco-blue:#cfe6f8;
 }
 *{box-sizing:border-box;}
 body{
   margin:0; font-family:'Inter',sans-serif; background:var(--bg); color:var(--ink);
-  padding:28px 16px 28px;
+  padding:0 16px 28px; overflow-x:hidden; position:relative;
 }
-.page{ max-width:1180px; margin:0 auto; }
+.deco-circle{ position:fixed; border-radius:50%; z-index:-1; pointer-events:none; }
+.deco-circle.yellow{ top:70px; left:-40px; width:110px; height:110px; background:var(--deco-yellow); opacity:.35; }
+.deco-circle.blue{ top:-70px; right:-70px; width:280px; height:280px; background:var(--deco-blue); opacity:.55; }
+.app-navbar{ background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:100; margin:0 -16px; }
+.navbar-inner{ max-width:1180px; margin:0 auto; padding:14px 16px; display:flex; align-items:center; gap:28px; }
+.navbar-brand{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.navbar-wordmark{ display:flex; flex-direction:column; line-height:1.05; font-family:'Manrope',sans-serif; }
+.navbar-wordmark b{ font-size:14px; color:var(--ai); letter-spacing:.02em; }
+.navbar-wordmark span{ font-size:12px; font-weight:800; color:var(--ink); letter-spacing:.03em; }
+.navbar-links{ display:flex; gap:6px; flex:1; }
+.nav-link{ color:var(--ink-soft); text-decoration:none; font-size:13.5px; font-weight:600; padding:8px 14px; border-radius:20px; }
+.nav-link:hover{ background:#f2f6fa; }
+.nav-link.active{ background:var(--ai-soft); color:var(--ai); }
+.navbar-account{ display:flex; align-items:center; gap:6px; font-size:13.5px; color:var(--ink); font-weight:600; flex-shrink:0; cursor:pointer; }
+.account-avatar{ width:26px; height:26px; border-radius:50%; background:var(--ai-soft); display:flex; align-items:center; justify-content:center; font-size:13px; }
+.chevron-small{ color:var(--ink-soft); font-size:11px; }
+@media (max-width:720px){ .navbar-links{ display:none; } }
+.page{ max-width:1180px; margin:0 auto; padding-top:24px; }
 h1,h2,h3{font-family:'Manrope',sans-serif; color:var(--ink); margin:0;}
 h1{font-size:26px; font-weight:800; letter-spacing:-0.01em;}
 .eyebrow{
@@ -45,42 +63,51 @@ h1{font-size:26px; font-weight:800; letter-spacing:-0.01em;}
 }
 
 /* Carga de HUs */
-.assistant-box{
-  background:var(--ai-soft); border:1px solid var(--ai-line); border-radius:12px;
-  padding:20px; margin-bottom:22px;
+.step-block{ margin-bottom:18px; }
+.step-head{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+.step-num{
+  width:24px; height:24px; border-radius:50%; background:var(--ai); color:#fff;
+  font-family:'Manrope',sans-serif; font-weight:700; font-size:12.5px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
 }
-.assistant-head{ display:flex; align-items:center; gap:10px; margin-bottom:4px; }
-.assistant-avatar{
-  width:30px; height:30px; border-radius:8px; background:var(--ai);
-  display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0;
+.step-head h3{ font-size:15px; }
+.dropzone{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+  border:1.5px dashed #c3d7ea; border-radius:14px; background:#f7fbfe;
+  padding:34px 20px; cursor:pointer; text-align:center;
 }
-.assistant-box p.desc{ margin:8px 0 16px; font-size:13.5px; color:var(--ink-soft); }
-.upload-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
-.file-label{
-  background:#fff; border:1.5px dashed #c4b5f5; color:var(--ai); font-weight:600;
-  font-size:13.5px; padding:12px 16px; border-radius:8px; cursor:pointer;
-  display:inline-flex; align-items:center; gap:8px;
+.dropzone:hover{ background:#eff6fc; border-color:var(--ai); }
+.dropzone-icon{ font-size:30px; margin-bottom:4px; }
+.dropzone b{ font-family:'Manrope',sans-serif; font-size:15px; color:var(--ink); }
+.dropzone-hint{ font-size:13px; color:var(--ink-soft); margin-bottom:8px; }
+.btn-select-files{
+  display:inline-flex; align-items:center; gap:6px; background:#fff; border:1.5px solid var(--ai);
+  color:var(--ai); font-weight:700; font-size:13px; padding:9px 18px; border-radius:24px;
 }
-.file-label:hover{ background:#faf8ff; }
 input[type=file]{ display:none; }
-.file-hint{ font-size:12px; color:var(--ink-soft); }
-.divider-or{
-  display:flex; align-items:center; gap:10px; margin:14px 0 12px; color:var(--ink-soft); font-size:12px;
+.file-hint{ display:block; font-size:12px; color:var(--ink-soft); margin-top:10px; text-align:center; }
+.step-divider{
+  display:flex; align-items:center; gap:10px; margin:20px 0; color:var(--ink-soft); font-size:12.5px;
 }
-.divider-or::before, .divider-or::after{ content:''; flex:1; height:1px; background:var(--ai-line); }
-.assistant-box textarea{
-  width:100%; padding:12px 14px; border:1px solid #d7cff8; border-radius:8px;
+.step-divider::before, .step-divider::after{ content:''; flex:1; height:1px; background:var(--line); }
+.textarea-wrap{ position:relative; }
+#pasteText{
+  width:100%; padding:12px 14px 26px; border:1px solid var(--line); border-radius:10px;
   font-family:'Inter',sans-serif; font-size:14px; resize:vertical; background:#fff;
   margin-bottom:10px; color:var(--ink);
 }
-.assistant-box textarea:focus{ outline:2px solid var(--ai); outline-offset:1px; }
+#pasteText:focus{ outline:2px solid var(--ai); outline-offset:1px; }
+.char-counter{
+  position:absolute; right:10px; bottom:20px; font-size:11px; color:var(--ink-soft);
+  background:#fff; padding:0 4px;
+}
 .btn-analizar{
-  background:var(--ai); color:#fff; border:none; padding:10px 16px; border-radius:8px;
+  background:var(--ink); color:#fff; border:none; padding:10px 16px; border-radius:24px;
   cursor:pointer; font-weight:600; font-size:13.5px; font-family:'Inter',sans-serif;
   display:inline-flex; align-items:center; gap:8px;
 }
-.btn-analizar:hover{ background:#6d28d9; }
-.btn-analizar:disabled{ background:#b7a3ef; cursor:progress; }
+.btn-analizar:hover{ background:#0d223a; }
+.btn-analizar:disabled{ background:#9db1c2; cursor:progress; }
 .btn-texto{
   background:transparent; border:1px solid #d7cff8; color:var(--ai); padding:9px 14px;
   border-radius:8px; cursor:pointer; font-size:13px; font-weight:600;
@@ -178,12 +205,18 @@ input[type=file]{ display:none; }
 
 /* ---- Módulo de cálculo (sidebar desktop / barra fija mobile) ---- */
 .panel-calculo{
-  width:320px; flex-shrink:0; align-self:flex-start; position:sticky; top:20px;
-  background:var(--ink); color:#fff; border-radius:14px; padding:22px;
-  box-shadow:0 16px 34px rgba(0,0,0,0.22); max-height:calc(100vh - 40px); overflow-y:auto;
+  width:320px; flex-shrink:0; align-self:flex-start; position:sticky; top:84px;
+  background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:16px; padding:22px;
+  box-shadow:0 10px 30px rgba(22,50,74,0.08); max-height:calc(100vh - 104px); overflow-y:auto;
 }
-.panel-header{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:16px; }
-.panel-header h3{ color:#fff; font-size:15px; }
+.panel-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:16px; cursor:pointer; }
+.panel-header-title{ display:flex; gap:10px; align-items:flex-start; }
+.panel-icon{
+  width:34px; height:34px; border-radius:10px; background:var(--ai-soft);
+  display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0;
+}
+.panel-header h3{ color:var(--ink); font-size:15px; margin-bottom:2px; }
+.panel-subtitle{ font-size:12px; color:var(--ink-soft); line-height:1.4; margin:0; }
 .dropdown{ position:relative; display:inline-block; }
 .btn-exportar{
   background:var(--export); color:#fff; border:none; padding:9px 14px; font-size:13px;
@@ -201,61 +234,82 @@ input[type=file]{ display:none; }
 .dropdown:hover .dropdown-content{ display:block; }
 .dropdown-content.mostrar{ display:block; }
 .panel-toggle-detalle{
-  display:none; width:100%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
-  color:#fff; padding:9px 12px; border-radius:8px; font-size:12.5px; font-weight:600; cursor:pointer;
+  display:none; width:100%; background:#f2f6fa; border:1px solid var(--line);
+  color:var(--ink); padding:9px 12px; border-radius:8px; font-size:12.5px; font-weight:600; cursor:pointer;
   margin-bottom:12px; text-align:left;
 }
 .panel-toggle-full{
-  display:none; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18);
-  color:#fff; width:30px; height:30px; border-radius:8px; font-size:14px; cursor:pointer;
+  display:none; background:#f2f6fa; border:1px solid var(--line);
+  color:var(--ink-soft); width:30px; height:30px; border-radius:8px; font-size:14px; cursor:pointer;
   flex-shrink:0; align-items:center; justify-content:center;
 }
-.panel-resumen-compacto{ display:none; }
-.fases-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+.panel-resumen-compacto{ display:none; color:var(--ink-soft); }
+.panel-resumen-compacto b{ color:var(--ink); }
+.fases-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
 .fase-stat{
-  border-radius:9px; padding:9px 10px; border:1px solid rgba(255,255,255,0.1);
-  border-left:4px solid var(--phase-color,#999); background:rgba(255,255,255,0.05);
+  display:flex; align-items:center; gap:10px; border-radius:12px; padding:10px 12px;
+  border:1px solid var(--line); background:var(--phase-bg,#f7fbfe);
 }
-.fase-stat.discovery{ --phase-color:var(--discovery); }
-.fase-stat.arch{ --phase-color:var(--arch); }
-.fase-stat.ui{ --phase-color:var(--ui); }
-.fase-stat.test{ --phase-color:var(--test); }
+.fase-stat.discovery{ --phase-color:var(--discovery); --phase-bg:var(--discovery-bg); }
+.fase-stat.arch{ --phase-color:var(--arch); --phase-bg:var(--arch-bg); }
+.fase-stat.ui{ --phase-color:var(--ui); --phase-bg:var(--ui-bg); }
+.fase-stat.test{ --phase-color:var(--test); --phase-bg:var(--test-bg); }
+.fase-icon{
+  width:30px; height:30px; border-radius:50%; background:#fff; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:14px;
+  box-shadow:0 1px 3px rgba(22,50,74,0.12);
+}
 .fase-stat .fname{
-  font-size:10.5px; color:#cfd5da; font-weight:700; text-transform:uppercase;
-  letter-spacing:.02em; margin-bottom:3px;
+  font-size:10.5px; color:var(--phase-color); font-weight:700; text-transform:uppercase;
+  letter-spacing:.02em; margin-bottom:2px;
 }
-.fase-stat .fval{ font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; color:#fff; }
+.fase-stat .fval{ font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:700; color:var(--ink); }
 .capacidad-inline{
-  font-size:11.5px; color:#8b949c; margin-top:10px; padding-top:10px;
-  border-top:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+  font-size:11.5px; color:var(--ink-soft); margin-top:10px; padding-top:10px;
+  border-top:1px solid var(--line); display:flex; align-items:center; gap:6px; flex-wrap:wrap;
 }
 .capacidad-inline input{
-  width:44px; padding:3px 5px; border:1px solid rgba(255,255,255,0.2); border-radius:5px;
+  width:44px; padding:3px 5px; border:1px solid var(--line); border-radius:5px;
   font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-align:center;
-  background:rgba(255,255,255,0.08); color:#fff;
+  background:#f7fbfe; color:var(--ink);
 }
-.totales-mini{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:16px; }
-.totales-mini .t-item .label{ font-size:11px; color:#b6bec6; }
-.totales-mini .t-item .valor{ font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600; color:var(--result); }
-.totales-mini .t-item .valor.blanco{ color:#fff; }
-.totales-mini .nota{ font-size:9.5px; color:#8b949c; }
+.totales-mini{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:16px; }
+.t-item{ display:flex; align-items:center; gap:8px; }
+.t-icon{
+  width:28px; height:28px; border-radius:8px; background:#f2f6fa; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:13px;
+}
+.totales-mini .t-item .label{ font-size:11px; color:var(--ink-soft); }
+.totales-mini .t-item .valor{ font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:700; color:var(--ink); }
+.totales-mini .t-item .valor.blanco{ color:var(--ink); }
+.totales-mini .nota{ font-size:9.5px; color:var(--ink-soft); display:block; }
 .roles-box{
-  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
-  border-radius:10px; padding:12px 14px;
+  background:var(--ai-soft); border:1px solid var(--ai-line); border-radius:14px; padding:16px;
 }
-.roles-box.alerta{ border-color:rgba(240,169,78,0.5); background:rgba(180,83,9,0.16); }
-.roles-valor{ font-family:'IBM Plex Mono',monospace; font-size:24px; font-weight:700; margin-top:2px; }
-.roles-valor.ok{ color:var(--result); }
-.roles-valor.alerta{ color:#f0a94e; }
-.roles-msg{ font-size:12px; color:#cbd2d8; margin-top:6px; line-height:1.4; }
-.panel-export{ margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.1); }
+.roles-box.alerta{ background:#fff6e9; border-color:#f5d9a8; }
+.roles-box-head{ display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.roles-icon{
+  width:34px; height:34px; border-radius:50%; background:#fff; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:15px;
+}
+.roles-box .label{ color:var(--ink-soft); font-size:12px; }
+.roles-valor{ font-family:'IBM Plex Mono',monospace; font-size:30px; font-weight:800; margin:2px 0 4px; color:var(--ink); }
+.roles-valor.ok{ color:var(--ai); }
+.roles-valor.alerta{ color:#c2740a; }
+.roles-msg{ font-size:12px; color:var(--ink-soft); margin-top:2px; line-height:1.45; }
+.panel-export{ margin-top:16px; padding-top:16px; border-top:1px solid var(--line); }
 .panel-export .btn-exportar{ width:100%; text-align:center; }
-.descarga-lista{ margin-top:10px; font-size:12.5px; color:#cbd2d8; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.descarga-lista{ margin-top:10px; font-size:12.5px; color:var(--ink-soft); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .btn-descarga-lista{
   display:inline-block; background:var(--result); color:#fff; text-decoration:none;
   font-weight:700; padding:8px 12px; border-radius:7px; font-size:12.5px;
 }
-.error-descarga{ color:#f0a94e; }
+.error-descarga{ color:#c2740a; }
+.info-footer{
+  margin-top:14px; background:#f2f6fa; border:1px solid var(--line); border-radius:10px;
+  padding:10px 12px; display:flex; gap:8px; font-size:11.5px; color:var(--ink-soft); line-height:1.4;
+}
+.info-footer .info-icon{ flex-shrink:0; }
 
 /* ---- Resumen de iniciativas colapsable ---- */
 .resumen-iniciativas{ margin-bottom:22px; }
@@ -311,9 +365,9 @@ input[type=file]{ display:none; }
   .panel-toggle-full{ display:flex; }
   .panel-full-content{ display:none; }
   .panel-calculo.expandido .panel-full-content{ display:block; }
-  .panel-resumen-compacto{ display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:12.5px; color:#cbd2d8; }
+  .panel-resumen-compacto{ display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:12.5px; color:var(--ink-soft); }
   .panel-calculo.expandido .panel-resumen-compacto{ display:none; }
-  .panel-resumen-compacto b{ color:#fff; font-family:'IBM Plex Mono',monospace; font-size:14px; }
+  .panel-resumen-compacto b{ color:var(--ink); font-family:'IBM Plex Mono',monospace; font-size:14px; }
   .panel-toggle-detalle{ display:block; }
   .panel-detalle{ display:none; }
   .panel-detalle.expanded{ display:block; }
@@ -341,6 +395,37 @@ input[type=file]{ display:none; }
 </head>
 <body>
 
+<div class="deco-circle yellow"></div>
+<div class="deco-circle blue"></div>
+
+<header class="app-navbar">
+  <div class="navbar-inner">
+    <div class="navbar-brand">
+      <span aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 32 32" fill="none">
+          <path d="M4 21c3-9 7-13 12-13s9 4 12 13" stroke="#1a56a3" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <circle cx="27" cy="9" r="2.3" fill="#f5b921"/>
+        </svg>
+      </span>
+      <span class="navbar-wordmark">
+        <b>CAJA</b>
+        <span>LOS ANDES</span>
+      </span>
+    </div>
+    <nav class="navbar-links">
+      <a href="#" class="nav-link">Inicio</a>
+      <a href="#" class="nav-link active">Herramientas</a>
+      <a href="#" class="nav-link">Recursos</a>
+      <a href="#" class="nav-link">Ayuda</a>
+    </nav>
+    <div class="navbar-account">
+      <span class="account-avatar">👤</span>
+      <span>Mi cuenta</span>
+      <span class="chevron-small">⌄</span>
+    </div>
+  </div>
+</header>
+
 <div class="modal-overlay" id="modalAnalisis" style="display:none;" data-html2canvas-ignore="true">
   <div class="modal-box">
     <div class="modal-spinner"></div>
@@ -363,23 +448,36 @@ input[type=file]{ display:none; }
       <div class="main-col-inner">
 
         <!-- Carga de HUs -->
-        <div class="assistant-box" data-html2canvas-ignore="true">
-          <div class="assistant-head">
-            <div class="assistant-avatar">✨</div>
-            <h3 style="font-size:15px;">Carga tus Historias de Usuario</h3>
-          </div>
-          <p class="desc">Sube uno o varios documentos, o pega el texto directamente. Cada HU se analiza por separado y luego se consolida en el panel de cálculo. El asistente razona sobre el alcance real de cada una, no busca palabras clave.</p>
-
-          <div class="upload-row">
-            <label class="file-label" for="fileInput">📎 Subir documentos</label>
+        <div data-html2canvas-ignore="true">
+          <div class="step-block">
+            <div class="step-head">
+              <span class="step-num">1</span>
+              <h3>Carga tus Historias de Usuario</h3>
+            </div>
+            <label class="dropzone" for="fileInput">
+              <span class="dropzone-icon">📄</span>
+              <b>Sube documentos</b>
+              <span class="dropzone-hint">Arrastra y suelta uno o varios archivos aquí, o el asistente razona sobre el alcance real de cada una (no busca palabras clave)</span>
+              <span class="btn-select-files">⬆ Seleccionar archivos</span>
+            </label>
             <input type="file" id="fileInput" multiple accept=".txt,.md,.docx,.pdf,.xlsx,.xls,.csv">
             <span class="file-hint">.docx, .pdf, .txt, .md (una HU por archivo) · .xlsx, .xls, .csv (una HU por fila) — puedes seleccionar varios a la vez</span>
+            <div id="uploadError" class="upload-error" style="display:none;"></div>
           </div>
-          <div id="uploadError" class="upload-error" style="display:none;"></div>
 
-          <div class="divider-or">o pega el texto de una HU</div>
-          <textarea id="pasteText" rows="3" placeholder="Ej: Como usuario quiero un nuevo flujo de pago seguro que reemplace al actual, validado con clientes reales antes de pasar a desarrollo..."></textarea>
-          <button id="btnAgregarTexto" class="btn-analizar">＋ Agregar HU</button>
+          <div class="step-divider">o pega el texto de una HU</div>
+
+          <div class="step-block">
+            <div class="step-head">
+              <span class="step-num">2</span>
+              <h3>Pega el texto de la Historia de Usuario</h3>
+            </div>
+            <div class="textarea-wrap">
+              <textarea id="pasteText" rows="4" maxlength="2000" placeholder="Ej: Como usuario quiero un nuevo flujo de pago seguro que reemplace al actual, validado con clientes reales antes de pasar a desarrollo..."></textarea>
+              <span class="char-counter" id="charCounter">0 / 2.000 caracteres</span>
+            </div>
+            <button id="btnAgregarTexto" class="btn-analizar">＋ Agregar HU</button>
+          </div>
         </div>
 
         <div class="resumen-iniciativas" id="resumenIniciativas" style="display:none;">
@@ -417,7 +515,13 @@ input[type=file]{ display:none; }
     <!-- Módulo de cálculo: sidebar sticky en desktop / barra fija colapsable en mobile -->
     <aside class="panel-calculo" id="panelCalculo">
       <div class="panel-header" onclick="document.getElementById('panelCalculo').classList.toggle('expandido')">
-        <h3>Cálculo del QBR</h3>
+        <div class="panel-header-title">
+          <span class="panel-icon">📊</span>
+          <div>
+            <h3>Cálculo del QBR</h3>
+            <p class="panel-subtitle">El asistente consolida el esfuerzo total y calcula cuántos roles de UX se necesitan.</p>
+          </div>
+        </div>
         <button class="panel-toggle-full" id="toggleFull" data-html2canvas-ignore="true">▾</button>
       </div>
 
@@ -431,35 +535,49 @@ input[type=file]{ display:none; }
 
         <div class="panel-detalle" id="panelDetalle">
           <div class="fases-grid">
-            <div class="fase-stat discovery"><div class="fname">Discovery</div><div class="fval" id="sub-discovery">0</div></div>
-            <div class="fase-stat arch"><div class="fname">Arquitectura</div><div class="fval" id="sub-arch">0</div></div>
-            <div class="fase-stat ui"><div class="fname">Diseño UI</div><div class="fval" id="sub-ui">0</div></div>
-            <div class="fase-stat test"><div class="fname">Testing</div><div class="fval" id="sub-test">0</div></div>
+            <div class="fase-stat discovery"><span class="fase-icon">🔍</span><div><div class="fname">Discovery</div><div class="fval"><span id="sub-discovery">0</span> días</div></div></div>
+            <div class="fase-stat arch"><span class="fase-icon">🗂️</span><div><div class="fname">Arquitectura</div><div class="fval"><span id="sub-arch">0</span> días</div></div></div>
+            <div class="fase-stat ui"><span class="fase-icon">🎨</span><div><div class="fname">Diseño UI</div><div class="fval"><span id="sub-ui">0</span> días</div></div></div>
+            <div class="fase-stat test"><span class="fase-icon">⚙️</span><div><div class="fname">Testing</div><div class="fval"><span id="sub-test">0</span> días</div></div></div>
           </div>
         </div>
 
         <div class="totales-mini">
           <div class="t-item">
-            <div class="label">Días hábiles</div>
-            <div class="valor" id="totalDias">0</div>
-            <div class="nota">1 semana = 5 días</div>
+            <span class="t-icon">📅</span>
+            <div>
+              <div class="valor" id="totalDias">0</div>
+              <div class="label">Días hábiles</div>
+            </div>
           </div>
           <div class="t-item">
-            <div class="label">HH</div>
-            <div class="valor blanco" id="totalHH">0</div>
+            <span class="t-icon">⏱️</span>
+            <div>
+              <div class="valor blanco" id="totalHH">0</div>
+              <div class="label">HH</div>
+            </div>
           </div>
           <div class="t-item">
-            <div class="label">Semanas</div>
-            <div class="valor" id="totalSemanas">0.0</div>
+            <span class="t-icon">🗓️</span>
+            <div>
+              <div class="valor" id="totalSemanas">0.0</div>
+              <div class="label">Semanas</div>
+            </div>
           </div>
           <div class="t-item">
-            <div class="label">HUs</div>
-            <div class="valor blanco" id="totalHus">0</div>
+            <span class="t-icon">📋</span>
+            <div>
+              <div class="valor blanco" id="totalHus">0</div>
+              <div class="label">HUs</div>
+            </div>
           </div>
         </div>
 
         <div class="roles-box" id="rolesBox">
-          <div class="label" style="color:#b6bec6; font-size:12px;">Roles de UX necesarios (global, redondeado)</div>
+          <div class="roles-box-head">
+            <span class="roles-icon">👥</span>
+            <div class="label">Roles de UX necesarios (global, redondeado)</div>
+          </div>
           <div class="roles-valor ok" id="rolesValor">0</div>
           <div class="roles-msg" id="rolesMsg">Carga al menos una HU para calcular cuántos roles se necesitan.</div>
           <div class="capacidad-inline">
@@ -473,6 +591,11 @@ input[type=file]{ display:none; }
         <div class="panel-export" data-html2canvas-ignore="true">
           <button class="btn-exportar" id="btnDescargarExcel">📊 Descargar Excel</button>
           <div class="descarga-lista" id="descargaLista" style="display:none;"></div>
+        </div>
+
+        <div class="info-footer">
+          <span class="info-icon">ℹ️</span>
+          <span>El cálculo se basa en el análisis de tus Historias de Usuario y en la distribución de esfuerzo por fase.</span>
         </div>
       </div>
     </aside>
@@ -691,6 +814,11 @@ document.getElementById('fileInput').addEventListener('change', async function(e
   e.target.value = '';
 });
 
+const charCounterEl = document.getElementById('charCounter');
+document.getElementById('pasteText').addEventListener('input', function() {
+  charCounterEl.textContent = `${this.value.length} / 2.000 caracteres`;
+});
+
 document.getElementById('btnAgregarTexto').addEventListener('click', function() {
   const textarea = document.getElementById('pasteText');
   const texto = textarea.value.trim();
@@ -704,6 +832,7 @@ document.getElementById('btnAgregarTexto').addEventListener('click', function() 
   const nombre = 'HU manual ' + (expedientes.filter(x => x.origen === 'manual').length + 1);
   const exp = crearExpediente(nombre, texto, 'manual');
   textarea.value = '';
+  charCounterEl.textContent = '0 / 2.000 caracteres';
   renderAll();
   encolarAnalisis(exp.id);
 });
