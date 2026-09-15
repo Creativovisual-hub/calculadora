@@ -225,12 +225,19 @@ input[type=file]{ display:none; }
   font-family:'Plus Jakarta Sans',sans-serif; background:#f1f2f4; padding:2px 8px; border-radius:20px;
   font-size:11.5px; color:var(--ink-soft); white-space:nowrap;
 }
-.tiempo-editable input{
-  width:26px; border:none; background:transparent; font-family:'Plus Jakarta Sans',sans-serif;
-  font-size:11.5px; color:var(--ink-soft); text-align:right; padding:0; -moz-appearance:textfield;
+.tiempo-editable{
+  display:inline-flex; align-items:center; gap:4px; background:#fff;
+  border:1.5px solid var(--line); border-radius:20px; padding:3px 10px 3px 12px;
+  cursor:text; transition:border-color .15s, box-shadow .15s;
 }
-.tiempo-editable input:focus{ outline:none; color:var(--ink); }
-.tiempo-editable:focus-within{ background:#e6e9ec; }
+.tiempo-editable:hover{ border-color:var(--ai); }
+.tiempo-editable:focus-within{ border-color:var(--ai); box-shadow:0 0 0 3px var(--ai-line); }
+.tiempo-editable input{
+  width:34px; border:none; background:transparent; font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:12.5px; font-weight:700; color:var(--ink); text-align:right; padding:0;
+}
+.tiempo-editable input:focus{ outline:none; }
+.tiempo-editable input::-webkit-inner-spin-button{ opacity:1; }
 
 /* ---- Módulo de cálculo (sidebar desktop / barra fija mobile) ---- */
 .panel-calculo{
@@ -1016,7 +1023,7 @@ function renderExpedienteCard(exp) {
             <input type="checkbox" class="task-checkbox" data-exp-id="${exp.id}" data-task-id="${t.id}" ${checked}>
             ${escapeHtml(t.label)}
           </label>
-          <div class="mini-right">${badge}<span class="tiempo-badge tiempo-editable" data-html2canvas-ignore="true"><input type="text" inputmode="decimal" class="dias-input" data-exp-id="${exp.id}" data-task-id="${t.id}" value="${diasActual}">&nbsp;días</span></div>
+          <div class="mini-right">${badge}<label class="tiempo-badge tiempo-editable" data-html2canvas-ignore="true"><input type="number" step="0.5" min="0.5" class="dias-input" data-exp-id="${exp.id}" data-task-id="${t.id}" value="${diasActual}">días</label></div>
         </div>`;
     }).join('');
 
@@ -1028,7 +1035,7 @@ function renderExpedienteCard(exp) {
             ${escapeHtml(t.label)}
           </label>
           <div class="mini-right" data-html2canvas-ignore="true">
-            <span class="tiempo-badge tiempo-editable"><input type="text" inputmode="decimal" class="dias-input-custom" data-exp-id="${exp.id}" data-custom-id="${t.id}" value="${t.dias}">&nbsp;días</span>
+            <label class="tiempo-badge tiempo-editable"><input type="number" step="0.5" min="0.5" class="dias-input-custom" data-exp-id="${exp.id}" data-custom-id="${t.id}" value="${t.dias}">días</label>
             <button class="btn-del-tarea" onclick="eliminarTareaCustom(${exp.id}, '${t.id}')">✕</button>
           </div>
         </div>`).join('');
@@ -1213,7 +1220,6 @@ document.getElementById('expedientesList').addEventListener('input', function(e)
   const esCustom = e.target.classList.contains('dias-input-custom');
   if (!esCatalogo && !esCustom) return;
 
-  e.target.value = sanearDias(e.target.value);
   const expId = parseInt(e.target.dataset.expId, 10);
   const exp = expedientes.find(x => x.id === expId);
   if (!exp) return;
