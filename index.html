@@ -114,8 +114,8 @@ input[type=file]{ display:none; }
 .textarea-wrap{ position:relative; }
 #pasteText{
   width:100%; padding:14px; border:1px solid #e2e8f0; border-radius:12px;
-  font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; resize:vertical; background:#fff;
-  color:var(--ink);
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; resize:none; background:#fff;
+  color:var(--ink); overflow:hidden;
 }
 #pasteText:focus{ outline:none; border-color:#3b82f6; box-shadow:0 0 0 3px #dbeafe; }
 .char-counter{
@@ -184,8 +184,8 @@ input[type=file]{ display:none; }
 .exp-body{ padding:16px; }
 .exp-textarea{
   width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px;
-  font-family:'Plus Jakarta Sans',sans-serif; font-size:13.5px; resize:vertical; color:var(--ink);
-  margin-bottom:12px; background:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:13.5px; resize:none; color:var(--ink);
+  margin-bottom:12px; background:#fff; overflow:hidden;
 }
 .exp-summary{
   font-size:13.3px; color:var(--ink); background:var(--ai-soft); border:1px solid var(--ai-line);
@@ -765,7 +765,9 @@ document.getElementById('toggleDetalle').addEventListener('click', function() {
 });
 
 // ---- Utilidades de archivo ----
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
 
 async function extraerTextoPDF(arrayBuffer) {
   const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -994,6 +996,7 @@ function renderAll() {
     return;
   }
   list.innerHTML = expedientes.map(exp => renderExpedienteCard(exp)).join('');
+  list.querySelectorAll('.exp-textarea').forEach(autoGrow);
 }
 
 function renderExpedienteCard(exp) {
@@ -1023,7 +1026,7 @@ function renderExpedienteCard(exp) {
             <input type="checkbox" class="task-checkbox" data-exp-id="${exp.id}" data-task-id="${t.id}" ${checked}>
             ${escapeHtml(t.label)}
           </label>
-          <div class="mini-right">${badge}<label class="tiempo-badge tiempo-editable" data-html2canvas-ignore="true"><input type="number" step="0.5" min="0.5" class="dias-input" data-exp-id="${exp.id}" data-task-id="${t.id}" value="${diasActual}">días</label></div>
+          <div class="mini-right">${badge}<label class="tiempo-badge tiempo-editable" data-html2canvas-ignore="true"><input type="number" step="1" min="1" class="dias-input" data-exp-id="${exp.id}" data-task-id="${t.id}" value="${diasActual}">días</label></div>
         </div>`;
     }).join('');
 
@@ -1035,7 +1038,7 @@ function renderExpedienteCard(exp) {
             ${escapeHtml(t.label)}
           </label>
           <div class="mini-right" data-html2canvas-ignore="true">
-            <label class="tiempo-badge tiempo-editable"><input type="number" step="0.5" min="0.5" class="dias-input-custom" data-exp-id="${exp.id}" data-custom-id="${t.id}" value="${t.dias}">días</label>
+            <label class="tiempo-badge tiempo-editable"><input type="number" step="1" min="1" class="dias-input-custom" data-exp-id="${exp.id}" data-custom-id="${t.id}" value="${t.dias}">días</label>
             <button class="btn-del-tarea" onclick="eliminarTareaCustom(${exp.id}, '${t.id}')">✕</button>
           </div>
         </div>`).join('');
@@ -1215,7 +1218,21 @@ document.getElementById('expedientesList').addEventListener('change', function(e
   recalcularTotales();
 });
 
+// ---- Textareas que crecen mientras se escribe, para no tener que hacer scroll dentro de ellas ----
+function autoGrow(textarea) {
+  textarea.style.height = 'auto';
+  textarea.style.height = textarea.scrollHeight + 'px';
+}
+document.querySelectorAll('.exp-textarea, #pasteText').forEach(autoGrow);
+document.getElementById('pasteText').addEventListener('input', function() {
+  autoGrow(this);
+});
+
 document.getElementById('expedientesList').addEventListener('input', function(e) {
+  if (e.target.classList.contains('exp-textarea')) {
+    autoGrow(e.target);
+    return;
+  }
   const esCatalogo = e.target.classList.contains('dias-input');
   const esCustom = e.target.classList.contains('dias-input-custom');
   if (!esCatalogo && !esCustom) return;
@@ -1223,7 +1240,7 @@ document.getElementById('expedientesList').addEventListener('input', function(e)
   const expId = parseInt(e.target.dataset.expId, 10);
   const exp = expedientes.find(x => x.id === expId);
   if (!exp) return;
-  const valor = parseFloat(e.target.value);
+  const valor = Math.round(parseFloat(e.target.value));
 
   if (esCatalogo) {
     const taskId = e.target.dataset.taskId;
@@ -1456,7 +1473,14 @@ async function analizarExpediente(id, intento) {
       })
     });
     if (response.status === 429 || response.status === 529) throw new Error('RATE_LIMIT');
-    if (!response.ok) throw new Error('La API respondió con un error: ' + response.status);
+    if (!response.ok) {
+      let detalle = 'HTTP ' + response.status;
+      try {
+        const err = await response.json();
+        if (err && err.error) detalle = err.error;
+      } catch (e) { /* respuesta sin JSON, se deja el código de estado */ }
+      throw new Error(detalle);
+    }
 
     const data = await response.json();
     if (!data.text) throw new Error('El asistente no devolvió una respuesta de texto.');
