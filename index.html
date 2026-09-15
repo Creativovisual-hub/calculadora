@@ -1208,10 +1208,9 @@ async function analizarExpediente(id, intento) {
     if (!response.ok) throw new Error('La API respondió con un error: ' + response.status);
 
     const data = await response.json();
-    const textBlock = (data.content || []).find(b => b.type === 'text');
-    if (!textBlock) throw new Error('El asistente no devolvió una respuesta de texto.');
+    if (!data.text) throw new Error('El asistente no devolvió una respuesta de texto.');
 
-    const limpio = textBlock.text.replace(/```json|```/g, '').trim();
+    const limpio = data.text.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(limpio);
     const idsValidos = new Set(TAREAS.map(t => t.id));
 
