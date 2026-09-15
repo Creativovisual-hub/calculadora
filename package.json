@@ -1,0 +1,7 @@
+{
+  "name": "estimador-esfuerzo-ux",
+  "private": true,
+  "dependencies": {
+    "@google/genai": "^2.22.0"
+  }
+}

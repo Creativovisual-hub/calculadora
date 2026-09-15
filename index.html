@@ -8,79 +8,128 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#1f2933; --ink-soft:#5a6570; --bg:#f5f6f8; --card:#ffffff; --line:#e6e9ec;
-  --discovery:#0f766e; --discovery-bg:#eefaf8;
-  --arch:#4f46e5; --arch-bg:#f1f0fe;
-  --ui:#b45309; --ui-bg:#fdf3e7;
-  --test:#be123c; --test-bg:#fdedf1;
-  --ai:#7c3aed; --ai-soft:#f4effe; --ai-line:#ded4fb;
+  --ink:#0a2540; --ink-soft:#475569; --bg:#f0f5fa; --card:#ffffff; --line:#e2edf8;
+  --discovery:#0088ff; --discovery-icon-bg:#eff6ff;
+  --arch:#ffb703; --arch-icon:#d97706; --arch-icon-bg:#fffbeb;
+  --ui:#0060df; --ui-icon-bg:#eff6ff;
+  --test:#00b4d8; --test-icon:#0096c7; --test-icon-bg:#ecfeff;
+  --ai:#0060df; --ai-soft:#ebf3ff; --ai-line:#dce7f3;
   --export:#c0392b; --result:#16a34a;
+  --deco-yellow:#f7b928;
+  --brand-navy:#1d3f6e; --brand-amber:#f0a63c; --brand-tapp:#24a9c9;
+  --slate-900:#0f172a; --slate-700:#334155; --slate-600:#475569; --slate-500:#64748b; --slate-400:#94a3b8;
 }
 *{box-sizing:border-box;}
 body{
-  margin:0; font-family:'Inter',sans-serif; background:var(--bg); color:var(--ink);
-  padding:28px 16px 28px;
+  margin:0; font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--ink);
+  padding:0 16px 28px; overflow-x:hidden; position:relative;
 }
-.page{ max-width:1180px; margin:0 auto; }
-h1,h2,h3{font-family:'Manrope',sans-serif; color:var(--ink); margin:0;}
+.bg-shape-yellow{
+  position:absolute; left:-90px; top:110px; width:180px; height:250px;
+  background-color:var(--deco-yellow); border-top-right-radius:125px; border-bottom-right-radius:125px;
+  z-index:0; pointer-events:none;
+}
+.bg-shape-sky{
+  position:absolute; right:0; top:60px; width:320px; height:180px;
+  background:radial-gradient(circle at 100% 0%, #bde3fa 0%, #d4eefd 45%, rgba(244,248,252,0) 75%);
+  border-bottom-left-radius:180px; z-index:0; pointer-events:none;
+}
+@media (max-width:767px){ .bg-shape-yellow, .bg-shape-sky{ display:none; } }
+.app-navbar{ background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:100; margin:0 -16px; }
+.navbar-inner{ max-width:1180px; margin:0 auto; padding:14px 16px; display:flex; align-items:center; gap:28px; }
+.navbar-brand{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.navbar-logo-svg{ height:30px; width:auto; }
+.navbar-links{ display:flex; gap:6px; flex:1; }
+.nav-link{ color:var(--ink-soft); text-decoration:none; font-size:13.5px; font-weight:600; padding:8px 14px; border-radius:20px; }
+.nav-link:hover{ background:#f2f6fa; }
+.nav-link.active{ background:var(--ai-soft); color:var(--ai); }
+.navbar-account{ display:flex; align-items:center; gap:8px; font-size:13.5px; color:var(--slate-700); font-weight:600; flex-shrink:0; cursor:pointer; }
+.account-avatar{
+  width:32px; height:32px; border-radius:50%; background:#f1f6fc; border:1px solid #e2e8f0;
+  display:flex; align-items:center; justify-content:center; color:var(--ai); flex-shrink:0;
+}
+.chevron-small{ color:var(--slate-400); display:flex; align-items:center; }
+@media (max-width:720px){ .navbar-links{ display:none; } }
+.page{ max-width:1180px; margin:0 auto; padding-top:24px; }
+h1,h2,h3{font-family:'Plus Jakarta Sans',sans-serif; color:var(--ink); margin:0;}
 h1{font-size:26px; font-weight:800; letter-spacing:-0.01em;}
 .eyebrow{
-  font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:0.08em;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:11.5px; letter-spacing:0.08em;
   text-transform:uppercase; color:var(--ai); font-weight:600; margin-bottom:6px;
 }
 .subtitle{color:var(--ink-soft); font-size:14.5px; margin-top:6px; max-width:560px;}
 .page-header{
-  background:var(--card); border:1px solid var(--line); border-radius:14px;
-  padding:26px 30px; margin-bottom:20px;
+  max-width:680px; margin-bottom:24px; position:relative; z-index:10;
 }
 
 /* Layout de dos columnas */
-.layout{ display:flex; align-items:flex-start; gap:22px; }
-.main-col{ flex:1; min-width:0; }
+.layout{ display:grid; grid-template-columns:7fr 5fr; align-items:start; gap:22px; position:relative; z-index:10; }
+.main-col{ min-width:0; display:flex; flex-direction:column; gap:16px; }
 .main-col-inner{
-  background:var(--card); border:1px solid var(--line); border-radius:14px; padding:26px;
+  background:var(--card); border:1px solid var(--line); border-radius:16px; padding:26px;
+  box-shadow:0 4px 20px -4px rgba(0,40,120,0.05);
 }
 
 /* Carga de HUs */
-.assistant-box{
-  background:var(--ai-soft); border:1px solid var(--ai-line); border-radius:12px;
-  padding:20px; margin-bottom:22px;
+.step-block{ margin-bottom:18px; }
+.step-head{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px; }
+.step-head-title{ display:flex; align-items:center; gap:10px; }
+.step-num{
+  width:24px; height:24px; border-radius:50%; background:var(--ai); color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:12.5px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
 }
-.assistant-head{ display:flex; align-items:center; gap:10px; margin-bottom:4px; }
-.assistant-avatar{
-  width:30px; height:30px; border-radius:8px; background:var(--ai);
-  display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0;
+.step-head h3{ font-size:15px; }
+.step-head-hint{ display:flex; align-items:center; gap:5px; color:var(--slate-400); font-size:12px; }
+.step-head-hint span{ color:var(--slate-500); }
+.dropzone{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+  border:2px dashed #b8d6f8; border-radius:14px; background:#f7faff;
+  padding:26px 20px; cursor:pointer; text-align:center;
 }
-.assistant-box p.desc{ margin:8px 0 16px; font-size:13.5px; color:var(--ink-soft); }
-.upload-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
-.file-label{
-  background:#fff; border:1.5px dashed #c4b5f5; color:var(--ai); font-weight:600;
-  font-size:13.5px; padding:12px 16px; border-radius:8px; cursor:pointer;
-  display:inline-flex; align-items:center; gap:8px;
+.dropzone:hover{ background:#f1f7ff; }
+.dropzone-icon{
+  position:relative; width:56px; height:64px; background:#bce0fd; border-radius:12px;
+  display:flex; align-items:center; justify-content:center; color:var(--ai); margin-bottom:6px;
 }
-.file-label:hover{ background:#faf8ff; }
+.dropzone-icon::after{
+  content:''; position:absolute; top:-6px; right:-6px; width:16px; height:16px;
+  background:#f7faff; transform:rotate(45deg);
+}
+.dropzone b{ font-family:'Plus Jakarta Sans',sans-serif; font-size:15px; color:var(--slate-900); margin-bottom:2px; }
+.dropzone-hint{ font-size:12px; color:var(--slate-500); margin-bottom:12px; max-width:380px; }
+.btn-select-files{
+  display:inline-flex; align-items:center; gap:7px; background:#fff; border:1px solid var(--ai);
+  color:var(--ai); font-weight:600; font-size:12.5px; padding:9px 18px; border-radius:24px;
+  box-shadow:0 1px 2px rgba(0,40,120,0.06);
+}
 input[type=file]{ display:none; }
-.file-hint{ font-size:12px; color:var(--ink-soft); }
-.divider-or{
-  display:flex; align-items:center; gap:10px; margin:14px 0 12px; color:var(--ink-soft); font-size:12px;
+.step-divider{
+  display:flex; align-items:center; gap:10px; margin:20px 0; color:var(--slate-500); font-size:12.5px;
 }
-.divider-or::before, .divider-or::after{ content:''; flex:1; height:1px; background:var(--ai-line); }
-.assistant-box textarea{
-  width:100%; padding:12px 14px; border:1px solid #d7cff8; border-radius:8px;
-  font-family:'Inter',sans-serif; font-size:14px; resize:vertical; background:#fff;
-  margin-bottom:10px; color:var(--ink);
+.step-divider::before, .step-divider::after{ content:''; flex:1; height:1px; background:var(--line); }
+.textarea-wrap{ position:relative; }
+#pasteText{
+  width:100%; padding:14px; border:1px solid #e2e8f0; border-radius:12px;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; resize:vertical; background:#fff;
+  color:var(--ink);
 }
-.assistant-box textarea:focus{ outline:2px solid var(--ai); outline-offset:1px; }
+#pasteText:focus{ outline:none; border-color:#3b82f6; box-shadow:0 0 0 3px #dbeafe; }
+.char-counter{
+  display:block; text-align:right; margin-top:6px; font-size:11px; color:var(--slate-400); font-weight:500;
+}
 .btn-analizar{
-  background:var(--ai); color:#fff; border:none; padding:10px 16px; border-radius:8px;
-  cursor:pointer; font-weight:600; font-size:13.5px; font-family:'Inter',sans-serif;
-  display:inline-flex; align-items:center; gap:8px;
+  background:var(--ai); color:#fff; border:none; padding:10px 22px; border-radius:24px;
+  cursor:pointer; font-weight:600; font-size:13.5px; font-family:'Plus Jakarta Sans',sans-serif;
+  display:inline-flex; align-items:center; gap:7px; margin-top:14px;
+  box-shadow:0 4px 10px rgba(0,96,223,0.2);
 }
-.btn-analizar:hover{ background:#6d28d9; }
-.btn-analizar:disabled{ background:#b7a3ef; cursor:progress; }
+.btn-analizar:hover{ background:#0051bd; }
+.btn-analizar:active{ background:#004299; }
+.btn-analizar:disabled{ background:#9db1c2; cursor:progress; box-shadow:none; }
 .btn-texto{
   background:transparent; border:1px solid #d7cff8; color:var(--ai); padding:9px 14px;
   border-radius:8px; cursor:pointer; font-size:13px; font-weight:600;
@@ -101,9 +150,16 @@ input[type=file]{ display:none; }
 /* Lista de expedientes (HUs) */
 #expedientesList{ display:flex; flex-direction:column; gap:14px; }
 .empty-state{
-  text-align:center; padding:30px 16px; color:var(--ink-soft); font-size:14px;
-  border:1.5px dashed var(--line); border-radius:12px;
+  display:flex; align-items:center; gap:14px; text-align:left; padding:18px 20px;
+  background:var(--card); border:1px solid var(--line); border-radius:16px;
+  box-shadow:0 2px 10px -2px rgba(0,40,120,0.04);
 }
+.empty-state-icon{
+  width:44px; height:44px; border-radius:12px; background:#f0f6fc; border:1px solid #dbe8f7;
+  display:flex; align-items:center; justify-content:center; color:var(--slate-500); flex-shrink:0;
+}
+.empty-state b{ display:block; font-size:13.5px; color:var(--slate-900); margin-bottom:2px; }
+.empty-state-sub{ font-size:12.5px; color:var(--slate-500); }
 .exp-card{ border:1px solid var(--line); border-radius:12px; overflow:hidden; }
 .exp-head{
   display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
@@ -111,11 +167,11 @@ input[type=file]{ display:none; }
 }
 .exp-title{ display:flex; align-items:center; gap:10px; min-width:0; }
 .exp-title .name{
-  font-family:'Manrope',sans-serif; font-weight:700; font-size:14.5px; color:var(--ink);
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:14.5px; color:var(--ink);
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:320px;
 }
 .exp-status{
-  font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:10.5px; text-transform:uppercase;
   letter-spacing:.04em; padding:3px 9px; border-radius:20px; font-weight:600; flex-shrink:0;
 }
 .exp-status.pendiente{ background:#eef0f2; color:var(--ink-soft); }
@@ -123,12 +179,12 @@ input[type=file]{ display:none; }
 .exp-status.listo{ background:#e7f7ec; color:var(--result); }
 .exp-status.error{ background:#fdedf1; color:#9f1239; }
 .exp-actions{ display:flex; gap:8px; align-items:center; flex-shrink:0; }
-.exp-subtotal{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-soft); white-space:nowrap; }
+.exp-subtotal{ font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; color:var(--ink-soft); white-space:nowrap; }
 .exp-subtotal b{ color:var(--ink); font-size:15px; }
 .exp-body{ padding:16px; }
 .exp-textarea{
   width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px;
-  font-family:'Inter',sans-serif; font-size:13.5px; resize:vertical; color:var(--ink);
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:13.5px; resize:vertical; color:var(--ink);
   margin-bottom:12px; background:#fff;
 }
 .exp-summary{
@@ -149,7 +205,7 @@ input[type=file]{ display:none; }
 .mini-fase.ui{ --phase-color:var(--ui); background:var(--ui-bg); }
 .mini-fase.test{ --phase-color:var(--test); background:var(--test-bg); }
 .mini-fase h4{
-  font-family:'Manrope',sans-serif; font-size:12px; color:var(--phase-color);
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; color:var(--phase-color);
   text-transform:uppercase; letter-spacing:.03em; font-weight:700; margin:0 0 8px;
 }
 .mini-tarea{
@@ -161,27 +217,37 @@ input[type=file]{ display:none; }
 .mini-tarea input[type=checkbox]{ width:15px; height:15px; accent-color:var(--phase-color, var(--ai)); flex-shrink:0; }
 .mini-right{ display:flex; align-items:center; gap:6px; flex-shrink:0; }
 .badge-ai{
-  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; background:var(--ai-soft);
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:10px; font-weight:600; background:var(--ai-soft);
   color:var(--ai); border:1px solid var(--ai-line); padding:1px 6px; border-radius:20px;
   cursor:help; white-space:nowrap;
 }
 .tiempo-badge{
-  font-family:'IBM Plex Mono',monospace; background:#f1f2f4; padding:2px 8px; border-radius:20px;
+  font-family:'Plus Jakarta Sans',sans-serif; background:#f1f2f4; padding:2px 8px; border-radius:20px;
   font-size:11.5px; color:var(--ink-soft); white-space:nowrap;
 }
+.tiempo-editable input{
+  width:26px; border:none; background:transparent; font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:11.5px; color:var(--ink-soft); text-align:right; padding:0; -moz-appearance:textfield;
+}
+.tiempo-editable input:focus{ outline:none; color:var(--ink); }
+.tiempo-editable:focus-within{ background:#e6e9ec; }
 
 /* ---- Módulo de cálculo (sidebar desktop / barra fija mobile) ---- */
 .panel-calculo{
-  width:320px; flex-shrink:0; align-self:flex-start; position:sticky; top:20px;
-  background:var(--ink); color:#fff; border-radius:14px; padding:22px;
-  box-shadow:0 16px 34px rgba(0,0,0,0.22); max-height:calc(100vh - 40px); overflow-y:auto;
+  min-width:0; align-self:flex-start; position:sticky; top:84px;
+  background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:16px; padding:22px;
+  box-shadow:0 4px 20px -4px rgba(0,40,120,0.05); max-height:calc(100vh - 104px); overflow-y:auto;
 }
-.panel-header{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:16px; }
-.panel-header h3{ color:#fff; font-size:15px; }
+.panel-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:20px; cursor:pointer; }
+.panel-header-title{ display:flex; flex-direction:column; gap:4px; }
+.panel-header-title-row{ display:flex; align-items:center; gap:8px; color:var(--ai); }
+.panel-icon{ display:flex; flex-shrink:0; }
+.panel-header h3{ color:var(--slate-900); font-size:19px; font-weight:800; letter-spacing:-.01em; }
+.panel-subtitle{ font-size:12px; color:var(--slate-500); line-height:1.5; margin:0; }
 .dropdown{ position:relative; display:inline-block; }
 .btn-exportar{
   background:var(--export); color:#fff; border:none; padding:9px 14px; font-size:13px;
-  border-radius:7px; cursor:pointer; font-weight:600; font-family:'Inter',sans-serif;
+  border-radius:7px; cursor:pointer; font-weight:600; font-family:'Plus Jakarta Sans',sans-serif;
   transition:background .2s; white-space:nowrap;
 }
 .btn-exportar:hover{ background:#a5311f; }
@@ -195,61 +261,84 @@ input[type=file]{ display:none; }
 .dropdown:hover .dropdown-content{ display:block; }
 .dropdown-content.mostrar{ display:block; }
 .panel-toggle-detalle{
-  display:none; width:100%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
-  color:#fff; padding:9px 12px; border-radius:8px; font-size:12.5px; font-weight:600; cursor:pointer;
+  display:none; width:100%; background:#f2f6fa; border:1px solid var(--line);
+  color:var(--ink); padding:9px 12px; border-radius:8px; font-size:12.5px; font-weight:600; cursor:pointer;
   margin-bottom:12px; text-align:left;
 }
 .panel-toggle-full{
-  display:none; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18);
-  color:#fff; width:30px; height:30px; border-radius:8px; font-size:14px; cursor:pointer;
+  display:none; background:#f2f6fa; border:1px solid var(--line);
+  color:var(--ink-soft); width:30px; height:30px; border-radius:8px; font-size:14px; cursor:pointer;
   flex-shrink:0; align-items:center; justify-content:center;
 }
-.panel-resumen-compacto{ display:none; }
-.fases-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+.panel-resumen-compacto{ display:none; color:var(--ink-soft); }
+.panel-resumen-compacto b{ color:var(--ink); }
+.fases-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
 .fase-stat{
-  border-radius:9px; padding:9px 10px; border:1px solid rgba(255,255,255,0.1);
-  border-left:4px solid var(--phase-color,#999); background:rgba(255,255,255,0.05);
+  position:relative; overflow:hidden; border-radius:12px; padding:14px;
+  border:1px solid #e2e8f0; background:#fff;
 }
-.fase-stat.discovery{ --phase-color:var(--discovery); }
-.fase-stat.arch{ --phase-color:var(--arch); }
-.fase-stat.ui{ --phase-color:var(--ui); }
-.fase-stat.test{ --phase-color:var(--test); }
-.fase-stat .fname{
-  font-size:10.5px; color:#cfd5da; font-weight:700; text-transform:uppercase;
-  letter-spacing:.02em; margin-bottom:3px;
+.fase-stat::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--phase-color,#999); }
+.fase-stat-row{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+.fase-stat.discovery{ --phase-color:var(--discovery); --phase-icon-bg:var(--discovery-icon-bg); --phase-icon:var(--discovery); }
+.fase-stat.arch{ --phase-color:var(--arch); --phase-icon-bg:var(--arch-icon-bg); --phase-icon:var(--arch-icon); }
+.fase-stat.ui{ --phase-color:var(--ui); --phase-icon-bg:var(--ui-icon-bg); --phase-icon:var(--ui); }
+.fase-stat.test{ --phase-color:var(--test); --phase-icon-bg:var(--test-icon-bg); --phase-icon:var(--test-icon); }
+.fase-icon{
+  width:28px; height:28px; border-radius:8px; background:var(--phase-icon-bg,#f2f6fa); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; color:var(--phase-icon,#666);
 }
-.fase-stat .fval{ font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; color:#fff; }
+.fase-stat .fname{ font-size:12px; color:var(--slate-700); font-weight:600; margin-bottom:4px; display:block; }
+.fase-stat .fval{ font-family:'Plus Jakarta Sans',sans-serif; font-size:22px; font-weight:800; color:var(--slate-900); line-height:1; display:block; }
+.fase-stat .funit{ font-size:11px; color:var(--slate-500); margin-top:4px; display:block; }
 .capacidad-inline{
-  font-size:11.5px; color:#8b949c; margin-top:10px; padding-top:10px;
-  border-top:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+  font-size:11.5px; color:var(--ink-soft); margin-top:10px; padding-top:10px;
+  border-top:1px solid var(--line); display:flex; align-items:center; gap:6px; flex-wrap:wrap;
 }
 .capacidad-inline input{
-  width:44px; padding:3px 5px; border:1px solid rgba(255,255,255,0.2); border-radius:5px;
-  font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-align:center;
-  background:rgba(255,255,255,0.08); color:#fff;
+  width:44px; padding:3px 5px; border:1px solid var(--line); border-radius:5px;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:11.5px; text-align:center;
+  background:#f7fbfe; color:var(--ink);
 }
-.totales-mini{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:16px; }
-.totales-mini .t-item .label{ font-size:11px; color:#b6bec6; }
-.totales-mini .t-item .valor{ font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600; color:var(--result); }
-.totales-mini .t-item .valor.blanco{ color:#fff; }
-.totales-mini .nota{ font-size:9.5px; color:#8b949c; }
+.totales-mini{
+  display:grid; grid-template-columns:repeat(3,1fr); padding:12px 0; margin-bottom:16px;
+  border-top:1px solid #f1f5f9; border-bottom:1px solid #f1f5f9; text-align:center;
+}
+.t-item{ padding:0 8px; border-left:1px solid #f1f5f9; }
+.t-item:first-child{ border-left:none; }
+.t-item .label{ display:block; font-size:11px; color:var(--slate-500); margin-bottom:5px; }
+.t-item .t-row{ display:flex; align-items:center; justify-content:center; gap:5px; }
+.t-item .t-icon{ color:var(--ai); display:flex; }
+.totales-mini .t-item .valor{ font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:800; color:var(--slate-900); }
+.totales-mini .t-item .valor.blanco{ color:var(--slate-900); }
 .roles-box{
-  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
-  border-radius:10px; padding:12px 14px;
+  background:#ebf4fd; border-radius:14px; padding:16px; display:flex; align-items:flex-start; gap:14px;
 }
-.roles-box.alerta{ border-color:rgba(240,169,78,0.5); background:rgba(180,83,9,0.16); }
-.roles-valor{ font-family:'IBM Plex Mono',monospace; font-size:24px; font-weight:700; margin-top:2px; }
-.roles-valor.ok{ color:var(--result); }
-.roles-valor.alerta{ color:#f0a94e; }
-.roles-msg{ font-size:12px; color:#cbd2d8; margin-top:6px; line-height:1.4; }
-.panel-export{ margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.1); }
+.roles-box.alerta{ background:#fff6e9; }
+.roles-icon{
+  width:48px; height:48px; border-radius:50%; background:#d6e8fa; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; color:var(--ai);
+}
+.roles-box.alerta .roles-icon{ background:#fde9c8; color:#c2740a; }
+.roles-box .label{ color:#003d82; font-size:12px; font-weight:700; }
+.roles-box.alerta .label{ color:#7a4a08; }
+.roles-valor{ font-family:'Plus Jakarta Sans',sans-serif; font-size:28px; font-weight:800; margin:2px 0 4px; color:#004fa8; line-height:1; }
+.roles-valor.ok{ color:#004fa8; }
+.roles-valor.alerta{ color:#c2740a; }
+.roles-msg{ font-size:11px; color:var(--slate-600); margin-top:2px; line-height:1.5; }
+.panel-export{ margin-top:14px; }
 .panel-export .btn-exportar{ width:100%; text-align:center; }
-.descarga-lista{ margin-top:10px; font-size:12.5px; color:#cbd2d8; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.descarga-lista{ margin-top:10px; font-size:12.5px; color:var(--ink-soft); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
 .btn-descarga-lista{
   display:inline-block; background:var(--result); color:#fff; text-decoration:none;
   font-weight:700; padding:8px 12px; border-radius:7px; font-size:12.5px;
 }
-.error-descarga{ color:#f0a94e; }
+.error-descarga{ color:#c2740a; }
+.sidebar-col{ display:flex; flex-direction:column; gap:16px; min-width:0; }
+.info-footer{
+  background:#ebf3ff; border:1px solid #dbeafe; border-radius:12px;
+  padding:14px; display:flex; gap:10px; font-size:11.5px; color:var(--slate-600); line-height:1.5;
+}
+.info-footer .info-icon{ flex-shrink:0; color:#2563eb; margin-top:2px; }
 
 /* ---- Resumen de iniciativas colapsable ---- */
 .resumen-iniciativas{ margin-bottom:22px; }
@@ -266,7 +355,7 @@ input[type=file]{ display:none; }
 /* ---- Agregar tarea personalizada por fase ---- */
 .mini-tarea-custom{ border-style:dashed; }
 .badge-custom{
-  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; background:#eef0f2;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:10px; font-weight:600; background:#eef0f2;
   color:var(--ink-soft); border:1px solid var(--line); padding:1px 6px; border-radius:20px; white-space:nowrap;
 }
 .btn-del-tarea{
@@ -284,7 +373,7 @@ input[type=file]{ display:none; }
 }
 .form-tarea-inline.visible{ display:flex; }
 .form-tarea-inline input{
-  padding:7px 9px; border:1px solid var(--line); border-radius:6px; font-family:'Inter',sans-serif; font-size:12.5px;
+  padding:7px 9px; border:1px solid var(--line); border-radius:6px; font-family:'Plus Jakarta Sans',sans-serif; font-size:12.5px;
 }
 .form-tarea-botones{ display:flex; gap:8px; }
 .form-tarea-botones button{
@@ -295,7 +384,7 @@ input[type=file]{ display:none; }
 
 /* ---- Mobile: barra fija inferior, colapsable ---- */
 @media (max-width:899px){
-  .layout{ flex-direction:column; }
+  .layout{ grid-template-columns:1fr; }
   .panel-calculo{
     position:fixed; left:0; right:0; bottom:0; top:auto; width:100%;
     border-radius:16px 16px 0 0; max-height:75vh; z-index:70;
@@ -305,9 +394,9 @@ input[type=file]{ display:none; }
   .panel-toggle-full{ display:flex; }
   .panel-full-content{ display:none; }
   .panel-calculo.expandido .panel-full-content{ display:block; }
-  .panel-resumen-compacto{ display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:12.5px; color:#cbd2d8; }
+  .panel-resumen-compacto{ display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:12.5px; color:var(--ink-soft); }
   .panel-calculo.expandido .panel-resumen-compacto{ display:none; }
-  .panel-resumen-compacto b{ color:#fff; font-family:'IBM Plex Mono',monospace; font-size:14px; }
+  .panel-resumen-compacto b{ color:var(--ink); font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; }
   .panel-toggle-detalle{ display:block; }
   .panel-detalle{ display:none; }
   .panel-detalle.expanded{ display:block; }
@@ -335,6 +424,53 @@ input[type=file]{ display:none; }
 </head>
 <body>
 
+<div class="bg-shape-yellow" aria-hidden="true"></div>
+<div class="bg-shape-sky" aria-hidden="true"></div>
+
+<header class="app-navbar">
+  <div class="navbar-inner">
+    <div class="navbar-brand">
+      <a href="#" aria-label="Ir a inicio de Caja Los Andes" style="display:flex; align-items:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 104 24" class="navbar-logo-svg" fill="none">
+          <path d="M57.7517 18.4669H51.6122C49.3183 18.4669 47.1594 17.4986 45.7426 15.9769C44.1908 14.4553 35.2177 0.553314 35.2177 0.553314C35.0828 0.345821 34.8129 0.207493 34.5431 0.207493H30.1577C29.8204 0.207493 29.5505 0.345821 29.4156 0.622478C28.8758 1.38329 19.1606 14.732 17.6763 16.1844C16.1921 17.7061 14.1006 18.6744 11.8067 18.6744C8.1635 18.6744 5.26242 15.7003 5.26242 11.9654C5.26242 8.57637 7.82616 5.74063 11.0646 5.32565C11.4694 5.25648 11.8067 4.91066 11.8067 4.49568V0.899135C11.8067 0.414986 11.4019 0 10.9296 0C4.79015 0.48415 0 5.67147 0 11.9654C0 18.6052 5.26242 24 11.8067 24C15.5849 24 19.2281 22.4092 21.387 19.9885C23.2761 17.9135 29.8878 8.92219 31.7769 6.29395C31.9118 6.15562 32.0468 5.94813 32.2492 5.94813C32.4516 5.94813 32.654 6.15562 32.7889 6.29395C34.4756 8.92219 40.0079 17.6369 41.8969 19.7118C44.1234 22.1326 47.6991 23.7233 51.4773 23.7233H57.4818C57.5493 23.7233 57.6167 23.7233 57.6842 23.7233C58.1565 23.7233 58.5613 23.3084 58.5613 22.8242V19.366C58.6287 18.8818 58.2239 18.4669 57.7517 18.4669Z" fill="#0076A9"></path>
+          <path d="M88.9227 0.137695H88.4504C88.383 0.137695 88.3155 0.20686 88.3155 0.276024C88.3155 0.967667 88.3155 4.35672 88.3155 4.35672V4.42588V4.49504C88.248 5.32502 87.8432 5.87833 87.1011 5.87833C86.5613 5.87833 86.2915 5.74 85.8867 5.25585L85.8192 5.18669C85.7517 5.11752 85.7517 5.11752 85.6843 5.04836C85.6168 5.04836 85.6168 5.04836 85.5493 5.11752C85.4819 5.11752 85.2795 5.32502 85.212 5.39418C85.1445 5.46334 85.1445 5.46334 85.1445 5.53251C85.1445 5.53251 85.1445 5.60167 85.212 5.60167C85.6843 6.29332 86.2915 6.63914 87.1011 6.63914C87.6408 6.63914 88.1131 6.43164 88.5179 6.08582C88.9227 5.67084 89.1251 5.11752 89.1251 4.42588V0.345188C89.0576 0.20686 88.9902 0.137695 88.9227 0.137695Z" fill="#0076A9"></path>
+          <path d="M82.7849 4.21954H80.0862L81.4355 1.10714L82.7849 4.21954ZM83.5945 4.21954C82.8523 2.55959 82.0427 0.692158 81.8403 0.277172C81.8403 0.208008 81.7729 0.208008 81.7054 0.208008H81.1657C81.0982 0.208008 81.0307 0.277172 81.0307 0.277172C80.7609 0.899651 78.8718 5.04951 78.332 6.29446C78.332 6.36363 78.332 6.36363 78.332 6.43279C78.332 6.50196 78.3995 6.50196 78.467 6.50196H78.9392C79.0067 6.50196 79.1416 6.43279 79.1416 6.36363L79.7488 4.98034H83.1222L83.7294 6.36363C83.7969 6.43279 83.8643 6.50196 83.9318 6.50196H84.4041C84.4715 6.50196 84.4715 6.50196 84.539 6.43279C84.539 6.36363 84.539 6.36363 84.539 6.29446C84.3366 5.87948 83.9993 5.11867 83.5945 4.21954Z" fill="#0076A9"></path>
+          <path d="M94.5867 4.21954H91.888L93.2373 1.10714L94.5867 4.21954ZM96.2734 6.29446C96.071 5.87948 95.7336 5.11867 95.3288 4.21954C94.5867 2.55959 93.7771 0.692158 93.5747 0.277172C93.5747 0.208008 93.5072 0.208008 93.4398 0.208008H92.9C92.8325 0.208008 92.7651 0.277172 92.7651 0.277172C92.4952 0.899651 90.6061 5.04951 90.0664 6.29446C90.0664 6.36363 90.0664 6.36363 90.0664 6.43279C90.0664 6.50196 90.1339 6.50196 90.2013 6.50196H90.6736C90.7411 6.50196 90.876 6.43279 90.876 6.36363L91.4832 4.98034H94.8566L95.4638 6.36363C95.5312 6.43279 95.5987 6.50196 95.6662 6.50196H96.1384C96.2059 6.50196 96.2059 6.50196 96.2734 6.43279C96.3408 6.36363 96.3408 6.29446 96.2734 6.29446Z" fill="#0076A9"></path>
+          <path d="M77.4531 5.39481C77.4531 5.39481 77.3857 5.32565 77.3857 5.25648C77.3182 5.18732 77.2507 5.11816 77.2507 5.11816C77.1833 5.04899 77.1158 5.04899 77.1158 5.04899C77.0483 5.04899 77.0483 5.04899 77.0483 5.11816C76.4411 5.67147 75.9014 5.87896 75.1592 5.87896C73.8099 5.87896 72.7979 4.77233 72.7979 3.31989C72.7979 1.86744 73.8099 0.760807 75.1592 0.760807C75.8339 0.760807 76.3736 0.9683 76.9134 1.45245C76.9809 1.52161 76.9809 1.52161 77.0483 1.52161C77.1158 1.52161 77.1833 1.52161 77.2507 1.45245C77.2507 1.38329 77.5206 1.10663 77.5206 1.03746C77.5206 1.03746 77.5881 0.9683 77.5206 0.899135C77.5206 0.899135 77.4531 0.829971 77.3857 0.760807C76.711 0.207493 76.0363 0 75.1592 0C73.3376 0 71.9883 1.45245 71.9883 3.31989C71.9883 5.18732 73.3376 6.63977 75.1592 6.63977C76.1038 6.63977 76.7785 6.36311 77.5206 5.67147L77.5881 5.60231C77.5881 5.53314 77.5206 5.53314 77.4531 5.39481Z" fill="#0076A9"></path>
+          <path d="M75.699 17.4297H74.7544C74.687 17.4297 74.552 17.4989 74.552 17.568C74.2147 18.3288 72.663 21.9254 72.1232 23.1703L71.9883 23.447C71.9883 23.5161 71.9883 23.5853 71.9883 23.6545C71.9883 23.7236 72.0558 23.7236 72.1232 23.7236H73.3376C73.4051 23.7236 73.54 23.6545 73.54 23.5853L75.2267 19.6429L76.9134 23.5853C76.9808 23.6545 77.0483 23.7236 77.1158 23.7236H78.2627C78.3302 23.7236 78.3976 23.7236 78.3976 23.6545C78.3976 23.5853 78.4651 23.5161 78.3976 23.447C77.9254 22.4095 76.1712 18.398 75.8339 17.568C75.9014 17.4989 75.8339 17.4297 75.699 17.4297Z" fill="#0076A9"></path>
+          <path d="M97.2877 17.4297H93.1047C92.9698 17.4297 92.9023 17.4989 92.9023 17.6372C92.9023 18.1213 92.9023 19.6429 92.9023 20.5421C92.9023 21.5795 92.9023 22.8245 92.9023 23.447C92.9023 23.5161 92.9023 23.5853 92.9698 23.5853C93.0373 23.6545 93.0373 23.6545 93.1047 23.6545H97.2877C97.4226 23.6545 97.4901 23.5853 97.4901 23.447V22.617C97.4901 22.4787 97.3552 22.4095 97.2877 22.4095H94.3192V21.1646C94.589 21.1646 96.2082 21.1646 96.7479 21.1646C96.8829 21.1646 96.9504 21.0954 96.9504 20.9571V20.1271C96.9504 19.9888 96.8829 19.9196 96.7479 19.9196H94.3192V18.7438H97.2877C97.4226 18.7438 97.4901 18.6055 97.4901 18.5363V17.7063C97.4901 17.4989 97.4226 17.4297 97.2877 17.4297Z" fill="#0076A9"></path>
+          <path d="M101.268 19.9179C100.189 19.6413 99.9187 19.503 99.9187 19.088C99.9187 18.7421 100.189 18.5347 100.661 18.5347C101.066 18.5347 101.605 18.7421 102.145 19.088H102.213C102.28 19.088 102.348 19.0188 102.415 18.9496C102.482 18.8805 102.685 18.6038 102.82 18.3963C102.887 18.3272 102.955 18.258 102.955 18.1888C103.022 18.1197 103.09 17.9813 102.955 17.9122C102.28 17.428 101.538 17.1514 100.728 17.1514C99.4465 17.1514 98.5019 17.9813 98.5019 19.088C98.5019 20.4021 99.4465 20.7479 100.593 21.0937C101.673 21.3704 101.808 21.5779 101.808 21.8545C101.808 22.2004 101.47 22.4079 100.931 22.4079C100.391 22.4079 99.7838 22.2004 99.2441 21.7162C99.1091 21.647 98.9742 21.647 98.9067 21.7854C98.8393 21.8545 98.6369 22.1312 98.5019 22.3387L98.2995 22.6154C98.2995 22.6845 98.232 22.6845 98.2995 22.7537C98.2995 22.8228 98.367 22.892 98.5019 22.9612C98.5019 22.9612 98.5694 23.0303 98.6369 23.0303C99.3115 23.5145 100.121 23.722 100.931 23.722C102.348 23.722 103.292 22.9612 103.292 21.7162C103.292 20.6787 102.482 20.1946 101.268 19.9179Z" fill="#0076A9"></path>
+          <path d="M84.9382 17.4287H83.9936C83.8587 17.4287 83.7912 17.567 83.7912 17.6362V21.1636L81.0251 17.4979C80.9576 17.4287 80.8902 17.4287 80.8227 17.4287H79.8782C79.7432 17.4287 79.6758 17.567 79.6758 17.6362V23.5152C79.6758 23.6535 79.7432 23.7227 79.8782 23.7227H80.8227C80.9576 23.7227 81.0251 23.6535 81.0251 23.5152C81.0251 22.6852 81.0251 20.4028 81.0251 19.8495L83.8587 23.6535C83.9262 23.7227 83.9936 23.7227 84.0611 23.7227H84.9382C85.0731 23.7227 85.1406 23.6535 85.1406 23.5152V17.6362C85.1406 17.4979 85.0731 17.4287 84.9382 17.4287Z" fill="#0076A9"></path>
+          <path d="M88.9171 22.4085H87.9051V18.7428H88.9171C89.9291 18.7428 90.5363 19.4345 90.5363 20.6103C90.6038 21.7169 89.9966 22.4085 88.9171 22.4085ZM88.9171 17.4287H86.6907C86.6232 17.4287 86.5558 17.4287 86.5558 17.4979C86.4883 17.567 86.4883 17.567 86.4883 17.6362C86.4883 17.8437 86.4883 18.2587 86.4883 18.4662V22.616C86.4883 22.8235 86.4883 23.1002 86.4883 23.3077V23.5152C86.4883 23.6535 86.6232 23.7227 86.6907 23.7227H88.9171C90.7387 23.7227 92.0206 22.4085 92.0206 20.5411C92.0206 19.642 91.7507 18.8812 91.211 18.3278C90.6713 17.7054 89.8617 17.4287 88.9171 17.4287Z" fill="#0076A9"></path>
+          <path d="M77.1811 13.7632H74.2801V9.06003C74.2801 8.9217 74.1451 8.85254 74.0777 8.85254H73.0657C72.9307 8.85254 72.8633 8.99087 72.8633 9.06003V14.8698C72.8633 15.0082 72.9982 15.0773 73.0657 15.0773H77.1811C77.3161 15.0773 77.3835 14.939 77.3835 14.8698V13.9707C77.3835 13.8324 77.3161 13.7632 77.1811 13.7632Z" fill="#0076A9"></path>
+          <path d="M79.4072 11.8953C79.4072 10.7886 80.2168 9.95865 81.2288 9.95865C82.2408 9.95865 83.0504 10.7886 83.0504 11.8953C83.0504 13.0019 82.2408 13.8319 81.2288 13.8319C80.2168 13.901 79.4072 13.071 79.4072 11.8953ZM81.2288 8.64453C79.3397 8.64453 77.8555 10.097 77.8555 11.9644C77.8555 13.8319 79.2723 15.2843 81.2288 15.2843C83.1179 15.2843 84.6021 13.8319 84.6021 11.9644C84.6021 10.0278 83.1853 8.64453 81.2288 8.64453Z" fill="#0076A9"></path>
+          <path d="M88.1793 11.2734C87.0998 10.9967 86.8299 10.8584 86.8299 10.4434C86.8299 10.0976 87.0998 9.89012 87.5721 9.89012C87.9769 9.89012 88.5166 10.0976 89.0564 10.4434H89.1238C89.1913 10.4434 89.2588 10.3743 89.3262 10.3051C89.3937 10.2359 89.5286 10.0284 89.6636 9.82096C89.731 9.68263 89.7985 9.61346 89.7985 9.5443C89.866 9.47514 89.9334 9.33681 89.7985 9.26764C89.1238 8.78349 88.3817 8.50684 87.5721 8.50684C86.2902 8.50684 85.3457 9.33681 85.3457 10.4434C85.3457 11.7576 86.2902 12.1034 87.4372 12.4492C88.5166 12.7259 88.6516 12.9333 88.6516 13.21C88.6516 13.5558 88.3142 13.7633 87.7745 13.7633C87.2348 13.7633 86.6275 13.5558 86.0878 13.0717C85.9529 13.0025 85.8179 13.0025 85.7505 13.1408C85.683 13.21 85.4806 13.4867 85.3457 13.6942L85.1433 13.9708C85.1433 14.04 85.0758 14.04 85.1433 14.1091C85.1433 14.1783 85.2782 14.2475 85.3457 14.3166H85.4131L85.4806 14.3858C86.1553 14.8699 86.9649 15.0774 87.7745 15.0774C89.1913 15.0774 90.1358 14.3166 90.1358 13.0717C90.2033 12.0342 89.3937 11.6192 88.1793 11.2734Z" fill="#0076A9"></path>
+          <path d="M65.1705 23.7942H61.6622C61.19 23.7942 60.7852 23.3792 60.7852 22.8951V19.2985C60.7852 18.8144 61.19 18.3994 61.6622 18.3994H65.1705C65.6428 18.3994 66.0476 18.8144 66.0476 19.2985V22.8951C66.0476 23.3792 65.6428 23.7942 65.1705 23.7942Z" fill="#F8BF14"></path>
+        </svg>
+      </a>
+    </div>
+    <nav class="navbar-links">
+      <a href="#" class="nav-link">Inicio</a>
+      <a href="#" class="nav-link active">Herramientas</a>
+      <a href="#" class="nav-link">Recursos</a>
+      <a href="#" class="nav-link">Ayuda</a>
+    </nav>
+    <div class="navbar-account">
+      <span class="account-avatar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span>Mi cuenta</span>
+      <span class="chevron-small">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </div>
+  </div>
+</header>
+
 <div class="modal-overlay" id="modalAnalisis" style="display:none;" data-html2canvas-ignore="true">
   <div class="modal-box">
     <div class="modal-spinner"></div>
@@ -357,23 +493,61 @@ input[type=file]{ display:none; }
       <div class="main-col-inner">
 
         <!-- Carga de HUs -->
-        <div class="assistant-box" data-html2canvas-ignore="true">
-          <div class="assistant-head">
-            <div class="assistant-avatar">✨</div>
-            <h3 style="font-size:15px;">Carga tus Historias de Usuario</h3>
-          </div>
-          <p class="desc">Sube uno o varios documentos, o pega el texto directamente. Cada HU se analiza por separado y luego se consolida en el panel de cálculo. El asistente razona sobre el alcance real de cada una, no busca palabras clave.</p>
-
-          <div class="upload-row">
-            <label class="file-label" for="fileInput">📎 Subir documentos</label>
+        <div data-html2canvas-ignore="true">
+          <div class="step-block">
+            <div class="step-head">
+              <div class="step-head-title">
+                <span class="step-num">1</span>
+                <h3>Carga tus Historias de Usuario</h3>
+              </div>
+              <div class="step-head-hint">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="12" x2="12.01" y1="17" y2="17"/>
+                </svg>
+                <span>Formatos soportados: .docx, .pdf, .txt, .md, .xlsx, .xls, .csv</span>
+              </div>
+            </div>
+            <label class="dropzone" for="fileInput">
+              <span class="dropzone-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <b>Sube documentos</b>
+              <span class="dropzone-hint">Arrastra y suelta uno o varios archivos aquí</span>
+              <span class="btn-select-files">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Seleccionar archivos
+              </span>
+            </label>
             <input type="file" id="fileInput" multiple accept=".txt,.md,.docx,.pdf,.xlsx,.xls,.csv">
-            <span class="file-hint">.docx, .pdf, .txt, .md (una HU por archivo) · .xlsx, .xls, .csv (una HU por fila) — puedes seleccionar varios a la vez</span>
+            <div id="uploadError" class="upload-error" style="display:none;"></div>
           </div>
-          <div id="uploadError" class="upload-error" style="display:none;"></div>
 
-          <div class="divider-or">o pega el texto de una HU</div>
-          <textarea id="pasteText" rows="3" placeholder="Ej: Como usuario quiero un nuevo flujo de pago seguro que reemplace al actual, validado con clientes reales antes de pasar a desarrollo..."></textarea>
-          <button id="btnAgregarTexto" class="btn-analizar">＋ Agregar HU</button>
+          <div class="step-divider">o pega el texto de una HU</div>
+
+          <div class="step-block">
+            <div class="step-head">
+              <div class="step-head-title">
+                <span class="step-num">2</span>
+                <h3>Pega el texto de la Historia de Usuario</h3>
+              </div>
+            </div>
+            <div class="textarea-wrap">
+              <textarea id="pasteText" rows="4" maxlength="2000" placeholder="Ej: Como usuario quiero un nuevo flujo de pago seguro que reemplace al actual, validado con clientes reales antes de pasar a desarrollo..."></textarea>
+              <span class="char-counter" id="charCounter">0 / 2.000 caracteres</span>
+            </div>
+            <button id="btnAgregarTexto" class="btn-analizar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Agregar HU
+            </button>
+          </div>
         </div>
 
         <div class="resumen-iniciativas" id="resumenIniciativas" style="display:none;">
@@ -402,16 +576,37 @@ input[type=file]{ display:none; }
         </div>
 
         <div id="expedientesList">
-          <div class="empty-state" id="emptyState">Aún no has cargado ninguna HU. Sube un documento o pega texto arriba para empezar.</div>
+          <div class="empty-state" id="emptyState">
+            <span class="empty-state-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span>
+              <b>Aún no has cargado ninguna HU.</b>
+              <span class="empty-state-sub">Sube un documento o pega texto arriba para empezar.</span>
+            </span>
+          </div>
         </div>
 
       </div>
     </div>
 
     <!-- Módulo de cálculo: sidebar sticky en desktop / barra fija colapsable en mobile -->
+    <div class="sidebar-col">
     <aside class="panel-calculo" id="panelCalculo">
       <div class="panel-header" onclick="document.getElementById('panelCalculo').classList.toggle('expandido')">
-        <h3>Cálculo del QBR</h3>
+        <div class="panel-header-title">
+          <div class="panel-header-title-row">
+            <span class="panel-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zM16.2 13H19v6h-2.8z"/>
+              </svg>
+            </span>
+            <h3>Cálculo del QBR</h3>
+          </div>
+          <p class="panel-subtitle">El asistente consolida el esfuerzo total y calcula cuántos roles de UX se necesitan.</p>
+        </div>
         <button class="panel-toggle-full" id="toggleFull" data-html2canvas-ignore="true">▾</button>
       </div>
 
@@ -425,51 +620,101 @@ input[type=file]{ display:none; }
 
         <div class="panel-detalle" id="panelDetalle">
           <div class="fases-grid">
-            <div class="fase-stat discovery"><div class="fname">Discovery</div><div class="fval" id="sub-discovery">0</div></div>
-            <div class="fase-stat arch"><div class="fname">Arquitectura</div><div class="fval" id="sub-arch">0</div></div>
-            <div class="fase-stat ui"><div class="fname">Diseño UI</div><div class="fval" id="sub-ui">0</div></div>
-            <div class="fase-stat test"><div class="fname">Testing</div><div class="fval" id="sub-test">0</div></div>
+            <div class="fase-stat discovery">
+              <div class="fase-stat-row">
+                <div><span class="fname">Discovery</span><span class="fval" id="sub-discovery">0</span><span class="funit">días</span></div>
+                <span class="fase-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+                </span>
+              </div>
+            </div>
+            <div class="fase-stat arch">
+              <div class="fase-stat-row">
+                <div><span class="fname">Arquitectura</span><span class="fval" id="sub-arch">0</span><span class="funit">días</span></div>
+                <span class="fase-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+            </div>
+            <div class="fase-stat ui">
+              <div class="fase-stat-row">
+                <div><span class="fname">Diseño UI</span><span class="fval" id="sub-ui">0</span><span class="funit">días</span></div>
+                <span class="fase-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+            </div>
+            <div class="fase-stat test">
+              <div class="fase-stat-row">
+                <div><span class="fname">Testing</span><span class="fval" id="sub-test">0</span><span class="funit">días</span></div>
+                <span class="fase-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3"/></svg>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="totales-mini">
           <div class="t-item">
-            <div class="label">Días hábiles</div>
-            <div class="valor" id="totalDias">0</div>
-            <div class="nota">1 semana = 5 días</div>
+            <span class="label">Días hábiles</span>
+            <div class="t-row">
+              <span class="t-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect height="18" rx="2" ry="2" width="18" x="3" y="4"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg></span>
+              <span class="valor" id="totalDias">0</span>
+            </div>
           </div>
           <div class="t-item">
-            <div class="label">HH</div>
-            <div class="valor blanco" id="totalHH">0</div>
+            <span class="label">Semanas</span>
+            <div class="t-row">
+              <span class="t-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+              <span class="valor" id="totalSemanas">0.0</span>
+            </div>
           </div>
           <div class="t-item">
-            <div class="label">Semanas</div>
-            <div class="valor" id="totalSemanas">0.0</div>
+            <span class="label">HUs</span>
+            <div class="t-row">
+              <span class="t-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg></span>
+              <span class="valor blanco" id="totalHus">0</span>
+            </div>
           </div>
-          <div class="t-item">
-            <div class="label">HUs</div>
-            <div class="valor blanco" id="totalHus">0</div>
-          </div>
+          <span id="totalHH" style="display:none;">0</span>
         </div>
 
         <div class="roles-box" id="rolesBox">
-          <div class="label" style="color:#b6bec6; font-size:12px;">Roles de UX necesarios (global, redondeado)</div>
-          <div class="roles-valor ok" id="rolesValor">0</div>
-          <div class="roles-msg" id="rolesMsg">Carga al menos una HU para calcular cuántos roles se necesitan.</div>
-          <div class="capacidad-inline">
-            Asumiendo <input type="number" id="capacidadInput" value="63" min="1" step="1"> días hábiles por rol en el QBR (3 meses)
-          </div>
-          <div class="capacidad-inline">
-            y <input type="number" id="horasPorDiaInput" value="8" min="1" step="1"> horas por día hábil (para el cálculo de HH)
+          <span class="roles-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              <path opacity="0.7" d="M19 8c1.66 0 3-1.34 3-3s-1.34-3-3-3c-.41 0-.79.08-1.15.23C18.42 3.02 19 4.43 19 6c0 1.57-.58 2.98-1.15 3.77.36.15.74.23 1.15.23zm0 2c-.96 0-1.88.22-2.73.6 1.63 1.19 2.73 3.04 2.73 5.4v2h4v-2c0-3.31-2.69-6-4-6z"/>
+            </svg>
+          </span>
+          <div>
+            <div class="label">Roles de UX necesarios</div>
+            <div class="roles-valor ok" id="rolesValor">0</div>
+            <div class="roles-msg" id="rolesMsg">Carga al menos una HU para calcular cuántos roles se necesitan.</div>
+            <div class="capacidad-inline">
+              Asumiendo <input type="number" id="capacidadInput" value="63" min="1" step="1"> días hábiles por rol en el QBR (3 meses)
+            </div>
+            <div class="capacidad-inline">
+              y <input type="number" id="horasPorDiaInput" value="8" min="1" step="1"> horas por día hábil (para el cálculo de HH)
+            </div>
           </div>
         </div>
 
         <div class="panel-export" data-html2canvas-ignore="true">
-          <button class="btn-exportar" id="btnDescargarExcel">📊 Descargar Excel</button>
+          <button class="btn-exportar" id="btnDescargarExcel">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px; margin-right:6px;"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Descargar Excel
+          </button>
           <div class="descarga-lista" id="descargaLista" style="display:none;"></div>
         </div>
       </div>
     </aside>
+
+    <div class="info-footer">
+      <svg class="info-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+      <span>El cálculo se basa en el análisis de tus Historias de Usuario y en la distribución de esfuerzo por fase.</span>
+    </div>
+    </div>
 
   </div>
 </div>
@@ -685,6 +930,11 @@ document.getElementById('fileInput').addEventListener('change', async function(e
   e.target.value = '';
 });
 
+const charCounterEl = document.getElementById('charCounter');
+document.getElementById('pasteText').addEventListener('input', function() {
+  charCounterEl.textContent = `${this.value.length} / 2.000 caracteres`;
+});
+
 document.getElementById('btnAgregarTexto').addEventListener('click', function() {
   const textarea = document.getElementById('pasteText');
   const texto = textarea.value.trim();
@@ -698,6 +948,7 @@ document.getElementById('btnAgregarTexto').addEventListener('click', function() 
   const nombre = 'HU manual ' + (expedientes.filter(x => x.origen === 'manual').length + 1);
   const exp = crearExpediente(nombre, texto, 'manual');
   textarea.value = '';
+  charCounterEl.textContent = '0 / 2.000 caracteres';
   renderAll();
   encolarAnalisis(exp.id);
 });
@@ -713,7 +964,8 @@ function crearExpediente(nombre, texto, origen) {
     razones: {},
     resumen: '',
     error: null,
-    tareasExtra: []
+    tareasExtra: [],
+    diasOverride: {}
   };
   expedientes.push(exp);
   return exp;
@@ -757,13 +1009,14 @@ function renderExpedienteCard(exp) {
       const checked = exp.marcado.has(t.id) ? 'checked' : '';
       const razon = exp.razones[t.id];
       const badge = razon ? `<span class="badge-ai" title="${escapeHtml(razon)}">IA</span>` : '';
+      const diasActual = diasEfectivos(exp, t.id, t.dias);
       return `
         <div class="mini-tarea">
           <label>
             <input type="checkbox" class="task-checkbox" data-exp-id="${exp.id}" data-task-id="${t.id}" ${checked}>
             ${escapeHtml(t.label)}
           </label>
-          <div class="mini-right">${badge}<span class="tiempo-badge">${t.dias} días</span></div>
+          <div class="mini-right">${badge}<span class="tiempo-badge tiempo-editable" data-html2canvas-ignore="true"><input type="text" inputmode="decimal" class="dias-input" data-exp-id="${exp.id}" data-task-id="${t.id}" value="${diasActual}">&nbsp;días</span></div>
         </div>`;
     }).join('');
 
@@ -775,7 +1028,7 @@ function renderExpedienteCard(exp) {
             ${escapeHtml(t.label)}
           </label>
           <div class="mini-right" data-html2canvas-ignore="true">
-            <span class="tiempo-badge">${t.dias} días</span>
+            <span class="tiempo-badge tiempo-editable"><input type="text" inputmode="decimal" class="dias-input-custom" data-exp-id="${exp.id}" data-custom-id="${t.id}" value="${t.dias}">&nbsp;días</span>
             <button class="btn-del-tarea" onclick="eliminarTareaCustom(${exp.id}, '${t.id}')">✕</button>
           </div>
         </div>`).join('');
@@ -906,11 +1159,17 @@ function actualizarTextoExpediente(id, valor) {
   if (exp) exp.texto = valor;
 }
 
+// ---- Días efectivos de una tarea del catálogo: el override manual del usuario, si existe, o el valor por defecto ----
+function diasEfectivos(exp, taskId, diasBase) {
+  const override = exp.diasOverride ? exp.diasOverride[taskId] : undefined;
+  return (override !== undefined && !isNaN(override) && override > 0) ? override : diasBase;
+}
+
 function calcularSubtotal(exp) {
   let total = 0;
   exp.marcado.forEach(taskId => {
     const t = TAREAS.find(x => x.id === taskId);
-    if (t) total += t.dias;
+    if (t) total += diasEfectivos(exp, taskId, t.dias);
   });
   (exp.tareasExtra || []).forEach(t => { total += t.dias; });
   return total;
@@ -920,7 +1179,22 @@ function contarTareas(exp) {
   return exp.marcado.size + (exp.tareasExtra ? exp.tareasExtra.length : 0);
 }
 
-// ---- Delegación de eventos para checkboxes dinámicos ----
+function actualizarSubtotalCard(exp, card) {
+  card = card || document.querySelector(`.exp-subtotal[data-exp-id="${exp.id}"]`)?.closest('.exp-card');
+  if (!card) return;
+  const subtotal = calcularSubtotal(exp);
+  const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
+  const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
+  const roles = rolesFraccion(subtotal, capacidad);
+  const setText = (sel, val) => { const el = card.querySelector(sel); if (el) el.textContent = val; };
+  setText('.es-tareas', contarTareas(exp));
+  setText('.es-dias', subtotal);
+  setText('.es-hh', (subtotal * horasPorDia).toFixed(0));
+  setText('.es-semanas', (subtotal/5).toFixed(1));
+  setText('.es-roles', roles);
+}
+
+// ---- Delegación de eventos para checkboxes e inputs de días dinámicos ----
 document.getElementById('expedientesList').addEventListener('change', function(e) {
   if (!e.target.classList.contains('task-checkbox')) return;
   const expId = parseInt(e.target.dataset.expId, 10);
@@ -930,20 +1204,33 @@ document.getElementById('expedientesList').addEventListener('change', function(e
 
   if (e.target.checked) exp.marcado.add(taskId); else exp.marcado.delete(taskId);
 
-  const card = e.target.closest('.exp-card');
-  if (card) {
-    const subtotal = calcularSubtotal(exp);
-    const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
-    const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
-    const roles = rolesFraccion(subtotal, capacidad);
-    const setText = (sel, val) => { const el = card.querySelector(sel); if (el) el.textContent = val; };
-    setText('.es-tareas', contarTareas(exp));
-    setText('.es-dias', subtotal);
-    setText('.es-hh', (subtotal * horasPorDia).toFixed(0));
-    setText('.es-semanas', (subtotal/5).toFixed(1));
-    setText('.es-roles', roles);
+  actualizarSubtotalCard(exp, e.target.closest('.exp-card'));
+  recalcularTotales();
+});
+
+document.getElementById('expedientesList').addEventListener('input', function(e) {
+  const esCatalogo = e.target.classList.contains('dias-input');
+  const esCustom = e.target.classList.contains('dias-input-custom');
+  if (!esCatalogo && !esCustom) return;
+
+  e.target.value = sanearDias(e.target.value);
+  const expId = parseInt(e.target.dataset.expId, 10);
+  const exp = expedientes.find(x => x.id === expId);
+  if (!exp) return;
+  const valor = parseFloat(e.target.value);
+
+  if (esCatalogo) {
+    const taskId = e.target.dataset.taskId;
+    exp.diasOverride = exp.diasOverride || {};
+    if (!isNaN(valor) && valor > 0) exp.diasOverride[taskId] = valor;
+    else delete exp.diasOverride[taskId];
+  } else {
+    const customId = e.target.dataset.customId;
+    const tarea = (exp.tareasExtra || []).find(t => t.id === customId);
+    if (tarea && !isNaN(valor) && valor > 0) tarea.dias = valor;
   }
 
+  actualizarSubtotalCard(exp, e.target.closest('.exp-card'));
   recalcularTotales();
 });
 
@@ -998,7 +1285,7 @@ function recalcularTotales() {
   expedientes.forEach(exp => {
     exp.marcado.forEach(taskId => {
       const t = TAREAS.find(x => x.id === taskId);
-      if (t) { total += t.dias; porFase[t.slug] += t.dias; }
+      if (t) { const d = diasEfectivos(exp, taskId, t.dias); total += d; porFase[t.slug] += d; }
     });
     (exp.tareasExtra || []).forEach(t => {
       total += t.dias;
@@ -1154,24 +1441,21 @@ async function analizarExpediente(id, intento) {
   renderAll();
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
         system: construirSystemPrompt(),
-        messages: [{ role: 'user', content: exp.texto }]
+        texto: exp.texto
       })
     });
     if (response.status === 429 || response.status === 529) throw new Error('RATE_LIMIT');
     if (!response.ok) throw new Error('La API respondió con un error: ' + response.status);
 
     const data = await response.json();
-    const textBlock = (data.content || []).find(b => b.type === 'text');
-    if (!textBlock) throw new Error('El asistente no devolvió una respuesta de texto.');
+    if (!data.text) throw new Error('El asistente no devolvió una respuesta de texto.');
 
-    const limpio = textBlock.text.replace(/```json|```/g, '').trim();
+    const limpio = data.text.replace(/```json|```/g, '').trim();
     const parsed = JSON.parse(limpio);
     const idsValidos = new Set(TAREAS.map(t => t.id));
 
@@ -1263,7 +1547,7 @@ function crearHojaIniciativa(exp, capacidad, horasPorDia) {
     const t = TAREAS.find(x => x.id === taskId);
     if (!t) return;
     const origen = exp.razones[taskId] !== undefined ? 'Sugerido por IA' : 'Manual (catálogo)';
-    filasTareas.push([t.label, t.fase, t.dias, origen]);
+    filasTareas.push([t.label, t.fase, diasEfectivos(exp, taskId, t.dias), origen]);
   });
   (exp.tareasExtra || []).forEach(t => {
     filasTareas.push([t.label, t.fase, t.dias, 'Manual (nueva)']);
