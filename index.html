@@ -1,21 +1,1396 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christyan Montiel</title>
-    <link rel="stylesheet" href="./assets/css/style.css">
-    </head>
-    <body>
-    <div class="container">
-        <div class="logo">
-        <div class="water-effect">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JavaScript Logo">
-        </div>
-        </div>
-        <h1 class="animated-title">Christyan Montiel</h1>
-        <script src="/js/main.js"></script>
-    </div>
-    </body>
-    </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estimador de Esfuerzo UX — Asistente</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1f2933; --ink-soft:#5a6570; --bg:#f5f6f8; --card:#ffffff; --line:#e6e9ec;
+  --discovery:#0f766e; --discovery-bg:#eefaf8;
+  --arch:#4f46e5; --arch-bg:#f1f0fe;
+  --ui:#b45309; --ui-bg:#fdf3e7;
+  --test:#be123c; --test-bg:#fdedf1;
+  --ai:#7c3aed; --ai-soft:#f4effe; --ai-line:#ded4fb;
+  --export:#c0392b; --result:#16a34a;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; font-family:'Inter',sans-serif; background:var(--bg); color:var(--ink);
+  padding:28px 16px 28px;
+}
+.page{ max-width:1180px; margin:0 auto; }
+h1,h2,h3{font-family:'Manrope',sans-serif; color:var(--ink); margin:0;}
+h1{font-size:26px; font-weight:800; letter-spacing:-0.01em;}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--ai); font-weight:600; margin-bottom:6px;
+}
+.subtitle{color:var(--ink-soft); font-size:14.5px; margin-top:6px; max-width:560px;}
+.page-header{
+  background:var(--card); border:1px solid var(--line); border-radius:14px;
+  padding:26px 30px; margin-bottom:20px;
+}
 
+/* Layout de dos columnas */
+.layout{ display:flex; align-items:flex-start; gap:22px; }
+.main-col{ flex:1; min-width:0; }
+.main-col-inner{
+  background:var(--card); border:1px solid var(--line); border-radius:14px; padding:26px;
+}
+
+/* Carga de HUs */
+.assistant-box{
+  background:var(--ai-soft); border:1px solid var(--ai-line); border-radius:12px;
+  padding:20px; margin-bottom:22px;
+}
+.assistant-head{ display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+.assistant-avatar{
+  width:30px; height:30px; border-radius:8px; background:var(--ai);
+  display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0;
+}
+.assistant-box p.desc{ margin:8px 0 16px; font-size:13.5px; color:var(--ink-soft); }
+.upload-row{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+.file-label{
+  background:#fff; border:1.5px dashed #c4b5f5; color:var(--ai); font-weight:600;
+  font-size:13.5px; padding:12px 16px; border-radius:8px; cursor:pointer;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.file-label:hover{ background:#faf8ff; }
+input[type=file]{ display:none; }
+.file-hint{ font-size:12px; color:var(--ink-soft); }
+.divider-or{
+  display:flex; align-items:center; gap:10px; margin:14px 0 12px; color:var(--ink-soft); font-size:12px;
+}
+.divider-or::before, .divider-or::after{ content:''; flex:1; height:1px; background:var(--ai-line); }
+.assistant-box textarea{
+  width:100%; padding:12px 14px; border:1px solid #d7cff8; border-radius:8px;
+  font-family:'Inter',sans-serif; font-size:14px; resize:vertical; background:#fff;
+  margin-bottom:10px; color:var(--ink);
+}
+.assistant-box textarea:focus{ outline:2px solid var(--ai); outline-offset:1px; }
+.btn-analizar{
+  background:var(--ai); color:#fff; border:none; padding:10px 16px; border-radius:8px;
+  cursor:pointer; font-weight:600; font-size:13.5px; font-family:'Inter',sans-serif;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.btn-analizar:hover{ background:#6d28d9; }
+.btn-analizar:disabled{ background:#b7a3ef; cursor:progress; }
+.btn-texto{
+  background:transparent; border:1px solid #d7cff8; color:var(--ai); padding:9px 14px;
+  border-radius:8px; cursor:pointer; font-size:13px; font-weight:600;
+}
+.btn-texto:hover{ background:#faf8ff; }
+.btn-texto.danger{ border-color:#f3c6cf; color:#9f1239; }
+.btn-texto.danger:hover{ background:#fdf1f4; }
+.spinner{
+  width:13px; height:13px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff;
+  border-radius:50%; animation:spin .7s linear infinite; display:inline-block;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+.upload-error{
+  margin-top:10px; padding:10px 12px; background:#fdedf1; border:1px solid #f5c2cf;
+  color:#9f1239; border-radius:8px; font-size:13px;
+}
+
+/* Lista de expedientes (HUs) */
+#expedientesList{ display:flex; flex-direction:column; gap:14px; }
+.empty-state{
+  text-align:center; padding:30px 16px; color:var(--ink-soft); font-size:14px;
+  border:1.5px dashed var(--line); border-radius:12px;
+}
+.exp-card{ border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+.exp-head{
+  display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
+  padding:14px 16px; background:#fafbfc; border-bottom:1px solid var(--line);
+}
+.exp-title{ display:flex; align-items:center; gap:10px; min-width:0; }
+.exp-title .name{
+  font-family:'Manrope',sans-serif; font-weight:700; font-size:14.5px; color:var(--ink);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:320px;
+}
+.exp-status{
+  font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase;
+  letter-spacing:.04em; padding:3px 9px; border-radius:20px; font-weight:600; flex-shrink:0;
+}
+.exp-status.pendiente{ background:#eef0f2; color:var(--ink-soft); }
+.exp-status.analizando{ background:var(--ai-soft); color:var(--ai); }
+.exp-status.listo{ background:#e7f7ec; color:var(--result); }
+.exp-status.error{ background:#fdedf1; color:#9f1239; }
+.exp-actions{ display:flex; gap:8px; align-items:center; flex-shrink:0; }
+.exp-subtotal{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--ink-soft); white-space:nowrap; }
+.exp-subtotal b{ color:var(--ink); font-size:15px; }
+.exp-body{ padding:16px; }
+.exp-textarea{
+  width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px;
+  font-family:'Inter',sans-serif; font-size:13.5px; resize:vertical; color:var(--ink);
+  margin-bottom:12px; background:#fff;
+}
+.exp-summary{
+  font-size:13.3px; color:var(--ink); background:var(--ai-soft); border:1px solid var(--ai-line);
+  border-radius:8px; padding:10px 12px; margin-bottom:14px;
+}
+.exp-error-msg{
+  font-size:13px; color:#9f1239; background:#fdedf1; border:1px solid #f5c2cf;
+  border-radius:8px; padding:10px 12px; margin-bottom:14px;
+}
+.exp-fases{ display:flex; flex-direction:column; gap:10px; }
+.mini-fase{
+  border-radius:9px; border:1px solid var(--line); border-left:4px solid var(--phase-color,#999);
+  padding:10px 12px;
+}
+.mini-fase.discovery{ --phase-color:var(--discovery); background:var(--discovery-bg); }
+.mini-fase.arch{ --phase-color:var(--arch); background:var(--arch-bg); }
+.mini-fase.ui{ --phase-color:var(--ui); background:var(--ui-bg); }
+.mini-fase.test{ --phase-color:var(--test); background:var(--test-bg); }
+.mini-fase h4{
+  font-family:'Manrope',sans-serif; font-size:12px; color:var(--phase-color);
+  text-transform:uppercase; letter-spacing:.03em; font-weight:700; margin:0 0 8px;
+}
+.mini-tarea{
+  display:flex; justify-content:space-between; align-items:center; gap:8px; padding:7px 9px;
+  background:#fff; border:1px solid var(--line); border-radius:7px; margin-bottom:6px; font-size:13px;
+}
+.mini-tarea:last-child{ margin-bottom:0; }
+.mini-tarea label{ display:flex; align-items:center; gap:8px; cursor:pointer; flex-grow:1; }
+.mini-tarea input[type=checkbox]{ width:15px; height:15px; accent-color:var(--phase-color, var(--ai)); flex-shrink:0; }
+.mini-right{ display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.badge-ai{
+  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; background:var(--ai-soft);
+  color:var(--ai); border:1px solid var(--ai-line); padding:1px 6px; border-radius:20px;
+  cursor:help; white-space:nowrap;
+}
+.tiempo-badge{
+  font-family:'IBM Plex Mono',monospace; background:#f1f2f4; padding:2px 8px; border-radius:20px;
+  font-size:11.5px; color:var(--ink-soft); white-space:nowrap;
+}
+
+/* ---- Módulo de cálculo (sidebar desktop / barra fija mobile) ---- */
+.panel-calculo{
+  width:320px; flex-shrink:0; align-self:flex-start; position:sticky; top:20px;
+  background:var(--ink); color:#fff; border-radius:14px; padding:22px;
+  box-shadow:0 16px 34px rgba(0,0,0,0.22); max-height:calc(100vh - 40px); overflow-y:auto;
+}
+.panel-header{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:16px; }
+.panel-header h3{ color:#fff; font-size:15px; }
+.dropdown{ position:relative; display:inline-block; }
+.btn-exportar{
+  background:var(--export); color:#fff; border:none; padding:9px 14px; font-size:13px;
+  border-radius:7px; cursor:pointer; font-weight:600; font-family:'Inter',sans-serif;
+  transition:background .2s; white-space:nowrap;
+}
+.btn-exportar:hover{ background:#a5311f; }
+.dropdown-content{
+  display:none; position:absolute; right:0; top:calc(100% + 6px); background:#fff;
+  min-width:190px; border:1px solid var(--line); box-shadow:0 10px 24px rgba(0,0,0,0.25);
+  z-index:60; border-radius:8px; overflow:hidden;
+}
+.dropdown-content a{ color:var(--ink); padding:11px 15px; text-decoration:none; display:block; font-size:13.5px; }
+.dropdown-content a:hover{ background:#f4f5f7; }
+.dropdown:hover .dropdown-content{ display:block; }
+.dropdown-content.mostrar{ display:block; }
+.panel-toggle-detalle{
+  display:none; width:100%; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
+  color:#fff; padding:9px 12px; border-radius:8px; font-size:12.5px; font-weight:600; cursor:pointer;
+  margin-bottom:12px; text-align:left;
+}
+.panel-toggle-full{
+  display:none; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.18);
+  color:#fff; width:30px; height:30px; border-radius:8px; font-size:14px; cursor:pointer;
+  flex-shrink:0; align-items:center; justify-content:center;
+}
+.panel-resumen-compacto{ display:none; }
+.fases-grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+.fase-stat{
+  border-radius:9px; padding:9px 10px; border:1px solid rgba(255,255,255,0.1);
+  border-left:4px solid var(--phase-color,#999); background:rgba(255,255,255,0.05);
+}
+.fase-stat.discovery{ --phase-color:var(--discovery); }
+.fase-stat.arch{ --phase-color:var(--arch); }
+.fase-stat.ui{ --phase-color:var(--ui); }
+.fase-stat.test{ --phase-color:var(--test); }
+.fase-stat .fname{
+  font-size:10.5px; color:#cfd5da; font-weight:700; text-transform:uppercase;
+  letter-spacing:.02em; margin-bottom:3px;
+}
+.fase-stat .fval{ font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; color:#fff; }
+.capacidad-inline{
+  font-size:11.5px; color:#8b949c; margin-top:10px; padding-top:10px;
+  border-top:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+}
+.capacidad-inline input{
+  width:44px; padding:3px 5px; border:1px solid rgba(255,255,255,0.2); border-radius:5px;
+  font-family:'IBM Plex Mono',monospace; font-size:11.5px; text-align:center;
+  background:rgba(255,255,255,0.08); color:#fff;
+}
+.totales-mini{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:16px; }
+.totales-mini .t-item .label{ font-size:11px; color:#b6bec6; }
+.totales-mini .t-item .valor{ font-family:'IBM Plex Mono',monospace; font-size:18px; font-weight:600; color:var(--result); }
+.totales-mini .t-item .valor.blanco{ color:#fff; }
+.totales-mini .nota{ font-size:9.5px; color:#8b949c; }
+.roles-box{
+  background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+  border-radius:10px; padding:12px 14px;
+}
+.roles-box.alerta{ border-color:rgba(240,169,78,0.5); background:rgba(180,83,9,0.16); }
+.roles-valor{ font-family:'IBM Plex Mono',monospace; font-size:24px; font-weight:700; margin-top:2px; }
+.roles-valor.ok{ color:var(--result); }
+.roles-valor.alerta{ color:#f0a94e; }
+.roles-msg{ font-size:12px; color:#cbd2d8; margin-top:6px; line-height:1.4; }
+.panel-export{ margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.1); }
+.panel-export .btn-exportar{ width:100%; text-align:center; }
+.descarga-lista{ margin-top:10px; font-size:12.5px; color:#cbd2d8; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.btn-descarga-lista{
+  display:inline-block; background:var(--result); color:#fff; text-decoration:none;
+  font-weight:700; padding:8px 12px; border-radius:7px; font-size:12.5px;
+}
+.error-descarga{ color:#f0a94e; }
+
+/* ---- Resumen de iniciativas colapsable ---- */
+.resumen-iniciativas{ margin-bottom:22px; }
+.resumen-iniciativas-head{
+  display:flex; align-items:center; justify-content:space-between; gap:10px; cursor:pointer;
+  padding:12px 14px; background:var(--ai-soft); border:1px solid var(--ai-line); border-radius:10px;
+}
+.resumen-iniciativas-head h3{ font-size:14px; color:var(--ai); }
+.resumen-iniciativas-head .chevron{ font-size:13px; color:var(--ai); transition:transform .15s; }
+.resumen-iniciativas.expandido .resumen-iniciativas-head .chevron{ transform:rotate(180deg); }
+.resumen-iniciativas-body{ display:none; margin-top:12px; }
+.resumen-iniciativas.expandido .resumen-iniciativas-body{ display:block; }
+
+/* ---- Agregar tarea personalizada por fase ---- */
+.mini-tarea-custom{ border-style:dashed; }
+.badge-custom{
+  font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; background:#eef0f2;
+  color:var(--ink-soft); border:1px solid var(--line); padding:1px 6px; border-radius:20px; white-space:nowrap;
+}
+.btn-del-tarea{
+  background:transparent; border:1px solid #f3c6cf; color:#9f1239; border-radius:6px;
+  width:20px; height:20px; font-size:11px; cursor:pointer; flex-shrink:0; line-height:1;
+}
+.mini-fase-add{ margin-top:6px; }
+.btn-add-tarea{
+  background:transparent; border:1px dashed var(--phase-color, #999); color:var(--phase-color, #666);
+  padding:6px 10px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; width:100%;
+}
+.form-tarea-inline{
+  display:none; flex-direction:column; gap:6px; margin-top:8px; background:#fff;
+  border:1px solid var(--line); border-radius:8px; padding:10px;
+}
+.form-tarea-inline.visible{ display:flex; }
+.form-tarea-inline input{
+  padding:7px 9px; border:1px solid var(--line); border-radius:6px; font-family:'Inter',sans-serif; font-size:12.5px;
+}
+.form-tarea-botones{ display:flex; gap:8px; }
+.form-tarea-botones button{
+  flex:1; padding:6px 8px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; border:none;
+}
+.form-tarea-botones button:first-child{ background:var(--ai); color:#fff; }
+.form-tarea-botones button:last-child{ background:#eef0f2; color:var(--ink-soft); }
+
+/* ---- Mobile: barra fija inferior, colapsable ---- */
+@media (max-width:899px){
+  .layout{ flex-direction:column; }
+  .panel-calculo{
+    position:fixed; left:0; right:0; bottom:0; top:auto; width:100%;
+    border-radius:16px 16px 0 0; max-height:75vh; z-index:70;
+    padding:16px 18px calc(14px + env(safe-area-inset-bottom));
+  }
+  body{ padding-bottom:70px; }
+  .panel-toggle-full{ display:flex; }
+  .panel-full-content{ display:none; }
+  .panel-calculo.expandido .panel-full-content{ display:block; }
+  .panel-resumen-compacto{ display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:12.5px; color:#cbd2d8; }
+  .panel-calculo.expandido .panel-resumen-compacto{ display:none; }
+  .panel-resumen-compacto b{ color:#fff; font-family:'IBM Plex Mono',monospace; font-size:14px; }
+  .panel-toggle-detalle{ display:block; }
+  .panel-detalle{ display:none; }
+  .panel-detalle.expanded{ display:block; }
+  .exp-title .name{ max-width:150px; }
+}
+
+/* ---- Modal de progreso del análisis en cola ---- */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(15,17,20,0.55); z-index:200;
+  display:flex; align-items:center; justify-content:center; padding:20px;
+}
+.modal-box{
+  background:#fff; border-radius:14px; padding:28px 26px; max-width:360px; width:100%;
+  text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.3);
+}
+.modal-spinner{
+  width:34px; height:34px; border:4px solid var(--ai-line); border-top-color:var(--ai);
+  border-radius:50%; margin:0 auto 16px; animation:spin .8s linear infinite;
+}
+.modal-box h3{ font-size:16px; margin-bottom:6px; }
+.modal-box p{ font-size:13.5px; color:var(--ink-soft); margin-bottom:16px; }
+.modal-barra{ height:8px; background:#eef0f2; border-radius:20px; overflow:hidden; margin-bottom:20px; }
+.modal-barra-relleno{ height:100%; background:var(--ai); transition:width .3s ease; }
+</style>
+</head>
+<body>
+
+<div class="modal-overlay" id="modalAnalisis" style="display:none;" data-html2canvas-ignore="true">
+  <div class="modal-box">
+    <div class="modal-spinner"></div>
+    <h3>Analizando iniciativas</h3>
+    <p id="modalProgresoTexto">Analizando 1 de 1</p>
+    <div class="modal-barra"><div class="modal-barra-relleno" id="modalBarraRelleno" style="width:0%;"></div></div>
+    <button class="btn-texto danger" id="btnCancelarAnalisis" style="width:100%; justify-content:center;">Cancelar y continuar manualmente</button>
+  </div>
+</div>
+
+<div class="page" id="contenido-pdf">
+  <div class="page-header">
+    <div class="eyebrow">Asistente de estimación</div>
+    <h1>Estimador de Esfuerzo UX</h1>
+    <p class="subtitle">Carga una o varias Historias de Usuario y el asistente estima el esfuerzo por fase, consolida el total del QBR y calcula cuántos roles de UX se necesitan.</p>
+  </div>
+
+  <div class="layout">
+    <div class="main-col">
+      <div class="main-col-inner">
+
+        <!-- Carga de HUs -->
+        <div class="assistant-box" data-html2canvas-ignore="true">
+          <div class="assistant-head">
+            <div class="assistant-avatar">✨</div>
+            <h3 style="font-size:15px;">Carga tus Historias de Usuario</h3>
+          </div>
+          <p class="desc">Sube uno o varios documentos, o pega el texto directamente. Cada HU se analiza por separado y luego se consolida en el panel de cálculo. El asistente razona sobre el alcance real de cada una, no busca palabras clave.</p>
+
+          <div class="upload-row">
+            <label class="file-label" for="fileInput">📎 Subir documentos</label>
+            <input type="file" id="fileInput" multiple accept=".txt,.md,.docx,.xlsx,.xls,.csv">
+            <span class="file-hint">.docx, .txt, .md (una HU por archivo) · .xlsx, .xls, .csv (una HU por fila) — puedes seleccionar varios a la vez</span>
+          </div>
+          <div id="uploadError" class="upload-error" style="display:none;"></div>
+
+          <div class="divider-or">o pega el texto de una HU</div>
+          <textarea id="pasteText" rows="3" placeholder="Ej: Como usuario quiero un nuevo flujo de pago seguro que reemplace al actual, validado con clientes reales antes de pasar a desarrollo..."></textarea>
+          <button id="btnAgregarTexto" class="btn-analizar">＋ Agregar HU</button>
+        </div>
+
+        <div class="resumen-iniciativas" id="resumenIniciativas" style="display:none;">
+          <div class="resumen-iniciativas-head" onclick="document.getElementById('resumenIniciativas').classList.toggle('expandido')">
+            <h3 id="resumenIniciativasTitulo">Resumen de Iniciativas</h3>
+            <span class="chevron">▾</span>
+          </div>
+          <div class="resumen-iniciativas-body">
+            <div style="overflow-x:auto;">
+              <table id="resumenTable" style="width:100%; border-collapse:collapse; font-size:13px;">
+                <thead>
+                  <tr style="text-align:left; border-bottom:2px solid var(--line);">
+                    <th style="padding:8px 10px;">Iniciativa</th>
+                    <th style="padding:8px 10px;">Resumen</th>
+                    <th style="padding:8px 10px; text-align:center;">Tareas</th>
+                    <th style="padding:8px 10px; text-align:center;">Días</th>
+                    <th style="padding:8px 10px; text-align:center;">HH</th>
+                    <th style="padding:8px 10px; text-align:center;">Semanas</th>
+                    <th style="padding:8px 10px; text-align:center;">Roles</th>
+                  </tr>
+                </thead>
+                <tbody id="resumenTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="expedientesList">
+          <div class="empty-state" id="emptyState">Aún no has cargado ninguna HU. Sube un documento o pega texto arriba para empezar.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Módulo de cálculo: sidebar sticky en desktop / barra fija colapsable en mobile -->
+    <aside class="panel-calculo" id="panelCalculo">
+      <div class="panel-header" onclick="document.getElementById('panelCalculo').classList.toggle('expandido')">
+        <h3>Cálculo del QBR</h3>
+        <button class="panel-toggle-full" id="toggleFull" data-html2canvas-ignore="true">▾</button>
+      </div>
+
+      <div class="panel-resumen-compacto" data-html2canvas-ignore="true">
+        <span><b id="miniDias">0</b> días · <b id="miniSemanas">0.0</b> sem</span>
+        <span><b id="miniRoles">0</b> rol(es)</span>
+      </div>
+
+      <div class="panel-full-content" id="panelFullContent">
+        <button class="panel-toggle-detalle" id="toggleDetalle" data-html2canvas-ignore="true">Ver detalle por fase ▾</button>
+
+        <div class="panel-detalle" id="panelDetalle">
+          <div class="fases-grid">
+            <div class="fase-stat discovery"><div class="fname">Discovery</div><div class="fval" id="sub-discovery">0</div></div>
+            <div class="fase-stat arch"><div class="fname">Arquitectura</div><div class="fval" id="sub-arch">0</div></div>
+            <div class="fase-stat ui"><div class="fname">Diseño UI</div><div class="fval" id="sub-ui">0</div></div>
+            <div class="fase-stat test"><div class="fname">Testing</div><div class="fval" id="sub-test">0</div></div>
+          </div>
+        </div>
+
+        <div class="totales-mini">
+          <div class="t-item">
+            <div class="label">Días hábiles</div>
+            <div class="valor" id="totalDias">0</div>
+            <div class="nota">1 semana = 5 días</div>
+          </div>
+          <div class="t-item">
+            <div class="label">HH</div>
+            <div class="valor blanco" id="totalHH">0</div>
+          </div>
+          <div class="t-item">
+            <div class="label">Semanas</div>
+            <div class="valor" id="totalSemanas">0.0</div>
+          </div>
+          <div class="t-item">
+            <div class="label">HUs</div>
+            <div class="valor blanco" id="totalHus">0</div>
+          </div>
+        </div>
+
+        <div class="roles-box" id="rolesBox">
+          <div class="label" style="color:#b6bec6; font-size:12px;">Roles de UX necesarios (global, redondeado)</div>
+          <div class="roles-valor ok" id="rolesValor">0</div>
+          <div class="roles-msg" id="rolesMsg">Carga al menos una HU para calcular cuántos roles se necesitan.</div>
+          <div class="capacidad-inline">
+            Asumiendo <input type="number" id="capacidadInput" value="63" min="1" step="1"> días hábiles por rol en el QBR (3 meses)
+          </div>
+          <div class="capacidad-inline">
+            y <input type="number" id="horasPorDiaInput" value="8" min="1" step="1"> horas por día hábil (para el cálculo de HH)
+          </div>
+        </div>
+
+        <div class="panel-export" data-html2canvas-ignore="true">
+          <button class="btn-exportar" id="btnDescargarExcel">📊 Descargar Excel</button>
+          <div class="descarga-lista" id="descargaLista" style="display:none;"></div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<script>
+// ---- Catálogo de tareas: fuente única de verdad ----
+const TAREAS = [
+  { id:'chk-bench', label:'Benchmarking (Análisis competitivo)', fase:'Discovery', dias:5, slug:'discovery' },
+  { id:'chk-stake', label:'Entrevistas con Stakeholders', fase:'Discovery', dias:3, slug:'discovery' },
+  { id:'chk-user', label:'Entrevistas con Usuarios (Research)', fase:'Discovery', dias:7, slug:'discovery' },
+  { id:'chk-audit', label:'Auditoría Heurística / Data', fase:'Discovery', dias:2, slug:'discovery' },
+  { id:'chk-flow', label:'Mapeo de flujos (User Journeys)', fase:'Arquitectura y Wireframes', dias:3, slug:'arch' },
+  { id:'chk-wire-sim', label:'Wireframes (Flujo simple)', fase:'Arquitectura y Wireframes', dias:2, slug:'arch' },
+  { id:'chk-wire-com', label:'Wireframes (Flujo complejo / Nuevo)', fase:'Arquitectura y Wireframes', dias:5, slug:'arch' },
+  { id:'chk-ui-act', label:'Diseño UI (Usando Design System actual)', fase:'Diseño UI', dias:3, slug:'ui' },
+  { id:'chk-ui-new', label:'Diseño UI (Nuevos componentes)', fase:'Diseño UI', dias:8, slug:'ui' },
+  { id:'chk-proto', label:'Prototipo Interactivo', fase:'Diseño UI', dias:2, slug:'ui' },
+  { id:'chk-test-mod', label:'Pruebas de Usabilidad Moderadas', fase:'Testing & Handoff', dias:5, slug:'test' },
+  { id:'chk-test-nomod', label:'Pruebas No Moderadas (Maze, etc.)', fase:'Testing & Handoff', dias:3, slug:'test' },
+  { id:'chk-handoff', label:'Handoff y Documentación Devs', fase:'Testing & Handoff', dias:2, slug:'test' }
+];
+
+const FASES_ORDEN = [
+  { nombre:'Discovery', slug:'discovery' },
+  { nombre:'Arquitectura y Wireframes', slug:'arch' },
+  { nombre:'Diseño UI', slug:'ui' },
+  { nombre:'Testing & Handoff', slug:'test' }
+];
+
+let expedientes = [];
+let nextId = 1;
+let nextCustomId = 1;
+let formsTareaAbiertos = new Set(); // claves "expId-faseSlug" cuyo formulario debe seguir abierto tras un re-render
+let formsTareaDraft = {}; // claves "expId-faseSlug" -> { nombre, dias } escritos hasta el momento
+
+// ---- Toggle del detalle en mobile ----
+document.getElementById('toggleDetalle').addEventListener('click', function() {
+  const detalle = document.getElementById('panelDetalle');
+  const expandido = detalle.classList.toggle('expanded');
+  this.textContent = expandido ? 'Ocultar detalle por fase ▴' : 'Ver detalle por fase ▾';
+});
+
+// ---- Utilidades de archivo ----
+function leerArchivo(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    if (ext === 'docx') {
+      reader.onload = async (e) => {
+        try {
+          const result = await mammoth.extractRawText({ arrayBuffer: e.target.result });
+          resolve(result.value);
+        } catch (err) { reject(err); }
+      };
+      reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+      reader.readAsArrayBuffer(file);
+    } else if (ext === 'txt' || ext === 'md') {
+      reader.onload = (e) => resolve(e.target.result);
+      reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+      reader.readAsText(file);
+    } else {
+      reject(new Error('Formato no soportado: .' + ext + '. Usa .docx, .txt o .md, o pega el texto directamente.'));
+    }
+  });
+}
+
+// ---- Planillas (.xlsx, .xls, .csv): una HU por fila ----
+function leerArchivoBinario(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => resolve(e.target.result);
+    reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function mapRowToInitData(row) {
+  const keys = Object.keys(row);
+  const buscar = (patrones) => {
+    const k = keys.find(k => patrones.some(p => k.toLowerCase().includes(p)));
+    return k ? String(row[k]).trim() : '';
+  };
+  let titulo = buscar(['iniciativa', 'título', 'titulo', 'nombre', 'hu']);
+  let descripcion = buscar(['descripci', 'detalle', 'detail']);
+
+  // Si no hay columnas reconocibles, usar la primera celda como título y el resto como descripción
+  if (!titulo && keys.length) {
+    titulo = String(row[keys[0]] || '').trim();
+    descripcion = keys.slice(1).map(k => row[k]).filter(v => String(v).trim()).join(' · ');
+  }
+  return { titulo, descripcion };
+}
+
+async function procesarPlanilla(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  let wb;
+  if (ext === 'csv') {
+    const arrayBuffer = await leerArchivoBinario(file);
+    const texto = new TextDecoder('utf-8').decode(arrayBuffer);
+    wb = XLSX.read(texto, { type: 'string' });
+  } else {
+    const arrayBuffer = await leerArchivoBinario(file);
+    wb = XLSX.read(arrayBuffer, { type: 'array' });
+  }
+
+  const hoja = wb.Sheets[wb.SheetNames[0]];
+
+  // Intento 1: planilla plana con encabezados reconocibles (una HU por fila)
+  const filasObj = XLSX.utils.sheet_to_json(hoja, { defval: '' });
+  const nuevos = [];
+  filasObj.forEach(fila => {
+    const { titulo, descripcion } = mapRowToInitData(fila);
+    if (!titulo) return;
+    const texto = descripcion ? (titulo + '\n\n' + descripcion) : titulo;
+    nuevos.push(crearExpediente(titulo, texto));
+  });
+  if (nuevos.length) return nuevos;
+
+  // Intento 2: planilla jerárquica sin encabezados, con celdas combinadas
+  // (Categoría > Subcategoría > ... > Iniciativa > Equipo/Responsable).
+  // Se rellenan hacia abajo las columnas vacías (herencia de celda combinada)
+  // y se asume que la iniciativa real está en la penúltima columna,
+  // dejando la última como equipo/responsable.
+  const filasArr = XLSX.utils.sheet_to_json(hoja, { header: 1, defval: '' });
+  const filasLimpias = filasArr.filter(r => r.some(c => String(c).trim() !== ''));
+  if (!filasLimpias.length) return [];
+
+  const numCols = Math.max(...filasLimpias.map(r => r.length));
+  const rellenas = filasLimpias.map(r => {
+    const row = r.slice();
+    while (row.length < numCols) row.push('');
+    return row;
+  });
+
+  const ultimaCol = numCols - 1;
+  for (let c = 0; c < ultimaCol; c++) {
+    let ultimoValor = '';
+    for (let f = 0; f < rellenas.length; f++) {
+      const val = String(rellenas[f][c] || '').trim();
+      if (val) ultimoValor = val;
+      else rellenas[f][c] = ultimoValor;
+    }
+  }
+
+  const idxTitulo = numCols >= 2 ? numCols - 2 : 0;
+  rellenas.forEach(row => {
+    const titulo = String(row[idxTitulo] || '').trim();
+    if (!titulo) return;
+    const contexto = row.slice(0, idxTitulo).map(v => String(v).trim()).filter(Boolean).join(' > ');
+    const responsable = ultimaCol > idxTitulo ? String(row[ultimaCol] || '').trim() : '';
+    let texto = titulo;
+    if (contexto) texto += '\n\nContexto: ' + contexto;
+    if (responsable) texto += '\nEquipo/Responsable: ' + responsable;
+    nuevos.push(crearExpediente(titulo, texto));
+  });
+
+  return nuevos;
+}
+
+document.getElementById('fileInput').addEventListener('change', async function(e) {
+  const files = Array.from(e.target.files || []);
+  const errorBox = document.getElementById('uploadError');
+  errorBox.style.display = 'none';
+  const errores = [];
+  const paraAnalizar = [];
+
+  for (const file of files) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    try {
+      if (ext === 'xlsx' || ext === 'xls' || ext === 'csv') {
+        const nuevos = await procesarPlanilla(file);
+        if (!nuevos.length) throw new Error('No se encontraron filas con un título reconocible.');
+        paraAnalizar.push(...nuevos);
+      } else {
+        const texto = await leerArchivo(file);
+        paraAnalizar.push(crearExpediente(file.name, texto));
+      }
+    } catch (err) {
+      errores.push(file.name + ': ' + err.message);
+    }
+  }
+
+  renderAll();
+  paraAnalizar.forEach(exp => encolarAnalisis(exp.id));
+
+  if (errores.length) {
+    errorBox.textContent = errores.join(' · ');
+    errorBox.style.display = 'block';
+  }
+  e.target.value = '';
+});
+
+document.getElementById('btnAgregarTexto').addEventListener('click', function() {
+  const textarea = document.getElementById('pasteText');
+  const texto = textarea.value.trim();
+  if (texto.length < 10) {
+    const errorBox = document.getElementById('uploadError');
+    errorBox.textContent = 'Escribe al menos una frase describiendo la HU antes de agregarla.';
+    errorBox.style.display = 'block';
+    return;
+  }
+  document.getElementById('uploadError').style.display = 'none';
+  const nombre = 'HU manual ' + (expedientes.filter(x => x.origen === 'manual').length + 1);
+  const exp = crearExpediente(nombre, texto, 'manual');
+  textarea.value = '';
+  renderAll();
+  encolarAnalisis(exp.id);
+});
+
+function crearExpediente(nombre, texto, origen) {
+  const exp = {
+    id: nextId++,
+    nombre: nombre,
+    texto: texto,
+    origen: origen || 'archivo',
+    estado: 'pendiente',
+    marcado: new Set(),
+    razones: {},
+    resumen: '',
+    error: null,
+    tareasExtra: []
+  };
+  expedientes.push(exp);
+  return exp;
+}
+
+function eliminarExpediente(id) {
+  expedientes = expedientes.filter(x => x.id !== id);
+  renderAll();
+  recalcularTotales();
+}
+
+// ---- Render de la lista de expedientes ----
+function renderAll() {
+  const list = document.getElementById('expedientesList');
+  const empty = document.getElementById('emptyState');
+  if (!expedientes.length) {
+    list.innerHTML = '';
+    list.appendChild(empty);
+    return;
+  }
+  list.innerHTML = expedientes.map(exp => renderExpedienteCard(exp)).join('');
+}
+
+function renderExpedienteCard(exp) {
+  const subtotal = calcularSubtotal(exp);
+  const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
+  const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
+  const rolesInic = rolesFraccion(subtotal, capacidad);
+
+  let bodyContent = '';
+  if (exp.estado === 'error') {
+    bodyContent += `<div class="exp-error-msg">No se pudo analizar automáticamente (${escapeHtml(exp.error || '')}). Puedes seleccionar las tareas manualmente abajo.</div>`;
+  }
+  if (exp.resumen) {
+    bodyContent += `<div class="exp-summary"><strong>Resumen:</strong> ${escapeHtml(exp.resumen)}</div>`;
+  }
+
+  const fasesHtml = FASES_ORDEN.map(fase => {
+    const tareasFase = TAREAS.filter(t => t.fase === fase.nombre);
+    const items = tareasFase.map(t => {
+      const checked = exp.marcado.has(t.id) ? 'checked' : '';
+      const razon = exp.razones[t.id];
+      const badge = razon ? `<span class="badge-ai" title="${escapeHtml(razon)}">IA</span>` : '';
+      return `
+        <div class="mini-tarea">
+          <label>
+            <input type="checkbox" class="task-checkbox" data-exp-id="${exp.id}" data-task-id="${t.id}" ${checked}>
+            ${escapeHtml(t.label)}
+          </label>
+          <div class="mini-right">${badge}<span class="tiempo-badge">${t.dias} días</span></div>
+        </div>`;
+    }).join('');
+
+    const tareasExtraFase = (exp.tareasExtra || []).filter(t => t.slug === fase.slug);
+    const itemsExtra = tareasExtraFase.map(t => `
+        <div class="mini-tarea mini-tarea-custom">
+          <label style="cursor:default;">
+            <span class="badge-custom">Manual</span>
+            ${escapeHtml(t.label)}
+          </label>
+          <div class="mini-right" data-html2canvas-ignore="true">
+            <span class="tiempo-badge">${t.dias} días</span>
+            <button class="btn-del-tarea" onclick="eliminarTareaCustom(${exp.id}, '${t.id}')">✕</button>
+          </div>
+        </div>`).join('');
+
+    const formKey = `${exp.id}-${fase.slug}`;
+    const formAbierto = formsTareaAbiertos.has(formKey);
+    const draft = formsTareaDraft[formKey] || { nombre: '', dias: '' };
+    const formTarea = `
+        <div class="mini-fase-add" data-html2canvas-ignore="true">
+          <button class="btn-add-tarea" onclick="mostrarFormTarea(${exp.id}, '${fase.slug}')">＋ Agregar tarea</button>
+          <div class="form-tarea-inline ${formAbierto ? 'visible' : ''}" id="formTarea-${exp.id}-${fase.slug}">
+            <input type="text" placeholder="Nombre de la tarea" id="tareaNombre-${exp.id}-${fase.slug}" value="${escapeHtml(draft.nombre)}" oninput="guardarDraftTarea(${exp.id}, '${fase.slug}', 'nombre', this.value)">
+            <input type="text" inputmode="decimal" placeholder="Días (ej: 2 o 2.5)" id="tareaDias-${exp.id}-${fase.slug}" value="${escapeHtml(draft.dias)}" oninput="this.value = sanearDias(this.value); guardarDraftTarea(${exp.id}, '${fase.slug}', 'dias', this.value)">
+            <div class="form-tarea-botones">
+              <button onclick="agregarTareaCustom(${exp.id}, '${fase.slug}')">Agregar</button>
+              <button onclick="ocultarFormTarea(${exp.id}, '${fase.slug}')">Cancelar</button>
+            </div>
+          </div>
+        </div>`;
+
+    return `<div class="mini-fase ${fase.slug}"><h4>${fase.nombre}</h4>${items}${itemsExtra}${formTarea}</div>`;
+  }).join('');
+
+  return `
+    <div class="exp-card">
+      <div class="exp-head">
+        <div class="exp-title">
+          <span class="exp-status ${exp.estado}">${estadoLabel(exp.estado)}</span>
+          <span class="name" title="${escapeHtml(exp.nombre)}">${escapeHtml(exp.nombre)}</span>
+        </div>
+        <div class="exp-actions" data-html2canvas-ignore="true">
+          <span class="exp-subtotal" data-exp-id="${exp.id}">
+            <span class="es-tareas">${contarTareas(exp)}</span> tareas ·
+            <b class="es-dias">${subtotal}</b> días ·
+            <span class="es-hh">${(subtotal * horasPorDia).toFixed(0)}</span> HH ·
+            <span class="es-semanas">${(subtotal/5).toFixed(1)}</span> sem ·
+            <span class="es-roles" title="Proporción de la capacidad de un rol en el trimestre (no redondeado a mínimo 1)">${rolesInic}</span> rol(es)
+          </span>
+          <button class="btn-texto" onclick="encolarAnalisis(${exp.id})" ${exp.estado === 'analizando' ? 'disabled' : ''}>
+            ${exp.estado === 'analizando' ? '<span class="spinner"></span>' : (exp.estado === 'listo' || exp.estado === 'error' ? '↻ Reanalizar' : '✨ Analizar')}
+          </button>
+          <button class="btn-texto danger" onclick="eliminarExpediente(${exp.id})">✕</button>
+        </div>
+      </div>
+      <div class="exp-body">
+        <textarea class="exp-textarea" rows="2" data-html2canvas-ignore="true" onchange="actualizarTextoExpediente(${exp.id}, this.value)">${escapeHtml(exp.texto)}</textarea>
+        ${bodyContent}
+        <div class="exp-fases">${fasesHtml}</div>
+      </div>
+    </div>`;
+}
+
+// ---- Tareas manuales agregadas por el equipo ----
+function sanearDias(valor) {
+  // Solo dígitos y un único punto decimal (acepta también coma y la convierte a punto)
+  let limpio = String(valor || '').replace(',', '.').replace(/[^0-9.]/g, '');
+  const partes = limpio.split('.');
+  if (partes.length > 2) limpio = partes[0] + '.' + partes.slice(1).join('');
+  return limpio;
+}
+
+function guardarDraftTarea(expId, faseSlug, campo, valor) {
+  const key = `${expId}-${faseSlug}`;
+  if (!formsTareaDraft[key]) formsTareaDraft[key] = { nombre: '', dias: '' };
+  formsTareaDraft[key][campo] = valor;
+}
+
+function mostrarFormTarea(expId, faseSlug) {
+  formsTareaAbiertos.add(`${expId}-${faseSlug}`);
+  const el = document.getElementById(`formTarea-${expId}-${faseSlug}`);
+  if (el) el.classList.add('visible');
+}
+
+function ocultarFormTarea(expId, faseSlug) {
+  const key = `${expId}-${faseSlug}`;
+  formsTareaAbiertos.delete(key);
+  delete formsTareaDraft[key];
+  const el = document.getElementById(`formTarea-${expId}-${faseSlug}`);
+  if (el) el.classList.remove('visible');
+}
+
+function agregarTareaCustom(expId, faseSlug) {
+  const exp = expedientes.find(x => x.id === expId);
+  if (!exp) return;
+  const fase = FASES_ORDEN.find(f => f.slug === faseSlug);
+  const nombreInput = document.getElementById(`tareaNombre-${expId}-${faseSlug}`);
+  const diasInput = document.getElementById(`tareaDias-${expId}-${faseSlug}`);
+  const nombre = (nombreInput.value || '').trim();
+  const dias = parseFloat(diasInput.value);
+
+  if (!nombre || !dias || dias <= 0) {
+    alert('Ingresa un nombre y una cantidad de días válida (mayor a 0) para la tarea.');
+    return;
+  }
+
+  exp.tareasExtra = exp.tareasExtra || [];
+  exp.tareasExtra.push({
+    id: 'custom-' + expId + '-' + (nextCustomId++),
+    label: nombre,
+    dias: dias,
+    fase: fase ? fase.nombre : faseSlug,
+    slug: faseSlug
+  });
+
+  ocultarFormTarea(expId, faseSlug);
+  renderAll();
+  recalcularTotales();
+}
+
+function eliminarTareaCustom(expId, taskId) {
+  const exp = expedientes.find(x => x.id === expId);
+  if (!exp) return;
+  exp.tareasExtra = (exp.tareasExtra || []).filter(t => t.id !== taskId);
+  renderAll();
+  recalcularTotales();
+}
+
+function estadoLabel(estado) {
+  return { pendiente:'Pendiente', analizando:'Analizando…', listo:'Analizado', error:'Sin analizar' }[estado] || estado;
+}
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function actualizarTextoExpediente(id, valor) {
+  const exp = expedientes.find(x => x.id === id);
+  if (exp) exp.texto = valor;
+}
+
+function calcularSubtotal(exp) {
+  let total = 0;
+  exp.marcado.forEach(taskId => {
+    const t = TAREAS.find(x => x.id === taskId);
+    if (t) total += t.dias;
+  });
+  (exp.tareasExtra || []).forEach(t => { total += t.dias; });
+  return total;
+}
+
+function contarTareas(exp) {
+  return exp.marcado.size + (exp.tareasExtra ? exp.tareasExtra.length : 0);
+}
+
+// ---- Delegación de eventos para checkboxes dinámicos ----
+document.getElementById('expedientesList').addEventListener('change', function(e) {
+  if (!e.target.classList.contains('task-checkbox')) return;
+  const expId = parseInt(e.target.dataset.expId, 10);
+  const taskId = e.target.dataset.taskId;
+  const exp = expedientes.find(x => x.id === expId);
+  if (!exp) return;
+
+  if (e.target.checked) exp.marcado.add(taskId); else exp.marcado.delete(taskId);
+
+  const card = e.target.closest('.exp-card');
+  if (card) {
+    const subtotal = calcularSubtotal(exp);
+    const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
+    const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
+    const roles = rolesFraccion(subtotal, capacidad);
+    const setText = (sel, val) => { const el = card.querySelector(sel); if (el) el.textContent = val; };
+    setText('.es-tareas', contarTareas(exp));
+    setText('.es-dias', subtotal);
+    setText('.es-hh', (subtotal * horasPorDia).toFixed(0));
+    setText('.es-semanas', (subtotal/5).toFixed(1));
+    setText('.es-roles', roles);
+  }
+
+  recalcularTotales();
+});
+
+// ---- Roles necesarios para una cantidad de días dada (global: redondeado hacia arriba, mínimo 1) ----
+function rolesParaDias(dias, capacidad) {
+  if (!dias || dias <= 0) return 0;
+  return Math.max(1, Math.ceil(dias / capacidad));
+}
+
+// ---- Proporción real de un rol que consume una iniciativa (redondeado al 0.5 más cercano) ----
+// A diferencia de rolesParaDias, esto NO fuerza un mínimo de 1: una iniciativa que usa
+// poco de la capacidad trimestral puede mostrar 0.5, 1, 1.5, etc.
+function rolesFraccion(dias, capacidad) {
+  if (!dias || dias <= 0) return 0;
+  return Math.round((dias / capacidad) * 2) / 2;
+}
+
+// ---- Tabla de Resumen de Iniciativas (para pantalla, PDF y referencia rápida) ----
+function renderResumenIniciativas() {
+  const box = document.getElementById('resumenIniciativas');
+  const tbody = document.getElementById('resumenTableBody');
+  const titulo = document.getElementById('resumenIniciativasTitulo');
+  if (!expedientes.length) { box.style.display = 'none'; tbody.innerHTML = ''; return; }
+
+  const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
+  const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
+  box.style.display = 'block';
+  if (titulo) titulo.textContent = `Resumen de Iniciativas (${expedientes.length})`;
+
+  tbody.innerHTML = expedientes.map(exp => {
+    const dias = calcularSubtotal(exp);
+    const hh = dias * horasPorDia;
+    const semanas = (dias / 5).toFixed(1);
+    const roles = rolesFraccion(dias, capacidad);
+    return `<tr>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); font-weight:600;">${escapeHtml(exp.nombre)}</td>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); color:var(--ink-soft);">${escapeHtml(exp.resumen || '—')}</td>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:center;">${contarTareas(exp)}</td>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:center;">${dias}</td>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:center;">${hh.toFixed(0)}</td>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:center;">${semanas}</td>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:center;">${roles}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ---- Totales consolidados ----
+function recalcularTotales() {
+  let total = 0;
+  const porFase = { discovery:0, arch:0, ui:0, test:0 };
+
+  expedientes.forEach(exp => {
+    exp.marcado.forEach(taskId => {
+      const t = TAREAS.find(x => x.id === taskId);
+      if (t) { total += t.dias; porFase[t.slug] += t.dias; }
+    });
+    (exp.tareasExtra || []).forEach(t => {
+      total += t.dias;
+      if (porFase[t.slug] !== undefined) porFase[t.slug] += t.dias;
+    });
+  });
+
+  document.getElementById('totalDias').textContent = total;
+  document.getElementById('totalSemanas').textContent = (total / 5).toFixed(1);
+  document.getElementById('totalHus').textContent = expedientes.length;
+  renderResumenIniciativas();
+  document.getElementById('sub-discovery').textContent = porFase.discovery;
+  document.getElementById('sub-arch').textContent = porFase.arch;
+  document.getElementById('sub-ui').textContent = porFase.ui;
+  document.getElementById('sub-test').textContent = porFase.test;
+
+  const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
+  const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
+  const totalHH = total * horasPorDia;
+
+  document.getElementById('totalDias').textContent = total;
+  document.getElementById('totalHH').textContent = totalHH.toFixed(0);
+  document.getElementById('totalSemanas').textContent = (total / 5).toFixed(1);
+  document.getElementById('totalHus').textContent = expedientes.length;
+  renderResumenIniciativas();
+  document.getElementById('sub-discovery').textContent = porFase.discovery;
+  document.getElementById('sub-arch').textContent = porFase.arch;
+  document.getElementById('sub-ui').textContent = porFase.ui;
+  document.getElementById('sub-test').textContent = porFase.test;
+
+  const rolesBox = document.getElementById('rolesBox');
+  const rolesValor = document.getElementById('rolesValor');
+  const rolesMsg = document.getElementById('rolesMsg');
+  let rolesActual = 0;
+
+  if (total === 0) {
+    rolesValor.textContent = '0';
+    rolesValor.className = 'roles-valor ok';
+    rolesMsg.textContent = 'Carga al menos una HU para calcular cuántos roles se necesitan.';
+    rolesBox.classList.remove('alerta');
+  } else {
+    const roles = Math.max(1, Math.ceil(total / capacidad));
+    rolesActual = roles;
+    rolesValor.textContent = roles;
+    const utilizacion = Math.round((total / (roles * capacidad)) * 100);
+    if (roles > 1) {
+      rolesValor.className = 'roles-valor alerta';
+      rolesBox.classList.add('alerta');
+      rolesMsg.textContent = `El esfuerzo total (${total} días / ${totalHH.toFixed(0)} HH) supera la capacidad de un rol en el QBR (${capacidad} días). Se necesitan ${roles} roles de UX en paralelo (usando ~${utilizacion}% de su capacidad conjunta), o repriorizar el alcance. Revisa el detalle por iniciativa abajo: no todas necesitan un rol completo.`;
+    } else {
+      rolesValor.className = 'roles-valor ok';
+      rolesBox.classList.remove('alerta');
+      rolesMsg.textContent = `1 rol de UX alcanza a cubrir este QBR (usa ${total} de ${capacidad} días disponibles, ${totalHH.toFixed(0)} HH — ${utilizacion}% de su capacidad).`;
+    }
+  }
+
+  // Barra compacta visible en mobile cuando el panel está colapsado
+  const miniDias = document.getElementById('miniDias');
+  const miniSemanas = document.getElementById('miniSemanas');
+  const miniRoles = document.getElementById('miniRoles');
+  if (miniDias) miniDias.textContent = total;
+  if (miniSemanas) miniSemanas.textContent = (total / 5).toFixed(1);
+  if (miniRoles) miniRoles.textContent = rolesActual;
+}
+
+document.getElementById('capacidadInput').addEventListener('input', recalcularTotales);
+document.getElementById('horasPorDiaInput').addEventListener('input', recalcularTotales);
+
+// ---- Cola de análisis: evita disparar todas las llamadas a la API en paralelo ----
+function construirSystemPrompt() {
+  const catalogo = TAREAS.map(t => `- id:"${t.id}" | fase:"${t.fase}" | tarea:"${t.label}"`).join('\n');
+  return `Eres un Lead de UX evaluando el alcance de una Historia de Usuario (HU) o iniciativa de QBR para estimar qué tareas de diseño se necesitan.
+
+Catálogo de tareas disponibles (usa EXACTAMENTE estos ids, no inventes otros):
+${catalogo}
+
+Instrucciones:
+1. Lee el texto del usuario y decide, con criterio de diseño real, qué tareas del catálogo son necesarias. No selecciones por coincidencia de palabras: razona sobre el alcance real (¿es un flujo nuevo o un ajuste?, ¿hay research previo o hace falta?, ¿usa componentes existentes o requiere nuevos?, ¿necesita validación con usuarios?, ¿hay handoff a desarrollo?).
+2. Sé conservador: solo marca una tarea si el texto realmente la justifica. No selecciones todo el catálogo por defecto.
+3. Responde ÚNICAMENTE con un objeto JSON válido, sin texto adicional, sin markdown, sin backticks. Formato exacto:
+{"resumen":"una frase breve describiendo el tipo de iniciativa detectada","seleccion":[{"id":"chk-xxx","razon":"justificación breve de máximo 12 palabras"}]}
+
+Solo incluye en "seleccion" las tareas que SÍ deben marcarse.`;
+}
+
+let colaAnalisis = [];
+let colaProcesando = false;
+let colaCancelada = false;
+let colaTotal = 0;
+let colaCompletados = 0;
+const RETRASO_ENTRE_LLAMADAS = 2000; // ms de pausa entre iniciativas para no saturar el rate limit
+
+function encolarAnalisis(id) {
+  const colaEstabaVacia = colaAnalisis.length === 0 && !colaProcesando;
+  if (colaEstabaVacia) {
+    colaTotal = 0;
+    colaCompletados = 0;
+    colaCancelada = false;
+  }
+  if (!colaAnalisis.includes(id)) {
+    colaAnalisis.push(id);
+    colaTotal++;
+  }
+  procesarCola();
+}
+
+async function procesarCola() {
+  if (colaProcesando) return;
+  colaProcesando = true;
+  mostrarModalAnalisis();
+
+  while (colaAnalisis.length) {
+    if (colaCancelada) { colaAnalisis = []; break; }
+    const id = colaAnalisis.shift();
+    actualizarModalAnalisis(colaCompletados + 1, colaTotal);
+    await analizarExpediente(id);
+    colaCompletados++;
+    if (colaAnalisis.length && !colaCancelada) await new Promise(r => setTimeout(r, RETRASO_ENTRE_LLAMADAS));
+  }
+
+  colaProcesando = false;
+  ocultarModalAnalisis();
+}
+
+// ---- Modal de progreso ----
+function mostrarModalAnalisis() {
+  const modal = document.getElementById('modalAnalisis');
+  if (modal) modal.style.display = 'flex';
+}
+function ocultarModalAnalisis() {
+  const modal = document.getElementById('modalAnalisis');
+  if (modal) modal.style.display = 'none';
+}
+function actualizarModalAnalisis(actual, total) {
+  const texto = document.getElementById('modalProgresoTexto');
+  const barra = document.getElementById('modalBarraRelleno');
+  if (texto) texto.textContent = `Analizando ${actual} de ${total}`;
+  if (barra) barra.style.width = total > 0 ? `${Math.round(((actual - 1) / total) * 100)}%` : '0%';
+}
+document.getElementById('btnCancelarAnalisis').addEventListener('click', function() {
+  colaCancelada = true;
+  colaAnalisis = [];
+  ocultarModalAnalisis();
+});
+
+async function analizarExpediente(id, intento) {
+  intento = intento || 0;
+  const exp = expedientes.find(x => x.id === id);
+  if (!exp) return;
+
+  exp.estado = 'analizando';
+  exp.error = null;
+  renderAll();
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: construirSystemPrompt(),
+        messages: [{ role: 'user', content: exp.texto }]
+      })
+    });
+    if (response.status === 429 || response.status === 529) throw new Error('RATE_LIMIT');
+    if (!response.ok) throw new Error('La API respondió con un error: ' + response.status);
+
+    const data = await response.json();
+    const textBlock = (data.content || []).find(b => b.type === 'text');
+    if (!textBlock) throw new Error('El asistente no devolvió una respuesta de texto.');
+
+    const limpio = textBlock.text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(limpio);
+    const idsValidos = new Set(TAREAS.map(t => t.id));
+
+    exp.marcado = new Set();
+    exp.razones = {};
+    (parsed.seleccion || []).forEach(item => {
+      if (!idsValidos.has(item.id)) return;
+      exp.marcado.add(item.id);
+      exp.razones[item.id] = item.razon || '';
+    });
+    exp.resumen = parsed.resumen || '';
+    exp.estado = 'listo';
+  } catch (err) {
+    if (colaCancelada) {
+      // El usuario canceló: dejar la iniciativa lista para selección manual, sin marcarla como error
+      exp.estado = 'pendiente';
+      exp.error = null;
+      renderAll();
+      return;
+    }
+    const esRateLimit = err.message === 'RATE_LIMIT' || /rate limit/i.test(err.message);
+    if (esRateLimit && intento < 4) {
+      const espera = 2000 * Math.pow(2, intento); // 2s, 4s, 8s, 16s
+      exp.estado = 'analizando';
+      exp.error = `Límite de solicitudes alcanzado, reintentando en ${Math.round(espera / 1000)}s… (intento ${intento + 1}/4)`;
+      renderAll();
+      await new Promise(r => setTimeout(r, espera));
+      return analizarExpediente(id, intento + 1);
+    }
+    console.error('Error del asistente:', err);
+    exp.estado = 'error';
+    exp.error = esRateLimit
+      ? 'Se alcanzó el límite de solicitudes tras varios reintentos. Espera un momento y usa "↻ Reanalizar".'
+      : err.message;
+  }
+
+  renderAll();
+  recalcularTotales();
+}
+
+// ---- Utilidad: mostrar un enlace de descarga real para el archivo generado ----
+// (en vez de disparar la descarga de forma 100% automática, que en algunos
+// entornos con iframe restringido puede ser bloqueada silenciosamente)
+function mostrarEnlaceDescarga(blob, filename, etiqueta) {
+  const contenedor = document.getElementById('descargaLista');
+  const url = URL.createObjectURL(blob);
+  contenedor.style.display = 'flex';
+  contenedor.innerHTML = `<a href="${url}" download="${filename}" class="btn-descarga-lista">✅ ${etiqueta} — Descargar</a>`;
+}
+function mostrarErrorDescarga(mensaje) {
+  const contenedor = document.getElementById('descargaLista');
+  contenedor.style.display = 'flex';
+  contenedor.innerHTML = `<span class="error-descarga">${escapeHtml(mensaje)}</span>`;
+}
+
+// ---- Nombre de hoja válido y único para Excel (máx 31 caracteres, sin \ / ? * [ ] :) ----
+function generarNombreHoja(nombre, indice, usados) {
+  let limpio = String(nombre || 'Iniciativa').replace(/[\\\/?*\[\]:]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (!limpio) limpio = 'Iniciativa';
+  let base = `${indice}. ${limpio}`;
+  if (base.length > 31) base = base.slice(0, 31);
+
+  let candidato = base;
+  let sufijo = 2;
+  while (usados.has(candidato)) {
+    const extra = `(${sufijo})`;
+    candidato = base.slice(0, 31 - extra.length) + extra;
+    sufijo++;
+  }
+  usados.add(candidato);
+  return candidato;
+}
+
+// Filas fijas usadas en cada hoja de iniciativa, para que las fórmulas del
+// Resumen puedan apuntar siempre a la misma celda sin importar cuántas tareas tenga.
+const FILA_TAREAS_INICIO = 5;
+const FILA_TAREAS_FIN = FILA_TAREAS_INICIO + 299; // rango amplio reservado (hasta 300 tareas)
+const FILA_CANT = 306;
+const FILA_DIAS = 307;
+const FILA_SEMANAS = 308;
+const FILA_HORASPORDIA = 309;
+const FILA_HH = 310;
+const FILA_CAPACIDAD = 311;
+const FILA_ROLES = 312;
+
+function crearHojaIniciativa(exp, capacidad, horasPorDia) {
+  const filasTareas = [];
+  exp.marcado.forEach(taskId => {
+    const t = TAREAS.find(x => x.id === taskId);
+    if (!t) return;
+    const origen = exp.razones[taskId] !== undefined ? 'Sugerido por IA' : 'Manual (catálogo)';
+    filasTareas.push([t.label, t.fase, t.dias, origen]);
+  });
+  (exp.tareasExtra || []).forEach(t => {
+    filasTareas.push([t.label, t.fase, t.dias, 'Manual (nueva)']);
+  });
+
+  const aoa = [];
+  aoa[0] = ['Iniciativa', exp.nombre];
+  aoa[1] = ['Resumen', exp.resumen || '(sin analizar aún)'];
+  aoa[2] = [];
+  aoa[3] = ['Tarea', 'Fase', 'Días', 'Origen'];
+  filasTareas.forEach((fila, idx) => { aoa[FILA_TAREAS_INICIO - 1 + idx] = fila; });
+
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+
+  const totalDias = filasTareas.reduce((s, f) => s + (parseFloat(f[2]) || 0), 0);
+  const cantTareas = filasTareas.length;
+  const roles = rolesFraccion(totalDias, capacidad);
+  const totalHH = totalDias * horasPorDia;
+
+  ws[`A${FILA_CANT}`] = { t: 's', v: 'Cantidad de Tareas' };
+  ws[`B${FILA_CANT}`] = { t: 'n', f: `COUNTA(A${FILA_TAREAS_INICIO}:A${FILA_TAREAS_FIN})`, v: cantTareas };
+
+  ws[`A${FILA_DIAS}`] = { t: 's', v: 'Total Días' };
+  ws[`B${FILA_DIAS}`] = { t: 'n', f: `SUM(C${FILA_TAREAS_INICIO}:C${FILA_TAREAS_FIN})`, v: totalDias };
+
+  ws[`A${FILA_SEMANAS}`] = { t: 's', v: 'Total Semanas' };
+  ws[`B${FILA_SEMANAS}`] = { t: 'n', f: `B${FILA_DIAS}/5`, v: totalDias / 5 };
+
+  ws[`A${FILA_HORASPORDIA}`] = { t: 's', v: 'Horas por Día Hábil' };
+  ws[`B${FILA_HORASPORDIA}`] = { t: 'n', f: `Parametros!B3`, v: horasPorDia };
+
+  ws[`A${FILA_HH}`] = { t: 's', v: 'Total HH' };
+  ws[`B${FILA_HH}`] = { t: 'n', f: `B${FILA_DIAS}*B${FILA_HORASPORDIA}`, v: totalHH };
+
+  ws[`A${FILA_CAPACIDAD}`] = { t: 's', v: 'Capacidad por Rol (días)' };
+  ws[`B${FILA_CAPACIDAD}`] = { t: 'n', f: `Parametros!B2`, v: capacidad };
+
+  ws[`A${FILA_ROLES}`] = { t: 's', v: 'Roles Necesarios (proporción real, sin mínimo 1)' };
+  ws[`B${FILA_ROLES}`] = {
+    t: 'n',
+    f: `IF(B${FILA_DIAS}=0,0,ROUND((B${FILA_DIAS}/B${FILA_CAPACIDAD})*2,0)/2)`,
+    v: roles
+  };
+
+  ws['!cols'] = [{ wch: 42 }, { wch: 24 }, { wch: 10 }, { wch: 20 }];
+  ws['!ref'] = XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: FILA_ROLES - 1, c: 3 } });
+
+  return { ws, meta: { cantTareas, totalDias, totalHH, roles } };
+}
+
+function construirLibroExcel() {
+  const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
+  const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
+  const workbook = XLSX.utils.book_new();
+
+  // Hoja "Parametros": valores compartidos que las demás hojas referencian por fórmula
+  const wsParametros = XLSX.utils.aoa_to_sheet([
+    ['Parámetro', 'Valor'],
+    ['Capacidad por Rol (días/QBR)', capacidad],
+    ['Horas por Día Hábil', horasPorDia]
+  ]);
+  wsParametros['!cols'] = [{ wch: 30 }, { wch: 12 }];
+
+  // Generar nombres de hoja únicos y crear cada hoja de iniciativa
+  const usados = new Set(['Resumen', 'Parametros']);
+  const hojasIniciativa = expedientes.map((exp, idx) => {
+    const nombreHoja = generarNombreHoja(exp.nombre, idx + 1, usados);
+    const { ws, meta } = crearHojaIniciativa(exp, capacidad, horasPorDia);
+    return { exp, nombreHoja, ws, meta };
+  });
+
+  // Hoja "Resumen": todo por fórmula, apuntando a la hoja de cada iniciativa.
+  // "Roles Necesarios" aquí es la PROPORCIÓN real que consume cada iniciativa
+  // (puede ser 0.5, 1, 1.5...), no un mínimo forzado a 1 como el total global.
+  const resumenAoa = [["Iniciativa", "Resumen", "Cant. Tareas", "Días", "HH", "Semanas", "Roles (proporción individual)"]];
+  const wsResumen = XLSX.utils.aoa_to_sheet(resumenAoa);
+
+  let fila = 2;
+  hojasIniciativa.forEach(({ exp, nombreHoja, meta }) => {
+    const ref = `'${nombreHoja}'`;
+    wsResumen[`A${fila}`] = { t: 's', f: `${ref}!B1`, v: exp.nombre };
+    wsResumen[`B${fila}`] = { t: 's', f: `${ref}!B2`, v: exp.resumen || '(sin analizar aún)' };
+    wsResumen[`C${fila}`] = { t: 'n', f: `${ref}!B${FILA_CANT}`, v: meta.cantTareas };
+    wsResumen[`D${fila}`] = { t: 'n', f: `${ref}!B${FILA_DIAS}`, v: meta.totalDias };
+    wsResumen[`E${fila}`] = { t: 'n', f: `${ref}!B${FILA_HH}`, v: meta.totalHH };
+    wsResumen[`F${fila}`] = { t: 'n', f: `${ref}!B${FILA_SEMANAS}`, v: meta.totalDias / 5 };
+    wsResumen[`G${fila}`] = { t: 'n', f: `${ref}!B${FILA_ROLES}`, v: meta.roles };
+    fila++;
+  });
+
+  const primeraFilaDatos = 2;
+  const ultimaFilaDatos = fila - 1;
+  const filaTotal = fila + 1; // deja una fila en blanco antes del total
+
+  const totalDiasGlobal = hojasIniciativa.reduce((s, h) => s + h.meta.totalDias, 0);
+  const totalTareasGlobal = hojasIniciativa.reduce((s, h) => s + h.meta.cantTareas, 0);
+  const rolesGlobal = rolesParaDias(totalDiasGlobal, capacidad); // acá SÍ se redondea hacia arriba (mínimo 1): es la cifra para decidir cuánta gente contratar
+
+  wsResumen[`A${filaTotal}`] = { t: 's', v: 'TOTAL GLOBAL (redondeado, para dotación)' };
+  if (ultimaFilaDatos >= primeraFilaDatos) {
+    wsResumen[`C${filaTotal}`] = { t: 'n', f: `SUM(C${primeraFilaDatos}:C${ultimaFilaDatos})`, v: totalTareasGlobal };
+    wsResumen[`D${filaTotal}`] = { t: 'n', f: `SUM(D${primeraFilaDatos}:D${ultimaFilaDatos})`, v: totalDiasGlobal };
+  } else {
+    wsResumen[`C${filaTotal}`] = { t: 'n', v: 0 };
+    wsResumen[`D${filaTotal}`] = { t: 'n', v: 0 };
+  }
+  wsResumen[`E${filaTotal}`] = { t: 'n', f: `D${filaTotal}*Parametros!B3`, v: totalDiasGlobal * horasPorDia };
+  wsResumen[`F${filaTotal}`] = { t: 'n', f: `D${filaTotal}/5`, v: totalDiasGlobal / 5 };
+  wsResumen[`G${filaTotal}`] = {
+    t: 'n',
+    f: `IF(D${filaTotal}=0,0,MAX(1,ROUNDUP(D${filaTotal}/Parametros!B2,0)))`,
+    v: rolesGlobal
+  };
+
+  wsResumen['!cols'] = [{ wch: 28 }, { wch: 55 }, { wch: 12 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 26 }];
+  wsResumen['!ref'] = XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: filaTotal - 1, c: 6 } });
+
+  // Orden de pestañas: Resumen primero, luego Parámetros, luego cada iniciativa
+  XLSX.utils.book_append_sheet(workbook, wsResumen, 'Resumen');
+  XLSX.utils.book_append_sheet(workbook, wsParametros, 'Parametros');
+  hojasIniciativa.forEach(({ nombreHoja, ws }) => {
+    XLSX.utils.book_append_sheet(workbook, ws, nombreHoja);
+  });
+
+  return workbook;
+}
+
+// ---- Descargar Excel ----
+document.getElementById('btnDescargarExcel').addEventListener('click', function(e) {
+  e.preventDefault();
+  const contenedor = document.getElementById('descargaLista');
+  contenedor.style.display = 'flex';
+
+  if (!expedientes.length) {
+    mostrarErrorDescarga('Carga al menos una iniciativa antes de descargar el Excel.');
+    return;
+  }
+
+  contenedor.innerHTML = '<span class="spinner"></span> Generando Excel…';
+  try {
+    const workbook = construirLibroExcel();
+    const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    mostrarEnlaceDescarga(blob, 'Estimacion_Esfuerzo_UX_QBR.xlsx', 'Excel listo');
+  } catch (err) {
+    console.error('Error generando Excel:', err);
+    mostrarErrorDescarga('No se pudo generar el Excel: ' + err.message);
+  }
+});
+
+recalcularTotales();
+</script>
+</body>
+</html>
