@@ -1,0 +1,7 @@
+{
+  "name": "estimador-esfuerzo-ux",
+  "private": true,
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.125.0"
+  }
+}

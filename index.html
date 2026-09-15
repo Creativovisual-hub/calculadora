@@ -1196,14 +1196,12 @@ async function analizarExpediente(id, intento) {
   renderAll();
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('/api/analyze', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
         system: construirSystemPrompt(),
-        messages: [{ role: 'user', content: exp.texto }]
+        texto: exp.texto
       })
     });
     if (response.status === 429 || response.status === 529) throw new Error('RATE_LIMIT');
