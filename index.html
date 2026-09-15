@@ -169,6 +169,12 @@ input[type=file]{ display:none; }
   font-family:'IBM Plex Mono',monospace; background:#f1f2f4; padding:2px 8px; border-radius:20px;
   font-size:11.5px; color:var(--ink-soft); white-space:nowrap;
 }
+.tiempo-editable input{
+  width:26px; border:none; background:transparent; font-family:'IBM Plex Mono',monospace;
+  font-size:11.5px; color:var(--ink-soft); text-align:right; padding:0; -moz-appearance:textfield;
+}
+.tiempo-editable input:focus{ outline:none; color:var(--ink); }
+.tiempo-editable:focus-within{ background:#e6e9ec; }
 
 /* ---- Módulo de cálculo (sidebar desktop / barra fija mobile) ---- */
 .panel-calculo{
@@ -713,7 +719,8 @@ function crearExpediente(nombre, texto, origen) {
     razones: {},
     resumen: '',
     error: null,
-    tareasExtra: []
+    tareasExtra: [],
+    diasOverride: {}
   };
   expedientes.push(exp);
   return exp;
@@ -757,13 +764,14 @@ function renderExpedienteCard(exp) {
       const checked = exp.marcado.has(t.id) ? 'checked' : '';
       const razon = exp.razones[t.id];
       const badge = razon ? `<span class="badge-ai" title="${escapeHtml(razon)}">IA</span>` : '';
+      const diasActual = diasEfectivos(exp, t.id, t.dias);
       return `
         <div class="mini-tarea">
           <label>
             <input type="checkbox" class="task-checkbox" data-exp-id="${exp.id}" data-task-id="${t.id}" ${checked}>
             ${escapeHtml(t.label)}
           </label>
-          <div class="mini-right">${badge}<span class="tiempo-badge">${t.dias} días</span></div>
+          <div class="mini-right">${badge}<span class="tiempo-badge tiempo-editable" data-html2canvas-ignore="true"><input type="text" inputmode="decimal" class="dias-input" data-exp-id="${exp.id}" data-task-id="${t.id}" value="${diasActual}">&nbsp;días</span></div>
         </div>`;
     }).join('');
 
@@ -775,7 +783,7 @@ function renderExpedienteCard(exp) {
             ${escapeHtml(t.label)}
           </label>
           <div class="mini-right" data-html2canvas-ignore="true">
-            <span class="tiempo-badge">${t.dias} días</span>
+            <span class="tiempo-badge tiempo-editable"><input type="text" inputmode="decimal" class="dias-input-custom" data-exp-id="${exp.id}" data-custom-id="${t.id}" value="${t.dias}">&nbsp;días</span>
             <button class="btn-del-tarea" onclick="eliminarTareaCustom(${exp.id}, '${t.id}')">✕</button>
           </div>
         </div>`).join('');
@@ -906,11 +914,17 @@ function actualizarTextoExpediente(id, valor) {
   if (exp) exp.texto = valor;
 }
 
+// ---- Días efectivos de una tarea del catálogo: el override manual del usuario, si existe, o el valor por defecto ----
+function diasEfectivos(exp, taskId, diasBase) {
+  const override = exp.diasOverride ? exp.diasOverride[taskId] : undefined;
+  return (override !== undefined && !isNaN(override) && override > 0) ? override : diasBase;
+}
+
 function calcularSubtotal(exp) {
   let total = 0;
   exp.marcado.forEach(taskId => {
     const t = TAREAS.find(x => x.id === taskId);
-    if (t) total += t.dias;
+    if (t) total += diasEfectivos(exp, taskId, t.dias);
   });
   (exp.tareasExtra || []).forEach(t => { total += t.dias; });
   return total;
@@ -920,7 +934,22 @@ function contarTareas(exp) {
   return exp.marcado.size + (exp.tareasExtra ? exp.tareasExtra.length : 0);
 }
 
-// ---- Delegación de eventos para checkboxes dinámicos ----
+function actualizarSubtotalCard(exp, card) {
+  card = card || document.querySelector(`.exp-subtotal[data-exp-id="${exp.id}"]`)?.closest('.exp-card');
+  if (!card) return;
+  const subtotal = calcularSubtotal(exp);
+  const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
+  const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
+  const roles = rolesFraccion(subtotal, capacidad);
+  const setText = (sel, val) => { const el = card.querySelector(sel); if (el) el.textContent = val; };
+  setText('.es-tareas', contarTareas(exp));
+  setText('.es-dias', subtotal);
+  setText('.es-hh', (subtotal * horasPorDia).toFixed(0));
+  setText('.es-semanas', (subtotal/5).toFixed(1));
+  setText('.es-roles', roles);
+}
+
+// ---- Delegación de eventos para checkboxes e inputs de días dinámicos ----
 document.getElementById('expedientesList').addEventListener('change', function(e) {
   if (!e.target.classList.contains('task-checkbox')) return;
   const expId = parseInt(e.target.dataset.expId, 10);
@@ -930,20 +959,33 @@ document.getElementById('expedientesList').addEventListener('change', function(e
 
   if (e.target.checked) exp.marcado.add(taskId); else exp.marcado.delete(taskId);
 
-  const card = e.target.closest('.exp-card');
-  if (card) {
-    const subtotal = calcularSubtotal(exp);
-    const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
-    const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
-    const roles = rolesFraccion(subtotal, capacidad);
-    const setText = (sel, val) => { const el = card.querySelector(sel); if (el) el.textContent = val; };
-    setText('.es-tareas', contarTareas(exp));
-    setText('.es-dias', subtotal);
-    setText('.es-hh', (subtotal * horasPorDia).toFixed(0));
-    setText('.es-semanas', (subtotal/5).toFixed(1));
-    setText('.es-roles', roles);
+  actualizarSubtotalCard(exp, e.target.closest('.exp-card'));
+  recalcularTotales();
+});
+
+document.getElementById('expedientesList').addEventListener('input', function(e) {
+  const esCatalogo = e.target.classList.contains('dias-input');
+  const esCustom = e.target.classList.contains('dias-input-custom');
+  if (!esCatalogo && !esCustom) return;
+
+  e.target.value = sanearDias(e.target.value);
+  const expId = parseInt(e.target.dataset.expId, 10);
+  const exp = expedientes.find(x => x.id === expId);
+  if (!exp) return;
+  const valor = parseFloat(e.target.value);
+
+  if (esCatalogo) {
+    const taskId = e.target.dataset.taskId;
+    exp.diasOverride = exp.diasOverride || {};
+    if (!isNaN(valor) && valor > 0) exp.diasOverride[taskId] = valor;
+    else delete exp.diasOverride[taskId];
+  } else {
+    const customId = e.target.dataset.customId;
+    const tarea = (exp.tareasExtra || []).find(t => t.id === customId);
+    if (tarea && !isNaN(valor) && valor > 0) tarea.dias = valor;
   }
 
+  actualizarSubtotalCard(exp, e.target.closest('.exp-card'));
   recalcularTotales();
 });
 
@@ -998,7 +1040,7 @@ function recalcularTotales() {
   expedientes.forEach(exp => {
     exp.marcado.forEach(taskId => {
       const t = TAREAS.find(x => x.id === taskId);
-      if (t) { total += t.dias; porFase[t.slug] += t.dias; }
+      if (t) { const d = diasEfectivos(exp, taskId, t.dias); total += d; porFase[t.slug] += d; }
     });
     (exp.tareasExtra || []).forEach(t => {
       total += t.dias;
@@ -1263,7 +1305,7 @@ function crearHojaIniciativa(exp, capacidad, horasPorDia) {
     const t = TAREAS.find(x => x.id === taskId);
     if (!t) return;
     const origen = exp.razones[taskId] !== undefined ? 'Sugerido por IA' : 'Manual (catálogo)';
-    filasTareas.push([t.label, t.fase, t.dias, origen]);
+    filasTareas.push([t.label, t.fase, diasEfectivos(exp, taskId, t.dias), origen]);
   });
   (exp.tareasExtra || []).forEach(t => {
     filasTareas.push([t.label, t.fase, t.dias, 'Manual (nueva)']);
