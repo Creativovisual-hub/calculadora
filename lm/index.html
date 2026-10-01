@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flujo Licencias Médicas — Mi Portal</title>
+<!-- Diseño: Figma UI_CHRIS_2022 · página "flujo LM" (node 3264:3065) -->
+<link rel="stylesheet" href="vendor/fonts.css">
+<link rel="stylesheet" href="vendor/fa/css/all.min.css">
+<style>
+:root{
+  /* Tokens del design system (nombres de variables Figma entre paréntesis) */
+  --c0:#00648f; --c1:#0076a9; --c2:#008ec4; --c3:#1896d3; --c5:#92d5f1; --c6:#def4ff;   /* primary/c */
+  --a3:#f9be00; --a5:#fde1a7;                                                          /* primary/a */
+  --g1:#3e4545; --g-helper:#586264; --g3:#a8b3b7; --g4:#c9d0d3; --g6:#f6f7f7;           /* secondary/g */
+  --x1:#326295; --x5:#d6e0ea; --x6:#ebeff4;                                            /* secondary/x */
+  --m3:#756f9c; --m5:#c3bedf;                                                          /* secondary/m */
+  --warn:#b34a00; --warn-bg:#fff3ea;                                                   /* complementary/n */
+  --ok:#006e62; --ok-bg:#e5f4f1;                                                       /* complementary/t */
+  --white:#fff; --black:#000;
+  --shadow-s:0 0 16px rgba(0,0,0,.08);
+  --shadow-m:0 8px 40px rgba(0,0,0,.08);
+  --shadow-l:0 8px 40px rgba(0,0,0,.16);
+  --shadow-d:0 8px 20px rgba(0,0,0,.08);
+  --font:'Rawson Pro','Nunito Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{font-family:var(--font); background:#e3e7ea; color:var(--black); -webkit-font-smoothing:antialiased;}
+button,input,select{font:inherit; color:inherit;}
+button{cursor:pointer; background:none; border:0; padding:0;}
+a{color:inherit; text-decoration:none;}
+p{margin:0;}
+.material-icons{font-size:24px; line-height:1; vertical-align:middle;}
+
+/* ---------- Barra de prototipo (fuera del diseño) ---------- */
+.proto-bar{position:sticky; top:0; z-index:50; display:flex; gap:8px; align-items:center; justify-content:center;
+  padding:8px 16px; background:#1f2937; color:#fff; font-size:14px;}
+.proto-bar select{max-width:280px; padding:4px 8px; border-radius:6px; border:0; color:#111;}
+
+/* ---------- Contenedor mobile ---------- */
+.screen{max-width:479px; min-width:320px; margin:0 auto; min-height:100vh; background:var(--white); position:relative;}
+.screen.bg-g6{background:var(--g6);}
+.body{display:flex; flex-direction:column; gap:24px; padding:16px 16px 40px;}
+
+/* ---------- Tipografía ---------- */
+.h4{font-size:24px; line-height:32px; font-weight:700;}
+.h4 .reg{font-weight:400;}
+.lg{font-size:18px; line-height:24px;}
+.base{font-size:16px; line-height:20px;}
+.sm{font-size:14px; line-height:16px;}
+.b{font-weight:700;} .m{font-weight:500;} .r{font-weight:400;}
+.g1{color:var(--g1);}
+
+/* ---------- Botones ---------- */
+.btn{display:flex; align-items:center; justify-content:center; gap:8px; width:100%;
+  padding:12px 24px; border-radius:24px; font-size:18px; line-height:24px; font-weight:500; transition:background .15s, opacity .15s;}
+.btn-primary{background:var(--c1); color:var(--white);}
+.btn-primary:hover{background:var(--c0);}
+.btn-primary:disabled{background:var(--g4); cursor:not-allowed;}
+.btn-secondary{background:var(--white); color:var(--g1); border:2px solid var(--c1); padding:10px 24px;}
+.btn-secondary:hover{background:var(--c6);}
+.btn-tertiary{display:inline-flex; align-items:center; gap:4px; color:var(--c1); font-size:18px; line-height:24px; font-weight:500; padding:12px 0; border-radius:8px;}
+.btn-tertiary:hover{text-decoration:underline;}
+.icon-btn{width:48px; height:48px; display:inline-flex; align-items:center; justify-content:center; border-radius:4px; color:var(--c1); position:relative;}
+.icon-btn:hover{background:var(--g6);}
+
+/* ---------- Header público (login) ---------- */
+.header-pub{height:64px; background:var(--white); display:flex; align-items:center; gap:12px; padding:0 0 0 16px;}
+.header-pub .logo-sq{width:40px; height:40px;}
+.header-pub .logo-tapp{width:55px; height:24px; margin-left:12px;}
+.header-pub .back{margin-left:auto; padding:12px 16px;}
+
+/* ---------- Header privado ---------- */
+.header-priv{position:sticky; top:0; z-index:10; filter:drop-shadow(0 8px 20px rgba(0,0,0,.08));}
+.header-priv .bar{height:8px; background:linear-gradient(90deg,var(--c1),var(--c5)); display:block; width:100%; object-fit:cover;}
+.header-priv nav{height:64px; background:var(--white); display:flex; align-items:center; justify-content:space-between;
+  padding:8px 16px; border-radius:0 0 20px 20px;}
+.header-priv .group{display:flex; align-items:center; gap:4px;}
+.logo-cla{width:48px; height:48px; display:flex; align-items:center; justify-content:center;}
+.logo-cla img{width:40px; height:40px;}
+.badge{position:absolute; left:27px; top:13px; width:12px; height:12px; border-radius:50%; background:var(--a3); border:1px solid var(--g1);}
+.avatar{width:48px; height:48px; display:flex; align-items:center; justify-content:center;}
+.avatar img,.avatar .fb{width:32px; height:32px; border-radius:50%; object-fit:cover;}
+.avatar .fb{background:var(--c5); color:var(--x1); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;}
+
+/* ---------- Footer privado ---------- */
+.footer{background:var(--white);}
+.footer .cols{display:flex; flex-direction:column; gap:24px; padding:24px 16px 48px;}
+.footer .logo-foot{width:201px; height:47px;}
+.footer h3{margin:0 0 16px; font-size:24px; line-height:32px; font-weight:700; color:var(--g1);}
+.footer .links{display:flex; flex-direction:column; gap:8px;}
+.footer .links a{padding:4px; color:var(--c1); font-size:18px; line-height:24px;}
+.footer .links a:hover{text-decoration:underline;}
+.footer .icons{display:flex; flex-wrap:wrap; gap:8px;}
+.footer .icons a{width:48px; height:48px; display:flex; align-items:center; justify-content:center;}
+.footer .icons img{width:48px; height:48px;}
+.footer .icons .fb{width:40px; height:40px; border-radius:50%; background:var(--x6); color:var(--c1); display:flex; align-items:center; justify-content:center; font-size:18px;}
+.legal{background:var(--c1); color:var(--white); text-align:center; font-size:16px; line-height:20px; padding:24px 16px;}
+.legal.compact{padding:8px 12px 16px;}
+
+/* ---------- Logo fallback (si no se descargaron los assets) ---------- */
+.wordmark{display:inline-flex; align-items:center; gap:6px; color:var(--c1); font-weight:700; line-height:1;}
+.wordmark i{display:inline-block; width:8px; height:8px; background:var(--a3);}
+
+/* ---------- Formularios ---------- */
+.field{display:flex; flex-direction:column; gap:8px; width:100%;}
+.field label,.field .label{font-size:16px; line-height:20px; font-weight:500;}
+.field .helper{font-size:16px; line-height:20px; color:var(--g-helper);}
+.input{display:flex; align-items:center; gap:4px; height:48px; background:var(--white); border:1px solid var(--c1);
+  border-radius:8px; box-shadow:var(--shadow-s); overflow:hidden;}
+.input:focus-within{outline:2px solid var(--c5); outline-offset:1px;}
+.input .material-icons{padding:12px; color:var(--g1);}
+.input input{flex:1; min-width:0; border:0; outline:0; height:100%; padding:0 16px; font-size:18px; line-height:24px; background:transparent;}
+.input .material-icons + input{padding-left:0;}
+.input input::placeholder{color:var(--g1); opacity:1;}
+.input.search{border-color:var(--c0); padding-left:0;}
+.input.search button{padding:12px; color:var(--g1); display:flex;}
+.select{position:relative;}
+.select select{appearance:none; -webkit-appearance:none; width:100%; height:48px; padding:12px 48px 12px 16px; font-size:18px; line-height:24px;
+  color:var(--g1); background:var(--white); border:1px solid var(--c1); border-radius:8px; box-shadow:var(--shadow-s); outline:0;}
+.select select:focus{outline:2px solid var(--c5); outline-offset:1px;}
+.select .material-icons{position:absolute; right:8px; top:8px; font-size:32px; pointer-events:none; color:var(--g1);}
+
+/* ---------- Tags ---------- */
+.tag{display:inline-flex; align-items:center; gap:8px; height:32px; padding:4px 8px; border-radius:8px; background:var(--white);
+  border:1px solid; font-size:16px; line-height:20px; font-weight:500; max-width:288px; white-space:nowrap;}
+.tag .material-icons{font-size:24px;}
+.tag.warn{border-color:var(--warn);} .tag.warn .material-icons{color:var(--warn);}
+.tag.ok{border-color:var(--ok);}     .tag.ok .material-icons{color:var(--ok);}
+.tag.info{border-color:var(--x1);}   .tag.info .material-icons{color:var(--x1);}
+
+/* ---------- Alertas / mensajes ---------- */
+.alert{display:flex; flex-direction:column; gap:16px; padding:16px; border-radius:16px; border:1px solid; box-shadow:0 0 8px rgba(0,0,0,.08); position:relative;}
+.alert.info{background:var(--c6); border-color:var(--x1);}
+.alert.warn{background:var(--warn-bg); border-color:var(--warn);}
+.alert.ok{background:var(--ok-bg); border-color:var(--ok);}
+.alert .head{display:flex; gap:8px; align-items:center; padding-right:40px;}
+.alert .head .material-icons{font-size:32px;}
+.alert.info .head .material-icons{color:var(--x1);}
+.alert.warn .head .material-icons{color:var(--warn);}
+.alert.ok .head .material-icons{color:var(--ok);}
+.alert .close{position:absolute; right:4px; top:4px; width:48px; height:48px; display:flex; align-items:center; justify-content:center; color:var(--g1);}
+.alert p{font-size:18px; line-height:24px; font-weight:500; color:var(--g1);}
+.alert .title{font-size:18px; line-height:24px; font-weight:700; color:var(--black);}
+.msg{display:flex; gap:8px; align-items:flex-start; padding:16px; border-radius:16px; background:var(--c6); border:1px solid var(--x1); box-shadow:var(--shadow-d);}
+.msg .material-icons{color:var(--x1);}
+.msg p{font-size:18px; line-height:24px; color:var(--g1); font-weight:500;}
+
+/* ---------- Tabla en columnas (cards) ---------- */
+.tcol{filter:drop-shadow(0 8px 20px rgba(0,0,0,.08)); background:var(--white); border-radius:20px 20px 0 0;}
+.tcol .thead{background:var(--x1); color:var(--white); padding:16px; border-radius:20px 20px 0 0; font-size:18px; line-height:24px; font-weight:500;}
+.tcol .cell{padding:12px 16px 16px; border-bottom:1px solid var(--g4); color:var(--g1); font-size:18px; line-height:24px; display:flex; flex-direction:column; gap:4px; align-items:flex-start;}
+.tcol .cell .k{font-weight:700;} .tcol .cell .v{font-weight:500;}
+.tcol .actions{padding:4px 8px;}
+.tcol .actions .btn-tertiary{padding:12px 0 12px 4px;}
+
+/* ---------- Paginación ---------- */
+.pagination{display:flex; align-items:center; justify-content:center; padding:4px 0; align-self:center;}
+.pagination button{width:36px; height:36px; border-radius:8px; color:var(--c1); font-size:16px; font-weight:500; display:flex; align-items:center; justify-content:center;}
+.pagination button.active{background:var(--c1); color:var(--white); font-weight:700;}
+.pagination button:disabled{color:var(--g4); cursor:default;}
+.pagination .dots{width:18px; text-align:center; color:var(--c1);}
+
+/* ---------- Dashboard ---------- */
+.widgets{display:flex; flex-direction:column; gap:24px; padding:32px 16px 48px;}
+.carousel{display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; margin:0 -16px; padding:8px 16px 16px;}
+.carousel::-webkit-scrollbar{display:none;}
+.banner{flex:0 0 288px; height:345px; scroll-snap-align:center; border-radius:16px; box-shadow:var(--shadow-s); position:relative; overflow:hidden;
+  padding:8px 12px 16px; display:flex; flex-direction:column; gap:8px;}
+.banner.c{background:linear-gradient(180deg,var(--c5) 4%,#fff);}
+.banner.a{background:linear-gradient(180deg,var(--a5) 4%,#fff);}
+.banner.m{background:linear-gradient(180deg,var(--m5) 4%,#fff);}
+.banner .txt{width:237px; position:relative; z-index:1;}
+.banner .txt .t{font-size:24px; line-height:32px; font-weight:700;}
+.banner .txt .amount{font-size:18px; line-height:24px; font-weight:500;}
+.banner .txt .amount b{font-size:24px; line-height:32px;}
+.banner .txt .d{font-size:18px; line-height:24px; font-weight:500; color:var(--g1);}
+.banner .tag-new-sm{display:inline-block; background:var(--a3); padding:4px; border-radius:8px 0 8px 0; font-size:14px; line-height:16px; font-weight:700;}
+.banner .art{position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:272px; height:200px; object-fit:contain; object-position:bottom;}
+.banner .art-fb{position:absolute; right:40px; bottom:60px; font-size:80px;}
+.slidebar{align-self:center; display:flex; align-items:center; background:var(--white); border-radius:32px;}
+.slidebar button{padding:8px; color:var(--c1); display:flex; border-radius:32px;}
+.slidebar .dots{display:flex; gap:12px; padding:8px;}
+.slidebar .dot{width:12px; height:12px; border-radius:50%; border:2px solid var(--c1); margin:5px;}
+.slidebar .dot.on{background:var(--c1);}
+.direct{position:relative; background:var(--white); border:1px solid var(--x5); border-radius:16px; filter:drop-shadow(0 8px 20px rgba(0,0,0,.08));}
+.direct .new{position:absolute; left:15px; top:-13px; width:64px; height:24px; background:var(--a3); border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; letter-spacing:.5px;}
+.direct .new img{width:38px; height:9px;}
+.direct .inner{display:flex; flex-direction:column; align-items:center; gap:16px; padding:24px 16px;}
+.direct .ico{width:56px; height:56px; border-radius:16px; background:var(--c2); color:var(--white); display:flex; align-items:center; justify-content:center; font-size:30px;}
+.direct .lbl{font-size:18px; line-height:24px; font-weight:700; color:var(--g1); text-align:center;}
+.card{background:var(--white); border-radius:8px 8px 24px 24px; box-shadow:var(--shadow-l); overflow:hidden;}
+.card.r32{border-radius:8px 8px 32px 32px;}
+.card .seg{height:8px; background:var(--c1);}
+.card .head{display:flex; align-items:center; min-height:48px; padding:8px 12px;}
+.card .head .ic{width:48px; height:48px; border-radius:40px; background:var(--g6); color:var(--c1); display:flex; align-items:center; justify-content:center; font-size:22px; flex:0 0 48px;}
+.card .head .h4{flex:1; padding-left:8px;}
+.card .head .chev{width:48px; height:48px; color:var(--c1); display:flex; align-items:center; justify-content:center; transition:transform .2s;}
+.card.open .head .chev{transform:rotate(180deg);}
+.card .more{display:none; padding:0 16px 16px; color:var(--g1); font-size:16px; line-height:20px;}
+.card.open .more{display:block;}
+.card .content{padding:8px 16px 16px; display:flex; flex-direction:column; gap:12px;}
+.card .row{display:flex; gap:8px; align-items:center; padding:12px; border-radius:8px; font-size:16px; line-height:20px; color:var(--g1);}
+.card .row.g{background:var(--g6);}
+.card .row .right{flex:1; text-align:right; font-weight:500; color:var(--warn);}
+.card .foot{display:flex; justify-content:flex-end;}
+.tapp-card .body2{padding:12px; display:flex; flex-direction:column; gap:16px;}
+.tapp-card .top{display:flex; gap:8px; align-items:center;}
+.tapp-card .top .h4{flex:1;}
+.tapp-card .thumb{width:80px; height:80px; filter:drop-shadow(0 8px 20px rgba(0,0,0,.16)); border-radius:16px; display:flex; align-items:center; justify-content:center; background:var(--a5); font-size:36px; color:var(--c1);}
+.tapp-card .thumb img{width:80px; height:80px;}
+
+/* ---------- Login ---------- */
+.login-body{background:var(--white); box-shadow:var(--shadow-m); padding:16px 16px 32px; display:flex; flex-direction:column; align-items:center; gap:16px; position:relative;}
+.login-body .logo-full{width:122px; height:29px;}
+.login-form{width:100%; max-width:447px; display:flex; flex-direction:column; gap:16px;}
+.login-form .forgot{color:var(--c1); text-decoration:underline; font-size:16px; line-height:20px; font-weight:500; padding:8px 0; align-self:flex-start;}
+.login-form .first{text-align:center; font-size:14px; line-height:16px; font-weight:500;}
+.recaptcha{position:absolute; right:0; bottom:58px; width:64px; height:64px; background:var(--white); border-radius:8px 0 0 8px; filter:drop-shadow(0 0 8px rgba(0,0,0,.08)); display:flex; align-items:center; justify-content:center;}
+.recaptcha img{width:38px; height:38px;}
+.recaptcha .fb{font-size:28px; color:#4a90e2;}
+
+/* ---------- Detalle ---------- */
+.intro{display:flex; flex-direction:column; gap:8px;}
+.bank{background:var(--g6); border-radius:16px; padding:12px 16px; display:flex; flex-direction:column; gap:8px;}
+.box{background:var(--white); border-radius:32px; padding:24px 16px; filter:drop-shadow(0 8px 20px rgba(0,0,0,.08)); display:flex; flex-direction:column; gap:16px;}
+.stepper{display:flex; gap:16px; align-items:center;}
+.ring{width:56px; height:56px; border-radius:50%; flex:0 0 56px; display:flex; align-items:center; justify-content:center;
+  background:conic-gradient(var(--x1) calc(var(--p) * 1%), var(--x5) 0);}
+.ring span{width:42px; height:42px; border-radius:50%; background:var(--x1); color:var(--white); display:flex; align-items:center; justify-content:center; font-size:18px; line-height:24px; font-weight:500; box-shadow:0 0 0 3px var(--x5);}
+.stepper .t{font-size:18px; line-height:24px; font-weight:700;}
+.stepper .d{font-size:16px; line-height:20px; font-weight:500; color:var(--g1);}
+.docs{display:flex; flex-direction:column;}
+.doc{padding:16px 0; border-top:1px solid var(--x6); display:flex; flex-direction:column; gap:8px; align-items:flex-start;}
+.doc:first-child{border-top:0;}
+.doc .name{font-size:16px; line-height:20px; font-weight:700;}
+.file{display:flex; align-items:center; gap:8px; width:100%; background:var(--x6); border-radius:8px; padding:6px 8px 6px 12px; font-size:16px; line-height:20px;}
+.file .material-icons{color:var(--x1); font-size:20px;}
+.file span.n{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.file button{color:var(--c1); display:flex; padding:4px;}
+.file .ok{color:var(--ok);}
+.declare{display:flex; gap:12px; align-items:flex-start; background:var(--g6); border-radius:16px; padding:16px; font-size:18px; line-height:24px; color:var(--g1); cursor:pointer;}
+.declare input{width:24px; height:24px; accent-color:var(--c1); margin:0; flex:0 0 24px;}
+.sent{border-radius:8px; background:var(--x6); border-left:6px solid var(--c1);}
+.sent .toggle{display:flex; align-items:center; justify-content:space-between; width:100%; padding:16px; font-size:18px; line-height:24px; color:var(--g1); text-align:left;}
+.sent .toggle .material-icons{color:var(--c1); transition:transform .2s;}
+.sent.closed .toggle .material-icons{transform:rotate(180deg);}
+.sent .list{margin:0 16px 16px; background:var(--white); padding:12px; display:flex; flex-direction:column; gap:12px;}
+.sent.closed .list{display:none;}
+.resumen{border-radius:20px; overflow:hidden; filter:drop-shadow(0 8px 20px rgba(0,0,0,.08)); background:var(--white);}
+.resumen .rh{background:var(--x6); padding:16px 24px; display:flex; gap:12px; align-items:center;}
+.resumen .rh i{color:var(--c1); font-size:24px; width:32px; text-align:center;}
+.resumen .rb{padding:24px; display:flex; flex-direction:column; gap:16px;}
+.resumen .k{font-size:16px; line-height:20px; font-weight:700;}
+.resumen .v{font-size:18px; line-height:24px; color:var(--g1);}
+.contact{background:var(--white); border-radius:16px; padding:16px; box-shadow:0 0 8px rgba(0,0,0,.08); display:flex; flex-direction:column; gap:16px;}
+.section-title{display:flex; flex-direction:column; gap:8px;}
+
+/* ---------- Modal ---------- */
+.overlay{position:fixed; inset:0; z-index:100; background:rgba(40,40,40,.85); display:flex; align-items:center; justify-content:center; padding:16px;}
+.modal{background:var(--white); width:100%; max-width:479px; max-height:calc(100vh - 32px); border-radius:16px; box-shadow:var(--shadow-l);
+  padding:16px 12px; display:flex; flex-direction:column; gap:8px;}
+.modal .close-row{display:flex; justify-content:flex-end;}
+.modal .close-row .btn-tertiary{padding:12px 16px;}
+.modal .scroll{overflow-y:auto; display:flex; flex-direction:column; gap:24px; padding:0 4px;}
+.modal .mi{font-size:48px; color:var(--x1);}
+.modal .mt{font-size:24px; line-height:32px; font-weight:700; color:var(--x1);}
+.modal .mp{font-size:18px; line-height:24px; font-weight:500; color:var(--g1);}
+.modal .btns{display:flex; flex-direction:column; gap:16px; padding-top:16px;}
+.opt{display:flex; gap:16px; align-items:center; padding:16px 20px; background:var(--x6); border-radius:8px; text-align:left; width:100%;}
+.opt:hover{background:var(--x5);}
+.opt .material-icons{font-size:40px; color:var(--c1);}
+.opt .ot{font-size:18px; line-height:24px; font-weight:700;}
+.opt .od{font-size:16px; line-height:20px;}
+.tapp-banner{position:relative; height:314px; border-radius:20px; overflow:hidden; background:#012861; flex:0 0 auto;}
+.tapp-banner .photo{position:absolute; right:0; top:0; height:57.64%; width:auto; max-width:none;}
+.tapp-banner .g1{position:absolute; inset:0; background:linear-gradient(179deg, rgba(1,40,97,0) 29.7%, rgba(1,40,97,.8) 41.8%, #012861 57.7%);}
+.tapp-banner .g2{position:absolute; inset:0; background:linear-gradient(35deg, #8bc38e 25.4%, rgba(139,195,142,0) 57.5%);}
+.tapp-banner .tl{position:absolute; left:16px; top:162px; width:128px; height:56px;}
+.tapp-banner .tl.fb{color:#fff; font-size:44px; font-weight:700; line-height:56px;}
+.tapp-banner p{position:absolute; left:16px; right:16px; top:226px; color:#fff; font-size:18px; line-height:24px; font-weight:500;}
+.toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:200; background:var(--g1); color:#fff; padding:12px 20px; border-radius:24px; font-size:16px; box-shadow:var(--shadow-l);}
+.sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);}
+</style>
+</head>
+<body>
+
+<div class="proto-bar">
+  <label for="jump">Pantalla:</label>
+  <select id="jump" aria-label="Saltar a pantalla">
+    <option value="login">01 · Login</option>
+    <option value="dashboard">02 · Dashboard</option>
+    <option value="licencias">03 · Mis Licencias</option>
+    <option value="detalle/compin">04 · Detalle — Enviada a COMPIN</option>
+    <option value="detalle/compin?modal=banco">05 · Modal datos bancarios</option>
+    <option value="detalle/pendiente">06 · Detalle — Documentación pendiente</option>
+    <option value="detalle/pendiente?modal=upload">07 · Modal subir documento</option>
+    <option value="detalle/completa">08 · Detalle — Documentos completos</option>
+    <option value="detalle/enviada">09 · Detalle — Documentación enviada</option>
+    <option value="detalle/pagada">10 · Detalle — Resolución / pagada</option>
+  </select>
+</div>
+
+<div id="app"></div>
+<input type="file" id="file-doc" class="sr-only" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg">
+<input type="file" id="file-cam" class="sr-only" accept="image/*" capture="environment">
+
+<script>
+/* ===================== Datos de ejemplo ===================== */
+const MONTHS = ['Enero','Febrero','Marzo','Abril'];
+const state = {
+  user:'Alejandra',
+  bank:{ banco:'Scotiabank', tipo:'Cuenta ahorro', numero:'987654321' },
+  docs: MONTHS.map((m,i)=>({ month:m, file: i===0 ? 'ejemplodedocumento-enero.pdf' : null })),
+  declared:false,
+  uploadIdx:null,
+  page:1,
+};
+const LICENCIAS = [
+  { n:'12345677', inicio:'10/10/2023', pago:'15/10/2023', ticket:'76554', estado:'pendiente', route:'detalle/pendiente' },
+  { n:'2164065',  inicio:'10/07/2026', pago:'31/07/2026', ticket:'76555', estado:'revision',  route:'detalle/compin' },
+  { n:'12345690', inicio:'02/05/2026', pago:'20/05/2026', ticket:'76321', estado:'revision',  route:'detalle/enviada' },
+  { n:'12345612', inicio:'14/03/2026', pago:'30/03/2026', ticket:'75990', estado:'pagada',    route:'detalle/pagada' },
+];
+const ESTADOS = {
+  pendiente:{ cls:'warn', icon:'warning',      label:'Pendiente' },
+  revision: { cls:'info', icon:'info',         label:'En revisión' },
+  pagada:   { cls:'ok',   icon:'check_circle', label:'Pagada' },
+};
+
+/* ===================== Helpers ===================== */
+const $ = (s,r=document)=>r.querySelector(s);
+const mi = (name, cls='') => `<span class="material-icons ${cls}" aria-hidden="true">${name}</span>`;
+// Asset local (lm/assets) con fallback si aún no se ejecutó download-assets.sh
+const img = (file, cls, alt, fallback) =>
+  `<img src="assets/${file}" class="${cls}" alt="${alt}" data-fb="${encodeURIComponent(fallback)}" onerror="assetFallback(this)">`;
+function assetFallback(el){
+  const w = document.createElement('span');
+  w.innerHTML = decodeURIComponent(el.dataset.fb || '');
+  const node = w.firstElementChild || document.createTextNode(w.textContent);
+  el.replaceWith(node);
+}
+const wordmark = (size=18) => `<span class="wordmark" style="font-size:${size}px">CAJA LOS ANDES<i></i></span>`;
+const tag = (estado, text) => { const e = ESTADOS[estado]; return `<span class="tag ${e.cls}">${mi(e.icon)}${text || e.label}</span>`; };
+function toast(msg){
+  const t = document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 2400);
+}
+
+/* ===================== Componentes compartidos ===================== */
+const headerPrivate = () => `
+<header class="header-priv">
+  ${img('header-bar.svg','bar','', '<span class="bar"></span>')}
+  <nav>
+    <div class="group">
+      <button class="icon-btn" aria-label="Menú">${mi('menu')}</button>
+      <a class="logo-cla" href="#dashboard" aria-label="Inicio">${img('logo-cla-icon.svg','', 'Caja Los Andes', wordmark(10))}</a>
+    </div>
+    <div class="group">
+      <button class="icon-btn" aria-label="Ayuda">${mi('help_outline')}</button>
+      <button class="icon-btn" aria-label="Notificaciones">${mi('notifications_none')}<span class="badge"></span></button>
+      <button class="avatar" aria-label="Perfil">${img('avatar.png','', 'Perfil', '<span class="fb">AL</span>')}</button>
+    </div>
+  </nav>
+</header>`;
+
+const footerPrivate = () => `
+<footer class="footer">
+  <div class="cols">
+    <div>${img('logo-cla-footer.svg','logo-foot','Caja Los Andes', wordmark(26))}</div>
+    <div><h3>Somos Andes</h3><div class="links"><a href="#">Aviso de privacidad</a><a href="#">Información pública</a></div></div>
+    <div><h3>Contáctanos</h3><div class="links"><a href="#">Centro de ayuda</a><a href="#">Sucursales</a></div></div>
+    <div><h3>Síguenos</h3><div class="icons">
+      ${[['facebook','facebook-f'],['instagram','instagram'],['x','x-twitter'],['youtube','youtube'],['linkedin','linkedin-in']]
+        .map(([f,fa])=>`<a href="#" aria-label="${f}">${img('social-'+f+'.svg','',f,`<span class="fb"><i class="fa-brands fa-${fa}"></i></span>`)}</a>`).join('')}
+    </div></div>
+    <div><h3>Descarga la App</h3><div class="icons">
+      <a href="#" aria-label="Google Play">${img('store-google-play.svg','','Google Play','<span class="fb"><i class="fa-brands fa-google-play"></i></span>')}</a>
+      <a href="#" aria-label="App Store">${img('store-app-store.svg','','App Store','<span class="fb"><i class="fa-brands fa-app-store-ios"></i></span>')}</a>
+    </div></div>
+  </div>
+  <p class="legal">Las Cajas de Compensación son fiscalizadas por la Superintendencia de Seguridad Social (www.suseso.cl)</p>
+</footer>`;
+
+const breadcrumb = (href, text) => `<div><a class="btn-tertiary" href="#${href}">${mi('keyboard_arrow_left')}${text}</a></div>`;
+
+const bankBox = () => `
+<section class="bank">
+  <p class="lg">Datos bancarios para el pago de tu licencia</p>
+  <div class="base"><p class="b">${state.bank.banco} - ${state.bank.tipo}</p><p>${state.bank.numero}</p></div>
+  <button class="btn btn-secondary" data-modal="banco">${mi('mode_edit')}Modificar</button>
+</section>`;
+
+const stepper = (n, title, date='06-06-2023') => `
+<div class="stepper">
+  <div class="ring" style="--p:${n*25}" role="img" aria-label="Paso ${n} de 4"><span>${n}/4</span></div>
+  <div><p class="t">${title}</p><p class="d">${date}</p></div>
+</div>`;
+
+const resumen = () => `
+<section class="resumen">
+  <div class="rh"><i class="fa-solid fa-file-lines"></i><p class="h4">Resumen de licencia</p></div>
+  <dl class="rb" style="margin:0">
+    ${[['Nº de Licencia','2164065'],['Días de reposo','21 días'],['Fecha de inicio','10-07-2026'],['Fecha de término','31-07-2026'],['Fecha probable de pago','31-07-2023']]
+      .map(([k,v])=>`<div><dt class="k">${k}</dt><dd class="v" style="margin:0">${v}</dd></div>`).join('')}
+  </dl>
+</section>`;
+
+const contact = () => `
+<section class="contact">
+  <div class="section-title">
+    <p class="h4">¿Tienes dudas con tu licencia médica?</p>
+    <p class="base">Escríbenos y te ayudaremos a resolverlas o visita nuestro Centro de ayuda.</p>
+  </div>
+  <button class="btn btn-primary"><i class="fa-brands fa-whatsapp" style="font-size:22px"></i>Escríbenos</button>
+  <button class="btn btn-secondary">Centro de ayuda</button>
+</section>`;
+
+const detailShell = (inner) => `
+<div class="screen">
+  ${headerPrivate()}
+  <main class="body">
+    ${breadcrumb('licencias','Volver a Mis Licencias')}
+    <div class="intro">
+      <h1 class="h4" style="margin:0">Detalle de licencia médica</h1>
+      <p class="lg">Hola ${state.user}, acá podrás ver el avance de tu licencia médica.</p>
+    </div>
+    ${bankBox()}
+    ${inner}
+    ${resumen()}
+    ${contact()}
+  </main>
+  ${footerPrivate()}
+</div>`;
+
+/* ===================== Pantallas ===================== */
+const screens = {};
+
+screens.login = () => `
+<div class="screen bg-g6">
+  <header class="header-pub">
+    ${img('logo-cla-square.svg','logo-sq','Caja Los Andes', wordmark(10))}
+    ${img('logo-tapp.svg','logo-tapp','Tapp','')}
+    <a class="btn-tertiary back" href="#dashboard">${mi('arrow_back')}Volver</a>
+  </header>
+  <main class="login-body" style="margin-top:2px">
+    ${img('logo-cla-full.svg','logo-full','Caja Los Andes', wordmark(16))}
+    <form class="login-form" id="login-form" novalidate>
+      <p class="lg b">Inicia sesión en Mi Portal</p>
+      <div class="field">
+        <label for="rut">RUT</label>
+        <div class="input">${mi('calendar_today')}<input id="rut" inputmode="text" autocomplete="username" placeholder="Ej: 123456789"></div>
+      </div>
+      <div class="field">
+        <label for="clave">Clave</label>
+        <div class="input">${mi('calendar_today')}<input id="clave" type="password" autocomplete="current-password" placeholder="Ingresa tu clave de acceso"></div>
+      </div>
+      <a href="#" class="forgot">¿Olvidaste tu clave?</a>
+      <button class="btn btn-primary" id="btn-login" type="submit" disabled>Iniciar sesión</button>
+      <p class="first">¿Es tu primera vez en Caja Los Andes?</p>
+      <button class="btn btn-secondary" type="button">Crear cuenta</button>
+    </form>
+    <div class="recaptcha">${img('logo-recaptcha.svg','','reCAPTCHA','<i class="fa-solid fa-rotate fb"></i>')}</div>
+  </main>
+  <p class="legal compact">Las Cajas de Compensación son fiscalizadas por la Superintendencia de Seguridad Social (www.suseso.cl)</p>
+</div>`;
+
+screens.dashboard = () => `
+<div class="screen bg-g6">
+  ${headerPrivate()}
+  <main class="widgets">
+    <h1 class="h4" style="margin:0">¡Hola, ${state.user}!</h1>
+    <p class="h4">Creemos que puede interesarte</p>
+    <div>
+      <div class="carousel" id="carousel">
+        <article class="banner c">
+          <div class="txt"><p class="t">Crédito preaprobado</p><p class="amount">Monto de <b>$16.000.000</b></p><p class="d">¡Oferta disponible por tiempo limitado! Solicítala ya.</p></div>
+          ${img('banner-credito.png','art','', '<i class="fa-solid fa-comments-dollar art-fb" style="color:var(--c3)"></i>')}
+        </article>
+        <article class="banner a">
+          <div class="txt"><span class="tag-new-sm">Nuevo</span><p class="t">Seguro Automotriz</p><p class="amount">Monto de <b>$9.000.000</b></p><p class="d">Otra ecosolución de Caja los Andes y BNP Paribas Cardif.</p></div>
+          ${img('banner-seguro.png','art','', '<i class="fa-solid fa-car art-fb" style="color:var(--a3)"></i>')}
+        </article>
+        <article class="banner m">
+          <div class="txt"><p class="t">Descuento en Copec</p><p class="t">$15 dcto/lt</p><p class="d">En combustible pagando<br>con app de Copec.</p></div>
+          ${img('banner-copec.png','art','', '<i class="fa-solid fa-lightbulb art-fb" style="color:var(--m3)"></i>')}
+        </article>
+      </div>
+      <div style="display:flex;justify-content:center">
+        <div class="slidebar">
+          <button data-slide="-1" aria-label="Anterior">${mi('chevron_left')}</button>
+          <div class="dots" id="dots"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+          <button data-slide="1" aria-label="Siguiente">${mi('chevron_right')}</button>
+        </div>
+      </div>
+    </div>
+    <a class="direct" href="#">
+      <span class="new">${img('tag-nuevo.svg','','Nuevo','NUEVO')}</span>
+      <div class="inner"><span class="ico"><i class="fa-solid fa-hand-holding-dollar"></i></span><p class="lbl">Simula tu crédito</p></div>
+    </a>
+    <p class="h4">Mis <span class="reg">productos y servicios</span></p>
+    <article class="card">
+      <div class="seg"></div>
+      <div class="head" style="padding:8px 16px"><span class="ic"><i class="fa-solid fa-stethoscope"></i></span><p class="h4">Licencias <span class="reg">Médicas</span></p></div>
+      <div class="content">
+        <div class="row g"><span>Licencias medicas</span><b>${LICENCIAS.length}</b></div>
+        <div class="row"><span style="width:120px">N° ${LICENCIAS[0].n}</span><span class="right">Pendiente</span></div>
+        <div class="foot"><a class="btn-tertiary" style="padding:12px 16px" href="#licencias">Ir al detalle${mi('arrow_forward')}</a></div>
+      </div>
+    </article>
+    <article class="card r32 tapp-card">
+      <div class="seg"></div>
+      <div class="body2">
+        <div class="top"><p class="h4">Descarga<br><span class="reg">Tapp y obtén $10.000</span></p>
+          <span class="thumb">${img('tapp-thumb.png','','Tapp','<i class="fa-solid fa-gift"></i>')}</span></div>
+        <p class="base g1">¡Activa tu cuenta Tapp ahora! Y recibe tu sueldo con más ventajas</p>
+        <button class="btn btn-primary">Conocer más</button>
+      </div>
+    </article>
+    ${[['fa-users','Asignación','Familiar'],['fa-shield-halved','Seguros',''],['fa-suitcase','Turismo','']].map(([ic,a,b])=>`
+    <article class="card acc">
+      <div class="seg"></div>
+      <button class="head" style="width:100%;text-align:left" aria-expanded="false">
+        <span class="ic"><i class="fa-solid ${ic}"></i></span><span class="h4">${a}${b?` <span class="reg">${b}</span>`:''}</span>
+        <span class="chev">${mi('expand_more')}</span>
+      </button>
+      <div class="more">No tienes productos activos de ${(a+' '+b).trim().toLowerCase()} por ahora.</div>
+    </article>`).join('')}
+  </main>
+  ${footerPrivate()}
+</div>`;
+
+screens.licencias = (q) => {
+  const search = (q.get('q')||'').trim();
+  const est = q.get('estado')||'';
+  const list = LICENCIAS.filter(l => (!search || l.n.includes(search)) && (!est || l.estado===est));
+  return `
+<div class="screen">
+  ${headerPrivate()}
+  <main class="body">
+    ${breadcrumb('dashboard','Volver a Inicio')}
+    <div class="intro">
+      <h1 class="h4" style="margin:0">Mis Licencias</h1>
+      <p class="lg">Conoce el estado de tus licencias médicas y revisa los detalles de la resolución. Busca por número de licencia, por estado o fecha inicio de reposo.</p>
+    </div>
+    <form id="filters" style="display:flex;flex-direction:column;gap:24px">
+      <div class="field">
+        <label for="q">Buscar número de licencia</label>
+        <div class="input search"><input id="q" name="q" inputmode="numeric" placeholder="Número de licencia" value="${search}"><button type="submit" aria-label="Buscar">${mi('search')}</button></div>
+      </div>
+      <div class="field">
+        <label for="estado">Filtrar por estado</label>
+        <div class="select"><select id="estado" name="estado">
+          <option value="">Todos los estados</option>
+          ${Object.entries(ESTADOS).map(([k,e])=>`<option value="${k}" ${k===est?'selected':''}>${e.label}</option>`).join('')}
+        </select>${mi('keyboard_arrow_down')}</div>
+      </div>
+      <div class="field">
+        <label for="fecha">Filtrar por fecha inicio de reposo</label>
+        <div class="select"><select id="fecha" name="fecha"><option>Todas las fechas</option><option>Últimos 30 días</option><option>Últimos 6 meses</option><option>Último año</option></select>${mi('keyboard_arrow_down')}</div>
+      </div>
+    </form>
+    <section style="display:flex;flex-direction:column;gap:24px" aria-label="Listado de licencias">
+      ${list.length ? list.map(l=>`
+      <article class="tcol">
+        <div class="thead"><p>Nº de licencia</p><p>${l.n}</p></div>
+        <div class="cell"><span class="k">Fecha inicio de reposo</span><span class="v">${l.inicio}</span></div>
+        <div class="cell"><span class="k">Fecha Probable de pago</span><span class="v">${l.pago}</span></div>
+        <div class="cell"><span class="k">N° de ticket</span><span class="v">${l.ticket}</span></div>
+        <div class="cell" style="padding:8px 16px 12px"><span class="k" style="font-weight:500">Estado</span>${tag(l.estado)}</div>
+        <div class="actions"><a class="btn-tertiary" href="#${l.route}">Detalles${mi('arrow_forward')}</a></div>
+      </article>`).join('') : `<p class="lg g1">No encontramos licencias con esos filtros.</p>`}
+      <nav class="pagination" aria-label="Paginación">
+        <button disabled aria-label="Anterior">${mi('chevron_left')}</button>
+        <button class="active" aria-current="page">1</button><span class="dots">…</span>
+        <button>2</button><button>3</button><button>4</button><span class="dots">…</span><button>5</button>
+        <button aria-label="Siguiente">${mi('chevron_right')}</button>
+      </nav>
+    </section>
+    <div class="msg">${mi('info')}<div><p class="b">¿Qué son los estados en una licencia?</p><p>Son las etapas por las que pasa tu licencia médica, desde que ingresa en nuestro sistema hasta que recibes el pago.</p></div></div>
+  </main>
+  ${footerPrivate()}
+</div>`;
+};
+
+screens['detalle/compin'] = () => detailShell(`
+<section class="box">
+  <h2 class="h4" style="margin:0">Estado de licencia</h2>
+  ${stepper(2,'Enviada a COMPIN')}
+  <div class="alert info" id="alert-compin">
+    <div class="head">${mi('info')}<p class="title">Hemos recibido tu licencia médica</p></div>
+    <button class="close" aria-label="Cerrar mensaje" data-dismiss="alert-compin">${mi('close')}</button>
+    <p>Y se ha enviado a COMPIN para su revisión. Y su fecha estimada de respuesta de COMPIN será en un lapso de X días hábiles</p>
+  </div>
+</section>`);
+
+screens['detalle/pendiente'] = () => {
+  const loaded = state.docs.filter(d=>d.file).length;
+  const missing = state.docs.length - loaded;
+  const all = missing === 0;
+  return detailShell(`
+<section class="box">
+  <h2 class="h4" style="margin:0">Estado de licencia</h2>
+  ${stepper(3,'Revisión de documentos')}
+  ${all ? '' : `
+  <div class="alert warn">
+    <div class="head" style="padding-right:0">${mi('warning')}<p class="title">Tu licencia está en pausa por documentación faltante.</p></div>
+    <p style="margin-top:-12px">Para avanzar con tu solicitud, necesitamos que adjuntes ${missing===1?'el <b>1 documento</b> que falta':`los <b>${missing} documentos</b> que faltan`}. Los formatos aceptados: PDF, PNG, JPG, JPEG (máximo 10 MB por archivo).</p>
+  </div>`}
+  <div class="docs">
+    ${state.docs.map((d,i)=>`
+    <div class="doc">
+      <p class="name">Liquidación de sueldo - ${d.month} 2026</p>
+      ${d.file ? `${tag('pagada','Cargado')}
+        <div class="file">${mi('description')}<span class="n">${d.file}</span><button data-upload="${i}" aria-label="Reemplazar documento">${mi('file_upload')}</button></div>`
+      : `${tag('pendiente')}
+        <button class="btn btn-secondary" data-upload="${i}">Adjuntar documento${mi('file_upload')}</button>`}
+    </div>`).join('')}
+  </div>
+  ${all ? `
+  <label class="declare"><input type="checkbox" id="declare" ${state.declared?'checked':''}><span>Declaro que la información y documentos adjuntos son verídicos y válidos.</span></label>
+  <button class="btn btn-primary" id="send-docs" ${state.declared?'':'disabled'}>Enviar documentos</button>` : ''}
+</section>`);
+};
+// Variante "todos los documentos cargados" del Figma (3264:7307)
+screens['detalle/completa'] = () => {
+  state.docs.forEach(d=>{ if(!d.file) d.file = `ejemplodedocumento-${d.month.toLowerCase()}.pdf`; });
+  return screens['detalle/pendiente']();
+};
+
+screens['detalle/enviada'] = () => detailShell(`
+<section class="box">
+  <h2 class="h4" style="margin:0">Estado de licencia</h2>
+  ${stepper(3,'Revisión de documentos')}
+  <div class="alert info">
+    <div class="head" style="padding-right:0">${mi('info')}<p class="title">Documentación enviada de manera exitosa</p></div>
+    <p style="margin-top:-12px">Revisaremos tu caso en un plazo de X tiempo.</p>
+  </div>
+  <div class="sent" id="sent">
+    <button class="toggle" aria-expanded="true" data-toggle="sent">Documentación enviada${mi('expand_less')}</button>
+    <div class="list">
+      ${state.docs.map(d=>`<div class="file">${mi('description')}<span class="n">Liquidación-${d.month}-2026.pdf</span><span class="material-icons ok" aria-label="Enviado">check_circle</span></div>`).join('')}
+    </div>
+  </div>
+</section>`);
+
+screens['detalle/pagada'] = () => detailShell(`
+<section class="box">
+  <h2 class="h4" style="margin:0">Estado de licencia</h2>
+  ${stepper(4,'Resolución de licencia')}
+  <div class="alert ok">
+    <div class="head" style="padding-right:0">${mi('check_circle')}<p class="title">Detalle del estado: Tu licencia médica N° 2164065 fue pagada.</p></div>
+    <p style="margin-top:-12px">Hicimos una transferencia a tu cuenta bancaria registrada.</p>
+    <button class="btn btn-secondary" id="cert">Descargar certificado</button>
+  </div>
+</section>
+<section style="display:flex;flex-direction:column;gap:24px">
+  <div class="section-title"><h2 class="h4" style="margin:0">Detalle de las cuotas</h2><p class="base">Revisa la información de la cuota seleccionada</p></div>
+  ${[1,2,3].map(n=>`
+  <article class="tcol">
+    <div class="thead"><p>Nº de cuota</p><p>${n} de 3</p></div>
+    <div class="cell"><span class="k">Fecha de pago</span><span class="v">20/07/2026</span></div>
+    <div class="cell"><span class="k">Monto</span><span class="v">$400.000</span></div>
+    <div class="cell" style="padding:8px 16px 12px"><span class="k">Estado</span>${tag('pagada')}</div>
+    <div class="actions"><a class="btn-tertiary" href="#">Detalles${mi('arrow_forward')}</a></div>
+  </article>`).join('')}
+</section>`);
+
+/* ===================== Modales ===================== */
+const modals = {};
+modals.banco = () => `
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt-banco">
+  <div class="close-row"><button class="btn-tertiary" data-close>Cerrar${mi('close')}</button></div>
+  <form class="scroll" id="bank-form">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      ${mi('account_balance','mi')}
+      <h2 class="mt" id="mt-banco" style="margin:0">Datos bancarios</h2>
+      <p class="mp">Agrega o modifica tu información bancaria para recibir el pago de tu licencia médica. Los cambios se verán reflejados en un máximo <b>de 3 horas</b>.</p>
+    </div>
+    <div class="field"><label for="b-banco">Banco</label><div class="select"><select id="b-banco" required>
+      <option value="">Seleccione banco</option>
+      ${['Banco de Chile','Banco Estado','BCI','Santander','Scotiabank','Itaú','Tapp'].map(b=>`<option ${b===state.bank.banco?'selected':''}>${b}</option>`).join('')}
+    </select>${mi('keyboard_arrow_down')}</div></div>
+    <div class="field"><label for="b-tipo">Tipo de cuenta</label><div class="select"><select id="b-tipo" required>
+      <option value="">Seleccione cuenta</option>
+      ${['Cuenta corriente','Cuenta vista','Cuenta ahorro','Cuenta RUT'].map(b=>`<option ${b===state.bank.tipo?'selected':''}>${b}</option>`).join('')}
+    </select>${mi('keyboard_arrow_down')}</div></div>
+    <div class="field"><label for="b-num">Número de cuenta</label><div class="input"><input id="b-num" inputmode="numeric" placeholder="Ej: 12345678" value="${state.bank.numero}" required></div></div>
+    <div class="field"><label for="b-mail">Correo electrónico</label><div class="input"><input id="b-mail" type="email" placeholder="Ej: tucorreo@ejemplo.com"></div></div>
+    <div class="field"><label for="b-cel">Teléfono móvil</label><div class="input"><input id="b-cel" type="tel" placeholder="Ej: 9 1234 5678"></div></div>
+    <div class="field"><label for="b-fijo">Teléfono fijo</label><div class="input"><input id="b-fijo" type="tel" placeholder="Ej: 2 1234 5678"></div></div>
+    <div class="tapp-banner">
+      ${img('banner-tapp.png','photo','', '')}
+      <div class="g1"></div><div class="g2"></div>
+      ${img('logo-tapp-white.svg','tl','Tapp','<span class="tl fb">Tapp</span>')}
+      <p><b>Descargar Tapp</b> y agrégalo como tu cuenta bancaria facilitando el pago de tus licencias médicas.</p>
+    </div>
+  </form>
+  <div class="btns">
+    <button class="btn btn-primary" type="submit" form="bank-form">Guardar</button>
+    <button class="btn btn-secondary" data-close>Cancelar</button>
+  </div>
+</div>`;
+
+modals.upload = () => {
+  const d = state.docs[state.uploadIdx ?? 2];
+  return `
+<div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt-up" style="max-width:320px;padding:16px 12px">
+  <div class="scroll" style="gap:16px">
+    ${mi('description','mi')}
+    <h2 class="mt" id="mt-up" style="margin:0">Subir liquidación ${d.month} 2026</h2>
+    <p class="mp" style="font-weight:400">Sube tu documento o toma una foto. Asegúrate de que la imagen sea clara y legible para procesarla correctamente.</p>
+    <button class="opt" data-pick="file-cam">${mi('photo_camera')}<span><span class="ot">Tomar foto.</span><br><span class="od">Usa la cámara, procura buena luz y que se lea completo</span></span></button>
+    <button class="opt" data-pick="file-doc">${mi('insert_drive_file')}<span><span class="ot">Subir documento</span><br><span class="od">PDF o imagen guardada en tu teléfono.</span></span></button>
+  </div>
+  <div class="btns" style="padding-top:8px"><button class="btn btn-secondary" data-close>Cancelar</button></div>
+</div>`;
+};
+
+function openModal(name){
+  closeModal();
+  const o = document.createElement('div');
+  o.className = 'overlay'; o.id = 'overlay'; o.innerHTML = modals[name]();
+  o.addEventListener('click', e => { if (e.target === o) closeModal(); });
+  document.body.appendChild(o);
+  document.body.style.overflow = 'hidden';
+  (o.querySelector('select,input') || o.querySelector('button')).focus();
+}
+function closeModal(){
+  const o = $('#overlay'); if (o) o.remove();
+  document.body.style.overflow = '';
+}
+
+/* ===================== Router ===================== */
+function parseHash(){
+  const raw = location.hash.slice(1) || 'login';
+  const [path, qs] = raw.split('?');
+  return { path, q:new URLSearchParams(qs||'') };
+}
+function render(){
+  const { path, q } = parseHash();
+  const view = screens[path] || screens.login;
+  closeModal();
+  $('#app').innerHTML = view(q);
+  $('#jump').value = [...$('#jump').options].some(o=>o.value===location.hash.slice(1)) ? location.hash.slice(1) : (screens[path]?path:'login');
+  if (q.get('modal')) { if (q.get('modal')==='upload' && state.uploadIdx==null) state.uploadIdx = 2; openModal(q.get('modal')); }
+  else window.scrollTo(0,0);
+  bind(path);
+}
+window.addEventListener('hashchange', render);
+$('#jump').addEventListener('change', e => { location.hash = e.target.value; });
+
+/* ===================== Interacciones ===================== */
+function bind(path){
+  if (path === 'login' || !screens[path]) {
+    const rut = $('#rut'), clave = $('#clave'), btn = $('#btn-login');
+    const check = () => { btn.disabled = !(rut.value.trim() && clave.value.trim()); };
+    rut.addEventListener('input', check); clave.addEventListener('input', check);
+    $('#login-form').addEventListener('submit', e => { e.preventDefault(); if (!btn.disabled) location.hash = 'dashboard'; });
+  }
+  if (path === 'dashboard') {
+    const car = $('#carousel'), dots = [...document.querySelectorAll('#dots .dot')];
+    const step = () => car.querySelector('.banner').offsetWidth + 16;
+    document.querySelectorAll('[data-slide]').forEach(b => b.addEventListener('click', () => car.scrollBy({ left: step()*+b.dataset.slide, behavior:'smooth' })));
+    car.addEventListener('scroll', () => { const i = Math.round(car.scrollLeft/step()); dots.forEach((d,k)=>d.classList.toggle('on', k===i)); }, { passive:true });
+    document.querySelectorAll('.card.acc .head').forEach(h => h.addEventListener('click', () => {
+      const c = h.closest('.card'); c.classList.toggle('open'); h.setAttribute('aria-expanded', c.classList.contains('open'));
+    }));
+  }
+  if (path === 'licencias') {
+    const f = $('#filters');
+    const apply = e => { e && e.preventDefault(); const p = new URLSearchParams(); const q = $('#q').value.trim(), es = $('#estado').value;
+      if (q) p.set('q', q); if (es) p.set('estado', es); location.hash = 'licencias' + (p.toString() ? '?'+p : ''); };
+    f.addEventListener('submit', apply); $('#estado').addEventListener('change', apply);
+  }
+}
+
+// Delegación global (modales, alertas, documentos)
+document.addEventListener('click', e => {
+  const t = e.target.closest('button,a'); if (!t) return;
+  if (t.dataset.modal) { openModal(t.dataset.modal); }
+  else if (t.hasAttribute('data-close')) { e.preventDefault(); closeModal(); }
+  else if (t.dataset.dismiss) { document.getElementById(t.dataset.dismiss)?.remove(); }
+  else if (t.dataset.toggle) { const s = document.getElementById(t.dataset.toggle); s.classList.toggle('closed'); t.setAttribute('aria-expanded', !s.classList.contains('closed')); }
+  else if (t.dataset.upload != null) { state.uploadIdx = +t.dataset.upload; openModal('upload'); }
+  else if (t.dataset.pick) { document.getElementById(t.dataset.pick).click(); }
+  else if (t.id === 'send-docs') { state.declared = false; toast('Documentos enviados'); location.hash = 'detalle/enviada'; }
+  else if (t.id === 'cert') { toast('Descargando certificado…'); }
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'declare') { state.declared = e.target.checked; $('#send-docs').disabled = !state.declared; }
+  if (e.target.id === 'file-doc' || e.target.id === 'file-cam') {
+    const f = e.target.files[0]; e.target.value = '';
+    if (!f) return;
+    if (f.size > 10*1024*1024) { toast('El archivo supera los 10 MB'); return; }
+    state.docs[state.uploadIdx].file = f.name;
+    closeModal();
+    if (parseHash().path !== 'detalle/pendiente') location.hash = 'detalle/pendiente'; else render();
+    toast('Documento cargado');
+  }
+});
+document.addEventListener('submit', e => {
+  if (e.target.id !== 'bank-form') return;
+  e.preventDefault();
+  const banco = $('#b-banco').value, tipo = $('#b-tipo').value, numero = $('#b-num').value.trim();
+  if (!banco || !tipo || !numero) { toast('Completa banco, tipo y número de cuenta'); return; }
+  Object.assign(state.bank, { banco, tipo, numero });
+  closeModal();
+  const { path } = parseHash();
+  location.hash = path; render();
+  toast('Datos bancarios actualizados');
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+render();
+</script>
+</body>
+</html>
