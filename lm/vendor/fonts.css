@@ -1,0 +1,9 @@
+/* Fuentes empaquetadas para funcionar sin conexión.
+   Material Icons (Apache-2.0, paquete npm material-icons) · Nunito Sans (OFL, @fontsource/nunito-sans).
+   Nunito Sans reemplaza a Rawson Pro (fuente con licencia comercial del design system). */
+@font-face{font-family:'Material Icons';font-style:normal;font-weight:400;font-display:block;src:url(fonts/material-icons.woff2) format('woff2');}
+.material-icons{font-family:'Material Icons';font-weight:normal;font-style:normal;font-size:24px;line-height:1;letter-spacing:normal;text-transform:none;
+  display:inline-block;white-space:nowrap;word-wrap:normal;direction:ltr;-webkit-font-feature-settings:'liga';font-feature-settings:'liga';-webkit-font-smoothing:antialiased;}
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/nunito-sans-latin-400-normal.woff2) format('woff2');}
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/nunito-sans-latin-500-normal.woff2) format('woff2');}
+@font-face{font-family:'Nunito Sans';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/nunito-sans-latin-700-normal.woff2) format('woff2');}
