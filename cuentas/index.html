@@ -40,6 +40,14 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appear
 input[type=number]{-moz-appearance:textfield}
 .num{font-variant-numeric:tabular-nums}
 
+/* Checkbox con el estilo de la app */
+input[type=checkbox]{--cb:var(--accent);-webkit-appearance:none;appearance:none;margin:0;width:18px;height:18px;border:1.5px solid var(--ink-faint);border-radius:6px;background:var(--field);display:inline-grid;place-items:center;cursor:pointer;transition:background .15s,border-color .15s;flex:none}
+input[type=checkbox]::after{content:'';width:10px;height:10px;background:var(--accent-ink);clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0,43% 62%);transform:scale(0);transition:transform .12s ease-out}
+input[type=checkbox]:hover{border-color:var(--cb)}
+input[type=checkbox]:checked{background:var(--cb);border-color:var(--cb)}
+input[type=checkbox]:checked::after{transform:scale(1)}
+input[type=checkbox]:focus-visible{outline:2px solid var(--cb);outline-offset:2px}
+
 /* Top bar */
 .top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .top-in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
@@ -144,7 +152,7 @@ label.f{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margi
 .set .inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .set .inline .pct,.set .inline .money{width:130px}
 .check{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-soft);cursor:pointer}
-.check input{margin-top:2px;width:16px;height:16px;accent-color:var(--accent);flex:none}
+.check input{margin-top:1px;flex:none}
 
 /* Results */
 .res-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
@@ -165,7 +173,8 @@ label.f{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margi
 .prow{border:1px solid var(--line);border-radius:12px;background:var(--card)}
 .prow.paid{opacity:.6}
 .prow-main{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;cursor:pointer}
-.prow-main input{width:18px;height:18px;accent-color:var(--ok);margin:0}
+.prow-main input{--cb:var(--ok);width:22px;height:22px;border-radius:7px}
+.prow-main input::after{width:12px;height:12px}
 .prow .nm{font-weight:700;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .prow .nm small{display:block;font-weight:500;font-size:12px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .prow .tot{font-weight:800;font-size:17px;text-align:right}
