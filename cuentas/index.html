@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
+  color-scheme:light;
   --bg:#f2f6fa; --card:#ffffff; --ink:#0a2540; --ink-soft:#52637a; --ink-faint:#8a9ab0;
   --line:#e1e9f2; --field:#f6f9fc; --accent:#0060df; --accent-ink:#ffffff; --accent-soft:#e8f1ff;
   --ok:#0f8a5f; --ok-soft:#e3f6ee; --warn:#b45309; --warn-soft:#fff4e0; --bday:#c2417a; --bday-soft:#fde8f1;
@@ -16,6 +17,7 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
+    color-scheme:dark;
     --bg:#0c1522; --card:#132033; --ink:#e8eef6; --ink-soft:#a5b4c8; --ink-faint:#71839b;
     --line:#22334a; --field:#0f1b2b; --accent:#5aa2ff; --accent-ink:#06182e; --accent-soft:#16304f;
     --ok:#4fd1a1; --ok-soft:#123528; --warn:#f3b25a; --warn-soft:#3a2a12; --bday:#f08bb7; --bday-soft:#3b1a2a;
@@ -23,6 +25,7 @@
   }
 }
 :root[data-theme="dark"]{
+  color-scheme:dark;
   --bg:#0c1522; --card:#132033; --ink:#e8eef6; --ink-soft:#a5b4c8; --ink-faint:#71839b;
   --line:#22334a; --field:#0f1b2b; --accent:#5aa2ff; --accent-ink:#06182e; --accent-soft:#16304f;
   --ok:#4fd1a1; --ok-soft:#123528; --warn:#f3b25a; --warn-soft:#3a2a12; --bday:#f08bb7; --bday-soft:#3b1a2a;
@@ -205,6 +208,26 @@ label.f{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margi
 .drawer footer{padding:12px;border-top:1px solid var(--line);display:grid;gap:8px}
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;font-weight:600;opacity:0;transition:.2s;z-index:60;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%)}
+/* Selector de fecha propio (reemplaza al calendario nativo) */
+.dp{position:relative}
+.dp-btn{display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;cursor:pointer}
+.dp-btn svg{flex:none;color:var(--ink-soft)}
+.dp-btn[aria-expanded="true"]{border-color:var(--accent);background:var(--card)}
+.dp-pop{position:absolute;top:calc(100% + 6px);right:0;z-index:25;width:300px;max-width:calc(100vw - 32px);background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 32px rgba(10,37,64,.18);padding:12px;display:none}
+.dp-pop.open{display:block}
+.dp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.dp-head b{font-size:15px;text-transform:capitalize}
+.dp-nav{display:flex;gap:4px}
+.dp-nav button{border:1px solid var(--line);background:var(--field);width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:var(--ink-soft);padding:0}
+.dp-nav button:hover{border-color:var(--accent);color:var(--accent)}
+.dp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center}
+.dp-grid .wd{font-size:11px;font-weight:700;color:var(--ink-faint);padding:4px 0}
+.dp-grid button{border:0;background:transparent;aspect-ratio:1;border-radius:10px;font-size:14px;font-weight:600;color:var(--ink);padding:0}
+.dp-grid button:hover{background:var(--accent-soft);color:var(--accent)}
+.dp-grid button.out{color:var(--ink-faint);font-weight:500}
+.dp-grid button.today{box-shadow:inset 0 0 0 1.5px var(--accent);color:var(--accent)}
+.dp-grid button.sel{background:var(--accent);color:var(--accent-ink)}
+.dp-foot{display:flex;justify-content:space-between;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (max-width:420px){.kpis{grid-template-columns:1fr 1fr}.kpis .kpi:last-child{grid-column:1/-1}.btn .lbl-long{display:none}}
 </style>
@@ -232,7 +255,11 @@ label.f{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margi
       <p class="hint">Así la encuentran después en “Mis cuentas”.</p>
       <div class="row r-meta">
         <div><label class="f" for="place">Local</label><input class="in" id="place" placeholder="Ej: Mister Fish" autocomplete="off"></div>
-        <div><label class="f" for="date">Fecha</label><input class="in" id="date" type="date"></div>
+        <div class="dp" id="dp"><label class="f" for="date">Fecha</label>
+          <button type="button" class="in dp-btn" id="date" aria-haspopup="dialog" aria-expanded="false"><span id="dateLabel">—</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg></button>
+          <div class="dp-pop" id="dpPop" role="dialog" aria-label="Elegir fecha"></div>
+        </div>
       </div>
     </div>
 
@@ -424,7 +451,7 @@ label.f{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margi
   function renderAll() {
     var b = bill();
     $('#place').value = b.place;
-    $('#date').value = b.date;
+    $('#dateLabel').textContent = b.date ? fmtDate(b.date, true) : 'Elegir fecha';
     $('#brandSub').textContent = (b.place || 'Cuenta sin nombre') + (b.date ? ' · ' + fmtDate(b.date) : '');
     $('#splitUnassigned').checked = !!b.splitUnassigned;
     $('#discountPct').value = [0, 20, 30, 40, 50].indexOf(Number(b.discountPct)) >= 0 ? '' : b.discountPct;
@@ -617,10 +644,16 @@ label.f{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margi
   }
 
   // ---------- Helpers ----------
-  function fmtDate(iso) {
-    var p = iso.split('-');
-    var m = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
-    return p.length === 3 ? Number(p[2]) + ' ' + m[Number(p[1]) - 1] + ' ' + p[0] : iso;
+  var MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+  var WEEKDAYS = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+  function fmtDate(iso, long) {
+    var p = (iso || '').split('-');
+    if (p.length !== 3) return iso;
+    if (long) {
+      var d = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+      return WEEKDAYS[d.getDay()] + ' ' + Number(p[2]) + ' ' + MONTHS[Number(p[1]) - 1] + ' ' + p[0];
+    }
+    return Number(p[2]) + ' ' + MONTHS[Number(p[1]) - 1].slice(0, 3) + ' ' + p[0];
   }
   function fmtW(w) { return Number.isInteger(w) ? String(w) : String(Math.round(w * 100) / 100).replace('.', ','); }
   function round2(n) { n = Number(n) || 0; return Math.round(n * 100) / 100; }
@@ -661,7 +694,47 @@ label.f{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margi
 
   // ---------- Eventos ----------
   $('#place').addEventListener('input', function (e) { bill().place = e.target.value; save(); $('#brandSub').textContent = (e.target.value || 'Cuenta sin nombre') + ' · ' + fmtDate(bill().date); renderBills(); });
-  $('#date').addEventListener('change', function (e) { bill().date = e.target.value; save(); renderAll(); });
+  // ---------- Selector de fecha ----------
+  var dpView = null; // {y, m} mes que se está mirando
+  var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+  function dpOpen(open) {
+    $('#dpPop').classList.toggle('open', open);
+    $('#date').setAttribute('aria-expanded', open);
+    if (open) {
+      var p = (bill().date || today()).split('-');
+      dpView = { y: Number(p[0]), m: Number(p[1]) - 1 };
+      dpRender();
+      var sel = $('#dpPop .sel') || $('#dpPop .today'); if (sel) sel.focus();
+    }
+  }
+  function dpRender() {
+    var y = dpView.y, m = dpView.m, sel = bill().date, now = today();
+    var first = new Date(y, m, 1);
+    var start = new Date(y, m, 1 - (first.getDay() + 6) % 7); // semana parte el lunes
+    var cells = '';
+    for (var i = 0; i < 42; i++) {
+      var d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+      var iso = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+      var cls = (d.getMonth() !== m ? 'out ' : '') + (iso === now ? 'today ' : '') + (iso === sel ? 'sel' : '');
+      cells += '<button type="button" class="' + cls + '" data-day="' + iso + '" aria-label="' + fmtDate(iso, true) + '"' + (iso === sel ? ' aria-current="date"' : '') + '>' + d.getDate() + '</button>';
+    }
+    $('#dpPop').innerHTML = '<div class="dp-head"><b>' + MONTHS[m] + ' ' + y + '</b><div class="dp-nav">' +
+      '<button type="button" data-nav="-1" aria-label="Mes anterior">‹</button><button type="button" data-nav="1" aria-label="Mes siguiente">›</button></div></div>' +
+      '<div class="dp-grid">' + ['L', 'M', 'M', 'J', 'V', 'S', 'D'].map(function (w) { return '<span class="wd">' + w + '</span>'; }).join('') + cells + '</div>' +
+      '<div class="dp-foot"><button type="button" class="btn ghost sm" data-day="">Borrar</button><button type="button" class="btn sm" data-day="' + now + '">Hoy</button></div>';
+  }
+  $('#date').addEventListener('click', function () { dpOpen(!$('#dpPop').classList.contains('open')); });
+  $('#dpPop').addEventListener('click', function (e) {
+    e.stopPropagation(); // el contenido se re-dibuja: que el clic no cuente como "afuera"
+    var n = e.target.closest('[data-nav]');
+    if (n) { var d = new Date(dpView.y, dpView.m + Number(n.dataset.nav), 1); dpView = { y: d.getFullYear(), m: d.getMonth() }; dpRender(); return; }
+    var day = e.target.closest('[data-day]');
+    if (day) { bill().date = day.dataset.day; save(); dpOpen(false); renderAll(); $('#date').focus(); }
+  });
+  document.addEventListener('click', function (e) { if (!e.target.closest('#dp')) dpOpen(false); });
+  $('#dp').addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && $('#dpPop').classList.contains('open')) { e.stopPropagation(); dpOpen(false); $('#date').focus(); }
+  });
 
   $('#addPersonForm').addEventListener('submit', function (e) {
     e.preventDefault(); var v = $('#personName').value; $('#personName').value = ''; addPeople(v); $('#personName').focus();
