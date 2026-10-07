@@ -212,6 +212,13 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
 .pi .amt small{text-align:right}
 .pi input{pointer-events:none}
 .pi.free{border-style:dashed}
+.pi-row{display:flex;gap:6px;align-items:center}
+.pi-row .pi{flex:1;min-width:0}
+.pi-row .stepper span{min-width:38px;font-size:13px}
+@media (max-width:560px){.pi-row{flex-wrap:wrap}.pi-row .pi{flex:1 1 calc(100% - 50px)}.pi-row .stepper{order:3;margin:0 46px 4px auto}}
+.pi-del{width:38px;height:38px;border-radius:12px}
+.pi-del:hover{color:var(--danger,#c0392b);background:color-mix(in srgb,#c0392b 10%,transparent)}
+.mode .tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 
 /* Ajustes */
 .set{display:grid;gap:10px;padding:16px 0;border-top:1px solid var(--line-2)}
@@ -337,6 +344,8 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
 
 .toast{position:fixed;left:50%;bottom:96px;max-width:calc(100vw - 32px);text-align:center;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;opacity:0;transition:.2s;z-index:60;pointer-events:none;box-shadow:var(--shadow-lg)}
 .toast.show{opacity:1;transform:translateX(-50%)}
+.toast.act{pointer-events:auto;display:flex;align-items:center;gap:12px}
+.toast button{border:0;background:transparent;color:var(--accent-line);font-weight:800;font-size:14px;padding:2px 4px;text-decoration:underline}
 
 /* Foto de la boleta */
 .scan{display:flex;align-items:center;gap:14px;width:100%;text-align:left;border:1.5px dashed var(--accent-line);background:linear-gradient(135deg,var(--accent-soft),color-mix(in srgb,#7b5cff 10%,var(--card)));border-radius:14px;padding:14px;margin-bottom:16px;color:var(--ink);transition:border-color .15s,transform .05s}
@@ -478,7 +487,7 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
           <button type="button" data-mode="person">👤 Por persona</button>
           <button type="button" data-mode="item">🧾 Por producto</button>
         </div>
-        <span class="note" id="assignNote"></span>
+        <span class="tools"><span class="note" id="assignNote"></span><button type="button" class="btn ghost sm" id="clearItems" hidden>🗑 Borrar todos</button></span>
       </div>
       <div id="assign"></div>
     </section>
@@ -695,9 +704,16 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     return AV_COLORS[h % AV_COLORS.length];
   }
   function av(name, extra) { return '<span class="av' + (extra ? ' ' + extra : '') + '" style="background:' + avColor(name) + '" aria-hidden="true">' + esc(initials(name)) + '</span>'; }
-  function toast(msg) {
-    var t = $('#toast'); t.textContent = msg; t.classList.add('show');
-    clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.remove('show'); }, 1900);
+  function toast(msg, actionLabel, action) {
+    var t = $('#toast'); t.textContent = msg;
+    t.classList.toggle('act', !!action);
+    if (action) {
+      var btn = document.createElement('button'); btn.type = 'button'; btn.textContent = actionLabel;
+      btn.addEventListener('click', function () { t.classList.remove('show'); action(); });
+      t.appendChild(btn);
+    }
+    t.classList.add('show');
+    clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.remove('show'); }, action ? 5000 : 1900);
   }
   function plural(n, a, b) { return n + ' ' + (n === 1 ? a : b); }
 
@@ -826,6 +842,7 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     var res = result();
     var unassigned = res.unassigned.length;
     $('#assignNote').innerHTML = unassigned && !b.splitUnassigned ? '<span style="color:var(--warn);font-weight:700">⚠ ' + plural(unassigned, 'producto', 'productos') + ' sin asignar</span>' : (b.items.length ? '✓ Todo asignado' : '');
+    $('#clearItems').hidden = !b.items.length;
     var act = person(ui.active);
     $('#quickHint').innerHTML = ui.mode === 'person' && act ? 'Lo que agregues se asigna a <b>' + esc(act.name) + '</b>. Para algo compartido, tócalo en la lista y se divide.' : 'Tip: Enter para agregar rápido. Después marca quién lo consumió.';
     $('#receiptLink').innerHTML = b.receipt ? '<button type="button" class="receipt-link" data-view-receipt><img src="' + b.receipt + '" alt="">Ver foto de la boleta</button>' : '';
@@ -849,12 +866,17 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
       var who = b.people.filter(function (p) { return shares[p.id] > 0; });
       var total = C.itemTotal(it);
       var weight = who.reduce(function (s, p) { return s + shares[p.id]; }, 0);
-      var mine = on ? total * shares[ui.active] / weight : 0;
-      var sub = who.length ? (on ? (who.length === 1 ? 'Solo ' + esc(act.name) : 'Compartido con ' + who.filter(function (p) { return p.id !== ui.active; }).map(function (p) { return esc(p.name); }).join(', ')) : esc(who.map(function (p) { return p.name; }).join(', '))) : '<span style="color:var(--warn);font-weight:700">Sin asignar</span>';
-      return '<button type="button" class="pi' + (on ? ' on' : '') + (who.length ? '' : ' free') + '" data-pick="' + it.id + '" aria-pressed="' + on + '">' +
+      var units = isUnits(it), qtyN = Number(it.qty) || 1, freeU = units ? qtyN - weight : 0;
+      var mine = on ? (units && weight < qtyN ? total / qtyN * shares[ui.active] : total * shares[ui.active] / weight) : 0;
+      var sub = units && who.length && weight <= qtyN
+        ? who.map(function (p) { return esc(p.name) + ' ' + fmtW(shares[p.id]); }).join(' · ') + (freeU > 0 ? ' · <span style="color:var(--warn);font-weight:700">' + fmtW(freeU) + ' sin asignar</span>' : '')
+        : who.length ? (on ? (who.length === 1 ? 'Solo ' + esc(act.name) : 'Compartido con ' + who.filter(function (p) { return p.id !== ui.active; }).map(function (p) { return esc(p.name); }).join(', ')) : esc(who.map(function (p) { return p.name; }).join(', '))) : '<span style="color:var(--warn);font-weight:700">Sin asignar</span>';
+      return '<div class="pi-row"><button type="button" class="pi' + (on ? ' on' : '') + (who.length ? '' : ' free') + '" data-pick="' + it.id + '" aria-pressed="' + on + '">' +
         '<input type="checkbox" tabindex="-1"' + (on ? ' checked' : '') + ' aria-hidden="true">' +
         '<span style="min-width:0"><b>' + esc(it.name) + (Number(it.qty) > 1 ? ' <span style="color:var(--ink-3);font-weight:600">×' + it.qty + '</span>' : '') + '</b><small>' + sub + '</small></span>' +
-        '<span class="amt num">' + (on ? C.clp(mine) : C.clp(total)) + '<small>' + (on && who.length > 1 ? 'de ' + C.clp(total) : on ? '' : 'total') + '</small></span></button>';
+        '<span class="amt num">' + (on ? C.clp(mine) : C.clp(total)) + '<small>' + (on && mine < total - 0.5 ? 'de ' + C.clp(total) : on ? '' : 'total') + '</small></span></button>' +
+        (on && units ? '<span class="stepper" title="Unidades de ' + esc(act.name) + '"><button type="button" data-ustep="-1" data-uitem="' + it.id + '" aria-label="Una unidad menos">−</button><span class="num">' + fmtW(shares[ui.active]) + '/' + qtyN + '</span><button type="button" data-ustep="1" data-uitem="' + it.id + '" aria-label="Una unidad más">+</button></span>' : '') +
+        '<button type="button" class="icon-btn pi-del" data-del="' + it.id + '" title="Eliminar producto" aria-label="Eliminar ' + esc(it.name) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button></div>';
     }).join('');
     $('#assign').innerHTML = pick + '<div class="plist-items">' + list + '</div>';
   }
@@ -879,8 +901,11 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
       return '<button type="button" class="tog' + (on ? ' on' : '') + '" data-tog="' + p.id + '" aria-pressed="' + on + '">' + av(p.name) + esc(p.name) + w + '</button>';
     }).join('');
     var foot;
+    var units = isUnits(it), qtyN = Number(it.qty) || 1, freeU = units ? qtyN - weight : 0;
     if (unassigned) foot = '<span class="warn-txt">⚠ Nadie lo tiene marcado</span>';
     else if (!sel.length) foot = '<span>Sin monto</span>';
+    else if (units && freeU > 0) foot = '<span class="warn-txt">⚠ ' + fmtW(freeU) + ' de ' + qtyN + ' sin asignar</span>';
+    else if (units && weight <= qtyN && sel.length > 1) foot = '<span>' + sel.map(function (p) { return esc(p.name) + ' ' + fmtW(shares[p.id]); }).join(' · ') + ' <span style="color:var(--ink-3)">(' + C.clp(total / qtyN) + ' c/u)</span></span>';
     else if (sel.length === 1) foot = '<span>Lo paga <b>' + esc(sel[0].name) + '</b></span>';
     else {
       var even = sel.every(function (p) { return shares[p.id] === shares[sel[0].id]; });
@@ -891,10 +916,10 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
       portions = '<div class="portions">' + sel.map(function (p) {
         return '<div class="portion"><span>' + esc(p.name) + '</span>' +
           '<span class="stepper"><button type="button" data-step="-1" data-pid="' + p.id + '" aria-label="Menos">−</button><span class="num">' + fmtW(shares[p.id]) + '</span><button type="button" data-step="1" data-pid="' + p.id + '" aria-label="Más">+</button></span>' +
-          '<span class="amt num">' + C.clp(total * shares[p.id] / weight) + '</span></div>';
-      }).join('') + '<span class="note">Ej: si alguien se tomó 2 de 3 bebidas, ponle 2 porciones.</span></div>';
+          '<span class="amt num">' + C.clp(units && weight < qtyN ? total / qtyN * shares[p.id] : total * shares[p.id] / weight) + '</span></div>';
+      }).join('') + '<span class="note">' + (units ? 'Unidades de cada uno (' + fmtW(weight) + ' de ' + qtyN + ' asignadas).' : 'Ej: si alguien se tomó 2 de 3 bebidas, ponle 2 porciones.') + '</span></div>';
     }
-    return '<div class="item' + (unassigned ? ' warn' : '') + '" data-item="' + it.id + '">' +
+    return '<div class="item' + (unassigned || freeU > 0 ? ' warn' : '') + '" data-item="' + it.id + '">' +
       '<div class="item-top"><input class="item-name" data-f="name" value="' + esc(it.name) + '" aria-label="Nombre del producto">' +
       '<button class="icon-btn" data-del-item title="Eliminar" aria-label="Eliminar ' + esc(it.name) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button></div>' +
       '<div class="item-nums"><input class="in num q" type="number" inputmode="numeric" min="1" data-f="qty" value="' + (it.qty || 1) + '" aria-label="Cantidad">×' +
@@ -1172,8 +1197,8 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     e.preventDefault();
     var name = $('#niName').value.trim(); var qty = Math.max(1, Number($('#niQty').value) || 1); var price = Number($('#niPrice').value) || 0;
     if (!name && !price) { $('#niName').focus(); return; }
-    var it = { id: uid(), name: name || 'Producto', qty: qty, price: price, shares: {} };
-    if (ui.mode === 'person' && ui.active && person(ui.active)) it.shares[ui.active] = 1;
+    var it = { id: uid(), name: name || 'Producto', qty: qty, price: price, shares: {}, byUnits: true };
+    if (ui.mode === 'person' && ui.active && person(ui.active)) toggleShare(it, ui.active);
     bill().items.push(it);
     $('#niName').value = ''; $('#niQty').value = 1; $('#niPrice').value = '';
     save(); renderAssign(); refresh(); $('#niName').focus();
@@ -1184,30 +1209,82 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     ui.mode = b.dataset.mode; renderSegs(); renderAssign();
   });
 
+  // Unidades de un producto: con 2+ unidades, cada persona marcada se queda con las suyas.
+  // La primera persona toma todas; al sumar otra se le pasa 1 unidad de quien tenga más de una.
+  function isUnits(it) { return !!it.byUnits && Number(it.qty) > 1; }
+  function toggleShare(it, pid) {
+    it.shares = it.shares || {};
+    if (it.shares[pid]) { delete it.shares[pid]; return; }
+    if (!isUnits(it)) { it.shares[pid] = 1; return; }
+    var qty = Number(it.qty);
+    var ids = Object.keys(it.shares).filter(function (k) { return it.shares[k] > 0; });
+    var used = ids.reduce(function (s, k) { return s + it.shares[k]; }, 0);
+    if (!ids.length) { it.shares[pid] = qty; return; }
+    if (used < qty) { it.shares[pid] = Math.min(1, qty - used) || 1; return; }
+    var top = ids.sort(function (a, c) { return it.shares[c] - it.shares[a]; })[0];
+    if (it.shares[top] > 1) it.shares[top] -= 1;
+    it.shares[pid] = 1;
+  }
+  function shareAll(it, people) {
+    var n = people.length; var qty = Number(it.qty);
+    it.shares = {};
+    people.forEach(function (p) { it.shares[p.id] = isUnits(it) && n < qty ? qty / n : 1; });
+  }
+  function assignedUnits(it) {
+    return Object.keys(it.shares || {}).reduce(function (s, k) { return s + (it.shares[k] > 0 ? it.shares[k] : 0); }, 0);
+  }
+
+  // Elimina un producto con opción de deshacer
+  function deleteItem(id) {
+    var b = bill(); var idx = b.items.findIndex(function (x) { return x.id === id; });
+    if (idx < 0) return;
+    var removed = b.items.splice(idx, 1)[0];
+    save(); renderAssign(); refresh();
+    toast('Eliminado: ' + removed.name, 'Deshacer', function () {
+      var bb = bill(); if (bb !== b) return;
+      bb.items.splice(Math.min(idx, bb.items.length), 0, removed);
+      save(); renderAssign(); refresh();
+    });
+  }
+  $('#clearItems').addEventListener('click', function () {
+    var b = bill(); if (!b.items.length) return;
+    if (!confirm('¿Borrar los ' + b.items.length + ' productos de esta cuenta?')) return;
+    var backup = b.items; b.items = [];
+    save(); renderAssign(); refresh();
+    toast('Se borraron todos los productos', 'Deshacer', function () { b.items = backup; save(); renderAssign(); refresh(); });
+  });
+
   $('#assign').addEventListener('click', function (e) {
     var t;
+    if ((t = e.target.closest('[data-del]'))) { deleteItem(t.dataset.del); return; }
+    if ((t = e.target.closest('[data-ustep]'))) {
+      var uit = bill().items.find(function (x) { return x.id === t.dataset.uitem; });
+      var nv = (uit.shares[ui.active] || 0) + Number(t.dataset.ustep);
+      if (nv <= 0) delete uit.shares[ui.active]; else uit.shares[ui.active] = nv;
+      save(); renderAssign(); refresh(); return;
+    }
     if ((t = e.target.closest('[data-active]'))) { ui.active = t.dataset.active; renderAssign(); return; }
     if ((t = e.target.closest('[data-pick]'))) {
       var pit = bill().items.find(function (x) { return x.id === t.dataset.pick; });
       pit.shares = pit.shares || {};
-      if (pit.shares[ui.active]) delete pit.shares[ui.active]; else pit.shares[ui.active] = 1;
+      toggleShare(pit, ui.active);
       save(); renderAssign(); refresh(); return;
     }
     var node = e.target.closest('[data-item]'); if (!node) return;
     var it = bill().items.find(function (x) { return x.id === node.dataset.item; }); if (!it) return;
     it.shares = it.shares || {};
     if ((t = e.target.closest('[data-tog]'))) {
-      var id = t.dataset.tog; if (it.shares[id]) delete it.shares[id]; else it.shares[id] = 1;
+      toggleShare(it, t.dataset.tog);
     } else if (e.target.closest('[data-all]')) {
       var all = bill().people.every(function (p) { return it.shares[p.id]; });
-      it.shares = {}; if (!all) bill().people.forEach(function (p) { it.shares[p.id] = 1; });
+      it.shares = {}; if (!all) shareAll(it, bill().people);
     } else if ((t = e.target.closest('[data-step]'))) {
       var nx = (it.shares[t.dataset.pid] || 0) + Number(t.dataset.step);
       if (nx <= 0) delete it.shares[t.dataset.pid]; else it.shares[t.dataset.pid] = nx;
     } else if (e.target.closest('[data-portions]')) {
       ui.openPortions[it.id] = !ui.openPortions[it.id];
     } else if (e.target.closest('[data-del-item]')) {
-      bill().items = bill().items.filter(function (x) { return x.id !== it.id; });
+      deleteItem(it.id); return;
     } else return;
     save(); renderAssign(); refresh();
   });
@@ -1415,7 +1492,7 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     scan.rows.forEach(function (r) {
       if (!r.on || !(Number(r.total) > 0)) return;
       var qty = Math.max(1, Number(r.qty) || 1);
-      b.items.push({ id: uid(), name: r.name || 'Producto', qty: qty, price: Number(r.total) / qty, shares: {} });
+      b.items.push({ id: uid(), name: r.name || 'Producto', qty: qty, price: Number(r.total) / qty, shares: {}, byUnits: true });
       added++;
     });
     if (scan.useDiscount && Number(j.descuento) > 0) b.discountFixed = Number(j.descuento);
@@ -1524,7 +1601,7 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     data.items.forEach(function (r) {
       var qty = Math.max(1, Number(r[1]) || 1), total = Number(r[2]) || 0;
       if (!r[0] || !(total > 0)) return;
-      target.items.push({ id: uid(), name: String(r[0]), qty: qty, price: total / qty, shares: {} });
+      target.items.push({ id: uid(), name: String(r[0]), qty: qty, price: total / qty, shares: {}, byUnits: true });
     });
     if (data.id) target.imported = (target.imported || []).concat(data.id);
     state.currentId = target.id;
