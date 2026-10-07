@@ -1,33 +1,35 @@
-const { GoogleGenAI, Type } = require('@google/genai');
+// Lectura de la foto de una boleta para la calculadora de /cuentas, con ChatGPT (API de OpenAI)
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
 
-// Lectura de la foto de una boleta para la calculadora de /cuentas
+const num = { type: ['number', 'null'] };
 const SCHEMA_BOLETA = {
-  type: Type.OBJECT,
+  type: 'object',
+  additionalProperties: false,
   properties: {
-    local: { type: Type.STRING, nullable: true },
-    fecha: { type: Type.STRING, nullable: true, description: 'Fecha de la boleta en formato YYYY-MM-DD' },
+    local: { type: ['string', 'null'] },
+    fecha: { type: ['string', 'null'], description: 'Fecha de la boleta en formato YYYY-MM-DD' },
     items: {
-      type: Type.ARRAY,
+      type: 'array',
       items: {
-        type: Type.OBJECT,
+        type: 'object',
+        additionalProperties: false,
         properties: {
-          nombre: { type: Type.STRING },
-          cantidad: { type: Type.NUMBER },
-          precio_unitario: { type: Type.NUMBER },
-          total: { type: Type.NUMBER }
+          nombre: { type: 'string' },
+          cantidad: { type: 'number' },
+          precio_unitario: { type: 'number' },
+          total: { type: 'number' }
         },
         required: ['nombre', 'cantidad', 'precio_unitario', 'total']
       }
     },
-    subtotal: { type: Type.NUMBER, nullable: true },
-    descuento: { type: Type.NUMBER, nullable: true },
-    propina: { type: Type.NUMBER, nullable: true },
-    total: { type: Type.NUMBER, nullable: true },
-    legible: { type: Type.BOOLEAN }
+    subtotal: num,
+    descuento: num,
+    propina: num,
+    total: num,
+    legible: { type: 'boolean' }
   },
-  required: ['items', 'legible']
+  required: ['local', 'fecha', 'items', 'subtotal', 'descuento', 'propina', 'total', 'legible']
 };
 
 const INSTRUCCIONES = `Eres un lector de boletas y precuentas de restaurantes chilenos.
@@ -41,7 +43,7 @@ Extrae los productos consumidos de la imagen.
 - local: nombre del restaurante si aparece. fecha: si aparece, en formato YYYY-MM-DD.
 - legible = false si la imagen no es una boleta o no se puede leer; en ese caso items vacío.`;
 
-const TIPOS = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+const TIPOS = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -54,35 +56,51 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'Falta la imagen de la boleta.' });
   }
   const tipo = TIPOS.includes(mimeType) ? mimeType : 'image/jpeg';
-  const datos = imagen.replace(/^data:[^,]+,/, '');
+  const dataUrl = imagen.startsWith('data:') ? imagen : `data:${tipo};base64,${imagen}`;
 
-  if (!process.env.GEMINI_API_KEY) {
-    return res.status(500).json({ error: 'GEMINI_API_KEY no está configurada en el proyecto de Vercel.' });
+  if (!process.env.OPENAI_API_KEY) {
+    return res.status(500).json({ error: 'OPENAI_API_KEY no está configurada en el proyecto de Vercel.' });
   }
 
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: [{
-        role: 'user',
-        parts: [
-          { inlineData: { mimeType: tipo, data: datos } },
-          { text: 'Extrae los productos de esta boleta.' }
-        ]
-      }],
-      config: {
-        systemInstruction: INSTRUCCIONES,
-        responseMimeType: 'application/json',
-        responseSchema: SCHEMA_BOLETA,
-        temperature: 0
-      }
+    const r = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        temperature: 0,
+        messages: [
+          { role: 'system', content: INSTRUCCIONES },
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: 'Extrae los productos de esta boleta.' },
+              { type: 'image_url', image_url: { url: dataUrl, detail: 'high' } }
+            ]
+          }
+        ],
+        response_format: {
+          type: 'json_schema',
+          json_schema: { name: 'boleta', strict: true, schema: SCHEMA_BOLETA }
+        }
+      })
     });
 
-    return res.status(200).json(JSON.parse(response.text));
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      const msg = (data.error && data.error.message) || `Error ${r.status} de la API de OpenAI.`;
+      return res.status(r.status >= 400 && r.status < 600 ? r.status : 502).json({ error: msg });
+    }
+
+    const choice = data.choices && data.choices[0];
+    if (!choice || choice.message.refusal || !choice.message.content) {
+      return res.status(502).json({ error: 'ChatGPT no pudo leer la boleta.' });
+    }
+    return res.status(200).json(JSON.parse(choice.message.content));
   } catch (err) {
-    const status = err.status || err.code || 502;
-    return res.status(typeof status === 'number' && status >= 400 && status < 600 ? status : 502).json({
-      error: err.message || 'Error al contactar a la API de Gemini.'
-    });
+    return res.status(502).json({ error: err.message || 'Error al contactar a la API de OpenAI.' });
   }
 };
