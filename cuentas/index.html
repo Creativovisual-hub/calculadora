@@ -1249,9 +1249,10 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
   $('#clearItems').addEventListener('click', function () {
     var b = bill(); if (!b.items.length) return;
     if (!confirm('¿Borrar los ' + b.items.length + ' productos de esta cuenta?')) return;
-    var backup = b.items; b.items = [];
+    // También se olvidan los links ya importados, para poder volver a importarlos
+    var backup = b.items, backupImp = b.imported; b.items = []; b.imported = [];
     save(); renderAssign(); refresh();
-    toast('Se borraron todos los productos', 'Deshacer', function () { b.items = backup; save(); renderAssign(); refresh(); });
+    toast('Se borraron todos los productos', 'Deshacer', function () { b.items = backup; b.imported = backupImp; save(); renderAssign(); refresh(); });
   });
 
   $('#assign').addEventListener('click', function (e) {
