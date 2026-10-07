@@ -17,6 +17,8 @@
     return isFinite(n) ? n : 0;
   }
 
+  function fmtUnits(n) { return String(Math.round(n * 100) / 100).replace('.', ','); }
+
   // Total de un ítem = precio unitario × cantidad
   function itemTotal(item) {
     return num(item.price) * (num(item.qty) || 1);
@@ -55,11 +57,20 @@
         if (total > 0) unassigned.push({ id: item.id, name: item.name, amount: total });
         return;
       }
+      // Por unidades: si se pidieron 2+ y las porciones no alcanzan a cubrirlas, cada persona paga
+      // sus unidades y lo que sobra queda sin asignar (como "1 de 2 sin dueño").
+      var qty = num(item.qty) || 1;
+      var byUnits = item.byUnits && qty > 1 && weight < qty;
+      var unit = total / qty;
       ids.forEach(function (id) {
-        var amount = total * num(shares[id]) / weight;
+        var amount = byUnits ? unit * num(shares[id]) : total * num(shares[id]) / weight;
         byId[id].subtotal += amount;
-        byId[id].items.push({ name: item.name, amount: amount, portion: num(shares[id]), of: weight });
+        byId[id].items.push({ name: item.name, amount: amount, portion: num(shares[id]), of: byUnits ? qty : weight });
       });
+      if (byUnits && total > 0) {
+        var free = qty - weight;
+        unassigned.push({ id: item.id, name: item.name + ' (' + fmtUnits(free) + ' de ' + qty + ')', amount: unit * free, units: free });
+      }
     });
 
     // Lo que nadie marcó ("Coca cola sin dueño") se puede repartir entre todos
