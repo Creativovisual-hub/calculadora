@@ -1339,7 +1339,7 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
       return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || 'Error ' + r.status); return j; });
     }).then(function (j) {
       var items = (j.items || []).filter(function (i) { return i && i.nombre && (Number(i.total) || Number(i.precio_unitario)); });
-      if (!items.length) throw new Error(j.legible === false ? 'No pudimos leer la boleta en la foto.' : 'No encontramos productos en la foto.');
+      if (!items.length) { var e = new Error(j.legible === false ? 'No pudimos leer la boleta en la foto.' : 'No encontramos productos en la foto.'); e.photo = true; throw e; }
       scan.result = j;
       scan.rows = items.map(function (i) {
         var qty = Math.max(1, Math.round(Number(i.cantidad) || 1));
@@ -1351,7 +1351,8 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
       scan.useMeta = !!((j.local && !b.place) || (j.fecha && /^\d{4}-\d{2}-\d{2}$/.test(j.fecha)));
       scan.status = 'review'; renderScan();
     }).catch(function (err) {
-      scan.status = 'error'; scan.err = err && err.message ? err.message : 'No se pudo leer la boleta.'; renderScan();
+      scan.status = 'error'; scan.err = err && err.message ? err.message : 'No se pudo leer la boleta.';
+      scan.photoErr = !!(err && err.photo); renderScan();
     });
   }
 
@@ -1371,7 +1372,9 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     }
     if (scan.status === 'error') {
       body.innerHTML = '<div class="scan-load">' + (scan.preview ? '<div class="ph-img" style="height:150px;width:112px"><img src="' + scan.preview + '" alt=""></div>' : '') +
-        '<b>😕 ' + esc(scan.err) + '</b><p>Prueba con una foto más derecha, con buena luz y la boleta completa. También puedes agregar los productos a mano.</p></div>';
+        '<b>😕 ' + esc(scan.err) + '</b><p>' + (scan.photoErr
+          ? 'Prueba con una foto más derecha, con buena luz y la boleta completa. También puedes agregar los productos a mano.'
+          : 'Es un problema de conexión con el servicio que lee las boletas, no de la foto. Mientras tanto puedes agregar los productos a mano.') + '</p></div>';
       foot.innerHTML = '<button class="btn" type="button" data-sclose>Agregar a mano</button><button class="btn primary" type="button" data-rescan>📷 Otra foto</button>';
       return;
     }
