@@ -94,7 +94,7 @@ input[type=checkbox]:checked::after{transform:scale(1)}
 .stp.on::after{content:'';position:absolute;left:12%;right:12%;bottom:-1px;height:3px;border-radius:3px 3px 0 0;background:var(--accent)}
 .stp.on .n{background:var(--accent);color:var(--accent-ink)}
 .stp.done .n{background:var(--ok-soft);color:var(--ok)}
-.stp.alert .s{color:var(--warn);font-weight:700}
+.stp.warn-step .s{color:var(--warn);font-weight:700}
 @media (max-width:520px){.stp .s{display:none}.stp .t{flex-direction:column;gap:3px;font-size:12px}}
 
 /* Layout */
@@ -335,8 +335,44 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
 .ind-row .prev .wa-chat{margin-top:4px;padding:10px}
 .prefix{font-size:13px;font-weight:700;color:var(--ink-3)}
 
-.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;opacity:0;transition:.2s;z-index:60;pointer-events:none;box-shadow:var(--shadow-lg)}
+.toast{position:fixed;left:50%;bottom:96px;max-width:calc(100vw - 32px);text-align:center;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:700;opacity:0;transition:.2s;z-index:60;pointer-events:none;box-shadow:var(--shadow-lg)}
 .toast.show{opacity:1;transform:translateX(-50%)}
+
+/* Foto de la boleta */
+.scan{display:flex;align-items:center;gap:14px;width:100%;text-align:left;border:1.5px dashed var(--accent-line);background:linear-gradient(135deg,var(--accent-soft),color-mix(in srgb,#7b5cff 10%,var(--card)));border-radius:14px;padding:14px;margin-bottom:16px;color:var(--ink);transition:border-color .15s,transform .05s}
+.scan:hover{border-color:var(--accent)}
+.scan:active{transform:translateY(1px)}
+.scan .ic{width:44px;height:44px;border-radius:12px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;flex:none;box-shadow:0 6px 16px -6px var(--accent)}
+.scan b{display:block;font-size:15px}
+.scan small{display:block;font-size:13px;color:var(--ink-2)}
+.scan .go{margin-left:auto;color:var(--accent);font-weight:800;font-size:13px;white-space:nowrap}
+.or{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--ink-3);font-weight:700;margin:-4px 0 12px}
+.or::before,.or::after{content:'';flex:1;height:1px;background:var(--line)}
+.receipt-link{display:inline-flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;font-weight:700;color:var(--accent);background:none;border:0;padding:0}
+.receipt-link img{width:28px;height:36px;object-fit:cover;border-radius:5px;border:1px solid var(--line)}
+.scan-load{display:grid;justify-items:center;gap:14px;padding:18px 0 8px;text-align:center}
+.scan-load .ph-img{position:relative;width:150px;height:200px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:var(--field)}
+.scan-load .ph-img img{width:100%;height:100%;object-fit:cover}
+.scan-load .ph-img::after{content:'';position:absolute;left:0;right:0;height:38%;top:-38%;background:linear-gradient(transparent,color-mix(in srgb,var(--accent) 45%,transparent),transparent);animation:sweep 1.4s ease-in-out infinite}
+@keyframes sweep{to{top:100%}}
+.scan-load b{font-size:16px}
+.scan-load p{margin:0;color:var(--ink-2);font-size:13px}
+.rv-meta{display:flex;gap:10px;align-items:center;margin-top:6px;font-size:13px;color:var(--ink-2)}
+.rv-meta img{width:44px;height:58px;object-fit:cover;border-radius:8px;border:1px solid var(--line);cursor:zoom-in}
+.rv-list{display:grid;gap:6px;margin-top:12px}
+.rv{display:grid;grid-template-columns:auto minmax(0,1fr) 52px 96px;gap:8px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.rv.off{opacity:.45}
+.rv .in{padding:6px 8px;font-size:14px;border-radius:9px}
+.rv .money .in{padding-left:20px}
+.rv .money::before{left:8px}
+.rv .q{text-align:center}
+@media (max-width:420px){.rv{grid-template-columns:auto minmax(0,1fr) 46px 84px;gap:6px;padding:8px}}
+.rv-sum{margin-top:12px;border-radius:12px;padding:10px 12px;font-size:13px;display:grid;gap:4px;background:var(--field);border:1px solid var(--line)}
+.rv-sum .l{display:flex;justify-content:space-between;gap:10px}
+.rv-sum.ok{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 30%,transparent);color:var(--ok)}
+.rv-sum.bad{background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 30%,transparent);color:var(--warn)}
+.rv-opts{display:grid;gap:8px;margin-top:12px}
+.zoom{max-width:100%;border-radius:12px;display:block;margin:6px auto 0}
 
 /* Selector de fecha propio */
 .dp{position:relative}
@@ -420,6 +456,13 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     <section class="panel" data-panel="1">
       <div class="ph"><h2>¿Qué pidieron?</h2><p>Copia la boleta. Asigna <b>por producto</b> o, más rápido, elige <b>una persona</b> y toca lo que consumió.</p></div>
       <div class="card">
+        <button class="scan" type="button" id="scanBtn">
+          <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.2"/></svg></span>
+          <span><b>Subir foto de la boleta</b><small>La leemos y agregamos los productos por ti</small></span>
+          <span class="go">📷 Elegir</span>
+        </button>
+        <input type="file" id="scanFile" accept="image/*" hidden>
+        <div class="or">o agrega a mano</div>
         <form class="quick" id="addItemForm" autocomplete="off">
           <div class="nm"><label class="f" for="niName">Producto</label><input class="in" id="niName" placeholder="Ej: Coca zero"></div>
           <div><label class="f" for="niQty">Cant.</label><input class="in num" id="niQty" type="number" inputmode="numeric" min="1" value="1"></div>
@@ -428,6 +471,7 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span class="lbl">Agregar</span></button>
         </form>
         <div class="quick-hint" id="quickHint"></div>
+        <div id="receiptLink"></div>
       </div>
       <div class="mode">
         <div class="seg" id="modeSeg" role="tablist">
@@ -544,6 +588,17 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     <footer id="waFoot"></footer>
   </div>
 </div>
+<div class="modal" id="scanModal" role="dialog" aria-modal="true" aria-labelledby="scanTitle">
+  <div class="scrim2" data-sclose></div>
+  <div class="sheet">
+    <header>
+      <h3 id="scanTitle">Foto de la boleta</h3>
+      <button class="icon-btn" data-sclose aria-label="Cerrar">✕</button>
+    </header>
+    <div class="body" id="scanBody"></div>
+    <footer id="scanFoot"></footer>
+  </div>
+</div>
 <div class="toast" id="toast" role="status"></div>
 
 <script src="calc.js"></script>
@@ -605,7 +660,11 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     bill().updated = Date.now();
     clearTimeout(saveTimer);
     saveTimer = setTimeout(function () {
-      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* sin almacenamiento: la app sigue funcionando */ }
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {
+        // Si no cabe, se sacrifican las fotos de boletas de otras cuentas
+        state.bills.forEach(function (b) { if (b.id !== state.currentId) delete b.receipt; });
+        try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e2) { /* sin almacenamiento: la app sigue funcionando */ }
+      }
     }, 200);
   }
   function bill() { return state.bills.find(function (b) { return b.id === state.currentId; }); }
@@ -674,7 +733,7 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     $$('.stp').forEach(function (s, i) {
       s.classList.toggle('on', i === ui.step);
       s.classList.toggle('done', i !== ui.step && done[i]);
-      s.classList.toggle('alert', i === 1 && unassignedCount > 0 && !b.splitUnassigned);
+      s.classList.toggle('warn-step', i === 1 && unassignedCount > 0 && !b.splitUnassigned);
       s.setAttribute('aria-current', i === ui.step ? 'step' : 'false');
       $('[data-s="' + i + '"]').textContent = status[i];
       $('.n', s).textContent = i !== ui.step && done[i] ? '✓' : String(i + 1);
@@ -769,6 +828,7 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     $('#assignNote').innerHTML = unassigned && !b.splitUnassigned ? '<span style="color:var(--warn);font-weight:700">⚠ ' + plural(unassigned, 'producto', 'productos') + ' sin asignar</span>' : (b.items.length ? '✓ Todo asignado' : '');
     var act = person(ui.active);
     $('#quickHint').innerHTML = ui.mode === 'person' && act ? 'Lo que agregues se asigna a <b>' + esc(act.name) + '</b>. Para algo compartido, tócalo en la lista y se divide.' : 'Tip: Enter para agregar rápido. Después marca quién lo consumió.';
+    $('#receiptLink').innerHTML = b.receipt ? '<button type="button" class="receipt-link" data-view-receipt><img src="' + b.receipt + '" alt="">Ver foto de la boleta</button>' : '';
     if (!b.people.length) { $('#assign').innerHTML = '<div class="empty">Primero agrega personas en el paso 1. <button class="btn sm" type="button" data-go="0" style="margin-left:6px">Ir al paso 1</button></div>'; return; }
     if (ui.mode === 'person') renderByPerson(res); else renderByItem(res);
   }
@@ -1232,7 +1292,165 @@ label.f{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-b
     if (e.target.dataset.phone) { state.phones[e.target.dataset.phone.toLowerCase()] = e.target.value.trim(); save(); }
   });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') { if ($('#waModal').classList.contains('open')) closeWaModal(); openDrawer(false); }
+    if (e.key === 'Escape') { if ($('#waModal').classList.contains('open')) closeWaModal(); if ($('#scanModal').classList.contains('open')) { closeScan(); scan = null; } openDrawer(false); }
+  });
+
+  // ---------- Foto de la boleta ----------
+  var scan = null; // { img, preview, mime, data, status, result, rows, err }
+  function loadImage(file) {
+    return new Promise(function (resolve) {
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () { resolve(img); };
+      img.onerror = function () { resolve(null); }; // ej: HEIC en navegadores que no lo muestran
+      img.src = url;
+    });
+  }
+  function shrink(img, max, quality) {
+    var k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+    var c = document.createElement('canvas');
+    c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+    var ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.drawImage(img, 0, 0, c.width, c.height);
+    return c.toDataURL('image/jpeg', quality);
+  }
+  function readAsDataURL(file) {
+    return new Promise(function (resolve, reject) {
+      var r = new FileReader(); r.onload = function () { resolve(r.result); }; r.onerror = reject; r.readAsDataURL(file);
+    });
+  }
+  function openScan() { $('#scanModal').classList.add('open'); document.body.style.overflow = 'hidden'; renderScan(); }
+  function closeScan() { $('#scanModal').classList.remove('open'); document.body.style.overflow = ''; }
+
+  function startScan(file) {
+    scan = { status: 'loading' };
+    openScan();
+    loadImage(file).then(function (img) {
+      if (img) {
+        scan.data = shrink(img, 1600, 0.85); scan.mime = 'image/jpeg';
+        scan.preview = shrink(img, 900, 0.6);
+        return null;
+      }
+      return readAsDataURL(file).then(function (d) { scan.data = d; scan.mime = file.type || 'image/jpeg'; scan.preview = null; });
+    }).then(function () {
+      renderScan();
+      return fetch('/api/receipt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ imagen: scan.data, mimeType: scan.mime }) });
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || 'Error ' + r.status); return j; });
+    }).then(function (j) {
+      var items = (j.items || []).filter(function (i) { return i && i.nombre && (Number(i.total) || Number(i.precio_unitario)); });
+      if (!items.length) throw new Error(j.legible === false ? 'No pudimos leer la boleta en la foto.' : 'No encontramos productos en la foto.');
+      scan.result = j;
+      scan.rows = items.map(function (i) {
+        var qty = Math.max(1, Math.round(Number(i.cantidad) || 1));
+        var total = Math.round(Number(i.total) || (Number(i.precio_unitario) || 0) * qty);
+        return { on: true, name: String(i.nombre).trim(), qty: qty, total: total };
+      });
+      var b = bill();
+      scan.useDiscount = !!(Number(j.descuento) > 0 && !b.discountPct && !b.discountFixed);
+      scan.useMeta = !!((j.local && !b.place) || (j.fecha && /^\d{4}-\d{2}-\d{2}$/.test(j.fecha)));
+      scan.status = 'review'; renderScan();
+    }).catch(function (err) {
+      scan.status = 'error'; scan.err = err && err.message ? err.message : 'No se pudo leer la boleta.'; renderScan();
+    });
+  }
+
+  function renderScan() {
+    var body = $('#scanBody'), foot = $('#scanFoot');
+    if (!scan) return;
+    if (scan.status === 'view') {
+      body.innerHTML = '<img class="zoom" src="' + bill().receipt + '" alt="Foto de la boleta">';
+      foot.innerHTML = '<button class="btn" type="button" data-sclose>Cerrar</button>';
+      return;
+    }
+    if (scan.status === 'loading') {
+      body.innerHTML = '<div class="scan-load"><div class="ph-img">' + (scan.preview ? '<img src="' + scan.preview + '" alt="">' : '') + '</div>' +
+        '<b>Leyendo la boleta…</b><p>Esto toma unos segundos.</p></div>';
+      foot.innerHTML = '<button class="btn" type="button" data-sclose>Cancelar</button>';
+      return;
+    }
+    if (scan.status === 'error') {
+      body.innerHTML = '<div class="scan-load">' + (scan.preview ? '<div class="ph-img" style="height:150px;width:112px"><img src="' + scan.preview + '" alt=""></div>' : '') +
+        '<b>😕 ' + esc(scan.err) + '</b><p>Prueba con una foto más derecha, con buena luz y la boleta completa. También puedes agregar los productos a mano.</p></div>';
+      foot.innerHTML = '<button class="btn" type="button" data-sclose>Agregar a mano</button><button class="btn primary" type="button" data-rescan>📷 Otra foto</button>';
+      return;
+    }
+    var j = scan.result; var b = bill();
+    var on = scan.rows.filter(function (r) { return r.on; });
+    body.innerHTML = '<div class="rv-meta">' + (scan.preview ? '<img src="' + scan.preview + '" alt="Ampliar foto" data-zoom title="Ampliar">' : '') +
+      '<span>Encontramos <b>' + plural(scan.rows.length, 'producto', 'productos') + '</b>' + (j.local ? ' en <b>' + esc(j.local) + '</b>' : '') + '. Revisa y corrige si algo no calza.</span></div>' +
+      (scan.zoom && scan.preview ? '<img class="zoom" src="' + scan.preview + '" alt="Foto de la boleta" data-zoom>' : '') +
+      '<div class="rv-list">' + scan.rows.map(function (r, i) {
+        return '<div class="rv' + (r.on ? '' : ' off') + '" data-rv="' + i + '"><input type="checkbox" data-rvf="on"' + (r.on ? ' checked' : '') + ' aria-label="Incluir ' + esc(r.name) + '">' +
+          '<input class="in" data-rvf="name" value="' + esc(r.name) + '" aria-label="Producto">' +
+          '<input class="in num q" type="number" inputmode="numeric" min="1" data-rvf="qty" value="' + r.qty + '" aria-label="Cantidad">' +
+          '<div class="money"><input class="in num" type="number" inputmode="numeric" min="0" data-rvf="total" value="' + r.total + '" aria-label="Total de la línea"></div></div>';
+      }).join('') + '</div>' + scanSumHTML() +
+      '<div class="rv-opts">' +
+      (Number(j.descuento) > 0 ? '<label class="check"><input type="checkbox" data-sopt="useDiscount"' + (scan.useDiscount ? ' checked' : '') + '> Aplicar el descuento de la boleta (' + C.clp(j.descuento) + ')</label>' : '') +
+      ((j.local && !b.place) || j.fecha ? '<label class="check"><input type="checkbox" data-sopt="useMeta"' + (scan.useMeta ? ' checked' : '') + '> Usar ' + [j.local && !b.place ? 'el nombre del local' : '', j.fecha ? 'la fecha (' + esc(fmtDate(j.fecha)) + ')' : ''].filter(Boolean).join(' y ') + '</label>' : '') +
+      (Number(j.propina) > 0 ? '<span class="note">La propina impresa (' + C.clp(j.propina) + ') no se agrega como producto: se calcula en Ajustes.</span>' : '') +
+      '</div>';
+    foot.innerHTML = '<button class="btn" type="button" data-rescan>📷 Otra foto</button><button class="btn primary" type="button" data-scommit' + (on.length ? '' : ' disabled') + '>Agregar ' + plural(on.length, 'producto', 'productos') + '</button>';
+  }
+
+  // Compara la suma de lo leído con el subtotal impreso, para detectar errores de lectura
+  function scanSumHTML() {
+    var j = scan.result;
+    var sum = scan.rows.filter(function (r) { return r.on; }).reduce(function (s, r) { return s + (Number(r.total) || 0); }, 0);
+    var ref = Number(j.subtotal) || (Number(j.total) ? Number(j.total) + (Number(j.descuento) || 0) - (Number(j.propina) || 0) : 0);
+    var diff = ref ? sum - ref : 0;
+    return '<div class="rv-sum ' + (!ref ? '' : Math.abs(diff) < 2 ? 'ok' : 'bad') + '" id="rvSum">' +
+      '<div class="l"><span>Suma de los productos</span><b class="num">' + C.clp(sum) + '</b></div>' +
+      (ref ? '<div class="l"><span>' + (j.subtotal ? 'Subtotal' : 'Consumo') + ' en la boleta</span><b class="num">' + C.clp(ref) + '</b></div>' +
+        '<div>' + (Math.abs(diff) < 2 ? '✓ Calza con la boleta' : '⚠ Hay una diferencia de ' + C.clp(Math.abs(diff)) + ': revisa los montos') + '</div>' : '') + '</div>';
+  }
+
+  function commitScan() {
+    var b = bill(); var j = scan.result;
+    var added = 0;
+    scan.rows.forEach(function (r) {
+      if (!r.on || !(Number(r.total) > 0)) return;
+      var qty = Math.max(1, Number(r.qty) || 1);
+      b.items.push({ id: uid(), name: r.name || 'Producto', qty: qty, price: Number(r.total) / qty, shares: {} });
+      added++;
+    });
+    if (scan.useDiscount && Number(j.descuento) > 0) b.discountFixed = Number(j.descuento);
+    if (scan.useMeta) {
+      if (j.local && !b.place) b.place = String(j.local).trim();
+      if (j.fecha && /^\d{4}-\d{2}-\d{2}$/.test(j.fecha)) b.date = j.fecha;
+    }
+    if (scan.preview) b.receipt = scan.preview;
+    closeScan(); scan = null;
+    ui.mode = 'person';
+    save(); renderAll();
+    toast('✓ ' + plural(added, 'producto agregado', 'productos agregados') + '. Ahora marca quién consumió qué');
+    setTimeout(function () { $('.mode').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 150);
+  }
+
+  $('#scanBtn').addEventListener('click', function () { $('#scanFile').value = ''; $('#scanFile').click(); });
+  $('#scanFile').addEventListener('change', function (e) { var f = e.target.files && e.target.files[0]; if (f) startScan(f); });
+  $('#scanModal').addEventListener('click', function (e) {
+    if (e.target.closest('[data-sclose]')) { closeScan(); scan = null; return; }
+    if (e.target.closest('[data-rescan]')) { $('#scanFile').value = ''; $('#scanFile').click(); return; }
+    if (e.target.closest('[data-scommit]')) { commitScan(); return; }
+    if (e.target.closest('[data-zoom]')) { scan.zoom = !scan.zoom; renderScan(); }
+  });
+  $('#scanModal').addEventListener('input', function (e) {
+    var f = e.target.dataset.rvf; var row = e.target.closest('[data-rv]'); if (!f || !row || f === 'on') return;
+    var r = scan.rows[Number(row.dataset.rv)];
+    if (f === 'name') r.name = e.target.value;
+    if (f === 'qty') r.qty = Math.max(1, Number(e.target.value) || 1);
+    if (f === 'total') r.total = Number(e.target.value) || 0;
+    $('#rvSum').outerHTML = scanSumHTML();
+  });
+  $('#scanModal').addEventListener('change', function (e) {
+    var row = e.target.closest('[data-rv]');
+    if (row && e.target.dataset.rvf === 'on') { scan.rows[Number(row.dataset.rv)].on = e.target.checked; renderScan(); return; }
+    if (e.target.dataset.sopt) scan[e.target.dataset.sopt] = e.target.checked;
+  });
+  $('#assign').parentNode.addEventListener('click', function (e) {
+    if (e.target.closest('[data-view-receipt]')) { scan = { status: 'view' }; openScan(); }
   });
 
   // Mis cuentas
