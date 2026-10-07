@@ -46,8 +46,18 @@ Extrae los productos consumidos de la imagen.
 const TIPOS = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
 module.exports = async function handler(req, res) {
+  // Diagnóstico: abrir /api/receipt en el navegador muestra si la clave está configurada (sin revelarla)
+  if (req.method === 'GET') {
+    const key = (process.env.OPENAI_API_KEY || '').trim();
+    return res.status(200).json({
+      servicio: 'Lectura de boletas con ChatGPT',
+      clave_configurada: Boolean(key),
+      formato_clave_ok: /^sk-[A-Za-z0-9_-]{20,}$/.test(key),
+      modelo: MODEL
+    });
+  }
   if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
+    res.setHeader('Allow', 'GET, POST');
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
@@ -67,7 +77,7 @@ module.exports = async function handler(req, res) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY.trim()}`
       },
       body: JSON.stringify({
         model: MODEL,
