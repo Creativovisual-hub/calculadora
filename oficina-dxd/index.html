@@ -143,7 +143,7 @@ form#send{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
 #screenPanel.mini{top:auto;bottom:96px;left:auto;right:12px;transform:none;width:300px}
 #shareBtn.on{background:var(--bad);color:#fff}
 #moodBtn{font-size:18px;padding:6px 9px}
-#teleOv{position:fixed;inset:0;z-index:60;background:#000}#teleCv{width:100%;height:100%;display:block;object-fit:cover}#teleOv .teletop{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:12px;padding:16px 20px;background:linear-gradient(rgba(6,7,13,.7),transparent)}#teleOv .teletop b{flex:1;font-family:var(--f-brand);font-size:18px;letter-spacing:.04em;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+#teleOv{position:fixed;inset:0;z-index:60;background:#000}#teleCv{width:100%;height:100%;display:block;object-fit:cover;image-rendering:pixelated}#teleOv .teletop{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:12px;padding:16px 20px;background:linear-gradient(rgba(6,7,13,.7),transparent)}#teleOv .teletop b{flex:1;font-family:var(--f-brand);font-size:18px;letter-spacing:.04em;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5)}
 #volPop{position:fixed;z-index:40;top:56px;left:12px;width:min(320px,calc(100vw - 24px));background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:12px}
 #volPop .vrow{display:grid;grid-template-columns:86px minmax(0,1fr) 40px;align-items:center;gap:8px;font-size:13px;font-weight:700}#volPop .vrow b{text-align:right;color:var(--lav);font-size:12px}
 #volPop .vtog{display:flex;gap:8px}#volPop input[type=range]{width:100%;accent-color:#3d4cff}#volPop .vnote{margin:0;color:var(--muted);font-size:11px;line-height:1.45}
@@ -751,7 +751,7 @@ function artAndes(){const W=80,H=50,c=mkCv(W,H),g=c.getContext('2d');const P=(x,
   for(const [x,y] of [[18,10],[19,9],[20,10],[21,10],[22,9],[23,10],[30,13],[31,12],[32,13],[33,12]])P(x,y,1,1,'#1a1a2e');
   return c}
 const ART={costanera:artCostanera(),andes:artAndes()};
-ART.mirador=(()=>{const c=document.createElement('canvas');c.width=960;c.height=600;drawPanorama(c.getContext('2d'),960,600,.4,false);return c})();
+ART.mirador=(()=>{const c=document.createElement('canvas');c.width=288;c.height=180;drawPanoPx(c.getContext('2d'),288,180,.4,{});return c})();
 const ARTINFO={
   costanera:{title:'Gran Torre Costanera · Santiago',cap:'El edificio más alto de Sudamérica, con la cordillera nevada de fondo. Santiago visto desde una tarde despejada.'},
   mirador:{title:'Santiago desde el Cerro San Cristóbal',cap:'La Gran Torre Costanera, la ciudad y la cordillera nevada. Desde aquí arriba todo se ve más tranquilo.'},
@@ -2051,22 +2051,55 @@ function drawPanorama(g,W,H,t,cab){g.save();g.imageSmoothingEnabled=true;
       g.fillStyle='rgba(60,40,60,.55)';g.beginPath();g.roundRect(-28*sc,46*sc,56*sc,26*sc,6*sc);g.fill();g.fillStyle='#1d2140';g.beginPath();g.roundRect(-36*sc,70*sc,72*sc,10*sc,5*sc);g.fill();g.restore()};
     cabin(.15+k*.55,1.25,0);cabin(.9-k*.5,.8,H*.08)}
   g.restore()}
+// Panorámica de Santiago en pixel art (mismo estilo que la oficina y el login).
+// Se dibuja en baja resolución (alto 180) y se amplía con píxeles nítidos.
+function drawPanoPx(g,W,H,k,opt){opt=opt||{};g.imageSmoothingEnabled=false;
+  const R=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(Math.round(x),Math.round(y),Math.max(1,Math.round(w)),Math.max(1,Math.round(h)))};
+  const sky=['#2f6fc0','#3a7bca','#4688d3','#5495db','#64a2e2','#76b0e8','#8abeed','#a0cbf1'];
+  for(let i=0;i<sky.length;i++)R(0,i*H*.075,W,H*.075+1,sky[i]);R(0,sky.length*H*.075,W,H,'#b4d6f3');
+  const off=Math.round(k*W*.04),off2=Math.round(k*W*.12);
+  // nubes pixeladas
+  for(const [cx,cy,s] of [[.12,.12,1],[.46,.08,.8],[.8,.15,1.1]]){const x=((cx*W-off*.5)%W+W)%W,y=cy*H;R(x,y,24*s,4,'#ffffff');R(x+5*s,y-3,12*s,3,'#ffffff');R(x+2,y+4,20*s,2,'#e8f2fb')}
+  // cordillera con nieve
+  const base=Math.round(H*.6);
+  const mt=xx=>H*(.36-.11*Math.abs(Math.sin(xx*.03))*(.6+.4*Math.sin(xx*.011))-.04*Math.abs(Math.sin(xx*.09)));
+  for(let x=0;x<W;x++){const xx=x+off,top=Math.round(mt(xx)),r=mt(xx+1)>mt(xx);R(x,top,1,base-top,r?'#7f88ae':'#959ec2');const sn=Math.max(0,Math.min(Math.round(H*.07),Math.round(H*.3)-top+4));if(sn>0){R(x,top,1,sn,r?'#dfe4f2':'#f6f8fd');if((x*7)%5===0)R(x,top+sn,1,2,r?'#dfe4f2':'#f6f8fd')}}
+  R(0,base,W,Math.round(H*.06),'#aebcd6');R(0,base+Math.round(H*.06),W,2,'#c4d0e4');
+  // ciudad con ventanitas
+  const cb=Math.round(H*.86),PAL=[['#6d7b98','#8a97b2'],['#8996b3','#a8b4cc'],['#a2adc6','#c4cde0'],['#5f6c8a','#7d8aa6']];
+  for(let i=0;i<40;i++){const w=8+((i*37)%7)*2,h=Math.round(H*(.08+((i*53)%9)*.02)),x=((i*14-off2)%(W+40)+W+40)%(W+40)-20,[c1,c2]=PAL[i%4];
+    R(x,cb-h,w,h,c1);R(x,cb-h,w,1,c2);for(let yy=cb-h+3;yy<cb-2;yy+=4)for(let xx=x+2;xx<x+w-2;xx+=3)R(xx,yy,1,2,((xx+yy+i)%5)?'#c9d6ea':'#fff4c4')}
+  // Gran Torre Costanera
+  const tx=Math.round(W*.66-off2*.5),th=Math.round(H*.6);for(let y=0;y<th;y++){const kk=y/th,hw=Math.round(4+7*kk);R(tx-hw,cb-th+y,hw*2,1,(y%3)?'#7fa2c8':'#a8c6e4');R(tx-hw,cb-th+y,2,1,'#5d7fa8');R(tx+hw-2,cb-th+y,2,1,'#4c6a92')}
+  R(tx-3,cb-th-4,4,4,'#9fbbda');
+  if(opt.hill){// cerro con sendero en zigzag
+    for(let x=0;x<W;x++){const top=Math.round(H*(.62+.22*Math.pow((x/W-.55)*1.6,2)));R(x,top,1,H-top,'#6aa84a');R(x,top,1,2,'#86c25e');for(let y=top+4;y<H;y+=6)if((x*7+y*3)%11===0)R(x,y,2,1,'#5c9a3e')}
+    const pts=opt.path;g.fillStyle='#e3d7b4';for(let s=0;s<pts.length-1;s++){const [ax,ay]=pts[s],[bx,by]=pts[s+1],n=Math.ceil(Math.hypot((bx-ax)*W,(by-ay)*H));for(let i=0;i<=n;i++){const x=ax*W+(bx-ax)*W*i/n,y=ay*H+(by-ay)*H*i/n;R(x-2,y-1,5,3,'#e3d7b4')}}}
+  // árboles en primer plano (como los del jardín)
+  for(let i=0;i<16;i++){const x=((i*W/14-(opt.hill?0:k*W*.25))%(W+20)+W+20)%(W+20)-10,y=H-4-((i*29)%3)*3,r=7+((i*31)%3)*2;
+    g.fillStyle='#3f8f4a';g.beginPath();g.arc(Math.round(x),Math.round(y),r,0,Math.PI*2);g.fill();g.fillStyle='#55b060';g.beginPath();g.arc(Math.round(x-2),Math.round(y-3),r-3,0,Math.PI*2);g.fill()}
+  if(opt.cable){// cable, torre y cabinas rojas en pixel art
+    const x0=-10,y0=Math.round(H*.95),x1=W+10,y1=-10,line=(oy)=>{for(let x=x0;x<=x1;x++){const y=y0+(y1-y0)*(x-x0)/(x1-x0)+oy;R(x,y,1,1,'#2a2f3a')}};line(0);line(10);
+    const px=Math.round(W*.18),py=y0+(y1-y0)*(px-x0)/(x1-x0);for(let y=Math.round(py)+4;y<H;y++){const w=Math.round(2+(y-py)*.08);R(px-w,y,1,1,'#3d7a3d');R(px+w,y,1,1,'#3d7a3d');if((y-Math.round(py))%6===0)R(px-w,y,w*2+1,1,'#3d7a3d')}
+    const cab=(u,oy,s)=>{const x=Math.round(x0+(x1-x0)*u),y=Math.round(y0+(y1-y0)*u+oy),sw=Math.round(Math.sin(performance.now()/450));
+      R(x,y,1,6*s,'#5a6070');R(x-1+sw,y+6*s,3,2,'#5a6070');const bx=x-7*s+sw,by=y+8*s;R(bx,by,14*s,12*s,'#d62b2b');R(bx,by,14*s,1,'#ff5a5a');R(bx+2*s,by+2*s,10*s,4*s,'#5a2a3a');R(bx+2*s,by+2*s,3*s,1,'#9a6a7a');R(bx-1,by+6*s,14*s+2,2*s,'#1d2140');R(bx,by+10*s,14*s,1,'#a51d1d')};
+    cab(.12+k*.55,0,2);cab(.88-k*.45,10,1)}
+  if(opt.walker&&typeof profile!=='undefined'&&profile){const [wx,wy,dir]=opt.walker;drawChar(g,Math.round(wx*W),Math.round(wy*H),profile.look,dir,Math.floor(performance.now()/150)%4,false,1)}}
+function pxScene(cv,k,opt){const H=180,W=Math.max(200,Math.round(H*cv.width/cv.height));const sm=pxScene.c||(pxScene.c=document.createElement('canvas'));if(sm.width!==W){sm.width=W;sm.height=H}
+  drawPanoPx(sm.getContext('2d'),W,H,k,opt);const g=cv.getContext('2d');g.imageSmoothingEnabled=false;g.drawImage(sm,0,0,cv.width,cv.height)}
 const CER={station:{x:23.5,y:33.55},top:{x:108.5,y:20.6}};
 function teleRide(up){const ov=$('teleOv'),cv=$('teleCv'),g=cv.getContext('2d');ov.hidden=false;keys.clear();me.path=null;
   const r=()=>{cv.width=Math.min(1280,innerWidth)*devicePixelRatio;cv.height=Math.min(720,innerHeight)*devicePixelRatio};r();$('teleTitle').textContent=up?'Subiendo al Cerro San Cristóbal 🚡':'Bajando a la oficina 🚡';
   const t0=performance.now(),dur=5500;let done=false;
   const end=()=>{if(done)return;done=true;ov.hidden=true;travel(up?'cerro':'jardin')};$('teleSkip').onclick=end;
-  (function f(now){if(done)return;const k=Math.min(1,(now-t0)/dur);drawPanorama(g,cv.width,cv.height,up?k:1-k,true);if(k>=1){setTimeout(end,250);return}requestAnimationFrame(f)})(t0)}
+  (function f(now){if(done)return;const k=Math.min(1,(now-t0)/dur);pxScene(cv,up?k:1-k,{cable:true});if(k>=1){setTimeout(end,250);return}requestAnimationFrame(f)})(t0)}
 // sendero a pie: animación corta del personaje caminando por el cerro
 function trailWalk(up){const ov=$('teleOv'),cv=$('teleCv'),g=cv.getContext('2d');ov.hidden=false;keys.clear();me.path=null;
   cv.width=Math.min(1280,innerWidth)*devicePixelRatio;cv.height=Math.min(720,innerHeight)*devicePixelRatio;$('teleTitle').textContent=up?'Subiendo a pie por el sendero 🥾':'Bajando a pie por el sendero 🥾';
   const t0=performance.now(),dur=4500;let done=false;const end=()=>{if(done)return;done=true;ov.hidden=true;travel(up?'sendero':'jardin2')};$('teleSkip').onclick=end;
-  (function f(now){if(done)return;const k=Math.min(1,(now-t0)/dur),W=cv.width,H=cv.height;drawPanorama(g,W,H,.2+k*.1,false);
-    g.fillStyle='rgba(120,160,70,.95)';g.beginPath();g.moveTo(0,H);g.lineTo(0,H*.75);g.quadraticCurveTo(W*.5,H*.35,W,H*.62);g.lineTo(W,H);g.fill();
-    g.strokeStyle='#d8c9a0';g.lineWidth=H*.03;g.beginPath();g.moveTo(W*.08,H);g.lineTo(W*.5,H*.86);g.lineTo(W*.22,H*.74);g.lineTo(W*.6,H*.62);g.stroke();
-    for(let i=0;i<9;i++){g.fillStyle=['#5c8a35','#6e9a3a','#4f7a2a'][i%3];g.beginPath();g.arc(W*(.05+i*.115),H*(.8+((i*37)%5)*.03),H*.05,0,Math.PI*2);g.fill()}
-    const pts=[[.08,1],[.5,.86],[.22,.74],[.6,.62]],u=up?k:1-k,seg=Math.min(2,Math.floor(u*3)),q=u*3-seg,[ax,ay]=pts[seg],[bx,by]=pts[seg+1],px=(ax+(bx-ax)*q)*W,py=(ay+(by-ay)*q)*H;
-    if(profile)drawChar(g,px,py,profile.look,bx>ax?'right':'left',Math.floor(now/150)%4,false,Math.max(3,Math.round(H/140)));
+  const PTS=[[.1,1],[.52,.9],[.26,.8],[.62,.7]];
+  (function f(now){if(done)return;const k=Math.min(1,(now-t0)/dur),u=up?k:1-k,seg=Math.min(2,Math.floor(u*3)),q=u*3-seg,[ax,ay]=PTS[seg],[bx,by]=PTS[seg+1];
+    pxScene(cv,.3,{hill:true,path:PTS,walker:[ax+(bx-ax)*q,ay+(by-ay)*q-.005,(up?bx>ax:bx<ax)?'right':'left']});
     if(k>=1){setTimeout(end,200);return}requestAnimationFrame(f)})(t0)}
 // actividades: yoga y ejercicio
 function startAct(f,type){if(me.sit)standUp();me.x=(f.x+(f.w||1)/2)*T;me.y=f.s?(f.y+(f.h||1))*T+22:(f.y+(f.h||1))*T-4; // frente al aparato (no encima)
