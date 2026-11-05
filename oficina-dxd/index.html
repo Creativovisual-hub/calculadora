@@ -1421,18 +1421,26 @@ function onDuel(m){const d=m.data;if(!d||typeof d!=='object')return;
 let last=performance.now(),lastZone='',promptTick=0;
 /* ---- NPC que pasean por su piso ---- */
 const NPC_AREA=[{x0:4,y0:4,x1:43,y1:33},{x0:51,y0:4,x1:72,y1:19},null,{x0:80,y0:4,x1:101,y1:21}];
-for(const n of NPCS){n.path=null;n.walk=0;n.wait=performance.now()+1000+Math.random()*4000;n.home={x:n.tx,y:n.ty}}
+for(const n of NPCS){n.path=null;n.walk=0;n.metAt=0;n.wait=performance.now()+3000+Math.random()*8000;n.home={x:n.tx,y:n.ty}}
+let npcGreetAt=0;
 function npcTick(dt,now){
-  for(const n of NPCS){const near=profile&&Math.hypot(me.x-n.x,me.y-n.y)<110;
-    if(near||dlgNpc===n){if(n.path){n.path=null;n.wait=now+2500}continue}
+  for(const n of NPCS){const dMe=profile?Math.hypot(me.x-n.x,me.y-n.y):1e9;
+    if(dlgNpc===n){n.path=null;continue}
+    // si llegas muy cerca se detiene un momento, pero no se queda pegado a ti
+    if(dMe<60&&!n.metAt){n.metAt=now;n.path=null;n.wait=now+3000}
+    if(n.metAt&&dMe>220)n.metAt=0;
     if(!n.path){if(now<n.wait)continue;
-      const reg=regionOf(n.x,n.y),A=NPC_AREA[reg];if(!A){n.wait=now+5000;continue}
-      const R=n.id==='dexi'?7:99,sx=Math.floor(n.x/T),sy=Math.floor((n.y-4)/T);
-      for(let k=0;k<20&&!n.path;k++){const tx=Math.max(A.x0,Math.min(A.x1,n.home.x+Math.round((Math.random()*2-1)*Math.min(R,40)))),ty=Math.max(A.y0,Math.min(A.y1,n.home.y+Math.round((Math.random()*2-1)*Math.min(R,20))));
-        if(isSolid(tx,ty)||(tx===sx&&ty===sy))continue;const pth=bfs(sx,sy,(cx,cy)=>cx===tx&&cy===ty);if(pth&&pth.length&&pth.length<70)n.path=pth}
-      if(!n.path)n.wait=now+3000;continue}
-    const [px,py]=n.path[0],dx=px-n.x,dy=py-n.y,d=Math.hypot(dx,dy),sp=62*dt;
-    if(d<=sp){n.x=px;n.y=py;n.path.shift();if(!n.path.length){n.path=null;n.wait=now+2500+Math.random()*6000;n.dir=['down','left','right','down'][Math.floor(Math.random()*4)]}}
+      const reg=regionOf(n.x,n.y),A=NPC_AREA[reg];if(!A){n.wait=now+8000;continue}
+      const sx=Math.floor(n.x/T),sy=Math.floor((n.y-4)/T),far=n.id!=='dexi'&&Math.random()<.25,R=n.id==='dexi'?4:far?30:6;
+      const mx=Math.floor(me.x/T),my=Math.floor((me.y-4)/T);
+      for(let k=0;k<25&&!n.path;k++){const tx=Math.max(A.x0,Math.min(A.x1,n.home.x+Math.round((Math.random()*2-1)*R))),ty=Math.max(A.y0,Math.min(A.y1,n.home.y+Math.round((Math.random()*2-1)*Math.min(R,14))));
+        if(isSolid(tx,ty)||(tx===sx&&ty===sy))continue;
+        if(profile&&Math.abs(tx-mx)+Math.abs(ty-my)<6)continue;                       // no ir hacia donde estás
+        if(NPCS.some(o=>o!==n&&Math.abs(Math.floor(o.x/T)-tx)+Math.abs(Math.floor((o.y-4)/T)-ty)<4))continue; // no amontonarse
+        const pth=bfs(sx,sy,(cx,cy)=>cx===tx&&cy===ty);if(pth&&pth.length&&pth.length<60)n.path=pth}
+      if(!n.path)n.wait=now+5000;continue}
+    const [px,py]=n.path[0],dx=px-n.x,dy=py-n.y,d=Math.hypot(dx,dy),sp=55*dt;
+    if(d<=sp){n.x=px;n.y=py;n.path.shift();if(!n.path.length){n.path=null;n.wait=now+6000+Math.random()*10000;n.dir=['down','left','right','down'][Math.floor(Math.random()*4)]}}
     else{n.x+=dx/d*sp;n.y+=dy/d*sp;n.walk+=dt;n.dir=Math.abs(dx)>Math.abs(dy)?(dx<0?'left':'right'):(dy<0?'up':'down')}}}
 function step(now){
   musicUpdate();vcTick();scTick(now);djTick(now);hungerTick(now);
@@ -1441,9 +1449,9 @@ function step(now){
   if(profile)arenaStep(dt,now);
   fxTick(dt,now);
   if(profile)for(const n of NPCS){const dx=me.x-n.x,dy=me.y-n.y,d=Math.hypot(dx,dy);
-    if(d<110){n.dir=Math.abs(dx)>Math.abs(dy)?(dx<0?'left':'right'):(dy<0?'up':'down');
-      if(!n.greeted){n.greeted=true;if(dlgNpc!==n){n.sayText='¡Hola, '+profile.name+'! Presiona E para hablar conmigo.';n.sayAt=now}}}
-    else{if(d>260)n.greeted=false}
+    if(d<70&&!n.path){n.dir=Math.abs(dx)>Math.abs(dy)?(dx<0?'left':'right'):(dy<0?'up':'down');
+      if(!n.greeted&&now-npcGreetAt>7000){n.greeted=true;npcGreetAt=now;if(dlgNpc!==n){n.sayText='¡Hola, '+profile.name+'! Presiona E para hablar conmigo.';n.sayAt=now}}}
+    else if(d>420)n.greeted=false
     if(dlgNpc===n&&d>90)closeTalk()}
   npcTick(dt,now);
   for(const o of others.values()){const k=Math.min(1,dt*10);const dx=o.tx-o.x,dy=o.ty-o.y;
