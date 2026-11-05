@@ -132,6 +132,28 @@ form#send{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
 .opt .v small{display:block;color:var(--muted);font-weight:700;font-size:9.5px;text-transform:uppercase;letter-spacing:.14em}
 .cardfoot{display:flex;gap:8px;margin-top:18px}
 .cardfoot .pri{flex:1;padding:12px;font-size:15px}
+/* Editor de personaje grande: vista previa amplia y opciones a un clic */
+.editcard{width:min(920px,100%);padding:26px}
+.editcard .namerow input{font-size:18px;padding:12px 14px}
+.editcard .charrow{grid-template-columns:260px minmax(0,1fr);gap:24px;align-items:start}
+.editcard .prev{gap:10px;position:sticky;top:0}
+.editcard #prevCv{width:240px;height:360px}
+.prevName{font-weight:800;background:var(--blue);padding:4px 12px;border-radius:999px;font-size:14px;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spin{display:flex;gap:8px}.spin .btn{min-width:60px;font-size:20px;padding:6px 12px}
+.editcard .opts{display:block;min-height:300px}
+.otabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.otabs button{border:1px solid var(--line);background:var(--ink);padding:10px 16px;border-radius:999px;font-weight:800;font-size:14px}
+.otabs button[aria-selected=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+.osec{margin-bottom:16px}
+.osec h4{margin:0 0 8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;align-items:baseline}
+.osec h4 span{color:var(--lav);letter-spacing:0;text-transform:none;font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:var(--ink);border-radius:12px;padding:9px 13px;font-weight:700;font-size:14px;min-height:42px}
+.chip:hover{border-color:var(--muted)}
+.chip[aria-pressed=true]{border-color:var(--lav);background:var(--ink-3);box-shadow:0 0 0 2px rgba(198,199,255,.3)}
+.chip.sw{width:42px;height:42px;min-height:0;padding:0;border-radius:50%;border-color:rgba(255,255,255,.18)}
+.chip.sw[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 3px var(--blue)}
+@media (max-width:720px){.editcard{padding:18px 18px 0}.editcard .eyebrow{display:none}.editcard .charrow{grid-template-columns:1fr;gap:12px}.editcard .prev{position:static;gap:8px}.editcard #prevCv{width:112px;height:168px}.editcard .opts{min-height:0}.editcard .cardfoot{position:sticky;bottom:0;background:var(--ink-2);padding:12px 0 calc(16px + env(safe-area-inset-bottom,0px));margin-top:8px}}
 .err{color:var(--bad);font-size:12px;min-height:16px;margin-top:6px}
 
 .gcard{background:var(--ink-2);border:1px solid var(--line);border-radius:22px;padding:18px;width:min(780px,100%);max-height:100%;overflow:auto}
@@ -290,7 +312,7 @@ aside#panel.open{transform:none}
 </div>
 
 <div class="overlay" id="modal" hidden>
-  <div class="card" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="card editcard" role="dialog" aria-modal="true" aria-labelledby="mTitle">
     <div class="eyebrow">DXD · Diseñadores de experiencia con IA</div>
     <h2 id="mTitle">Tu personaje</h2>
     <p class="sub" id="mSub">Elige cómo te verá el equipo en la oficina.</p>
@@ -301,13 +323,14 @@ aside#panel.open{transform:none}
     <div class="charrow">
       <div class="prev">
         <canvas id="prevCv" width="112" height="168"></canvas>
-        <button class="btn" id="spinBtn" type="button">Girar</button>
+        <div class="prevName" id="prevName">Tu nombre</div>
+        <div class="spin"><button class="btn" id="spinL" type="button" aria-label="Girar a la izquierda">⟲</button><button class="btn" id="spinBtn" type="button" aria-label="Girar a la derecha">⟳</button></div>
       </div>
-      <div class="opts" id="opts"></div>
+      <div class="optwrap"><div class="otabs" id="optTabs" role="tablist"></div><div class="opts" id="opts"></div></div>
     </div>
     <div class="err" id="mErr"></div>
     <div class="cardfoot">
-      <button class="btn" id="randBtn" type="button">Aleatorio</button>
+      <button class="btn" id="randBtn" type="button">🎲 Aleatorio</button>
       <button class="btn pri" id="saveBtn" type="button">Entrar a la oficina</button>
     </div>
   </div>
@@ -1557,24 +1580,33 @@ function updateStatus(){const dot=$('status').querySelector('.dot');const n=1+ot
 
 /* ================= Editor ================= */
 let draft={name:'',look:randLook()},prevDir=0;const optsEl=$('opts');
-function buildOpts(){optsEl.textContent='';
-  for(const f of FIELDS){const row=document.createElement('div');row.className='opt';
-    const l=document.createElement('button');l.type='button';l.textContent='‹';l.setAttribute('aria-label',f.label+' anterior');
-    const r=document.createElement('button');r.type='button';r.textContent='›';r.setAttribute('aria-label',f.label+' siguiente');
-    const v=document.createElement('div');v.className='v';const sm=document.createElement('small');sm.textContent=f.label;const val=document.createElement('span');val.textContent=f.n[draft.look[f.k]];v.append(sm,val);
-    l.onclick=()=>{draft.look[f.k]=(draft.look[f.k]+f.n.length-1)%f.n.length;val.textContent=f.n[draft.look[f.k]]};
-    r.onclick=()=>{draft.look[f.k]=(draft.look[f.k]+1)%f.n.length;val.textContent=f.n[draft.look[f.k]]};
-    row.append(l,v,r);optsEl.appendChild(row)}}
+const OPT_GROUPS=[{t:'Cara y pelo',f:['sk','hs','hc','bd']},{t:'Ropa',f:['ou','sc','pc','zc']},{t:'Accesorios',f:['ac']}];
+const OPT_SW={sk:SKIN,hc:HAIRC,sc:CLOTH,pc:PANTS,zc:SHOES};
+let optTab=0;
+function buildOpts(){
+  const tabs=$('optTabs');tabs.textContent='';
+  OPT_GROUPS.forEach((g,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','tab');b.textContent=g.t;b.setAttribute('aria-selected',i===optTab);
+    b.onclick=()=>{optTab=i;buildOpts()};tabs.appendChild(b)});
+  optsEl.textContent='';
+  for(const k of OPT_GROUPS[optTab].f){const f=FIELDS.find(x=>x.k===k);const sec=document.createElement('div');sec.className='osec';
+    const h=document.createElement('h4');h.textContent=f.label;const cur=document.createElement('span');cur.textContent=f.n[draft.look[k]];h.appendChild(cur);sec.appendChild(h);
+    const box=document.createElement('div');box.className='chips';
+    f.n.forEach((name,i)=>{const b=document.createElement('button');b.type='button';b.className='chip';b.setAttribute('aria-pressed',draft.look[k]===i);
+      if(OPT_SW[k]){b.classList.add('sw');b.style.background=OPT_SW[k][i];b.title=name;b.setAttribute('aria-label',f.label+': '+name)}else b.textContent=name;
+      b.onclick=()=>{draft.look[k]=i;buildOpts()};box.appendChild(b)});
+    sec.appendChild(box);optsEl.appendChild(sec)}}
+function updPrevName(){$('prevName').textContent=cleanStr($('nameIn').value,20)||'Tu nombre'}
+$('nameIn').addEventListener('input',updPrevName);
 function openEditor(first){
   draft={name:profile?profile.name:'',look:profile?{...profile.look}:randLook()};
-  $('nameIn').value=draft.name;$('mErr').textContent='';
+  $('nameIn').value=draft.name;$('mErr').textContent='';updPrevName();
   $('mTitle').textContent=first?'Bienvenido a DXD':'Tu personaje';
   $('mSub').textContent=first?'Ponle nombre y arma tu personaje. Así te verá el resto del equipo en la oficina.':'Cambia tu nombre o tu look. Todos lo verán al instante.';
   $('saveBtn').textContent=first?'Entrar a la oficina':'Guardar cambios';
   buildOpts();modal.hidden=false;setTimeout(()=>$('nameIn').focus(),30)}
 $('editBtn').onclick=()=>openEditor(false);
 $('logoutBtn').onclick=()=>{if(window.dxdLogout)window.dxdLogout();else location.reload()};
-$('spinBtn').onclick=()=>{prevDir=(prevDir+1)%4};
+$('spinBtn').onclick=()=>{prevDir=(prevDir+1)%4};$('spinL').onclick=()=>{prevDir=(prevDir+3)%4};
 $('randBtn').onclick=()=>{draft.look=randLook();buildOpts()};
 $('saveBtn').onclick=save;
 $('nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')save()});
@@ -2036,6 +2068,8 @@ paintAll();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(paintAll);
 renderMsgs();renderPeople();updateStatus();
 if(profile)refreshMe();else openEditor(true);
+// Cada vez que alguien inicia sesión crea un personaje nuevo (al recargar se mantiene el actual).
+addEventListener('dxd:login',()=>{profile=null;try{localStorage.removeItem(PROFILE_KEY)}catch(e){}optTab=0;prevDir=0;openEditor(true)});
 requestAnimationFrame(step);
 connect();
 setInterval(updateStatus,3000);

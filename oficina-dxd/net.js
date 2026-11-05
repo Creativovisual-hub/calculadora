@@ -193,8 +193,10 @@
     var check = saved && saved.token
       ? rpc('dxd_me', { p_token: saved.token }).then(function (m) { return m ? { token: saved.token, user: m.user, room: m.room } : null; }, function () { return null; })
       : Promise.resolve(null);
-    return check.then(function (s) { return s || showLogin(); }).then(function (s) {
+    var fresh = false;
+    return check.then(function (s) { if (s) return s; fresh = true; return showLogin(); }).then(function (s) {
       session = s; lsSet(s); unlock();
+      if (fresh) dispatchEvent(new CustomEvent('dxd:login', { detail: { user: s.user } })); // personaje nuevo en cada inicio de sesión
       if (SHARED_USERS.indexOf(String(s.user).toLowerCase()) < 0) prefillName(s.user); // usuario compartido: cada uno pone su nombre
       return s;
     });
