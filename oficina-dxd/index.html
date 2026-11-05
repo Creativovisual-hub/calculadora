@@ -133,6 +133,14 @@ form#send{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
 .opt .v small{display:block;color:var(--muted);font-weight:700;font-size:9.5px;text-transform:uppercase;letter-spacing:.14em}
 .cardfoot{display:flex;gap:8px;margin-top:18px}
 .cardfoot .pri{flex:1;padding:12px;font-size:15px}
+#screenPanel{position:fixed;z-index:30;top:64px;left:50%;transform:translateX(-50%);width:min(960px,calc(100vw - 32px));background:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.55);overflow:hidden}
+#screenPanel .sph{display:flex;align-items:center;gap:8px;padding:8px 10px;font-weight:800;font-size:13px}
+#screenPanel .sph span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#screenPanel .sph button{border:0;background:var(--ink-3);border-radius:8px;padding:6px 10px;font-weight:800;color:var(--text)}
+#screenPanel #scrStop{background:var(--bad);color:#fff}
+#scrVideo{display:block;width:100%;max-height:calc(100vh - 200px);background:#000}
+#screenPanel.mini{top:auto;bottom:96px;left:auto;right:12px;transform:none;width:300px}
+#shareBtn.on{background:var(--bad);color:#fff}
 .petcard{width:min(520px,100%)}#petCv{display:block;margin:0 auto 12px;width:320px;max-width:100%;height:180px;image-rendering:pixelated;background:radial-gradient(circle at 50% 80%,#262d73,transparent 70%);border-radius:14px}
 /* Editor de personaje grande: vista previa amplia y opciones a un clic */
 .editcard{width:min(920px,100%);padding:26px}
@@ -284,7 +292,7 @@ aside#panel.open{transform:none}
     </div>
     <input class="hud" id="sayBox" maxlength="140" placeholder="Di algo y presiona Enter" autocomplete="off" aria-label="Mensaje sobre tu personaje" hidden>
     <div class="hud bl">
-      <div class="row"><button class="btn atk" id="atkBtn" hidden>⚔️ Atacar <kbd>Espacio</kbd></button><button class="btn pri talk" id="talkBtn">💬 Hablar <kbd>T</kbd></button><button class="btn voice" id="voiceBtn" type="button">🎙️ Voz</button><button class="btn inv" id="tomBtn" type="button" hidden title="Lanzar tomate (Q)">🍅 <span id="tomN">0</span> <kbd>Q</kbd></button><button class="btn inv" id="banBtn" type="button" hidden title="Dejar cáscara de plátano (B)">🍌 <span id="banN">0</span> <kbd>B</kbd></button><button class="btn" id="voiceLeave" type="button" hidden title="Salir de la voz">✕</button><div class="emotes" id="emotes" aria-label="Reacciones"></div></div>
+      <div class="row"><button class="btn atk" id="atkBtn" hidden>⚔️ Atacar <kbd>Espacio</kbd></button><button class="btn pri talk" id="talkBtn">💬 Hablar <kbd>T</kbd></button><button class="btn voice" id="voiceBtn" type="button">🎙️ Voz</button><button class="btn inv" id="tomBtn" type="button" hidden title="Lanzar tomate (Q)">🍅 <span id="tomN">0</span> <kbd>Q</kbd></button><button class="btn inv" id="banBtn" type="button" hidden title="Dejar cáscara de plátano (B)">🍌 <span id="banN">0</span> <kbd>B</kbd></button><button class="btn" id="shareBtn" type="button" hidden>🖥️ Compartir pantalla</button><button class="btn" id="voiceLeave" type="button" hidden title="Salir de la voz">✕</button><div class="emotes" id="emotes" aria-label="Reacciones"></div></div>
       <div class="mecard">
         <img id="meHead" alt="">
         <div><div class="nm" id="meName">Tú</div><div class="zn" id="meZone">Oficina</div></div>
@@ -313,6 +321,7 @@ aside#panel.open{transform:none}
   </aside>
 </div>
 
+<div id="screenPanel" hidden><div class="sph"><span id="scrTitle"></span><button id="scrFull" type="button" title="Pantalla completa" aria-label="Pantalla completa">⛶</button><button id="scrMin" type="button" title="Achicar o agrandar" aria-label="Achicar o agrandar">–</button><button id="scrStop" type="button" hidden>Dejar de compartir</button></div><video id="scrVideo" autoplay playsinline></video></div>
 <div class="overlay" id="petModal" hidden>
   <div class="card petcard" role="dialog" aria-modal="true" aria-labelledby="petTitle">
     <div class="eyebrow">Casita DXD</div>
@@ -710,7 +719,7 @@ fillT(49,23,74,33,WALL2);fillT(50,25,73,32,SAND);
 const FUR=[];const WD=[];
 const add=(o)=>{FUR.push(o);return o};
 // Sala Insight (reuniones)
-WD.push({t:'painting',x:5,y:3,w:2},{t:'clock',x:13,y:3,w:1});
+WD.push({t:'painting',x:5,y:3,w:2},{t:'clock',x:13,y:3,w:1},{t:'tv',x:8,y:3,w:3,meet:1});
 add({t:'mtable',x:6,y:6,w:6,h:3,s:1});
 for(const x of [7,8,9,10]){add({t:'mchairD',x,y:5});add({t:'mchairU',x,y:9})}
 add({t:'plant',x:4,y:4,s:1,v:2});add({t:'credenza',x:12,y:4,w:2,s:1});add({t:'plant',x:4,y:11,s:1,v:1});add({t:'plant',x:14,y:11,s:1,v:0});add({t:'lampf',x:14,y:4});
@@ -826,6 +835,7 @@ const NPCS=[
       'Muévete con WASD o las flechas, o haz clic donde quieras ir.',
       'Presiona T para hablar: tu mensaje aparece sobre tu cabeza y todos lo ven.',
       'En el jardín hay un huerto de tomates 🍅 (Q para lanzarlos) y una casita para adoptar mascota 🐾. En la cocina hay plátanos 🍌: B para dejar la cáscara… ¡cuidado al pisarla!',
+      'La Sala Insight es la sala de reuniones: lo que se habla ahí solo se escucha ahí, y con 🖥️ puedes compartir tu pantalla con todos los que estén dentro.',
       'Con el botón 🎙️ Voz hablas con tu micrófono: te escuchan quienes estén en tu misma sala, y más bajito los que estén cerca. M para silenciarte.',
       'Sam Tomaz está en el piso 14: toma el ascensor del pasillo norte. Carito está en Equipo Producto, Sabi en la Biblioteca y Yab en la Sala Insight.',
       'En la Galería Chile hay cuadros de Santiago y la cordillera. Acércate y presiona E para verlos en grande.',
@@ -1234,7 +1244,7 @@ function claimDesk(i){const cur=deskOwners()[i];
 
 /* ================= Presencia ================= */
 let lastPush=0,pushPending=false,lastSent='';
-function presencePayload(){return{n:profile.name,l:profile.look,x:Math.round(me.x),y:Math.round(me.y),d:me.dir,m:me.moving?1:0,e:me.emote,s:me.say,st:me.sit?1:0,g:me.game,ty:me.typing?1:0,v:vc.on?1:0,sp:vc.speaking&&!vc.muted?1:0,fl:me.fallAt?1:0,tm:me.tomN||0,pl:myPeels.map(p=>[p.id,p.x,p.y]),pt:profile.pet||null,dk:me.desk==null?null:me.desk,hp:inArena()?me.hp:null,ko:me.ko?1:0,a:me.atkSeq}}
+function presencePayload(){return{n:profile.name,l:profile.look,x:Math.round(me.x),y:Math.round(me.y),d:me.dir,m:me.moving?1:0,e:me.emote,s:me.say,st:me.sit?1:0,g:me.game,ty:me.typing?1:0,v:vc.on?1:0,sp:vc.speaking&&!vc.muted?1:0,fl:me.fallAt?1:0,tm:me.tomN||0,pl:myPeels.map(p=>[p.id,p.x,p.y]),pt:profile.pet||null,sh:sc.stream?1:0,dk:me.desk==null?null:me.desk,hp:inArena()?me.hp:null,ko:me.ko?1:0,a:me.atkSeq}}
 function pushPresence(force){
   if(!room||!profile)return;const now=performance.now();
   const p=presencePayload();const k=JSON.stringify(p);if(k===lastSent&&!force)return;
@@ -1251,7 +1261,7 @@ function applyPeers(list){
     let o=others.get(p.peer);
     if(!o){o={x,y,walk:0,emoteAt:0,sayAt:0,emoteId:null,sayId:null};others.set(p.peer,o);if(announceReady)sysMsg(name+' llegó a la oficina')}
     o.name=name;o.look=sanLook(pr.l);o.tx=x;o.ty=y;o.dir=DIRS.includes(pr.d)?pr.d:'down';o.m=!!pr.m;o.st=!!pr.st;o.typ=!!pr.ty;o.v=!!pr.v;o.sp=!!pr.sp;if(pr.fl&&!o.fl)o.flAt=performance.now();o.fl=!!pr.fl;{const tn=Math.max(0,Math.min(10,pr.tm|0));if(tn>(o.tmN||0))o.tmAt=performance.now();o.tmN=tn}
-    o.pl=Array.isArray(pr.pl)?pr.pl.slice(0,3).filter(q=>Array.isArray(q)&&typeof q[0]==='string').map(q=>[q[0].slice(0,10),Math.max(0,Math.min(MW*T,+q[1]||0)),Math.max(0,Math.min(MH*T,+q[2]||0))]):[];o.pt=sanPet(pr.pt);o.dk=Number.isInteger(pr.dk)&&pr.dk>=0&&pr.dk<DESKS.length?pr.dk:null;o.g=GAME_NAMES[pr.g]?pr.g:null;
+    o.pl=Array.isArray(pr.pl)?pr.pl.slice(0,3).filter(q=>Array.isArray(q)&&typeof q[0]==='string').map(q=>[q[0].slice(0,10),Math.max(0,Math.min(MW*T,+q[1]||0)),Math.max(0,Math.min(MH*T,+q[2]||0))]):[];o.pt=sanPet(pr.pt);o.sh=!!pr.sh;o.dk=Number.isInteger(pr.dk)&&pr.dk>=0&&pr.dk<DESKS.length?pr.dk:null;o.g=GAME_NAMES[pr.g]?pr.g:null;
     o.hp=Number.isFinite(pr.hp)?Math.max(0,Math.min(100,pr.hp)):100;o.ko=!!pr.ko;if(pr.a!==o.atkSeq){if(o.atkSeq!==undefined)o.atkAt=performance.now();o.atkSeq=pr.a}o.guest=!!p.guest;o.mine=p.isMe;
     const e=pr.e&&typeof pr.e==='object'?pr.e:null;
     if(e&&e.i!==o.emoteId){o.emoteId=e.i;o.emote=EMOTES[(e.k|0)]||null;o.emoteAt=performance.now()}
@@ -1316,7 +1326,7 @@ function onDuel(m){const d=m.data;if(!d||typeof d!=='object')return;
 /* ================= Loop ================= */
 let last=performance.now(),lastZone='',promptTick=0;
 function step(now){
-  musicUpdate();vcTick();
+  musicUpdate();vcTick();scTick(now);
   const dt=Math.min(.05,(now-last)/1000);last=now;
   if(profile&&gameModal.hidden&&stopModal.hidden&&artModal.hidden)updateMe(dt);
   if(profile)arenaStep(dt,now);
@@ -1369,6 +1379,7 @@ function drawDyn(f,now){
     ctx.fillStyle='rgba(255,255,255,.6)';ctx.fillRect(X+20,Y-8-((t*12)%14),2,2);ctx.fillRect(X+W-30,Y-4-((t*9+5)%16),2,2)}}
 function drawWallDyn(now){
   for(const d of WD){if(d.t!=='tv')continue;const X=d.x*T,Y=d.y*T,W=d.w*T;const sx=X+5,sy=Y+8,sw=W-10,sh=17;
+    if(d.meet){drawMeetTV(d,sx,sy,sw,sh,now);continue}
     if(d.game){ctx.fillStyle='#10142e';ctx.fillRect(sx,sy,sw,sh);const t=now/1000;ctx.fillStyle='#3d4cff';ctx.fillRect(sx+6,sy+sh-5,sw-12,2);ctx.fillStyle='#c6c7ff';ctx.fillRect(sx+8+((t*30)%(sw-20)),sy+4+Math.abs(Math.sin(t*3))*6,3,3);ctx.fillStyle='#e05a5a';ctx.fillRect(sx+sw-14,sy+sh-9,4,4);continue}
     const g2=ctx.createLinearGradient(sx,sy,sx+sw,sy+sh);g2.addColorStop(0,'#0b0d1c');g2.addColorStop(1,'#151a4a');ctx.fillStyle=g2;ctx.fillRect(sx,sy,sw,sh);
     const pulse=.55+.45*Math.sin(now/700);ctx.globalAlpha=.35*pulse;ctx.fillStyle='#3d4cff';ctx.beginPath();ctx.arc(sx+sw/2-14,sy+sh/2,10,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
@@ -1600,7 +1611,7 @@ function vcUI(){const b=$('voiceBtn'),l=$('voiceLeave');
   b.title=!vc.on?'Unirte a la voz':'Silenciar o activar tu micrófono (M)';l.hidden=!vc.on}
 async function vcJoin(){if(vc.on)return;if(!room){toast('Sin conexión en vivo: la voz no está disponible.');return}
   if(!navigator.mediaDevices||!window.RTCPeerConnection){toast('Este navegador no permite voz.');return}
-  try{vc.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}})}
+  try{vc.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1,sampleRate:48000}})}
   catch(e){toast('No se pudo usar el micrófono. Revisa el permiso del navegador.');return}
   vc.on=true;vc.muted=false;
   try{sfxUnlock();if(sfxCtx){vc.an=sfxCtx.createAnalyser();vc.an.fftSize=512;vc.buf=new Float32Array(512);sfxCtx.createMediaStreamSource(vc.stream).connect(vc.an)}}catch(e){vc.an=null}
@@ -1618,7 +1629,8 @@ function vcPeer(id){let p=vc.pcs.get(id);if(p)return p;
     try{sfxUnlock();if(sfxCtx&&!p.gain){audio.muted=true;p.gain=sfxCtx.createGain();p.gain.gain.value=0;sfxCtx.createMediaStreamSource(st).connect(p.gain).connect(sfxCtx.destination)}}catch(err){p.gain=null;audio.muted=false}
     audio.play().catch(()=>{})};
   pc.onconnectionstatechange=()=>{const s2=pc.connectionState,o=others.get(id),nm=o?o.name:'alguien';p.state=s2;renderPeople();
-    if(s2==='connected'&&!p.ok){p.ok=true;toast('🎙️ Voz conectada con '+nm)}
+    if(s2==='connected'&&!p.ok){p.ok=true;toast('🎙️ Voz conectada con '+nm);
+      for(const sd of pc.getSenders())if(sd.track&&sd.track.kind==='audio'){try{const pa=sd.getParameters();pa.encodings=pa.encodings&&pa.encodings.length?pa.encodings:[{}];pa.encodings[0].maxBitrate=64000;sd.setParameters(pa).catch(()=>{})}catch(e){}}}
     if(s2==='failed'){toast('No se pudo conectar la voz con '+nm+'. Su red puede estar bloqueando llamadas directas.');vcClose(id)}
     if(s2==='closed')vcClose(id)};
   setTimeout(()=>{if(vc.pcs.get(id)===p&&pc.connectionState!=='connected'){p.state='failed';renderPeople()}},15000);
@@ -1639,7 +1651,8 @@ async function vcOnMsg(m){const d=m.data;if(!d||typeof d!=='object'||m.sameTab||
     else if(d.t==='leave')vcClose(from);
   }catch(e){vcClose(from)}}
 // Todos los que están en voz se escuchan siempre; la cercanía solo cambia el volumen.
-function vcVol(o){if(regionOf(o.tx,o.ty)!==regionOf(me.x,me.y))return .45;
+function vcVol(o){const mi=inMeet(me.x,me.y),oi=inMeet(o.tx,o.ty);if(mi||oi)return mi&&oi?1:0; // sala de reuniones insonorizada
+  if(regionOf(o.tx,o.ty)!==regionOf(me.x,me.y))return .45;
   if(zoneAt(o.tx,o.ty)===zoneAt(me.x,me.y))return 1;
   const d=Math.hypot(o.tx-me.x,o.ty-me.y);return .55+.45*Math.max(0,Math.min(1,1-(d-3*T)/(12*T)))}
 function vcTick(){if(!vc.on)return;
@@ -1764,6 +1777,74 @@ function setPet(p){profile.pet=p;try{localStorage.setItem(PROFILE_KEY,JSON.strin
 $('petOk').onclick=()=>setPet(sanPet(petDraft));$('petNone').onclick=()=>setPet(null);$('petClose').onclick=()=>{$('petModal').hidden=true};
 $('tomBtn').onclick=()=>throwTomato();$('banBtn').onclick=()=>dropPeel();invUI();
 try{const sp=JSON.parse(localStorage.getItem(PROFILE_KEY)||'null');if(profile&&sp)profile.pet=sanPet(sp.pet)}catch(e){} // mascota guardada
+/* ================= Sala de reuniones: pantalla compartida ================= */
+// En la Sala Insight: lo que se habla se escucha claro solo adentro, y quien quiera
+// comparte su pantalla con todos los que estén en la sala (WebRTC, quien comparte inicia).
+const MEET='Sala Insight';const inMeet=(x,y)=>zoneAt(x,y)===MEET;
+const sc={stream:null,out:new Map(),inp:null,shownFrom:null,wasIn:false};
+function scEmit(d){if(room)room.emit('scr',d).catch(()=>{})}
+function scBtnUI(){const b=$('shareBtn');const can=!!(navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia);
+  b.hidden=!(sc.stream||(can&&profile&&inMeet(me.x,me.y)));b.textContent=sc.stream?'⏹ Dejar de compartir':'🖥️ Compartir pantalla';b.classList.toggle('on',!!sc.stream)}
+function showScreen(stream,title,mine){const v=$('scrVideo');v.srcObject=stream;v.muted=!!mine;v.play().catch(()=>{});$('scrTitle').textContent=title;
+  $('scrStop').hidden=!mine;const p=$('screenPanel');p.hidden=false;p.classList.remove('mini')}
+function hideScreen(){const v=$('scrVideo');v.srcObject=null;$('screenPanel').hidden=true;sc.shownFrom=null}
+async function scStart(){if(sc.stream){scStop();return}
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getDisplayMedia){toast('Tu navegador no permite compartir pantalla (en celular no está disponible).');return}
+  if(!inMeet(me.x,me.y)){toast('Entra a la Sala Insight para compartir tu pantalla.');return}
+  for(const o of others.values())if(o.sh&&inMeet(o.tx,o.ty)){toast('🖥️ '+o.name+' ya está compartiendo su pantalla.');return}
+  try{sc.stream=await navigator.mediaDevices.getDisplayMedia({video:{frameRate:{ideal:15,max:30}},audio:true})}catch(e){return}
+  sc.stream.getVideoTracks()[0].addEventListener('ended',()=>scStop());
+  if(sc.inp)scCloseIn();showScreen(sc.stream,'Tu pantalla · la están viendo en la sala',true);sc.shownFrom='me';
+  scBtnUI();pushPresence(true);toast('🖥️ Estás compartiendo tu pantalla con la sala.');scSync()}
+function scStop(){if(!sc.stream)return;sc.stream.getTracks().forEach(t=>t.stop());sc.stream=null;for(const id of [...sc.out.keys()])scCloseOut(id);
+  scEmit({t:'stop'});hideScreen();scBtnUI();pushPresence(true)}
+function scCloseOut(id){const o=sc.out.get(id);if(!o)return;sc.out.delete(id);try{o.pc.close()}catch(e){}}
+function scCloseIn(){if(!sc.inp)return;try{sc.inp.pc.close()}catch(e){}sc.inp=null;if(sc.shownFrom&&sc.shownFrom!=='me')hideScreen()}
+async function scFlush(o){for(const c of o.pending.splice(0))try{await o.pc.addIceCandidate(c)}catch(e){}}
+async function scOffer(id){const pc=new RTCPeerConnection({iceServers:VC_ICE});const o={pc,pending:[]};sc.out.set(id,o);
+  sc.stream.getTracks().forEach(t=>pc.addTrack(t,sc.stream));
+  pc.onicecandidate=e=>{if(e.candidate)scEmit({t:'ice',to:id,c:e.candidate.toJSON(),side:'v'})};
+  pc.onconnectionstatechange=()=>{if(pc.connectionState==='failed'||pc.connectionState==='closed')scCloseOut(id)};
+  try{await pc.setLocalDescription(await pc.createOffer());scEmit({t:'offer',to:id,sdp:{type:pc.localDescription.type,sdp:pc.localDescription.sdp}})}catch(e){scCloseOut(id)}}
+function scSync(){if(!sc.stream)return;const view=new Set();for(const [id,o] of others)if(inMeet(o.tx,o.ty))view.add(id);
+  for(const id of view)if(!sc.out.has(id))scOffer(id);
+  for(const id of [...sc.out.keys()])if(!view.has(id)){scCloseOut(id);scEmit({t:'bye',to:id})}}
+async function onScr(m){const d=m.data;if(!d||typeof d!=='object'||m.sameTab)return;const from=m.peer;if(typeof from!=='string')return;
+  if(d.t==='stop'){if(sc.inp&&sc.inp.from===from)scCloseIn();return}
+  if(d.to!==myPeer)return;
+  try{
+    if(d.t==='offer'&&d.sdp){if(!inMeet(me.x,me.y)||sc.stream)return;scCloseIn();
+      const pc=new RTCPeerConnection({iceServers:VC_ICE});const inp=sc.inp={pc,from,pending:sc.early&&sc.early.from===from?sc.early.c:[]};sc.early=null;
+      pc.ontrack=e=>{const o=others.get(from);showScreen(e.streams[0]||new MediaStream([e.track]),'🖥️ Pantalla de '+(o?o.name:'alguien'),false);sc.shownFrom=from};
+      pc.onicecandidate=e=>{if(e.candidate)scEmit({t:'ice',to:from,c:e.candidate.toJSON(),side:'s'})};
+      pc.onconnectionstatechange=()=>{if(pc.connectionState==='failed'){toast('No se pudo recibir la pantalla compartida. La red puede estar bloqueando conexiones directas.');if(sc.inp===inp)scCloseIn()}};
+      await pc.setRemoteDescription(d.sdp);await scFlush(inp);await pc.setLocalDescription(await pc.createAnswer());
+      scEmit({t:'answer',to:from,sdp:{type:pc.localDescription.type,sdp:pc.localDescription.sdp}})}
+    else if(d.t==='answer'&&d.sdp){const o=sc.out.get(from);if(o&&!o.pc.remoteDescription){await o.pc.setRemoteDescription(d.sdp);await scFlush(o)}}
+    else if(d.t==='ice'&&d.c){
+      if(d.side==='v'){if(sc.inp&&sc.inp.from===from){if(sc.inp.pc.remoteDescription)await sc.inp.pc.addIceCandidate(d.c).catch(()=>{});else sc.inp.pending.push(d.c)}
+        else{if(!sc.early||sc.early.from!==from)sc.early={from,c:[]};sc.early.c.push(d.c)}}
+      else{const o=sc.out.get(from);if(o){if(o.pc.remoteDescription)await o.pc.addIceCandidate(d.c).catch(()=>{});else o.pending.push(d.c)}}}
+    else if(d.t==='bye'){if(sc.inp&&sc.inp.from===from)scCloseIn()}
+  }catch(e){}}
+let scLast=0;
+function scTick(now){if(!profile)return;const inside=inMeet(me.x,me.y);
+  if(inside!==sc.wasIn){sc.wasIn=inside;scBtnUI();
+    if(inside)toast('🚪 Sala de reuniones: lo que se habla aquí solo se escucha aquí. Activa 🎙️ Voz'+(navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia?' y comparte con 🖥️.':'.'));
+    else{if(sc.stream){scStop();toast('Saliste de la sala: dejaste de compartir tu pantalla.')}if(sc.inp)scCloseIn()}}
+  if(now-scLast>1000){scLast=now;scSync()}}
+function drawMeetTV(d,sx,sy,sw,sh,now){const v=$('scrVideo');let live=false;
+  if(sc.shownFrom&&v.readyState>=2&&v.videoWidth){ctx.fillStyle='#000';ctx.fillRect(sx,sy,sw,sh);const r=Math.min(sw/v.videoWidth,sh/v.videoHeight),w=v.videoWidth*r,h=v.videoHeight*r;
+    try{ctx.drawImage(v,sx+(sw-w)/2,sy+(sh-h)/2,w,h)}catch(e){}live=true}
+  else{for(const o of others.values())if(o.sh&&inMeet(o.tx,o.ty))live=true;
+    const g2=ctx.createLinearGradient(sx,sy,sx+sw,sy+sh);g2.addColorStop(0,'#0b0d1c');g2.addColorStop(1,'#151a4a');ctx.fillStyle=g2;ctx.fillRect(sx,sy,sw,sh);
+    ctx.fillStyle=live?'#f1f2ff':'#5a5f80';ctx.font='700 7px Silkscreen, monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(live?'PANTALLA COMPARTIDA':'SALA DE REUNIONES',sx+sw/2,sy+sh/2+1)}
+  if(live){ctx.fillStyle=Math.floor(now/600)%2?'#e0453a':'#ff6b7a';ctx.beginPath();ctx.arc(sx+5,sy+4,2.5,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='700 5px Silkscreen, monospace';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText('EN VIVO',sx+10,sy+4.5)}}
+$('shareBtn').onclick=()=>scStart();$('scrStop').onclick=()=>scStop();
+$('scrMin').onclick=()=>$('screenPanel').classList.toggle('mini');
+$('scrFull').onclick=()=>{const v=$('scrVideo');(v.requestFullscreen||v.webkitRequestFullscreen||v.webkitEnterFullscreen||(()=>{})).call(v)};
+addEventListener('pagehide',()=>scStop());
 async function sendChat(raw){
   if(!profile)return;const text=cleanStr(raw,140);if(!text)return;
   playSfx('out');
@@ -1788,7 +1869,7 @@ function renderPeople(){
   const el=$('people');el.textContent='';const rows=[];
   if(profile)rows.push({name:profile.name,look:profile.look,zone:statusOf(zoneAt(me.x,me.y),me.sit,me.game),me:true});
   for(const [id,o] of others){let vz='';if(o.v){const pc=vc.on&&vc.pcs.get(id);vz=!vc.on?' · 🎙️ en voz':pc&&pc.state==='connected'?' · 🎙️ te escucha':pc&&pc.state==='failed'?' · 🎙️ sin conexión de voz':' · 🎙️ conectando…'}
-    rows.push({name:o.name,look:o.look,zone:statusOf(zoneAt(o.tx,o.ty),o.st,o.g,o.mine,o.guest)+vz})}
+    rows.push({name:o.name,look:o.look,zone:statusOf(zoneAt(o.tx,o.ty),o.st,o.g,o.mine,o.guest)+vz+(o.sh?' · 🖥️ compartiendo pantalla':'')})}
   $('pc').textContent=rows.length;for(const r of rows)el.appendChild(personRow(r));
   if(rows.length<=1){const e=document.createElement('div');e.className='empty';e.textContent=room?'Por ahora estás solo. Cuando alguien del equipo abra la oficina aparecerá aquí y en el mapa.':'Sin conexión en vivo: revisa tu internet y recarga la página.';el.appendChild(e)}}
 function updateStatus(){const dot=$('status').querySelector('.dot');const n=1+others.size;
@@ -2267,6 +2348,7 @@ async function connect(){
     room.on('duel',onDuel,()=>{});
     room.on('rtc',vcOnMsg,()=>{});
     room.on('fx',onFx,()=>{});
+    room.on('scr',onScr,()=>{});
     if(!db)room.on('chat',m=>{const p=parseMsg(m.data);if(!p)return;localMsgs.push(p);if(localMsgs.length>150)localMsgs.shift();renderMsgs();if(!m.sameTab)onNewIncoming()},()=>{});
     setTimeout(()=>{announceReady=true},3000);pushPresence(true)}
   if(db){
