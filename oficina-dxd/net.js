@@ -304,6 +304,9 @@
 
   if (!sb) return; // sin supabase-js no hay nada más que hacer
 
+  // Llamadas a funciones dxd_* con la sesión actual (cola de DJ, etc.)
+  window.dxdRpc = function (fn, args) { return ready.then(function (s) { return rpc(fn, Object.assign({ p_token: s.token }, args || {})); }); };
+
   /* ======================= room ======================= */
   var myId = 'v' + Math.random().toString(36).slice(2, 12);
   var chatListeners = [];
