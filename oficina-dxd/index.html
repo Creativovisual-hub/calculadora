@@ -319,7 +319,7 @@ aside#panel.open{transform:none}
     </div>
     <input class="hud" id="sayBox" maxlength="140" placeholder="Di algo y presiona Enter" autocomplete="off" aria-label="Mensaje sobre tu personaje" hidden>
     <div class="hud bl">
-      <div class="row"><button class="btn atk" id="atkBtn" hidden>⚔️ Atacar <kbd>Espacio</kbd></button><button class="btn pri talk" id="talkBtn">💬 Hablar <kbd>T</kbd></button><button class="btn voice" id="voiceBtn" type="button">🎙️ Voz</button><button class="btn inv" id="tomBtn" type="button" hidden title="Lanzar tomate (Q)">🍅 <span id="tomN">0</span> <kbd>Q</kbd></button><button class="btn inv" id="banBtn" type="button" hidden title="Dejar cáscara de plátano (B)">🍌 <span id="banN">0</span> <kbd>B</kbd></button><button class="btn" id="shareBtn" type="button" hidden>🖥️ Compartir pantalla</button><button class="btn" id="feedBtn" type="button" hidden title="Dar comida a tus mascotas y a las que estén cerca (F)">🍖 Alimentar <kbd>F</kbd></button><button class="btn" id="voiceLeave" type="button" hidden title="Salir de la voz">✕</button><div class="emotes" id="emotes" aria-label="Reacciones"></div></div>
+      <div class="row"><button class="btn atk" id="atkBtn" hidden>⚔️ Atacar <kbd>Espacio</kbd></button><button class="btn pri talk" id="talkBtn">💬 Hablar <kbd>T</kbd></button><button class="btn voice" id="voiceBtn" type="button">🎙️ Voz</button><button class="btn inv" id="tomBtn" type="button" hidden title="Lanzar tomate (Q)">🍅 <span id="tomN">0</span> <kbd>Q</kbd></button><button class="btn inv" id="banBtn" type="button" hidden title="Dejar cáscara de plátano (B)">🍌 <span id="banN">0</span> <kbd>B</kbd></button><button class="btn pri" id="actStop" type="button" hidden>⏹ Terminar <kbd>Esc</kbd></button><button class="btn" id="shareBtn" type="button" hidden>🖥️ Compartir pantalla</button><button class="btn" id="feedBtn" type="button" hidden title="Dar comida a tus mascotas y a las que estén cerca (F)">🍖 Alimentar <kbd>F</kbd></button><button class="btn" id="voiceLeave" type="button" hidden title="Salir de la voz">✕</button><div class="emotes" id="emotes" aria-label="Reacciones"></div></div>
       <div class="mecard">
         <img id="meHead" alt="">
         <div><div class="nm" id="meName">Tú</div><div class="zn" id="meZone">Oficina</div></div>
@@ -787,6 +787,8 @@ fillT(F2X,0,MW-1,MH-1,SKY);fillT(79,2,102,22,WALL2);fillT(80,4,101,21,PARTY);fil
 // Cerro San Cristóbal (a la derecha de todo)
 fillT(FCX,0,MW-1,MH-1,G);fillT(FCX,0,MW-1,1,CLIFF);fillT(116,3,129,11,PLAZA);fillT(107,5,114,11,WOOD);fillT(131,5,138,12,SAND);fillT(118,15,128,20,WOOD);
 fillT(108,12,109,21,PATH);fillT(108,12,123,13,PATH);fillT(122,12,123,15,PATH);fillT(129,8,131,9,PATH);
+// sendero a pie en zigzag desde la base (abajo a la derecha) hasta la zona de ejercicio
+fillT(133,21,139,21,PATH);fillT(133,17,134,21,PATH);fillT(133,17,138,17,PATH);fillT(137,13,138,17,PATH);
 
 const FUR=[];const WD=[];
 const add=(o)=>{FUR.push(o);return o};
@@ -859,7 +861,7 @@ add({t:'bench',x:25,y:32,w:2,s:1});add({t:'bench',x:32,y:32,w:2,s:1});
 // Huerto de tomates y casita de mascotas (jardín)
 add({t:'huerto',x:14,y:32,w:2,s:1,act:'tomato'});add({t:'kennel',x:38,y:32,w:2,s:1,act:'pet'});
 // ---- Cerro San Cristóbal ----
-add({t:'telestation',x:22,y:32,w:3,s:1,act:'tele'});
+add({t:'telestation',x:22,y:32,w:3,s:1,act:'tele'});add({t:'trailsign',x:43,y:32,s:1,act:'trail'});add({t:'trailsign',x:139,y:20,s:1,act:'trail'});
 add({t:'telestation',x:110,y:19,w:3,s:1,act:'tele'});
 add({t:'railing',x:106,y:2,w:34,s:1});add({t:'binoc',x:114,y:3,s:1,act:'view'});add({t:'binoc',x:131,y:3,s:1,act:'view'});
 add({t:'virgen',x:122,y:3,w:2,h:2,s:1});add({t:'antena',x:127,y:3,s:1});add({t:'palm',x:118,y:4,s:1});add({t:'palm',x:127,y:9,s:1});add({t:'palm',x:117,y:10,s:1});
@@ -869,7 +871,7 @@ add({t:'barras',x:132,y:6,w:2,s:1,act:'exercise'});add({t:'pesas',x:135,y:6,w:2,
 add({t:'rtable',x:122,y:17,w:2,h:2,s:1});for(const [x,y] of [[119,15],[125,15],[119,20],[125,20]])add({t:'bench',x,y,w:2,s:1});
 add({t:'plant',x:118,y:15,s:1,v:2});add({t:'plant',x:128,y:20,s:1,v:1});
 add({t:'hedge',x:110,y:14,w:6,s:1});add({t:'hedge',x:125,y:13,w:4,s:1});add({t:'hedge',x:111,y:3,w:3,s:1});
-for(const [x,y] of [[106,5],[106,9],[106,13],[106,17],[115,16],[113,19],[116,21],[130,16],[134,18],[138,15],[139,6],[139,10],[136,21],[131,21],[121,22],[128,23],[112,23]])add({t:'tree',x,y,s:1,v:(x+y)%2});
+for(const [x,y] of [[106,5],[106,9],[106,13],[106,17],[115,16],[113,19],[116,21],[130,16],[136,19],[131,19],[135,14],[139,6],[139,10],[131,22],[121,22],[128,23],[112,23],[139,15]])add({t:'tree',x,y,s:1,v:(x+y)%2});
 for(let x=FCX;x<MW;x+=2)add({t:'tree',x,y:24,s:1,v:x%2});
 // ---- Piso 2: Fiesta DXD ----
 WD.push({t:'elev',x:81,y:3,w:2,go:'2'},{t:'floorsign',x:84,y:3,w:3,txt:'PISO 2'},{t:'neon',x:97,y:3,w:3});
@@ -976,7 +978,7 @@ for(const f of FUR){const X=f.x*T,Y=f.y*T,w=f.w||1;
   if(f.t==='sofaU')for(let i=0;i<w;i++)SEATS.push({x:X+i*T+16,y:Y+18,dir:'up',f});
   if(f.act)ACTS.push(f);
 }
-const ACT_LABEL={arena:'Entrar a la Arena de espadas',leave:'Salir de la Arena',art:'Mirar el cuadro',stop:'Jugar Stop (Bachillerato)',coffee:'Servirte un café',catch:'Jugar Atrapa Datos',pong:'Jugar Ping Pong DXD',kart:'Jugar Karting DXD',dj:'Poner música 🎧',elev:'Tomar el ascensor',tomato:'Sacar tomates 🍅',tele:'Tomar el teleférico 🚡',view:'Mirar Santiago 🔭',yoga:'Hacer yoga 🧘',exercise:'Hacer ejercicio 💪',eat:'Comer algo 🍔',wash:'Lavarte la cara 🚿',banana:'Sacar plátanos 🍌',pet:'Elegir mascota 🐾',fish:'Pescar en el acuario',up:'Tomar el ascensor',down:'Tomar el ascensor'};
+const ACT_LABEL={arena:'Entrar a la Arena de espadas',leave:'Salir de la Arena',art:'Mirar el cuadro',stop:'Jugar Stop (Bachillerato)',coffee:'Servirte un café',catch:'Jugar Atrapa Datos',pong:'Jugar Ping Pong DXD',kart:'Jugar Karting DXD',dj:'Poner música 🎧',elev:'Tomar el ascensor',tomato:'Sacar tomates 🍅',tele:'Tomar el teleférico 🚡',trail:'Ir caminando por el sendero 🥾',view:'Mirar Santiago 🔭',yoga:'Hacer yoga 🧘',exercise:'Hacer ejercicio 💪',eat:'Comer algo 🍔',wash:'Lavarte la cara 🚿',banana:'Sacar plátanos 🍌',pet:'Elegir mascota 🐾',fish:'Pescar en el acuario',up:'Tomar el ascensor',down:'Tomar el ascensor'};
 function rectDist(px,py,f){const x0=f.x*T,y0=f.y*T,x1=x0+(f.w||1)*T,y1=y0+(f.h||1)*T;const cy=py-6;
   const dx=Math.max(x0-px,0,px-x1),dy=Math.max(y0-cy,0,cy-y1);return Math.hypot(dx,dy)}
 
@@ -1178,6 +1180,7 @@ function drawItem(g,f,rnd){
     case 'telestation':shadow();R(0,12,W,20,'#8a8fa0');R(0,12,W,3,'#a9aebd');R(6,-14,4,28,'#5a6070');R(W-10,-14,4,28,'#5a6070');R(-4,-22,W+8,9,'#d62b2b');R(-4,-14,W+8,2,'#a51d1d');
       C(W/2,-4,9,'#3a4250');C(W/2,-4,4,'#9aa0b0');R(W/2-13,2,26,18,'#d62b2b');R(W/2-10,5,20,7,'#3a2a4a');R(W/2-14,12,28,3,'#1d2140');
       R(4,22,W-8,9,'#14162a');g.fillStyle='#ffd23d';g.font='700 7px Silkscreen, monospace';g.textAlign='center';g.textBaseline='middle';g.fillText(f.x>FCX?'BAJAR':'CERRO S.C.',W/2,27);break;
+    case 'trailsign':shadow();R(14,2,4,28,'#7b5530');R(0,-4,30,14,'#c98b3c');R(0,-4,30,2,'#e0a860');g.fillStyle='#2a1a10';g.font='700 6px Silkscreen, monospace';g.textAlign='center';g.textBaseline='middle';g.fillText(f.x>FCX?'BAJAR':'SENDERO',15,1);g.fillText(f.x>FCX?'A PIE':'CERRO ⛰',15,7);break;
     case 'railing':R(0,10,W,3,'#2f5a3a');R(0,18,W,2,'#2f5a3a');for(let x=0;x<W;x+=16)R(x,8,3,16,'#2f5a3a');break;
     case 'binoc':shadow();R(14,4,4,26,'#3a4250');R(6,-6,20,11,'#3d7a3d');R(6,-6,20,2,'#5aa05a');C(10,0,3,'#111');C(22,0,3,'#111');R(13,8,6,4,'#3a4250');break;
     case 'virgen':{E(W/2,H+4,30,8,'rgba(40,30,70,.18)');R(10,28,44,8,'#cfcbd8');R(14,4,36,26,'#ecebf2');R(14,4,4,26,'#f8f8fc');R(44,4,6,26,'#d4d2de');R(10,0,44,6,'#dedce8');R(28,16,8,14,'#7a5a3a');
@@ -1229,7 +1232,7 @@ function resize(){const r=stage.getBoundingClientRect();vw=r.width;vh=r.height;d
   let z=Math.min(vw/(20*T),vh/(13*T));z=Math.max(.85,Math.min(2.2,z));zoom=Math.round(z*4)/4}
 new ResizeObserver(resize).observe(stage);resize();
 
-function blocked(px,py){for(const [ax,ay] of [[px-7,py-6],[px+7,py-6],[px-7,py-1],[px+7,py-1]])if(isSolid(Math.floor(ax/T),Math.floor(ay/T)))return true;return false}
+function blocked(px,py){if(stuckOK)return false;for(const [ax,ay] of [[px-7,py-6],[px+7,py-6],[px-7,py-1],[px+7,py-1]])if(isSolid(Math.floor(ax/T),Math.floor(ay/T)))return true;return false}
 function bfs(sx,sy,goal){
   const prev=new Int32Array(MW*MH).fill(-1);const s=sy*MW+sx;const q=[s];prev[s]=s;let found=-1,h=0;
   while(h<q.length){const c=q[h++];const cx=c%MW,cy=(c/MW)|0;if(goal(cx,cy)){found=c;break}
@@ -1325,12 +1328,14 @@ function finishAuto(){const a=me.auto;me.auto=null;if(!a)return;
   if(a.type==='npc'&&Math.hypot(a.n.x-me.x,a.n.y-me.y)<50){const dx=a.n.x-me.x,dy=a.n.y-me.y;me.dir=Math.abs(dx)>Math.abs(dy)?(dx<0?'left':'right'):(dy<0?'up':'down');openTalk(a.n)}}
 function faceTo(f){const cx=(f.x+(f.w||1)/2)*T,cy=(f.y+(f.h||1)/2)*T;const dx=cx-me.x,dy=cy-me.y;me.dir=Math.abs(dx)>Math.abs(dy)?(dx<0?'left':'right'):(dy<0?'up':'down')}
 function travel(a){const fade=document.getElementById('fade');fade.classList.add('on');closeTalk();
-    setTimeout(()=>{if(me.sit)standUp();me.act=null;me.path=null;me.auto=null;me.desk=null;me.dir='down';
+    setTimeout(()=>{if(me.sit)standUp();stopAct();me.path=null;me.auto=null;me.desk=null;me.dir='down';
       if(a==='up'||a==='f14'){me.x=67*T;me.y=5*T+22;toast('Piso 14 · Oficina de Sam Tomaz')}
       else if(a==='down'||a==='f1'){me.x=30*T;me.y=5*T+22;toast('Piso 1 · Oficina DXD')}
       else if(a==='f2'){me.x=82*T;me.y=5*T+22;toast('🎉 Piso 2 · Fiesta DXD')}
       else if(a==='cerro'){me.x=111.5*T;me.y=20*T+22;toast('🏔️ Cerro San Cristóbal · ¡Mira la vista desde el mirador!')}
       else if(a==='jardin'){me.x=23.5*T;me.y=33*T+18;me.dir='down';toast('Volviste al jardín de la oficina')}
+      else if(a==='sendero'){me.x=137.5*T;me.y=21*T+22;me.dir='up';toast('🥾 Base del sendero: sigue el camino hacia arriba hasta la cumbre')}
+      else if(a==='jardin2'){me.x=43.5*T;me.y=33*T+18;me.dir='down';toast('Bajaste caminando al jardín de la oficina')}
       else if(a==='arena'){enterArena()}
       else{me.ko=0;me.hp=100;bot=null;me.x=29.5*T;me.y=32*T+20;me.dir='up';toast('Volviste a la oficina')}
       pushPresence(true);promptKey=null;setTimeout(()=>fade.classList.remove('on'),60)},260)}
@@ -1353,6 +1358,7 @@ function doAct(f){
   if(f.act==='pet'){openPet();return}
   if(f.act==='eat'){eatFood();return}
   if(f.act==='tele'){teleRide(regionOf(me.x,me.y)!==4);return}
+  if(f.act==='trail'){trailWalk(regionOf(me.x,me.y)!==4);return}
   if(f.act==='view'){openArt('mirador');return}
   if(f.act==='yoga'){startAct(f,'yoga');return}
   if(f.act==='exercise'){startAct(f,'ex');return}
@@ -1507,9 +1513,11 @@ function step(now){
   if(pushPending&&now-lastPush>=90)pushPresence();
   if(now-promptTick>120){promptTick=now;updatePrompt()}
   requestAnimationFrame(step)}
+let stuckOK=false;
 function updateMe(dt){
+  stuckOK=false;{const bx=me.x,by=me.y;let inside=false;for(const [ax,ay] of [[bx-7,by-6],[bx+7,by-6],[bx-7,by-1],[bx+7,by-1]])if(isSolid(Math.floor(ax/T),Math.floor(ay/T)))inside=true;if(inside)stuckOK=true}
   if(me.ko){me.moving=false;me.walk=0;return}
-  if(me.act){if(keys.size||me.path){me.act=null;pushPresence(true)}else{me.moving=false;me.walk=0;return}}
+  if(me.act){if(keys.size||me.path){stopAct()}else{me.moving=false;me.walk=0;return}}
   if(me.fallAt&&performance.now()-me.fallAt<1600){me.moving=false;me.walk=0;me.path=null;return}
   if(me.sit&&Math.hypot(me.x-me.sit.x,me.y-me.sit.y)>4){me.sit=null;promptKey=null;pushPresence(true)}
   if(me.sit){if(keys.size){standUp()}else{me.moving=false;return}}
@@ -1894,14 +1902,14 @@ function moodFx(x,y,md,now,fy){if(md==null)return;const g=ctx,z=Math.max(1.5,zoo
   const aura=(col,a,r)=>{const R2=r*zoom*1.1,rg=g.createRadialGradient(x,bc,4,x,bc,R2);rg.addColorStop(0,col.replace('A',a*1.4));rg.addColorStop(1,col.replace('A',0));g.fillStyle=rg;g.beginPath();g.arc(x,bc,R2,0,Math.PI*2);g.fill()};
   switch(md){
     case 0: // feliz: brillos
-      aura('rgba(255,220,90,A)',.2,46);for(let i=0;i<9;i++){const an=t*1.2+i*.7,r=(24+8*Math.sin(t*2+i))*zoom,k=.5+.5*Math.sin(t*5+i*1.7);g.globalAlpha=.35+.65*k;star(x+Math.cos(an)*r,bc-6*zoom+Math.sin(an)*r*.9,(3+4*k)*z,i%2?'#fff6c2':'#ffd23d')}break;
+      for(let i=0;i<7;i++){const k=.5+.5*Math.sin(t*5+i*1.7),px=x+(i-3)*9*z,py=hy-4*z-Math.cos((i-3)/3*1.2)*12*z-Math.sin(t*3+i)*2*z;g.globalAlpha=.4+.6*k;star(px,py,(3+4*k)*z,i%2?'#fff6c2':'#ffd23d')}break;
     case 1: // enojado: fuego
       for(let i=-1;i<=1;i++)flame(x+i*9*z,hy+2*z,(16+(i?0:6))*z,10*z,i*2);break;
     case 2: // rabia: fuego grande + 💢 + aura roja
-      aura('rgba(255,40,40,A)',.28,52);for(let i=-2;i<=2;i++)flame(x+i*8*z,hy+2*z,(18+(2-Math.abs(i))*6)*z,11*z,i*1.3);
+      for(let i=-2;i<=2;i++)flame(x+i*8*z,hy+2*z,(18+(2-Math.abs(i))*6)*z,11*z,i*1.3);
       g.font=Math.round(16*z*(1+.15*Math.sin(t*8)))+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('💢',x+26*z,hy-18*z);break;
     case 3: // sueño: zzz y aura azul
-      aura('rgba(120,140,255,A)',.16,44);for(let i=0;i<3;i++){const p=(t+i*.6)%1.8;g.globalAlpha=Math.max(0,1-p/1.8);g.font='800 '+Math.round((10+i*4)*z)+'px Manrope, sans-serif';g.lineWidth=3;g.strokeStyle='#14162a';const zx=x+(22+p*12)*z,zy=hy-(4+p*22)*z;g.strokeText('z',zx,zy);g.fillStyle='#dfe3ff';g.fillText('z',zx,zy)}break;
+      for(let i=0;i<3;i++){const p=(t+i*.6)%1.8;g.globalAlpha=Math.max(0,1-p/1.8);g.font='800 '+Math.round((10+i*4)*z)+'px Manrope, sans-serif';g.lineWidth=3;g.strokeStyle='#14162a';const zx=x+(22+p*12)*z,zy=hy-(4+p*22)*z;g.strokeText('z',zx,zy);g.fillStyle='#dfe3ff';g.fillText('z',zx,zy)}break;
     case 4: {// creativo: ampolleta brillando
       const k=.6+.4*Math.sin(t*4),by=hy-12*z;g.globalAlpha=.5*k;g.strokeStyle='#ffe066';g.lineWidth=2*z;for(let i=0;i<8;i++){const an=i*Math.PI/4;g.beginPath();g.moveTo(x+Math.cos(an)*12*z,by+Math.sin(an)*12*z);g.lineTo(x+Math.cos(an)*18*z,by+Math.sin(an)*18*z);g.stroke()}
       g.globalAlpha=1;g.font=Math.round(20*z)+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('💡',x,by);g.globalAlpha=k;star(x+20*z,by-10*z,4*z,'#fff6c2');star(x-20*z,by+2*z,3*z,'#ffd23d');break}
@@ -1914,8 +1922,8 @@ function moodFx(x,y,md,now,fy){if(md==null)return;const g=ctx,z=Math.max(1.5,zoo
       g.fillStyle='rgba(255,255,255,.92)';[[10,-2,2.5],[16,-9,4]].forEach(([dx,dy,r])=>{g.beginPath();g.arc(x+dx*z,hy+dy*z,r*z,0,Math.PI*2);g.fill()});
       g.beginPath();g.ellipse(x+26*z,hy-22*z,13*z,10*z,0,0,Math.PI*2);g.fill();g.fillStyle='#3d4cff';g.font='800 '+Math.round(13*z*(1+.1*Math.sin(t*4)))+'px Manrope, sans-serif';g.fillText('?',x+26*z,hy-21*z);break;
     case 8: // concentrado: aura zen que respira
-      {const br=.5+.5*Math.sin(t*1.2);aura('rgba(170,150,255,A)',.22+.12*br,40+10*br);g.strokeStyle='rgba(200,190,255,.7)';g.lineWidth=1.5*z;
-      for(let i=0;i<3;i++){const p=(t*.35+i/3)%1;g.globalAlpha=(1-p)*.8;g.beginPath();g.ellipse(x,fy-2*z,(12+p*30)*z,(4+p*9)*z,0,0,Math.PI*2);g.stroke()}
+      {const br=.5+.5*Math.sin(t*1.2);g.strokeStyle='rgba(200,190,255,.8)';g.lineWidth=1.5*z;
+      for(let i=0;i<3;i++){const p=(t*.35+i/3)%1;g.globalAlpha=(1-p)*.8;g.beginPath();g.ellipse(x,hy-12*z,(8+p*14)*z,(3+p*5)*z,0,0,Math.PI*2);g.stroke()}
       g.globalAlpha=.75+.25*br;g.font=Math.round(15*z)+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('🧘',x,hy-16*z-br*4*z)}break;
     case 9: {// en pausa: tacita con vapor
       const cx=x+20*z,cy=hy-6*z;g.font=Math.round(15*z)+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('☕',cx,cy);g.strokeStyle='rgba(255,255,255,.7)';g.lineWidth=1.5*z;
@@ -1924,9 +1932,9 @@ function moodFx(x,y,md,now,fy){if(md==null)return;const g=ctx,z=Math.max(1.5,zoo
       for(let i=0;i<14;i++){const p=((t*.8)+i/14)%1;g.globalAlpha=1-p;g.fillStyle=['#ff6b7a','#ffd23d','#3ddc97','#5cc6e0','#8a92ff','#e86fa8'][i%6];g.save();g.translate(x+(-30+i*4.6)*z+Math.sin(p*9+i)*5,hy-(28*p)*z+p*p*40*z);g.rotate(p*8+i);g.fillRect(-2*z,-3*z,4*z,6*z);g.restore()}
       g.globalAlpha=1;g.font=Math.round(15*z)+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('🎉',x+24*z,hy-14*z);break;
     case 11: // enfermo: burbujas verdes
-      aura('rgba(120,220,120,A)',.16,42);for(let i=0;i<6;i++){const p=(t*.5+i/6)%1;g.globalAlpha=(1-p)*.8;g.strokeStyle='#7fe08a';g.lineWidth=1.5*z;g.beginPath();g.arc(x+(-14+i*6)*z+Math.sin(t*2+i)*4,hy-(p*28)*z,(2+p*4)*z,0,Math.PI*2);g.stroke()}break;
+      for(let i=0;i<6;i++){const p=(t*.5+i/6)%1;g.globalAlpha=(1-p)*.8;g.strokeStyle='#7fe08a';g.lineWidth=1.5*z;g.beginPath();g.arc(x+(-14+i*6)*z+Math.sin(t*2+i)*4,hy-(p*28)*z,(2+p*4)*z,0,Math.PI*2);g.stroke()}break;
     case 12: // tranquilo: hojitas flotando y aura verde
-      aura('rgba(110,220,170,A)',.2,46);for(let i=0;i<4;i++){const p=(t*.25+i/4)%1,lx=x+Math.sin(p*Math.PI*2+i)*26*z,ly=hy+10*z-p*36*z;g.globalAlpha=Math.sin(p*Math.PI);
+      for(let i=0;i<4;i++){const p=(t*.25+i/4)%1,lx=x+Math.sin(p*Math.PI*2+i)*26*z,ly=hy+10*z-p*36*z;g.globalAlpha=Math.sin(p*Math.PI);
         g.save();g.translate(lx,ly);g.rotate(Math.sin(t*2+i)*.8);g.fillStyle=i%2?'#7fd18a':'#a6e3a1';g.beginPath();g.ellipse(0,0,6*z,3*z,0,0,Math.PI*2);g.fill();g.strokeStyle='#4f9a5a';g.lineWidth=1;g.beginPath();g.moveTo(-6*z,0);g.lineTo(6*z,0);g.stroke();g.restore()}break;
   }
   g.restore()}
@@ -2049,9 +2057,22 @@ function teleRide(up){const ov=$('teleOv'),cv=$('teleCv'),g=cv.getContext('2d');
   const t0=performance.now(),dur=5500;let done=false;
   const end=()=>{if(done)return;done=true;ov.hidden=true;travel(up?'cerro':'jardin')};$('teleSkip').onclick=end;
   (function f(now){if(done)return;const k=Math.min(1,(now-t0)/dur);drawPanorama(g,cv.width,cv.height,up?k:1-k,true);if(k>=1){setTimeout(end,250);return}requestAnimationFrame(f)})(t0)}
+// sendero a pie: animación corta del personaje caminando por el cerro
+function trailWalk(up){const ov=$('teleOv'),cv=$('teleCv'),g=cv.getContext('2d');ov.hidden=false;keys.clear();me.path=null;
+  cv.width=Math.min(1280,innerWidth)*devicePixelRatio;cv.height=Math.min(720,innerHeight)*devicePixelRatio;$('teleTitle').textContent=up?'Subiendo a pie por el sendero 🥾':'Bajando a pie por el sendero 🥾';
+  const t0=performance.now(),dur=4500;let done=false;const end=()=>{if(done)return;done=true;ov.hidden=true;travel(up?'sendero':'jardin2')};$('teleSkip').onclick=end;
+  (function f(now){if(done)return;const k=Math.min(1,(now-t0)/dur),W=cv.width,H=cv.height;drawPanorama(g,W,H,.2+k*.1,false);
+    g.fillStyle='rgba(120,160,70,.95)';g.beginPath();g.moveTo(0,H);g.lineTo(0,H*.75);g.quadraticCurveTo(W*.5,H*.35,W,H*.62);g.lineTo(W,H);g.fill();
+    g.strokeStyle='#d8c9a0';g.lineWidth=H*.03;g.beginPath();g.moveTo(W*.08,H);g.lineTo(W*.5,H*.86);g.lineTo(W*.22,H*.74);g.lineTo(W*.6,H*.62);g.stroke();
+    for(let i=0;i<9;i++){g.fillStyle=['#5c8a35','#6e9a3a','#4f7a2a'][i%3];g.beginPath();g.arc(W*(.05+i*.115),H*(.8+((i*37)%5)*.03),H*.05,0,Math.PI*2);g.fill()}
+    const pts=[[.08,1],[.5,.86],[.22,.74],[.6,.62]],u=up?k:1-k,seg=Math.min(2,Math.floor(u*3)),q=u*3-seg,[ax,ay]=pts[seg],[bx,by]=pts[seg+1],px=(ax+(bx-ax)*q)*W,py=(ay+(by-ay)*q)*H;
+    if(profile)drawChar(g,px,py,profile.look,bx>ax?'right':'left',Math.floor(now/150)%4,false,Math.max(3,Math.round(H/140)));
+    if(k>=1){setTimeout(end,200);return}requestAnimationFrame(f)})(t0)}
 // actividades: yoga y ejercicio
-function startAct(f,type){if(me.sit)standUp();me.x=(f.x+(f.w||1)/2)*T;me.y=(f.y+(f.h||1))*T-4;me.dir='down';me.path=null;me.auto=null;me.act={t:type,t0:performance.now(),reps:0,next:performance.now()+900};
-  pushPresence(true);toast(type==='yoga'?'🧘 Respira profundo… sigue la guía. Muévete para terminar.':'💪 ¡A entrenar! Muévete para terminar.')}
+function startAct(f,type){if(me.sit)standUp();me.x=(f.x+(f.w||1)/2)*T;me.y=f.s?(f.y+(f.h||1))*T+22:(f.y+(f.h||1))*T-4; // frente al aparato (no encima)
+  me.dir='down';me.path=null;me.auto=null;me.act={t:type,t0:performance.now(),reps:0,next:performance.now()+900};
+  pushPresence(true);$('actStop').hidden=false;toast(type==='yoga'?'🧘 Respira profundo… sigue la guía. Para terminar: muévete, Esc o ⏹ Terminar.':'💪 ¡A entrenar! Para terminar: muévete, Esc o ⏹ Terminar.')}
+function stopAct(){if(!me.act)return;const a=me.act;me.act=null;$('actStop').hidden=true;pushPresence(true);if(a.t==='ex'&&a.reps)toast('💪 Terminaste: '+a.reps+' repeticiones. ¡Bien!');else if(a.t==='yoga')toast('🧘 Terminaste tu sesión de yoga.')}
 function actTick(now){const a=me.act;if(!a)return;
   if(a.t==='ex'&&now>a.next){a.next=now+900;a.reps++;a.pop=now;if(a.reps%10===0){toast('💪 ¡'+a.reps+' repeticiones! Sigue así.');sendEmote(5)}}
   if(a.t==='yoga'&&!a.done&&now-a.t0>60000){a.done=true;toast('🧘 ¡1 minuto de yoga! Te sientes más tranquilo.');profile.mood=12;try{localStorage.setItem(PROFILE_KEY,JSON.stringify(profile))}catch(e){}moodUI();pushPresence(true)}}
@@ -2060,13 +2081,13 @@ function drawActAvatar(a,now,x,y){const t=actOf(a);if(!t)return false;
   if(t==='yoga'){const br=Math.sin(now/1600*Math.PI);drawChar(ctx,x,y-2-Math.round(br*2),a.look,'down',0,true,2);return true}
   if(t==='ex'){const ph=now/220;drawChar(ctx,x,y-Math.round(Math.abs(Math.sin(ph))*10),a.look,'down',Math.floor(ph*2)%4,false,2);return true}return false}
 function actFx(x,top,fy,t,now,isMe){if(!t)return;const g=ctx,z=Math.max(1.5,zoom*1.35);g.save();g.textAlign='center';g.textBaseline='middle';
-  if(t==='yoga'){const br=.5+.5*Math.sin(now/1600*Math.PI);const rg=g.createRadialGradient(x,fy-24*zoom,4,x,fy-24*zoom,(40+12*br)*zoom);rg.addColorStop(0,'rgba(170,150,255,'+(.28+.15*br)+')');rg.addColorStop(1,'rgba(170,150,255,0)');g.fillStyle=rg;g.beginPath();g.arc(x,fy-24*zoom,(40+12*br)*zoom,0,Math.PI*2);g.fill();
+  if(t==='yoga'){
     if(isMe){g.font='800 '+Math.round(12*z)+'px Manrope, sans-serif';g.lineWidth=4;g.strokeStyle='rgba(20,22,42,.8)';const txt=Math.sin(now/1600*Math.PI)>0?'Inhala…':'Exhala…';g.strokeText(txt,x,top-34*z);g.fillStyle='#e6e2ff';g.fillText(txt,x,top-34*z)}}
-  if(t==='ex'){for(let i=0;i<3;i++){const p=((now/700)+i/3)%1;g.globalAlpha=1-p;g.fillStyle='#7fc8ff';g.beginPath();g.ellipse(x+(i-1)*14*zoom,top+6*zoom+p*20*zoom,2*z,3*z,0,0,Math.PI*2);g.fill()}
-    g.globalAlpha=1;g.font=Math.round(15*z)+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('💪',x+24*z,top-10*z);
-    if(isMe&&me.act&&me.act.pop&&now-me.act.pop<700){const k=(now-me.act.pop)/700;g.globalAlpha=1-k;g.font='800 '+Math.round(13*z)+'px Manrope, sans-serif';g.lineWidth=4;g.strokeStyle='rgba(20,22,42,.8)';g.strokeText('+1 · '+me.act.reps,x,top-30*z-k*14);g.fillStyle='#ffd23d';g.fillText('+1 · '+me.act.reps,x,top-30*z-k*14)}}
+  if(t==='ex'){for(let i=0;i<3;i++){const p=((now/700)+i/3)%1;g.globalAlpha=1-p;g.fillStyle='#7fc8ff';g.beginPath();g.ellipse(x+(i-1)*16*zoom,top-44*zoom+p*14*zoom,2*z,3*z,0,0,Math.PI*2);g.fill()}
+    g.globalAlpha=1;g.font=Math.round(15*z)+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('💪',x+26*z,top-30*z);
+    if(isMe&&me.act&&me.act.pop&&now-me.act.pop<700){const k=(now-me.act.pop)/700;g.globalAlpha=1-k;g.font='800 '+Math.round(13*z)+'px Manrope, sans-serif';g.lineWidth=4;g.strokeStyle='rgba(20,22,42,.8)';g.strokeText('+1 · '+me.act.reps,x,top-46*z-k*14);g.fillStyle='#ffd23d';g.fillText('+1 · '+me.act.reps,x,top-46*z-k*14)}}
   g.restore()}
-$('teleSkip').onclick=()=>{};
+$('teleSkip').onclick=()=>{};$('actStop').onclick=()=>stopAct();addEventListener('keydown',e=>{if(e.key==='Escape'&&me.act&&modal.hidden){stopAct()}});
 /* ================= Travesuras y mascotas ================= */
 // Tomates para lanzar (Q), cáscaras de plátano para dejar en el suelo (B) y mascotas que te siguen.
 const inv={tom:0,ban:0};
