@@ -1174,7 +1174,7 @@ function applyPeers(list){
     const x=Math.max(0,Math.min(MW*T,+pr.x||0)),y=Math.max(0,Math.min(MH*T,+pr.y||0));
     let o=others.get(p.peer);
     if(!o){o={x,y,walk:0,emoteAt:0,sayAt:0,emoteId:null,sayId:null};others.set(p.peer,o);if(announceReady)sysMsg(name+' llegó a la oficina')}
-    o.name=name;o.look=sanLook(pr.l);o.tx=x;o.ty=y;o.dir=DIRS.includes(pr.d)?pr.d:'down';o.m=!!pr.m;o.st=!!pr.st;o.ty=!!pr.ty;o.dk=Number.isInteger(pr.dk)&&pr.dk>=0&&pr.dk<DESKS.length?pr.dk:null;o.g=GAME_NAMES[pr.g]?pr.g:null;
+    o.name=name;o.look=sanLook(pr.l);o.tx=x;o.ty=y;o.dir=DIRS.includes(pr.d)?pr.d:'down';o.m=!!pr.m;o.st=!!pr.st;o.typ=!!pr.ty;o.dk=Number.isInteger(pr.dk)&&pr.dk>=0&&pr.dk<DESKS.length?pr.dk:null;o.g=GAME_NAMES[pr.g]?pr.g:null;
     o.hp=Number.isFinite(pr.hp)?Math.max(0,Math.min(100,pr.hp)):100;o.ko=!!pr.ko;if(pr.a!==o.atkSeq){if(o.atkSeq!==undefined)o.atkAt=performance.now();o.atkSeq=pr.a}o.guest=!!p.guest;o.mine=p.isMe;
     const e=pr.e&&typeof pr.e==='object'?pr.e:null;
     if(e&&e.i!==o.emoteId){o.emoteId=e.i;o.emote=EMOTES[(e.k|0)]||null;o.emoteAt=performance.now()}
@@ -1342,7 +1342,7 @@ function draw(now){
     if(em&&em.emote&&now-em.emoteAt<2600){const t=(now-em.emoteAt)/2600;ctx.globalAlpha=t>.8?(1-t)*5:1;ctx.font='24px system-ui, "Apple Color Emoji", "Segoe UI Emoji", sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(em.emote,sx,top-30-Math.sin(t*Math.PI)*10);ctx.globalAlpha=1;by=top-60}
     const sb=a.isMe?mySay:a.o;const dur=sb&&sb.sayText?Math.min(15000,6000+sb.sayText.length*70):0;
     if(sb&&sb.sayText&&now-sb.sayAt<dur)bubble(sx,by,sb.sayText,Math.min(1,(dur-(now-sb.sayAt))/400));
-    else if(!a.isMe&&a.o.ty)typingBubble(sx,by,now);
+    else if(!a.isMe&&a.o.typ)typingBubble(sx,by,now);
   }
 }
 const myEmote={emote:null,emoteAt:0},mySay={sayText:'',sayAt:0};
