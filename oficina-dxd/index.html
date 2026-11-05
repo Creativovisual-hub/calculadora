@@ -36,6 +36,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lav);outline-of
 .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(61,220,151,.2)}
 .dot.off{background:#7d82a8;box-shadow:none}
 .bl{left:12px;bottom:12px;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+#voiceBtn.on{background:var(--ok);color:#06231a}#voiceBtn.muted{background:var(--bad);color:#fff}
 .mecard{display:flex;align-items:center;gap:10px;background:var(--ink);padding:6px 6px 6px 8px;border-radius:14px;border:1px solid var(--line)}
 .mecard img{width:32px;height:26px;image-rendering:pixelated}
 .mecard .nm{font-weight:800;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -282,7 +283,7 @@ aside#panel.open{transform:none}
     </div>
     <input class="hud" id="sayBox" maxlength="140" placeholder="Di algo y presiona Enter" autocomplete="off" aria-label="Mensaje sobre tu personaje" hidden>
     <div class="hud bl">
-      <div class="row"><button class="btn atk" id="atkBtn" hidden>⚔️ Atacar <kbd>Espacio</kbd></button><button class="btn pri talk" id="talkBtn">💬 Hablar <kbd>T</kbd></button><div class="emotes" id="emotes" aria-label="Reacciones"></div></div>
+      <div class="row"><button class="btn atk" id="atkBtn" hidden>⚔️ Atacar <kbd>Espacio</kbd></button><button class="btn pri talk" id="talkBtn">💬 Hablar <kbd>T</kbd></button><button class="btn voice" id="voiceBtn" type="button">🎙️ Voz</button><button class="btn" id="voiceLeave" type="button" hidden title="Salir de la voz">✕</button><div class="emotes" id="emotes" aria-label="Reacciones"></div></div>
       <div class="mecard">
         <img id="meHead" alt="">
         <div><div class="nm" id="meName">Tú</div><div class="zn" id="meZone">Oficina</div></div>
@@ -810,6 +811,7 @@ const NPCS=[
     lines:['¡Bienvenido a la oficina DXD! Soy Dexi, la guía.',
       'Muévete con WASD o las flechas, o haz clic donde quieras ir.',
       'Presiona T para hablar: tu mensaje aparece sobre tu cabeza y todos lo ven.',
+      'Con el botón 🎙️ Voz hablas con tu micrófono: te escuchan quienes estén en tu misma sala, y más bajito los que estén cerca. M para silenciarte.',
       'Sam Tomaz está en el piso 14: toma el ascensor del pasillo norte. Carito está en Equipo Producto, Sabi en la Biblioteca y Yab en la Sala Insight.',
       'En la Galería Chile hay cuadros de Santiago y la cordillera. Acércate y presiona E para verlos en grande.',
       'Para jugar: Stop, arcade y karting (en la consola) en la Sala de juegos, ping pong junto al lobby, pesca en el acuario de la Biblioteca y la Arena de espadas saliendo por la puerta principal.']},
@@ -1120,6 +1122,7 @@ addEventListener('keydown',e=>{
   else if(e.code==='KeyE'){runPrompt(0)}
   else if(e.code==='KeyR'){runPrompt(1)}
   else if(e.code==='KeyT'||e.key==='Enter'){e.preventDefault();openSay()}
+  else if(e.code==='KeyM'&&vc.on){e.preventDefault();vcMute(!vc.muted)}
   else if(/^[1-6]$/.test(e.key))sendEmote(+e.key-1);
 });
 addEventListener('keyup',e=>{if(KEYMAP[e.code])keys.delete(KEYMAP[e.code]);if(!gameModal.hidden)gameKey(e,false)});
@@ -1202,7 +1205,7 @@ function claimDesk(i){const cur=deskOwners()[i];
 
 /* ================= Presencia ================= */
 let lastPush=0,pushPending=false,lastSent='';
-function presencePayload(){return{n:profile.name,l:profile.look,x:Math.round(me.x),y:Math.round(me.y),d:me.dir,m:me.moving?1:0,e:me.emote,s:me.say,st:me.sit?1:0,g:me.game,ty:me.typing?1:0,dk:me.desk==null?null:me.desk,hp:inArena()?me.hp:null,ko:me.ko?1:0,a:me.atkSeq}}
+function presencePayload(){return{n:profile.name,l:profile.look,x:Math.round(me.x),y:Math.round(me.y),d:me.dir,m:me.moving?1:0,e:me.emote,s:me.say,st:me.sit?1:0,g:me.game,ty:me.typing?1:0,v:vc.on?1:0,sp:vc.speaking&&!vc.muted?1:0,dk:me.desk==null?null:me.desk,hp:inArena()?me.hp:null,ko:me.ko?1:0,a:me.atkSeq}}
 function pushPresence(force){
   if(!room||!profile)return;const now=performance.now();
   const p=presencePayload();const k=JSON.stringify(p);if(k===lastSent&&!force)return;
@@ -1218,7 +1221,7 @@ function applyPeers(list){
     const x=Math.max(0,Math.min(MW*T,+pr.x||0)),y=Math.max(0,Math.min(MH*T,+pr.y||0));
     let o=others.get(p.peer);
     if(!o){o={x,y,walk:0,emoteAt:0,sayAt:0,emoteId:null,sayId:null};others.set(p.peer,o);if(announceReady)sysMsg(name+' llegó a la oficina')}
-    o.name=name;o.look=sanLook(pr.l);o.tx=x;o.ty=y;o.dir=DIRS.includes(pr.d)?pr.d:'down';o.m=!!pr.m;o.st=!!pr.st;o.typ=!!pr.ty;o.dk=Number.isInteger(pr.dk)&&pr.dk>=0&&pr.dk<DESKS.length?pr.dk:null;o.g=GAME_NAMES[pr.g]?pr.g:null;
+    o.name=name;o.look=sanLook(pr.l);o.tx=x;o.ty=y;o.dir=DIRS.includes(pr.d)?pr.d:'down';o.m=!!pr.m;o.st=!!pr.st;o.typ=!!pr.ty;o.v=!!pr.v;o.sp=!!pr.sp;o.dk=Number.isInteger(pr.dk)&&pr.dk>=0&&pr.dk<DESKS.length?pr.dk:null;o.g=GAME_NAMES[pr.g]?pr.g:null;
     o.hp=Number.isFinite(pr.hp)?Math.max(0,Math.min(100,pr.hp)):100;o.ko=!!pr.ko;if(pr.a!==o.atkSeq){if(o.atkSeq!==undefined)o.atkAt=performance.now();o.atkSeq=pr.a}o.guest=!!p.guest;o.mine=p.isMe;
     const e=pr.e&&typeof pr.e==='object'?pr.e:null;
     if(e&&e.i!==o.emoteId){o.emoteId=e.i;o.emote=EMOTES[(e.k|0)]||null;o.emoteAt=performance.now()}
@@ -1283,7 +1286,7 @@ function onDuel(m){const d=m.data;if(!d||typeof d!=='object')return;
 /* ================= Loop ================= */
 let last=performance.now(),lastZone='',promptTick=0;
 function step(now){
-  musicUpdate();
+  musicUpdate();vcTick();
   const dt=Math.min(.05,(now-last)/1000);last=now;
   if(profile&&gameModal.hidden&&stopModal.hidden&&artModal.hidden)updateMe(dt);
   if(profile)arenaStep(dt,now);
@@ -1380,7 +1383,7 @@ function draw(now){
     const sx=(a.x-camX)*zoom,sy=(a.y-camY)*zoom,top=sy-(a.ko&&myReg===2?30:a.sit?52:58)*zoom;
     if(a.isMe&&!sayBox.hidden){sayBox.style.left=sx+'px';sayBox.style.top=(top-34)+'px'}
     if(sx<-150||sx>vw+150||sy<-80||sy>vh+150)continue;
-    nameTag(sx,top-6,a.name,a.isMe,a.g);
+    nameTag(sx,top-6,a.name,a.isMe,a.g,vcState(a.isMe?null:a.o));
     if(myReg===2)hpBar(sx,top-1,a.hp,a.ko);
     if(a.isMe&&!sayBox.hidden)continue;
     const em=a.isMe?myEmote:a.o;let by=top-30;
@@ -1391,13 +1394,14 @@ function draw(now){
   }
 }
 const myEmote={emote:null,emoteAt:0},mySay={sayText:'',sayAt:0};
-function nameTag(x,y,name,isMe,game){
-  const label=game?name+'  🕹️':name;
+function nameTag(x,y,name,isMe,game,voice){
+  const label=(voice?'🎙️ ':'')+(game?name+'  🕹️':name);
   ctx.font='700 12px Manrope, sans-serif';const w=ctx.measureText(label).width+26,h=22;
   ctx.fillStyle=isMe?'rgba(38,48,190,.95)':'rgba(6,7,13,.88)';ctx.beginPath();ctx.roundRect(x-w/2,y-h,w,h,8);ctx.fill();
   ctx.fillStyle='#3ddc97';ctx.beginPath();ctx.arc(x-w/2+11,y-h/2,3.5,0,Math.PI*2);ctx.fill();
   ctx.fillStyle='#fff';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(label,x-w/2+19,y-h/2+1);
-  ctx.beginPath();ctx.moveTo(x-4,y);ctx.lineTo(x+4,y);ctx.lineTo(x,y+4);ctx.fillStyle=isMe?'rgba(38,48,190,.95)':'rgba(6,7,13,.88)';ctx.fill()}
+  ctx.beginPath();ctx.moveTo(x-4,y);ctx.lineTo(x+4,y);ctx.lineTo(x,y+4);ctx.fillStyle=isMe?'rgba(38,48,190,.95)':'rgba(6,7,13,.88)';ctx.fill();
+  if(voice===2){ctx.strokeStyle='#3ddc97';ctx.lineWidth=2.5;ctx.beginPath();ctx.roundRect(x-w/2-2,y-h-2,w+4,h+4,10);ctx.stroke()}}
 function npcTag(x,y,name,role){
   ctx.font='800 12px Manrope, sans-serif';const nw=ctx.measureText(name).width;ctx.font='800 9px Manrope, sans-serif';const rw=ctx.measureText(role.toUpperCase()).width+10;
   const w=nw+rw+22,h=22;const gr=ctx.createLinearGradient(x-w/2,0,x+w/2,0);gr.addColorStop(0,'#3141f0');gr.addColorStop(1,'#8a92ff');
@@ -1548,6 +1552,60 @@ function musicUpdate(){if(!profile)return;
 function musicBtnLabel(){const b=$('musicBtn');b.textContent=musicOn?'🔊 Música':'🔇 Música';b.setAttribute('aria-pressed',musicOn)}
 function setMusic(on){musicOn=on;try{localStorage.setItem(MUSIC_KEY,on?'1':'0')}catch(e){}musicBtnLabel();if(on)sfxUnlock();musicUpdate()}
 $('musicBtn').onclick=()=>setMusic(!musicOn);musicBtnLabel(); // el ambiente arranca desde el loop (step)
+/* ================= Voz por cercanía (WebRTC) ================= */
+// Cada persona que entra a la voz se conecta directo (navegador a navegador) con las
+// demás que estén en voz. Las señales de conexión viajan por la sala en vivo.
+// Volumen: misma sala = fuerte; más lejos = más bajo; otro piso o la Arena = no se oye.
+const VC_ICE=[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']},{urls:'stun:stun.cloudflare.com:3478'}];
+const vc={on:false,muted:false,stream:null,pcs:new Map(),speaking:false,an:null,buf:null,hold:0};
+function vcEmit(d){if(room)room.emit('rtc',d).catch(()=>{})}
+function vcUI(){const b=$('voiceBtn'),l=$('voiceLeave');
+  b.textContent=!vc.on?'🎙️ Voz':vc.muted?'🔇 Silenciado':'🎙️ Micrófono';b.classList.toggle('on',vc.on&&!vc.muted);b.classList.toggle('muted',vc.on&&vc.muted);
+  b.title=!vc.on?'Unirte a la voz':'Silenciar o activar tu micrófono (M)';l.hidden=!vc.on}
+async function vcJoin(){if(vc.on)return;if(!room){toast('Sin conexión en vivo: la voz no está disponible.');return}
+  if(!navigator.mediaDevices||!window.RTCPeerConnection){toast('Este navegador no permite voz.');return}
+  try{vc.stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}})}
+  catch(e){toast('No se pudo usar el micrófono. Revisa el permiso del navegador.');return}
+  vc.on=true;vc.muted=false;
+  try{sfxUnlock();if(sfxCtx){vc.an=sfxCtx.createAnalyser();vc.an.fftSize=512;vc.buf=new Float32Array(512);sfxCtx.createMediaStreamSource(vc.stream).connect(vc.an)}}catch(e){vc.an=null}
+  vcUI();pushPresence(true);vcEmit({t:'join'});toast('Entraste a la voz: te escuchan quienes estén cerca. M para silenciar.')}
+function vcClose(id){const p=vc.pcs.get(id);if(!p)return;vc.pcs.delete(id);try{p.pc.close()}catch(e){}p.audio.srcObject=null;p.audio.remove()}
+function vcLeave(){if(!vc.on)return;vcEmit({t:'leave'});for(const id of [...vc.pcs.keys()])vcClose(id);
+  if(vc.stream)vc.stream.getTracks().forEach(t=>t.stop());vc.stream=null;vc.an=null;vc.on=false;vc.speaking=false;vcUI();pushPresence(true)}
+function vcMute(m){if(!vc.on)return;vc.muted=m;vc.stream.getAudioTracks().forEach(t=>t.enabled=!m);if(m)vc.speaking=false;vcUI();pushPresence(true)}
+function vcPeer(id){let p=vc.pcs.get(id);if(p)return p;
+  const pc=new RTCPeerConnection({iceServers:VC_ICE});const audio=document.createElement('audio');audio.autoplay=true;audio.playsInline=true;audio.volume=0;audio.hidden=true;document.body.appendChild(audio);
+  p={pc,audio,pending:[]};vc.pcs.set(id,p);
+  vc.stream.getTracks().forEach(t=>pc.addTrack(t,vc.stream));
+  pc.onicecandidate=e=>{if(e.candidate)vcEmit({t:'ice',to:id,c:e.candidate.toJSON()})};
+  pc.ontrack=e=>{audio.srcObject=e.streams[0]||new MediaStream([e.track]);audio.play().catch(()=>{})};
+  pc.onconnectionstatechange=()=>{if(pc.connectionState==='failed'||pc.connectionState==='closed')vcClose(id)};
+  return p}
+async function vcFlush(p){for(const c of p.pending.splice(0))try{await p.pc.addIceCandidate(c)}catch(e){}}
+async function vcCall(id){try{const p=vcPeer(id);await p.pc.setLocalDescription(await p.pc.createOffer());
+  vcEmit({t:'offer',to:id,sdp:{type:p.pc.localDescription.type,sdp:p.pc.localDescription.sdp}})}catch(e){vcClose(id)}}
+async function vcOnMsg(m){const d=m.data;if(!d||typeof d!=='object'||m.sameTab||!vc.on)return;const from=m.peer;if(typeof from!=='string')return;
+  if(d.to&&d.to!==myPeer)return;
+  try{
+    if(d.t==='join'){vcClose(from);vcEmit({t:'here',to:from});if(myPeer<from)vcCall(from)}
+    else if(d.t==='here'){if(!vc.pcs.has(from)&&myPeer<from)vcCall(from)}
+    else if(d.t==='offer'&&d.sdp){let p=vc.pcs.get(from);if(p&&p.pc.remoteDescription){vcClose(from);p=null}p=vcPeer(from);
+      await p.pc.setRemoteDescription(d.sdp);await vcFlush(p);await p.pc.setLocalDescription(await p.pc.createAnswer());
+      vcEmit({t:'answer',to:from,sdp:{type:p.pc.localDescription.type,sdp:p.pc.localDescription.sdp}})}
+    else if(d.t==='answer'&&d.sdp){const p=vc.pcs.get(from);if(p&&!p.pc.remoteDescription){await p.pc.setRemoteDescription(d.sdp);await vcFlush(p)}}
+    else if(d.t==='ice'&&d.c){const p=vc.pcs.get(from)||vcPeer(from);if(p.pc.remoteDescription)await p.pc.addIceCandidate(d.c).catch(()=>{});else p.pending.push(d.c)}
+    else if(d.t==='leave')vcClose(from);
+  }catch(e){vcClose(from)}}
+function vcVol(o){if(regionOf(o.tx,o.ty)!==regionOf(me.x,me.y))return 0;
+  if(zoneAt(o.tx,o.ty)===zoneAt(me.x,me.y))return 1;
+  const d=Math.hypot(o.tx-me.x,o.ty-me.y);return Math.max(0,Math.min(1,1-(d-3*T)/(9*T)))*.8}
+function vcTick(){if(!vc.on)return;
+  for(const [id,p] of vc.pcs){const o=others.get(id);if(!o){vcClose(id);continue}const v=vcVol(o);p.audio.volume+=(v-p.audio.volume)*.15;if(Math.abs(p.audio.volume-v)<.01)p.audio.volume=v}
+  if(vc.an&&!vc.muted){vc.an.getFloatTimeDomainData(vc.buf);let s=0;for(const x of vc.buf)s+=x*x;const rms=Math.sqrt(s/vc.buf.length),now=performance.now();
+    if(rms>.02)vc.hold=now+350;const sp=now<vc.hold;if(sp!==vc.speaking){vc.speaking=sp;pushPresence(true)}}}
+function vcState(o){return o?(o.v?(o.sp?2:1):0):(vc.on&&!vc.muted?(vc.speaking?2:1):vc.on?1:0)}
+$('voiceBtn').onclick=()=>{if(!vc.on)vcJoin();else vcMute(!vc.muted)};$('voiceLeave').onclick=()=>vcLeave();
+addEventListener('pagehide',()=>vcLeave());vcUI();
 async function sendChat(raw){
   if(!profile)return;const text=cleanStr(raw,140);if(!text)return;
   playSfx('out');
@@ -2048,6 +2106,7 @@ async function connect(){
     room.onPeers(ch=>applyPeers(ch.peers),()=>{room=null;others.clear();renderPeople();updateStatus()});
     room.onConnection(ok=>{updateStatus();if(ok)pushPresence(true)},()=>{});
     room.on('duel',onDuel,()=>{});
+    room.on('rtc',vcOnMsg,()=>{});
     if(!db)room.on('chat',m=>{const p=parseMsg(m.data);if(!p)return;localMsgs.push(p);if(localMsgs.length>150)localMsgs.shift();renderMsgs();if(!m.sameTab)onNewIncoming()},()=>{});
     setTimeout(()=>{announceReady=true},3000);pushPresence(true)}
   if(db){
