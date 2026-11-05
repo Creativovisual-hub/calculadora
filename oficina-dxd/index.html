@@ -143,6 +143,10 @@ form#send{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
 #screenPanel.mini{top:auto;bottom:96px;left:auto;right:12px;transform:none;width:300px}
 #shareBtn.on{background:var(--bad);color:#fff}
 #moodBtn{font-size:18px;padding:6px 9px}
+#volPop{position:fixed;z-index:40;top:56px;left:12px;width:min(320px,calc(100vw - 24px));background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:12px}
+#volPop .vrow{display:grid;grid-template-columns:86px minmax(0,1fr) 40px;align-items:center;gap:8px;font-size:13px;font-weight:700}#volPop .vrow b{text-align:right;color:var(--lav);font-size:12px}
+#volPop .vtog{display:flex;gap:8px}#volPop input[type=range]{width:100%;accent-color:#3d4cff}#volPop .vnote{margin:0;color:var(--muted);font-size:11px;line-height:1.45}
+#musicBtn{border:0;color:var(--text)}
 #djPanel{position:fixed;z-index:25;top:64px;right:12px;width:min(360px,calc(100vw - 24px));max-height:calc(100vh - 150px);display:flex;flex-direction:column;background:var(--ink);border:1px solid #4a3a8a;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 3px rgba(255,61,139,.15);overflow:hidden}
 #djPanel .djh{display:flex;align-items:center;gap:6px;padding:10px 10px 8px 14px;background:linear-gradient(90deg,#2a1f4e,#3d1f4e)}#djPanel .djh b{flex:1;font-size:14px}#djPanel .djh .btn{padding:5px 9px;font-size:12px}
 #djPanel .djb{padding:12px 14px;overflow:auto;display:flex;flex-direction:column;gap:10px}#djPanel.mini .djb{display:none}
@@ -343,6 +347,12 @@ aside#panel.open{transform:none}
 </div>
 
 <div id="moodPop" hidden></div>
+<div id="volPop" hidden role="dialog" aria-label="Volumen">
+  <label class="vrow vtog"><input type="checkbox" id="volOn"> Música de fondo</label>
+  <label class="vrow" for="volMus"><span>🎵 Música</span><input type="range" id="volMus" min="0" max="100" step="5"><b id="volMusN"></b></label>
+  <label class="vrow" for="volSfx"><span>🔔 Efectos</span><input type="range" id="volSfx" min="0" max="100" step="5"><b id="volSfxN"></b></label>
+  <p class="vnote">Las voces y la música de Spotify de la fiesta no cambian aquí: Spotify se controla con el volumen de tu computador.</p>
+</div>
 <aside id="djPanel" hidden aria-label="DJ de la fiesta">
   <div class="djh"><b>🎧 DJ DXD · Piso 2</b><button id="djMute" type="button" class="btn">🔊 Escuchando</button><button id="djMin" type="button" class="btn" aria-label="Achicar">–</button></div>
   <div class="djb">
@@ -1617,15 +1627,17 @@ const RO='Tu acceso es de solo lectura: puedes leer el chat pero no escribir.';
 let sfxCtx=null;
 function sfxUnlock(){try{if(!sfxCtx){const AC=window.AudioContext||window.webkitAudioContext;if(AC)sfxCtx=new AC()}if(sfxCtx&&sfxCtx.state==='suspended')sfxCtx.resume()}catch(e){}}
 addEventListener('pointerdown',sfxUnlock,{passive:true});addEventListener('keydown',sfxUnlock);
+let sfxBus=null;function sfxDest(){if(!sfxBus){sfxBus=sfxCtx.createGain();sfxBus.gain.value=sfxVol;sfxBus.connect(sfxCtx.destination)}return sfxBus}
 function playSfx(kind){try{sfxUnlock();const c=sfxCtx;if(!c||c.state!=='running')return;const t=c.currentTime;
   const notes=kind==='out'?[[660,0],[990,.07]]:kind==='throw'?[[300,0],[520,.05]]:kind==='splat'?[[160,0],[90,.05]]:kind==='slip'?[[900,0],[600,.08],[330,.16],[200,.26]]:[[880,0],[1320,.11]];
   for(const [f,d] of notes){const o=c.createOscillator(),g=c.createGain();o.type=kind==='out'?'triangle':'sine';o.frequency.setValueAtTime(f,t+d);
     g.gain.setValueAtTime(0,t+d);g.gain.linearRampToValueAtTime(kind==='out'?.12:.16,t+d+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d+(kind==='out'?.16:.32));
-    o.connect(g).connect(c.destination);o.start(t+d);o.stop(t+d+.35)}}catch(e){}}
+    o.connect(g).connect(sfxDest());o.start(t+d);o.stop(t+d+.35)}}catch(e){}}
 /* ================= Música ================= */
 // Música original generada con Web Audio (sin archivos). Un ambiente por lugar:
 // la oficina (lo-fi relajante) y uno por juego. Cambia con un fundido suave.
-const MUSIC_KEY='dxd-music';
+const MUSIC_KEY='dxd-music',MVOL_KEY='dxd-music-vol',SVOL_KEY='dxd-sfx-vol';
+let musicVol=.4,sfxVol=.7;try{const a=parseFloat(localStorage.getItem(MVOL_KEY)),b=parseFloat(localStorage.getItem(SVOL_KEY));if(a>=0&&a<=1)musicVol=a;if(b>=0&&b<=1)sfxVol=b}catch(e){}
 let musicOn=true;try{musicOn=localStorage.getItem(MUSIC_KEY)!=='0'}catch(e){}
 const mf=n=>440*Math.pow(2,(n-69)/12);
 const ch=(r,q)=>q.map(i=>r+i);const MAJ7=[0,4,7,11],MIN7=[0,3,7,10],MAJ=[0,4,7],MIN=[0,3,7],DOM7=[0,4,7,10];
@@ -1682,7 +1694,7 @@ function musSchedule(){const c=sfxCtx;if(!c||!mus.cur)return;const tr=TRACKS[mus
     for(const v of tr.voices)if(v.at.includes(s))for(const n of v.n(chd,s))musNote(c,mus.tg,v,n,t,v.d*sd);
     mus.next+=sd;mus.step++}}
 function musPlay(name){const c=sfxCtx;if(!c||c.state!=='running')return;
-  if(!mus.bus){mus.bus=c.createGain();mus.bus.gain.value=.7;mus.bus.connect(c.destination)}
+  if(!mus.bus){mus.bus=c.createGain();mus.bus.gain.value=.7*musicVol;mus.bus.connect(c.destination)}
   const now=c.currentTime;if(mus.tg){const old=mus.tg;old.gain.cancelScheduledValues(now);old.gain.setValueAtTime(old.gain.value,now);old.gain.linearRampToValueAtTime(0,now+.7);setTimeout(()=>{try{old.disconnect()}catch(e){}},1200)}
   mus.cur=name;mus.step=0;mus.next=now+.08;
   if(!name){mus.tg=null;clearInterval(mus.timer);mus.timer=null;return}
@@ -1691,15 +1703,23 @@ function musPlay(name){const c=sfxCtx;if(!c||c.state!=='running')return;
 function musicUpdate(){if(!profile)return;
   const want=!musicOn?null:(regionOf(me.x,me.y)===3&&djCur()&&!dj.muted)?null:gcur&&TRACKS[gcur]?gcur:!stopModal.hidden?'stop':inArena()?'arena':'office';
   if(want===mus.cur)return;if(want&&(!sfxCtx||sfxCtx.state!=='running'))return;musPlay(want)}
-function musicBtnLabel(){const b=$('musicBtn');b.textContent=musicOn?'🔊 Música':'🔇 Música';b.setAttribute('aria-pressed',musicOn)}
+function musicBtnLabel(){const b=$('musicBtn');const ic=!musicOn||musicVol===0?'🔇':musicVol<.34?'🔈':musicVol<.67?'🔉':'🔊';b.textContent=ic+' Música';b.setAttribute('aria-pressed',musicOn);b.title='Volumen de la música y los efectos'}
 function setMusic(on){musicOn=on;try{localStorage.setItem(MUSIC_KEY,on?'1':'0')}catch(e){}musicBtnLabel();if(on)sfxUnlock();musicUpdate()}
-$('musicBtn').onclick=()=>setMusic(!musicOn);musicBtnLabel(); // el ambiente arranca desde el loop (step)
+function volUI(){$('volMus').value=Math.round(musicVol*100);$('volSfx').value=Math.round(sfxVol*100);$('volMusN').textContent=Math.round(musicVol*100)+'%';$('volSfxN').textContent=Math.round(sfxVol*100)+'%';$('volOn').checked=musicOn}
+$('musicBtn').onclick=e=>{e.stopPropagation();const p=$('volPop');if(p.hidden){volUI();p.hidden=false;sfxUnlock()}else p.hidden=true};
+$('volMus').oninput=e=>{musicVol=e.target.value/100;try{localStorage.setItem(MVOL_KEY,musicVol)}catch(err){}if(mus.bus)mus.bus.gain.setTargetAtTime(.7*musicVol,sfxCtx.currentTime,.05);if(musicVol>0&&!musicOn)setMusic(true);volUI();musicBtnLabel()};
+$('volSfx').oninput=e=>{sfxVol=e.target.value/100;try{localStorage.setItem(SVOL_KEY,sfxVol)}catch(err){}if(sfxBus)sfxBus.gain.setTargetAtTime(sfxVol,sfxCtx.currentTime,.05);volUI()};
+$('volSfx').onchange=()=>playSfx('in');$('volOn').onchange=e=>{setMusic(e.target.checked);volUI()};
+addEventListener('pointerdown',e=>{const p=$('volPop');if(!p.hidden&&!p.contains(e.target)&&e.target!==$('musicBtn'))p.hidden=true});
+musicBtnLabel(); // el ambiente arranca desde el loop (step)
 /* ================= Voz por cercanía (WebRTC) ================= */
 // Cada persona que entra a la voz se conecta directo (navegador a navegador) con las
 // demás que estén en voz. Las señales de conexión viajan por la sala en vivo.
 // Volumen: misma sala = fuerte; más lejos = más bajo; otro piso o la Arena = no se oye.
 const VC_ICE=[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']},{urls:'stun:stun.cloudflare.com:3478'}];
 const vc={on:false,muted:false,stream:null,pcs:new Map(),speaking:false,an:null,buf:null,hold:0};
+function vcLeveler(c){const comp=c.createDynamicsCompressor();comp.threshold.value=-38;comp.knee.value=12;comp.ratio.value=8;comp.attack.value=.004;comp.release.value=.25;
+  const mk=c.createGain();mk.gain.value=2.2;comp.connect(mk);mk.connect(c.destination);return comp}
 function vcEmit(d){if(room)room.emit('rtc',d).catch(()=>{})}
 function vcUI(){const b=$('voiceBtn'),l=$('voiceLeave');
   b.textContent=!vc.on?'🎙️ Voz':vc.muted?'🔇 Silenciado':'🎙️ Micrófono';b.classList.toggle('on',vc.on&&!vc.muted);b.classList.toggle('muted',vc.on&&vc.muted);
@@ -1721,7 +1741,7 @@ function vcPeer(id){let p=vc.pcs.get(id);if(p)return p;
   vc.stream.getTracks().forEach(t=>pc.addTrack(t,vc.stream));
   pc.onicecandidate=e=>{if(e.candidate)vcEmit({t:'ice',to:id,c:e.candidate.toJSON()})};
   pc.ontrack=e=>{const st=e.streams[0]||new MediaStream([e.track]);audio.srcObject=st;
-    try{sfxUnlock();if(sfxCtx&&!p.gain){audio.muted=true;p.gain=sfxCtx.createGain();p.gain.gain.value=0;sfxCtx.createMediaStreamSource(st).connect(p.gain).connect(sfxCtx.destination)}}catch(err){p.gain=null;audio.muted=false}
+    try{sfxUnlock();if(sfxCtx&&!p.gain){audio.muted=true;p.gain=sfxCtx.createGain();p.gain.gain.value=0;sfxCtx.createMediaStreamSource(st).connect(p.gain).connect(vcLeveler(sfxCtx))}}catch(err){p.gain=null;audio.muted=false}
     audio.play().catch(()=>{})};
   pc.onconnectionstatechange=()=>{const s2=pc.connectionState,o=others.get(id),nm=o?o.name:'alguien';p.state=s2;renderPeople();
     if(s2==='connected'&&!p.ok){p.ok=true;toast('🎙️ Voz conectada con '+nm);
@@ -1746,10 +1766,8 @@ async function vcOnMsg(m){const d=m.data;if(!d||typeof d!=='object'||m.sameTab||
     else if(d.t==='leave')vcClose(from);
   }catch(e){vcClose(from)}}
 // Todos los que están en voz se escuchan siempre; la cercanía solo cambia el volumen.
-function vcVol(o){const mi=inMeet(me.x,me.y),oi=inMeet(o.tx,o.ty);if(mi||oi)return mi&&oi?1:0; // sala de reuniones insonorizada
-  if(regionOf(o.tx,o.ty)!==regionOf(me.x,me.y))return .45;
-  if(zoneAt(o.tx,o.ty)===zoneAt(me.x,me.y))return 1;
-  const d=Math.hypot(o.tx-me.x,o.ty-me.y);return .55+.45*Math.max(0,Math.min(1,1-(d-3*T)/(12*T)))}
+// Todos se escuchan igual, estén donde estén. La sala de reuniones sigue insonorizada.
+function vcVol(o){const mi=inMeet(me.x,me.y),oi=inMeet(o.tx,o.ty);if(mi||oi)return mi&&oi?1:0;return 1}
 function vcTick(){if(!vc.on)return;vrTick();
   for(const [id,p] of vc.pcs){const o=others.get(id);if(!o){vcClose(id);continue}const v=vcVol(o);
     if(p.gain){const gv=p.gain.gain;gv.value+=(v-gv.value)*.15}else{p.audio.volume+=(v-p.audio.volume)*.15;if(Math.abs(p.audio.volume-v)<.01)p.audio.volume=v}}
@@ -1787,7 +1805,7 @@ function vrStop(){clearInterval(vr.timer);vr.timer=null;try{vr.proc&&(vr.proc.on
   try{vr.enc&&vr.enc.state!=='closed'&&vr.enc.close()}catch(e){}vr.enc=null;vr.frames=[];
   for(const p of vr.peers.values()){try{p.dec&&p.dec.state!=='closed'&&p.dec.close();p.gain.disconnect()}catch(e){}}vr.peers.clear();
   if(vr.ch){vr.ch.leave().catch(()=>{});vr.ch=null}}
-function vrPeer(id){let p=vr.peers.get(id);if(p)return p;const c=sfxCtx;p={gain:c.createGain(),play:0,dec:null};p.gain.gain.value=0;p.gain.connect(c.destination);
+function vrPeer(id){let p=vr.peers.get(id);if(p)return p;const c=sfxCtx;p={gain:c.createGain(),play:0,dec:null};p.gain.gain.value=0;p.gain.connect(vcLeveler(c));
   p.out=(f,sr)=>{const c2=sfxCtx,now=c2.currentTime;if(p.play<now+.05||p.play>now+.8)p.play=now+.15;
     const buf=c2.createBuffer(1,f.length,sr||16000);buf.copyToChannel(f,0);const s=c2.createBufferSource();s.buffer=buf;s.connect(p.gain);s.start(p.play);p.play+=buf.duration};
   vr.peers.set(id,p);return p}
@@ -1966,7 +1984,7 @@ function petSound(p,now,loud){if(regionOf(p.x,p.y)!==regionOf(me.x,me.y))return;
   const info=PETS[p.pet.k];p.say=info.t;p.sayAt=now;animalSfx(info.s,Math.max(.15,1-d/(10*T))*(loud?1:.7))}
 function callPets(){if(!profile||!profile.pets||!profile.pets.length){toast('🐾 No tienes mascotas. Adopta en la casita del jardín.');return}fxSend({t:'pet',by:profile.name})}
 // Sonidos de animales hechos con Web Audio (sin archivos)
-function animalSfx(kind,vol){try{sfxUnlock();const c=sfxCtx;if(!c||c.state!=='running')return;const t0=c.currentTime,out=c.createGain();out.gain.value=.5*vol;out.connect(c.destination);
+function animalSfx(kind,vol){try{sfxUnlock();const c=sfxCtx;if(!c||c.state!=='running')return;const t0=c.currentTime,out=c.createGain();out.gain.value=.5*vol;out.connect(sfxDest());
   const tone=(type,f0,f1,st,dur,g=.3,lp)=>{const o=c.createOscillator(),gg=c.createGain();o.type=type;o.frequency.setValueAtTime(f0,t0+st);o.frequency.exponentialRampToValueAtTime(Math.max(20,f1),t0+st+dur);
     gg.gain.setValueAtTime(0,t0+st);gg.gain.linearRampToValueAtTime(g,t0+st+.015);gg.gain.exponentialRampToValueAtTime(.0001,t0+st+dur);let n=o;if(lp){const f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=lp;o.connect(f);n=f}n.connect(gg).connect(out);o.start(t0+st);o.stop(t0+st+dur+.05)};
   const noise=(st,dur,g,fq,type='bandpass')=>{const b=c.createBuffer(1,c.sampleRate*dur,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
