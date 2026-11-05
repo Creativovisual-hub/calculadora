@@ -1551,7 +1551,7 @@ async function pongJoin(){pnet={role:'solo',opp:null,ready:false,oppY:160,doneMi
   if(!room){pongLobby();return}
   try{const j=await room.join('pong');if(gcur!=='pong'){j.leave().catch(()=>{});return}pr=j;
     pr.presence({n:profile.name,l:profile.look,r:0,st:null,y:160}).catch(()=>{});
-    pr.onPeers(()=>pongPeers(),()=>{pr=null;pnet.role='solo';pongLobby()});pongPeers()}
+    pr.onPeers(()=>pongPeers(),()=>{pr=null;pnet.role='solo';pongLobby()});pongPeers();pongLobby()}
   catch(e){pongLobby()}}
 function pongLeave(){if(pr){pr.leave().catch(()=>{});pr=null}pnet={role:'solo',opp:null,ready:false,oppY:160,doneMid:null}}
 function pongPeers(){if(!pr||gcur!=='pong')return;
