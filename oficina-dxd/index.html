@@ -49,7 +49,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lav);outline-of
 .emotes{display:flex;gap:2px;background:rgba(6,7,13,.86);padding:4px;border-radius:12px}
 .emotes button{border:0;background:transparent;font-size:18px;width:34px;height:34px;border-radius:8px}
 .emotes button:hover{background:var(--ink-3)}
-.help{right:12px;bottom:12px;font-size:12px;background:rgba(6,7,13,.8);padding:7px 11px;border-radius:10px;max-width:300px;line-height:1.45}
+.help{right:12px;bottom:64px;font-size:12px;background:rgba(6,7,13,.8);padding:7px 11px;border-radius:10px;max-width:300px;line-height:1.45}
 .help b{color:var(--lav)}
 #panelToggle{display:flex;top:12px;right:12px;align-items:center;gap:6px}
 .badge{background:var(--bad);color:#fff;border-radius:999px;font-size:11px;padding:0 6px}
@@ -442,11 +442,14 @@ const SHOES_N=['Negras','Blancas','Café','Azules','Rojas'];
 const SKIN_N=['Tono 1','Tono 2','Tono 3','Tono 4','Tono 5','Tono 6'];
 const EMOTES=['👋','😂','🎉','☕','❤️','👍','🐟','🏓','🕹️'];
 const FIELDS=[
-  {k:'sk',label:'Piel',n:SKIN_N},{k:'hs',label:'Peinado',n:HAIRS},{k:'hc',label:'Color de pelo',n:HAIRC_N},{k:'bd',label:'Barba',n:BEARD},
+  {k:'gn',label:'Soy',n:['Hombre','Mujer']},{k:'sk',label:'Piel',n:SKIN_N},{k:'hs',label:'Peinado',n:HAIRS},{k:'hc',label:'Color de pelo',n:HAIRC_N},{k:'bd',label:'Barba',n:BEARD},
   {k:'ou',label:'Ropa',n:OUT},{k:'sc',label:'Color de ropa',n:CLOTH_N},{k:'pc',label:'Pantalón',n:PANTS_N},{k:'zc',label:'Zapatillas',n:SHOES_N},{k:'ac',label:'Accesorio',n:ACC},
 ];
 function sanLook(l){l=l&&typeof l==='object'?l:{};const o={};for(const f of FIELDS){const v=l[f.k]|0;o[f.k]=v>=0&&v<f.n.length?v:0}return o}
-function randLook(){const o={};for(const f of FIELDS)o[f.k]=Math.floor(Math.random()*f.n.length);if(Math.random()<.45)o.ac=0;if(Math.random()<.7)o.bd=0;return o}
+const HAIR_W=[1,3,6,9,7,2],HAIR_M=[0,2,4,5,7,8];
+function randLook(gn){const o={};for(const f of FIELDS)o[f.k]=Math.floor(Math.random()*f.n.length);if(gn===0||gn===1)o.gn=gn;
+  if(Math.random()<.45)o.ac=0;if(o.gn===1){o.bd=0;o.hs=HAIR_W[Math.floor(Math.random()*HAIR_W.length)]}else{if(Math.random()<.6)o.bd=0;o.hs=HAIR_M[Math.floor(Math.random()*HAIR_M.length)];if(o.ou===5)o.ou=0}
+  return o}
 function cleanStr(s,n){return (typeof s==='string'?s:'').replace(/[\u0000-\u001f\u007f​-‏‪-‮⁠-⁯]/g,'').trim().slice(0,n)}
 function shade(hex,amt){const n=parseInt(hex.slice(1),16);let r=n>>16,g=(n>>8)&255,b=n&255;
   if(amt<0){r*=1+amt;g*=1+amt;b*=1+amt}else{r+=(255-r)*amt;g+=(255-g)*amt;b+=(255-b)*amt}
@@ -490,6 +493,7 @@ function drawAvatar(g,cx,cy,lk,dir,frame,s,shadow=true,sit=false){
     }
     if(dress){Q(3,18,10,3,cl);Q(3,20,10,1,dk);Q(11,18,2,3,dk)}
     const sl=ou===2?dk:shade(cl,-.1);
+    if(lk.gn===1&&!dress&&ou!==6){g.clearRect(ox+4*s,oy+(15+b)*s,s,2*s);g.clearRect(ox+11*s,oy+(15+b)*s,s,2*s)}
     if(dress){Q(3,12,1,2,sl);Q(12,12,1,2,sl);Q(3,14,1,4,skin);Q(12,14,1,4,skin)}
     else{Q(3,12,1,5,sl);Q(12,12,1,5,sl);Q(3,17,1,1,skin);Q(12,17,1,1,skin)}
   } else {
@@ -506,13 +510,15 @@ function drawAvatar(g,cx,cy,lk,dir,frame,s,shadow=true,sit=false){
   }
   // cabeza
   Q(7,11,2,1,sd);Q(4,3,8,8,skin);
-  if(down){Q(11,4,1,6,sd);Q(5,10,6,1,sd);Q(3,7,1,2,skin);Q(12,7,1,2,sd);
-    Q(5,6,2,1,hd);Q(9,6,2,1,hd);Q(6,7,1,2,eye);Q(9,7,1,2,eye);Q(7,9,2,1,lip);
-    g.globalAlpha=.4;Q(5,9,1,1,'#f07a7a');Q(10,9,1,1,'#f07a7a');g.globalAlpha=1}
-  if(side){S(4,6,2,1,hd);S(5,7,1,2,eye);S(3,8,1,1,skin);S(4,9,1,1,lip);S(9,7,1,2,sd);S(4,10,8,1,sd)}
+  const fem=lk.gn===1;
+  if(down){Q(11,4,1,6,shade(skin,-.07));Q(3,7,1,2,skin);Q(12,7,1,2,shade(skin,-.07));
+    if(fem){Q(5,6,1,1,eye);Q(10,6,1,1,eye);Q(6,6,1,1,hd);Q(9,6,1,1,hd);Q(6,7,1,2,eye);Q(9,7,1,2,eye);Q(7,9,2,1,'#d0566a');Q(7,10,2,1,'#e88a9a')}
+    else{Q(5,6,2,1,hd);Q(9,6,2,1,hd);Q(6,7,1,2,eye);Q(9,7,1,2,eye);Q(7,9,2,1,lip)}
+    g.globalAlpha=fem?.6:.3;Q(5,9,1,1,'#f07a7a');Q(10,9,1,1,'#f07a7a');g.globalAlpha=1}
+  if(side){if(fem){S(4,6,1,1,eye);S(5,6,1,1,hd)}else S(4,6,2,1,hd);S(5,7,1,2,eye);S(3,8,1,1,skin);S(4,9,1,1,fem?'#d0566a':lip);S(9,7,1,2,sd)}
   if(dir==='up'){Q(4,10,8,1,sd);Q(3,7,1,2,skin);Q(12,7,1,2,skin)}
   // barba
-  const bd=lk.bd,B=(x,y,w,h)=>S(x,y,w,h,hair);
+  const bd=lk.gn===1?0:lk.bd,B=(x,y,w,h)=>S(x,y,w,h,hair);
   if(bd&&down){
     if(bd===1)B(6,9,4,1);
     if(bd===2){B(4,9,1,2);B(11,9,1,2);B(5,10,6,1);B(6,9,1,1);B(9,9,1,1)}
@@ -1244,7 +1250,7 @@ function claimDesk(i){const cur=deskOwners()[i];
 
 /* ================= Presencia ================= */
 let lastPush=0,pushPending=false,lastSent='';
-function presencePayload(){return{n:profile.name,l:profile.look,x:Math.round(me.x),y:Math.round(me.y),d:me.dir,m:me.moving?1:0,e:me.emote,s:me.say,st:me.sit?1:0,g:me.game,ty:me.typing?1:0,v:vc.on?1:0,sp:vc.speaking&&!vc.muted?1:0,fl:me.fallAt?1:0,tm:me.tomN||0,pl:myPeels.map(p=>[p.id,p.x,p.y]),pt:profile.pet||null,sh:sc.stream?1:0,dk:me.desk==null?null:me.desk,hp:inArena()?me.hp:null,ko:me.ko?1:0,a:me.atkSeq}}
+function presencePayload(){return{n:profile.name,l:profile.look,x:Math.round(me.x),y:Math.round(me.y),d:me.dir,m:me.moving?1:0,e:me.emote,s:me.say,st:me.sit?1:0,g:me.game,ty:me.typing?1:0,v:vc.on?1:0,oc:VR_OPUS?1:0,sp:vc.speaking&&!vc.muted?1:0,fl:me.fallAt?1:0,tm:me.tomN||0,pl:myPeels.map(p=>[p.id,p.x,p.y]),pt:profile.pet||null,sh:sc.stream?1:0,dk:me.desk==null?null:me.desk,hp:inArena()?me.hp:null,ko:me.ko?1:0,a:me.atkSeq}}
 function pushPresence(force){
   if(!room||!profile)return;const now=performance.now();
   const p=presencePayload();const k=JSON.stringify(p);if(k===lastSent&&!force)return;
@@ -1260,7 +1266,7 @@ function applyPeers(list){
     const x=Math.max(0,Math.min(MW*T,+pr.x||0)),y=Math.max(0,Math.min(MH*T,+pr.y||0));
     let o=others.get(p.peer);
     if(!o){o={x,y,walk:0,emoteAt:0,sayAt:0,emoteId:null,sayId:null};others.set(p.peer,o);if(announceReady)sysMsg(name+' llegó a la oficina')}
-    o.name=name;o.look=sanLook(pr.l);o.tx=x;o.ty=y;o.dir=DIRS.includes(pr.d)?pr.d:'down';o.m=!!pr.m;o.st=!!pr.st;o.typ=!!pr.ty;o.v=!!pr.v;o.sp=!!pr.sp;if(pr.fl&&!o.fl)o.flAt=performance.now();o.fl=!!pr.fl;{const tn=Math.max(0,Math.min(10,pr.tm|0));if(tn>(o.tmN||0))o.tmAt=performance.now();o.tmN=tn}
+    o.name=name;o.look=sanLook(pr.l);o.tx=x;o.ty=y;o.dir=DIRS.includes(pr.d)?pr.d:'down';o.m=!!pr.m;o.st=!!pr.st;o.typ=!!pr.ty;o.v=!!pr.v;o.sp=!!pr.sp;o.oc=pr.oc===undefined?undefined:!!pr.oc;if(pr.fl&&!o.fl)o.flAt=performance.now();o.fl=!!pr.fl;{const tn=Math.max(0,Math.min(10,pr.tm|0));if(tn>(o.tmN||0))o.tmAt=performance.now();o.tmN=tn}
     o.pl=Array.isArray(pr.pl)?pr.pl.slice(0,3).filter(q=>Array.isArray(q)&&typeof q[0]==='string').map(q=>[q[0].slice(0,10),Math.max(0,Math.min(MW*T,+q[1]||0)),Math.max(0,Math.min(MH*T,+q[2]||0))]):[];o.pt=sanPet(pr.pt);o.sh=!!pr.sh;o.dk=Number.isInteger(pr.dk)&&pr.dk>=0&&pr.dk<DESKS.length?pr.dk:null;o.g=GAME_NAMES[pr.g]?pr.g:null;
     o.hp=Number.isFinite(pr.hp)?Math.max(0,Math.min(100,pr.hp)):100;o.ko=!!pr.ko;if(pr.a!==o.atkSeq){if(o.atkSeq!==undefined)o.atkAt=performance.now();o.atkSeq=pr.a}o.guest=!!p.guest;o.mine=p.isMe;
     const e=pr.e&&typeof pr.e==='object'?pr.e:null;
@@ -1615,9 +1621,9 @@ async function vcJoin(){if(vc.on)return;if(!room){toast('Sin conexión en vivo: 
   catch(e){toast('No se pudo usar el micrófono. Revisa el permiso del navegador.');return}
   vc.on=true;vc.muted=false;
   try{sfxUnlock();if(sfxCtx){vc.an=sfxCtx.createAnalyser();vc.an.fftSize=512;vc.buf=new Float32Array(512);sfxCtx.createMediaStreamSource(vc.stream).connect(vc.an)}}catch(e){vc.an=null}
-  vcUI();pushPresence(true);vcEmit({t:'join'});toast('Entraste a la voz: te escuchan quienes estén cerca. M para silenciar.')}
+  vcUI();pushPresence(true);vcEmit({t:'join'});vrStart();toast('Entraste a la voz: te escuchan quienes estén cerca. M para silenciar.')}
 function vcClose(id){const p=vc.pcs.get(id);if(!p)return;vc.pcs.delete(id);try{p.pc.close()}catch(e){}try{if(p.gain)p.gain.disconnect()}catch(e){}p.audio.srcObject=null;p.audio.remove();if(typeof renderPeople==='function')renderPeople()}
-function vcLeave(){if(!vc.on)return;vcEmit({t:'leave'});for(const id of [...vc.pcs.keys()])vcClose(id);
+function vcLeave(){if(!vc.on)return;vcEmit({t:'leave'});vrStop();for(const id of [...vc.pcs.keys()])vcClose(id);
   if(vc.stream)vc.stream.getTracks().forEach(t=>t.stop());vc.stream=null;vc.an=null;vc.on=false;vc.speaking=false;vcUI();pushPresence(true)}
 function vcMute(m){if(!vc.on)return;vc.muted=m;vc.stream.getAudioTracks().forEach(t=>t.enabled=!m);if(m)vc.speaking=false;vcUI();pushPresence(true)}
 function vcPeer(id){let p=vc.pcs.get(id);if(p)return p;
@@ -1631,7 +1637,7 @@ function vcPeer(id){let p=vc.pcs.get(id);if(p)return p;
   pc.onconnectionstatechange=()=>{const s2=pc.connectionState,o=others.get(id),nm=o?o.name:'alguien';p.state=s2;renderPeople();
     if(s2==='connected'&&!p.ok){p.ok=true;toast('🎙️ Voz conectada con '+nm);
       for(const sd of pc.getSenders())if(sd.track&&sd.track.kind==='audio'){try{const pa=sd.getParameters();pa.encodings=pa.encodings&&pa.encodings.length?pa.encodings:[{}];pa.encodings[0].maxBitrate=64000;sd.setParameters(pa).catch(()=>{})}catch(e){}}}
-    if(s2==='failed'){toast('No se pudo conectar la voz con '+nm+'. Su red puede estar bloqueando llamadas directas.');vcClose(id)}
+    if(s2==='failed'){vcClose(id)} // sin conexión directa: la voz sigue por el relevo de la sala
     if(s2==='closed')vcClose(id)};
   setTimeout(()=>{if(vc.pcs.get(id)===p&&pc.connectionState!=='connected'){p.state='failed';renderPeople()}},15000);
   return p}
@@ -1655,7 +1661,7 @@ function vcVol(o){const mi=inMeet(me.x,me.y),oi=inMeet(o.tx,o.ty);if(mi||oi)retu
   if(regionOf(o.tx,o.ty)!==regionOf(me.x,me.y))return .45;
   if(zoneAt(o.tx,o.ty)===zoneAt(me.x,me.y))return 1;
   const d=Math.hypot(o.tx-me.x,o.ty-me.y);return .55+.45*Math.max(0,Math.min(1,1-(d-3*T)/(12*T)))}
-function vcTick(){if(!vc.on)return;
+function vcTick(){if(!vc.on)return;vrTick();
   for(const [id,p] of vc.pcs){const o=others.get(id);if(!o){vcClose(id);continue}const v=vcVol(o);
     if(p.gain){const gv=p.gain.gain;gv.value+=(v-gv.value)*.15}else{p.audio.volume+=(v-p.audio.volume)*.15;if(Math.abs(p.audio.volume-v)<.01)p.audio.volume=v}}
   if(vc.an&&!vc.muted){vc.an.getFloatTimeDomainData(vc.buf);let s=0;for(const x of vc.buf)s+=x*x;const rms=Math.sqrt(s/vc.buf.length),now=performance.now();
@@ -1663,6 +1669,46 @@ function vcTick(){if(!vc.on)return;
 function vcState(o){return o?(o.v?(o.sp?2:1):0):(vc.on&&!vc.muted?(vc.speaking?2:1):vc.on?1:0)}
 $('voiceBtn').onclick=()=>{if(!vc.on)vcJoin();else vcMute(!vc.muted)};$('voiceLeave').onclick=()=>vcLeave();
 addEventListener('pagehide',()=>vcLeave());vcUI();
+/* --- Relevo de voz: si la conexión directa con alguien no funciona, la voz viaja por la sala en vivo --- */
+// Se envía solo mientras hablas y solo si alguien que te escucha no tiene conexión directa contigo.
+// Opus (WebCodecs) a 24 kbps si todos lo soportan; si no, μ-law 8 kHz.
+const VR_OPUS=typeof AudioEncoder!=='undefined'&&typeof AudioDecoder!=='undefined';
+const vr={ch:null,proc:null,sink:null,enc:null,frames:[],ts:0,acc:[],timer:null,peers:new Map(),seq:0};
+function vrDirect(id){const p=vc.pcs.get(id);return !!(p&&p.state==='connected')}
+function vrListeners(){const l=[];for(const [id,o] of others)if(o.v&&!vrDirect(id)&&vcVol(o)>0)l.push(o);return l}
+function b64e(u8){let s='';for(let i=0;i<u8.length;i++)s+=String.fromCharCode(u8[i]);return btoa(s)}
+function b64d(s){const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+function mulawEnc(x){const s=x<0?0x80:0;let v=Math.min(32635,Math.abs(x*32768))+132,e=7;for(let m=0x4000;!(v&m)&&e>0;m>>=1)e--;return ~(s|(e<<4)|((v>>(e+3))&0x0f))&0xff}
+function mulawDec(u){u=~u&0xff;const s=u&0x80,e=(u>>4)&7,m=u&0x0f;let v=((m<<3)+132)<<e;v-=132;return (s?-v:v)/32768}
+async function vrStart(){if(!room||!sfxCtx)return;
+  try{const j=await room.join('voz');if(!vc.on){j.leave().catch(()=>{});return}vr.ch=j;j.on('a',vrOnAudio,()=>{})}catch(e){vr.ch=null;return}
+  const c=sfxCtx,src=c.createMediaStreamSource(vc.stream),proc=c.createScriptProcessor(2048,1,1),sink=c.createGain();sink.gain.value=0;
+  src.connect(proc);proc.connect(sink);sink.connect(c.destination);vr.proc=proc;vr.sink=sink;vr.src=src;
+  const opus=VR_OPUS&&[...others.values()].filter(o=>o.v).every(o=>o.oc!==false);vr.opus=opus;
+  if(opus){try{vr.enc=new AudioEncoder({output:ch=>{const u=new Uint8Array(ch.byteLength);ch.copyTo(u);vr.frames.push(b64e(u))},error:()=>{}});
+    vr.enc.configure({codec:'opus',sampleRate:16000,numberOfChannels:1,bitrate:24000})}catch(e){vr.enc=null;vr.opus=false}}
+  const ratio=c.sampleRate/16000;
+  proc.onaudioprocess=ev=>{if(!vc.on||vc.muted||!vc.speaking||!vrListeners().length){vr.acc=[];return}
+    const inp=ev.inputBuffer.getChannelData(0),n=Math.floor(inp.length/ratio),out=new Float32Array(n);
+    for(let i=0;i<n;i++){let a=0;const s0=Math.floor(i*ratio),s1=Math.floor((i+1)*ratio);for(let k=s0;k<s1;k++)a+=inp[k];out[i]=a/Math.max(1,s1-s0)}
+    if(vr.opus&&vr.enc&&vr.enc.state==='configured'){try{vr.enc.encode(new AudioData({format:'f32',sampleRate:16000,numberOfFrames:n,numberOfChannels:1,timestamp:vr.ts,data:out}));vr.ts+=n/16000*1e6}catch(e){}}
+    else{const u=new Uint8Array(Math.floor(n/2));for(let i=0;i<u.length;i++)u[i]=mulawEnc(out[i*2]);vr.frames.push(b64e(u))}};
+  vr.timer=setInterval(()=>{if(!vr.frames.length||!vr.ch)return;const f=vr.frames.splice(0,40);vr.ch.emit('a',{f,o:vr.opus?1:0,q:vr.seq++}).catch(()=>{})},200)}
+function vrStop(){clearInterval(vr.timer);vr.timer=null;try{vr.proc&&(vr.proc.onaudioprocess=null,vr.proc.disconnect());vr.src&&vr.src.disconnect();vr.sink&&vr.sink.disconnect()}catch(e){}
+  try{vr.enc&&vr.enc.state!=='closed'&&vr.enc.close()}catch(e){}vr.enc=null;vr.frames=[];
+  for(const p of vr.peers.values()){try{p.dec&&p.dec.state!=='closed'&&p.dec.close();p.gain.disconnect()}catch(e){}}vr.peers.clear();
+  if(vr.ch){vr.ch.leave().catch(()=>{});vr.ch=null}}
+function vrPeer(id){let p=vr.peers.get(id);if(p)return p;const c=sfxCtx;p={gain:c.createGain(),play:0,dec:null};p.gain.gain.value=0;p.gain.connect(c.destination);
+  p.out=(f,sr)=>{const c2=sfxCtx,now=c2.currentTime;if(p.play<now+.05||p.play>now+.8)p.play=now+.15;
+    const buf=c2.createBuffer(1,f.length,sr||16000);buf.copyToChannel(f,0);const s=c2.createBufferSource();s.buffer=buf;s.connect(p.gain);s.start(p.play);p.play+=buf.duration};
+  vr.peers.set(id,p);return p}
+function vrOnAudio(m){const d=m.data,from=m.peer;if(m.sameTab||!vc.on||!d||!Array.isArray(d.f)||typeof from!=='string'||vrDirect(from)||!sfxCtx)return;
+  const o=others.get(from);if(!o||vcVol(o)<=0)return;const p=vrPeer(from);
+  if(d.o){if(!VR_OPUS)return;if(!p.dec){try{p.dec=new AudioDecoder({output:ad=>{const f=new Float32Array(ad.numberOfFrames);try{ad.copyTo(f,{planeIndex:0,format:'f32-planar'})}catch(e){}const sr=ad.sampleRate;ad.close();p.out(f,sr)},error:()=>{p.dec=null}});
+      p.dec.configure({codec:'opus',sampleRate:16000,numberOfChannels:1})}catch(e){p.dec=null;return}}
+    for(const s of d.f.slice(0,40))if(typeof s==='string'&&s.length<2000)try{p.dec.decode(new EncodedAudioChunk({type:'key',timestamp:p.ts=(p.ts||0)+20000,data:b64d(s)}))}catch(e){}}
+  else for(const s of d.f.slice(0,40))if(typeof s==='string'&&s.length<4000){const u=b64d(s),f=new Float32Array(u.length*2);for(let i=0;i<u.length;i++){const v=mulawDec(u[i]);f[i*2]=v;f[i*2+1]=v}p.out(f,16000)}}
+function vrTick(){for(const [id,p] of vr.peers){const o=others.get(id);const v=o&&!vrDirect(id)?vcVol(o):0;p.gain.gain.value+=(v-p.gain.gain.value)*.15}}
 /* ================= Travesuras y mascotas ================= */
 // Tomates para lanzar (Q), cáscaras de plátano para dejar en el suelo (B) y mascotas que te siguen.
 const inv={tom:0,ban:0};
@@ -1868,7 +1914,7 @@ function statusOf(zone,sit,g,mine,guest){return (g?'Jugando '+GAME_NAMES[g]:(sit
 function renderPeople(){
   const el=$('people');el.textContent='';const rows=[];
   if(profile)rows.push({name:profile.name,look:profile.look,zone:statusOf(zoneAt(me.x,me.y),me.sit,me.game),me:true});
-  for(const [id,o] of others){let vz='';if(o.v){const pc=vc.on&&vc.pcs.get(id);vz=!vc.on?' · 🎙️ en voz':pc&&pc.state==='connected'?' · 🎙️ te escucha':pc&&pc.state==='failed'?' · 🎙️ sin conexión de voz':' · 🎙️ conectando…'}
+  for(const [id,o] of others){let vz='';if(o.v){const pc=vc.on&&vc.pcs.get(id);vz=!vc.on?' · 🎙️ en voz':pc&&pc.state==='connected'?' · 🎙️ te escucha':vr.ch?' · 🎙️ te escucha (por la sala)':' · 🎙️ conectando…'}
     rows.push({name:o.name,look:o.look,zone:statusOf(zoneAt(o.tx,o.ty),o.st,o.g,o.mine,o.guest)+vz+(o.sh?' · 🖥️ compartiendo pantalla':'')})}
   $('pc').textContent=rows.length;for(const r of rows)el.appendChild(personRow(r));
   if(rows.length<=1){const e=document.createElement('div');e.className='empty';e.textContent=room?'Por ahora estás solo. Cuando alguien del equipo abra la oficina aparecerá aquí y en el mapa.':'Sin conexión en vivo: revisa tu internet y recarga la página.';el.appendChild(e)}}
@@ -1878,7 +1924,7 @@ function updateStatus(){const dot=$('status').querySelector('.dot');const n=1+ot
 
 /* ================= Editor ================= */
 let draft={name:'',look:randLook()},prevDir=0;const optsEl=$('opts');
-const OPT_GROUPS=[{t:'Cara y pelo',f:['sk','hs','hc','bd']},{t:'Ropa',f:['ou','sc','pc','zc']},{t:'Accesorios',f:['ac']}];
+const OPT_GROUPS=[{t:'Cara y pelo',f:['gn','sk','hs','hc','bd']},{t:'Ropa',f:['ou','sc','pc','zc']},{t:'Accesorios',f:['ac']}];
 const OPT_SW={sk:SKIN,hc:HAIRC,sc:CLOTH,pc:PANTS,zc:SHOES};
 let optTab=0;
 function buildOpts(){
@@ -1886,12 +1932,13 @@ function buildOpts(){
   OPT_GROUPS.forEach((g,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('role','tab');b.textContent=g.t;b.setAttribute('aria-selected',i===optTab);
     b.onclick=()=>{optTab=i;buildOpts()};tabs.appendChild(b)});
   optsEl.textContent='';
-  for(const k of OPT_GROUPS[optTab].f){const f=FIELDS.find(x=>x.k===k);const sec=document.createElement('div');sec.className='osec';
+  for(const k of OPT_GROUPS[optTab].f){if(k==='bd'&&draft.look.gn===1)continue;const f=FIELDS.find(x=>x.k===k);const sec=document.createElement('div');sec.className='osec';
     const h=document.createElement('h4');h.textContent=f.label;const cur=document.createElement('span');cur.textContent=f.n[draft.look[k]];h.appendChild(cur);sec.appendChild(h);
     const box=document.createElement('div');box.className='chips';
     f.n.forEach((name,i)=>{const b=document.createElement('button');b.type='button';b.className='chip';b.setAttribute('aria-pressed',draft.look[k]===i);
       if(OPT_SW[k]){b.classList.add('sw');b.style.background=OPT_SW[k][i];b.title=name;b.setAttribute('aria-label',f.label+': '+name)}else b.textContent=name;
-      b.onclick=()=>{draft.look[k]=i;buildOpts()};box.appendChild(b)});
+      b.onclick=()=>{const L=draft.look;if(k==='gn'&&L.gn!==i){L.gn=i;const pick=a=>a[Math.floor(Math.random()*a.length)];
+        if(i===1){L.bd=0;if(!HAIR_W.includes(L.hs))L.hs=pick(HAIR_W)}else{if([1,6,9].includes(L.hs))L.hs=pick(HAIR_M);if(L.ou===5)L.ou=0}}else L[k]=i;buildOpts()};box.appendChild(b)});
     sec.appendChild(box);optsEl.appendChild(sec)}}
 function updPrevName(){$('prevName').textContent=cleanStr($('nameIn').value,20)||'Tu nombre'}
 $('nameIn').addEventListener('input',updPrevName);
@@ -1905,7 +1952,7 @@ function openEditor(first){
 $('editBtn').onclick=()=>openEditor(false);
 $('logoutBtn').onclick=()=>{if(window.dxdLogout)window.dxdLogout();else location.reload()};
 $('spinBtn').onclick=()=>{prevDir=(prevDir+1)%4};$('spinL').onclick=()=>{prevDir=(prevDir+3)%4};
-$('randBtn').onclick=()=>{draft.look=randLook();buildOpts()};
+$('randBtn').onclick=()=>{draft.look=randLook(draft.look.gn);buildOpts()};
 $('saveBtn').onclick=save;
 $('nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')save()});
 modal.addEventListener('keydown',e=>{if(e.key==='Escape'&&profile)modal.hidden=true});
