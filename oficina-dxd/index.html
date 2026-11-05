@@ -1569,17 +1569,23 @@ async function vcJoin(){if(vc.on)return;if(!room){toast('Sin conexión en vivo: 
   vc.on=true;vc.muted=false;
   try{sfxUnlock();if(sfxCtx){vc.an=sfxCtx.createAnalyser();vc.an.fftSize=512;vc.buf=new Float32Array(512);sfxCtx.createMediaStreamSource(vc.stream).connect(vc.an)}}catch(e){vc.an=null}
   vcUI();pushPresence(true);vcEmit({t:'join'});toast('Entraste a la voz: te escuchan quienes estén cerca. M para silenciar.')}
-function vcClose(id){const p=vc.pcs.get(id);if(!p)return;vc.pcs.delete(id);try{p.pc.close()}catch(e){}p.audio.srcObject=null;p.audio.remove()}
+function vcClose(id){const p=vc.pcs.get(id);if(!p)return;vc.pcs.delete(id);try{p.pc.close()}catch(e){}try{if(p.gain)p.gain.disconnect()}catch(e){}p.audio.srcObject=null;p.audio.remove();if(typeof renderPeople==='function')renderPeople()}
 function vcLeave(){if(!vc.on)return;vcEmit({t:'leave'});for(const id of [...vc.pcs.keys()])vcClose(id);
   if(vc.stream)vc.stream.getTracks().forEach(t=>t.stop());vc.stream=null;vc.an=null;vc.on=false;vc.speaking=false;vcUI();pushPresence(true)}
 function vcMute(m){if(!vc.on)return;vc.muted=m;vc.stream.getAudioTracks().forEach(t=>t.enabled=!m);if(m)vc.speaking=false;vcUI();pushPresence(true)}
 function vcPeer(id){let p=vc.pcs.get(id);if(p)return p;
   const pc=new RTCPeerConnection({iceServers:VC_ICE});const audio=document.createElement('audio');audio.autoplay=true;audio.playsInline=true;audio.volume=0;audio.hidden=true;document.body.appendChild(audio);
-  p={pc,audio,pending:[]};vc.pcs.set(id,p);
+  p={pc,audio,pending:[],gain:null,state:'new',ok:false};vc.pcs.set(id,p);
   vc.stream.getTracks().forEach(t=>pc.addTrack(t,vc.stream));
   pc.onicecandidate=e=>{if(e.candidate)vcEmit({t:'ice',to:id,c:e.candidate.toJSON()})};
-  pc.ontrack=e=>{audio.srcObject=e.streams[0]||new MediaStream([e.track]);audio.play().catch(()=>{})};
-  pc.onconnectionstatechange=()=>{if(pc.connectionState==='failed'||pc.connectionState==='closed')vcClose(id)};
+  pc.ontrack=e=>{const st=e.streams[0]||new MediaStream([e.track]);audio.srcObject=st;
+    try{sfxUnlock();if(sfxCtx&&!p.gain){audio.muted=true;p.gain=sfxCtx.createGain();p.gain.gain.value=0;sfxCtx.createMediaStreamSource(st).connect(p.gain).connect(sfxCtx.destination)}}catch(err){p.gain=null;audio.muted=false}
+    audio.play().catch(()=>{})};
+  pc.onconnectionstatechange=()=>{const s2=pc.connectionState,o=others.get(id),nm=o?o.name:'alguien';p.state=s2;renderPeople();
+    if(s2==='connected'&&!p.ok){p.ok=true;toast('🎙️ Voz conectada con '+nm)}
+    if(s2==='failed'){toast('No se pudo conectar la voz con '+nm+'. Su red puede estar bloqueando llamadas directas.');vcClose(id)}
+    if(s2==='closed')vcClose(id)};
+  setTimeout(()=>{if(vc.pcs.get(id)===p&&pc.connectionState!=='connected'){p.state='failed';renderPeople()}},15000);
   return p}
 async function vcFlush(p){for(const c of p.pending.splice(0))try{await p.pc.addIceCandidate(c)}catch(e){}}
 async function vcCall(id){try{const p=vcPeer(id);await p.pc.setLocalDescription(await p.pc.createOffer());
@@ -1596,11 +1602,13 @@ async function vcOnMsg(m){const d=m.data;if(!d||typeof d!=='object'||m.sameTab||
     else if(d.t==='ice'&&d.c){const p=vc.pcs.get(from)||vcPeer(from);if(p.pc.remoteDescription)await p.pc.addIceCandidate(d.c).catch(()=>{});else p.pending.push(d.c)}
     else if(d.t==='leave')vcClose(from);
   }catch(e){vcClose(from)}}
-function vcVol(o){if(regionOf(o.tx,o.ty)!==regionOf(me.x,me.y))return 0;
+// Todos los que están en voz se escuchan siempre; la cercanía solo cambia el volumen.
+function vcVol(o){if(regionOf(o.tx,o.ty)!==regionOf(me.x,me.y))return .45;
   if(zoneAt(o.tx,o.ty)===zoneAt(me.x,me.y))return 1;
-  const d=Math.hypot(o.tx-me.x,o.ty-me.y);return Math.max(0,Math.min(1,1-(d-3*T)/(9*T)))*.8}
+  const d=Math.hypot(o.tx-me.x,o.ty-me.y);return .55+.45*Math.max(0,Math.min(1,1-(d-3*T)/(12*T)))}
 function vcTick(){if(!vc.on)return;
-  for(const [id,p] of vc.pcs){const o=others.get(id);if(!o){vcClose(id);continue}const v=vcVol(o);p.audio.volume+=(v-p.audio.volume)*.15;if(Math.abs(p.audio.volume-v)<.01)p.audio.volume=v}
+  for(const [id,p] of vc.pcs){const o=others.get(id);if(!o){vcClose(id);continue}const v=vcVol(o);
+    if(p.gain){const gv=p.gain.gain;gv.value+=(v-gv.value)*.15}else{p.audio.volume+=(v-p.audio.volume)*.15;if(Math.abs(p.audio.volume-v)<.01)p.audio.volume=v}}
   if(vc.an&&!vc.muted){vc.an.getFloatTimeDomainData(vc.buf);let s=0;for(const x of vc.buf)s+=x*x;const rms=Math.sqrt(s/vc.buf.length),now=performance.now();
     if(rms>.02)vc.hold=now+350;const sp=now<vc.hold;if(sp!==vc.speaking){vc.speaking=sp;pushPresence(true)}}}
 function vcState(o){return o?(o.v?(o.sp?2:1):0):(vc.on&&!vc.muted?(vc.speaking?2:1):vc.on?1:0)}
@@ -1629,7 +1637,8 @@ function statusOf(zone,sit,g,mine,guest){return (g?'Jugando '+GAME_NAMES[g]:(sit
 function renderPeople(){
   const el=$('people');el.textContent='';const rows=[];
   if(profile)rows.push({name:profile.name,look:profile.look,zone:statusOf(zoneAt(me.x,me.y),me.sit,me.game),me:true});
-  for(const o of others.values())rows.push({name:o.name,look:o.look,zone:statusOf(zoneAt(o.tx,o.ty),o.st,o.g,o.mine,o.guest)});
+  for(const [id,o] of others){let vz='';if(o.v){const pc=vc.on&&vc.pcs.get(id);vz=!vc.on?' · 🎙️ en voz':pc&&pc.state==='connected'?' · 🎙️ te escucha':pc&&pc.state==='failed'?' · 🎙️ sin conexión de voz':' · 🎙️ conectando…'}
+    rows.push({name:o.name,look:o.look,zone:statusOf(zoneAt(o.tx,o.ty),o.st,o.g,o.mine,o.guest)+vz})}
   $('pc').textContent=rows.length;for(const r of rows)el.appendChild(personRow(r));
   if(rows.length<=1){const e=document.createElement('div');e.className='empty';e.textContent=room?'Por ahora estás solo. Cuando alguien del equipo abra la oficina aparecerá aquí y en el mapa.':'Sin conexión en vivo: revisa tu internet y recarga la página.';el.appendChild(e)}}
 function updateStatus(){const dot=$('status').querySelector('.dot');const n=1+others.size;
