@@ -39,6 +39,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lav);outline-of
 .mecard img{width:32px;height:26px;image-rendering:pixelated}
 .mecard .nm{font-weight:800;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mecard .zn{font-size:11px;color:var(--muted)}
+#logoutBtn{color:var(--muted)}#logoutBtn:hover{color:var(--bad)}
 .btn{border:0;border-radius:10px;padding:8px 12px;font-weight:800;font-size:13px;background:var(--ink-3)}
 .btn:hover{background:var(--line)}
 .btn.pri{background:var(--grad);color:#fff;text-shadow:0 1px 1px rgba(20,24,120,.35)}
@@ -262,6 +263,7 @@ aside#panel.open{transform:none}
         <img id="meHead" alt="">
         <div><div class="nm" id="meName">Tú</div><div class="zn" id="meZone">Oficina</div></div>
         <button class="btn" id="editBtn">Editar</button>
+        <button class="btn" id="logoutBtn" title="Cerrar sesión" aria-label="Cerrar sesión y volver al login">Salir</button>
       </div>
     </div>
     <div class="hud help"><b>WASD</b>/flechas para moverte · clic para caminar · <b>T</b> para hablar · <b>E</b> para usar lo que tengas cerca</div>
@@ -1496,6 +1498,7 @@ function openEditor(first){
   $('saveBtn').textContent=first?'Entrar a la oficina':'Guardar cambios';
   buildOpts();modal.hidden=false;setTimeout(()=>$('nameIn').focus(),30)}
 $('editBtn').onclick=()=>openEditor(false);
+$('logoutBtn').onclick=()=>{if(window.dxdLogout)window.dxdLogout();else location.reload()};
 $('spinBtn').onclick=()=>{prevDir=(prevDir+1)%4};
 $('randBtn').onclick=()=>{draft.look=randLook();buildOpts()};
 $('saveBtn').onclick=save;

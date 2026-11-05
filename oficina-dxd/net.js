@@ -49,6 +49,16 @@
   }
   function onSessionLost() { lsSet(null); location.reload(); }
 
+  // Botón "Salir": invalida la sesión en el servidor, la borra del navegador y vuelve al login.
+  // El nombre y el personaje guardados en este navegador se mantienen.
+  window.dxdLogout = function () {
+    var tok = session && session.token;
+    lsSet(null);
+    var done = function () { location.reload(); };
+    if (tok && sb) rpc('dxd_logout', { p_token: tok }).then(done, done); else done();
+    setTimeout(done, 2500);
+  };
+
   /* ======================= Login ======================= */
   // Escena pixel: fachada de la Oficina DXD al atardecer, con la cordillera,
   // el letrero DXD, la puerta con el felpudo "BIENVENIDOS" y Dexi recibiendo.
