@@ -48,7 +48,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lav);outline-of
 .emotes button:hover{background:var(--ink-3)}
 .help{right:12px;bottom:12px;font-size:12px;background:rgba(6,7,13,.8);padding:7px 11px;border-radius:10px;max-width:300px;line-height:1.45}
 .help b{color:var(--lav)}
-#panelToggle{display:none}
+#panelToggle{display:flex;top:12px;right:12px;align-items:center;gap:6px}
+.badge{background:var(--bad);color:#fff;border-radius:999px;font-size:11px;padding:0 6px}
 .bl .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .talk{display:flex;align-items:center;gap:8px;padding:9px 12px}
 .atk{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#e0455a;color:#fff}
@@ -142,6 +143,9 @@ form#send{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
 .gover h4{font-family:var(--f-brand);font-size:18px;letter-spacing:.06em;margin:0}
 .gover p{margin:0;color:var(--muted);max-width:340px;line-height:1.5}
 .gover .btn{padding:12px 22px;font-size:15px}
+.gover .plist{display:flex;flex-direction:column;gap:4px;font-size:14px;font-weight:700;color:var(--text);min-width:220px}
+.gover .plist div{display:flex;justify-content:space-between;gap:16px;background:rgba(23,27,51,.9);border-radius:10px;padding:6px 12px}
+.gover .plist div.w{background:var(--blue)}
 .board{background:var(--ink);border-radius:14px;padding:12px;min-width:0}
 .board ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
 .board li{display:grid;grid-template-columns:18px 28px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 4px;border-radius:8px;font-size:13px}
@@ -151,6 +155,10 @@ form#send{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
 .board li .v{font-weight:800;color:var(--lav);font-variant-numeric:tabular-nums}
 .board .mine{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.4}
 .ghelp{color:var(--muted);font-size:12px;margin:10px 0 0}
+/* Juegos grandes: el lienzo crece hasta donde lo permita el alto de la pantalla */
+.gamecard{width:min(1280px,100%,calc((100vh - 170px) * 1.5 + 270px))}
+.gamecard .gbody{grid-template-columns:minmax(0,1fr) 230px}
+.gamecard .gover h4{font-size:24px}.gamecard .gover p{font-size:15px;max-width:420px}
 .artcard{width:min(680px,100%)}
 #aCv{display:block;width:100%;height:auto;image-rendering:pixelated;border:8px solid #c9a24a;border-radius:6px;background:#000;box-shadow:inset 0 0 0 2px #8a6a2a}
 .acap{color:var(--muted);line-height:1.5;margin:12px 2px 0}
@@ -212,15 +220,20 @@ form#send{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
 @media (max-width:900px){.stopcard .gbody{grid-template-columns:1fr}.stopcard .sgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.sgrid,.stopcard .sgrid{grid-template-columns:1fr}.letter{width:56px;height:56px;font-size:34px}.stopcard .stopbtn{width:76px;height:76px;font-size:12px}.stopcard .stopmain{padding-left:36px}}
 
+/* Panel lateral plegable: cerrado por defecto para que el mapa use toda la pantalla */
+#app{grid-template-columns:minmax(0,1fr)}
+aside#panel{position:fixed;top:0;right:0;bottom:0;width:340px;max-width:100%;z-index:20;transform:translateX(105%);transition:transform .22s ease;box-shadow:-20px 0 50px rgba(0,0,0,.35)}
+aside#panel.open{transform:none}
+.tabs .close{display:block}
 @media (max-width:900px){
   #app{grid-template-columns:minmax(0,1fr)}
-  aside#panel{position:fixed;left:0;right:0;bottom:0;height:62%;z-index:20;border-left:0;border-top:1px solid var(--line);border-radius:18px 18px 0 0;transform:translateY(105%);transition:transform .22s ease;padding-bottom:env(safe-area-inset-bottom,0px)}
+  aside#panel{position:fixed;top:auto;width:auto;box-shadow:none;left:0;right:0;bottom:0;height:62%;z-index:20;border-left:0;border-top:1px solid var(--line);border-radius:18px 18px 0 0;transform:translateY(105%);transition:transform .22s ease;padding-bottom:env(safe-area-inset-bottom,0px)}
   aside#panel.open{transform:none}
   .tabs .close{display:block}
-  #panelToggle{display:flex;right:12px;bottom:12px;align-items:center;gap:6px}
+  #panelToggle{display:flex;top:auto;right:12px;bottom:12px;align-items:center;gap:6px}
   .help{display:none}
   .badge{background:var(--bad);color:#fff;border-radius:999px;font-size:11px;padding:0 6px}
-  .gbody{grid-template-columns:1fr}
+  .gbody,.gamecard .gbody{grid-template-columns:1fr}
   #prompt{bottom:128px}
 }
 @media (max-width:480px){.charrow{grid-template-columns:1fr}.brand .sub{display:none}}
@@ -252,7 +265,7 @@ form#send{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
       </div>
     </div>
     <div class="hud help"><b>WASD</b>/flechas para moverte · clic para caminar · <b>T</b> para hablar · <b>E</b> para usar lo que tengas cerca</div>
-    <button class="hud btn" id="panelToggle">Historial <span class="badge" id="badge" hidden></span></button>
+    <button class="hud btn" id="panelToggle" aria-label="Abrir chat, gente y ranking">💬 Chat <span class="badge" id="badge" hidden></span></button>
   </div>
   <aside id="panel" aria-label="Chat, gente y ranking">
     <div class="ph"><span class="mk"></span><span class="t">DXD · EQUIPO</span></div>
@@ -332,11 +345,11 @@ form#send{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
 </div>
 
 <div class="overlay" id="gameModal" hidden>
-  <div class="gcard" role="dialog" aria-modal="true" aria-labelledby="gTitle">
+  <div class="gcard gamecard" role="dialog" aria-modal="true" aria-labelledby="gTitle">
     <div class="ghead"><span class="mk"></span><h3 id="gTitle">Juego</h3><button class="btn" id="gClose">Cerrar</button></div>
     <div class="gbody">
       <div class="gwrap">
-        <canvas id="gcv" width="480" height="320"></canvas>
+        <canvas id="gcv" width="960" height="640"></canvas>
         <div class="gover" id="gOver"><h4 id="gOverT"></h4><p id="gOverP"></p><button class="btn pri" id="gStart">Jugar</button></div>
       </div>
       <div class="board"><div class="sec" style="padding:0 0 8px">Ranking del equipo</div><ol id="gBoard"></ol><div class="mine" id="gMine"></div></div>
@@ -670,7 +683,7 @@ add({t:'plant',x:4,y:20,s:1,v:3});add({t:'vending',x:14,y:20,s:1});add({t:'bin',
 // Sala de juegos
 WD.push({t:'neon',x:5,y:22,w:3},{t:'tv',x:11,y:22,w:3,game:1});
 add({t:'arcade',x:4,y:23,s:1,c:'#3d4cff',act:'catch'});add({t:'arcade',x:5,y:23,s:1,c:'#e0455a',act:'catch'});add({t:'arcade',x:6,y:23,s:1,c:'#1f9e74',act:'catch'});
-add({t:'tvstand',x:11,y:23,w:3,s:1});
+add({t:'tvstand',x:11,y:23,w:3,s:1,act:'kart'});
 add({t:'foos',x:5,y:26,w:3,s:1});
 add({t:'beanbag',x:10,y:25,c:'#e86fa8',dir:'up'});add({t:'beanbag',x:13,y:25,c:'#5cc6e0',dir:'up'});
 add({t:'sofaU',x:10,y:28,w:3,s:1,c:'#3d4cff'});
@@ -772,7 +785,7 @@ const NPCS=[
       'Presiona T para hablar: tu mensaje aparece sobre tu cabeza y todos lo ven.',
       'Sam Tomaz está en el piso 14: toma el ascensor del pasillo norte. Carito está en Equipo Producto, Sabi en la Biblioteca y Yab en la Sala Insight.',
       'En la Galería Chile hay cuadros de Santiago y la cordillera. Acércate y presiona E para verlos en grande.',
-      'Para jugar: Stop y arcade en la Sala de juegos, ping pong junto al lobby, pesca en el acuario de la Biblioteca y la Arena de espadas saliendo por la puerta principal.']},
+      'Para jugar: Stop, arcade y karting (en la consola) en la Sala de juegos, ping pong junto al lobby, pesca en el acuario de la Biblioteca y la Arena de espadas saliendo por la puerta principal.']},
 ];
 for(const n of NPCS){n.x=n.tx*T+16;n.y=n.ty*T+22;n.dir=n.face;n.sayText='';n.sayAt=0;n.greeted=false}
 
@@ -811,7 +824,7 @@ for(const f of FUR){const X=f.x*T,Y=f.y*T,w=f.w||1;
   if(f.t==='sofaU')for(let i=0;i<w;i++)SEATS.push({x:X+i*T+16,y:Y+18,dir:'up',f});
   if(f.act)ACTS.push(f);
 }
-const ACT_LABEL={arena:'Entrar a la Arena de espadas',leave:'Salir de la Arena',art:'Mirar el cuadro',stop:'Jugar Stop (Bachillerato)',coffee:'Servirte un café',catch:'Jugar Atrapa Datos',pong:'Jugar Ping Pong DXD',fish:'Pescar en el acuario',up:'Subir al piso 14',down:'Bajar al piso 1'};
+const ACT_LABEL={arena:'Entrar a la Arena de espadas',leave:'Salir de la Arena',art:'Mirar el cuadro',stop:'Jugar Stop (Bachillerato)',coffee:'Servirte un café',catch:'Jugar Atrapa Datos',pong:'Jugar Ping Pong DXD',kart:'Jugar Karting DXD',fish:'Pescar en el acuario',up:'Subir al piso 14',down:'Bajar al piso 1'};
 function rectDist(px,py,f){const x0=f.x*T,y0=f.y*T,x1=x0+(f.w||1)*T,y1=y0+(f.h||1)*T;const cy=py-6;
   const dx=Math.max(x0-px,0,px-x1),dy=Math.max(y0-cy,0,cy-y1);return Math.hypot(dx,dy)}
 
@@ -1135,7 +1148,7 @@ function doAct(f){
   if(f.act==='stop'){openStop();return}
   if(f.act==='coffee'){sendEmote(3);toast('Te serviste un café en tu taza DXD')}
   if(f.act==='fish')openGame('fish');
-  if(f.act==='catch'||f.act==='pong')openGame(f.act);
+  if(f.act==='catch'||f.act==='pong'||f.act==='kart')openGame(f.act);
   pushPresence(true)}
 let dlgNpc=null,dlgIdx=0;
 function openTalk(n){dlgNpc=n;dlgIdx=0;showLine()}
@@ -1399,7 +1412,7 @@ function setTab(t){tab=t;for(const [id,v] of [['tabChat','chat'],['tabPeople','p
   $('chatView').hidden=t!=='chat';$('peopleView').hidden=t!=='people';$('rankView').hidden=t!=='rank';
   if(t==='chat'){unread=0;updBadge();scrollMsgs()}if(t==='rank')renderRank()}
 $('tabChat').onclick=()=>setTab('chat');$('tabPeople').onclick=()=>setTab('people');$('tabRank').onclick=()=>setTab('rank');
-$('panelToggle').onclick=()=>openPanel('chat');$('closePanel').onclick=()=>panel.classList.remove('open');
+$('panelToggle').onclick=()=>{if(panel.classList.contains('open'))panel.classList.remove('open');else openPanel('chat')};$('closePanel').onclick=()=>panel.classList.remove('open');
 function updBadge(){const b=$('badge');b.hidden=!unread;b.textContent=unread}
 
 let dbMsgs=[],localMsgs=[],sysMsgs=[];
@@ -1420,10 +1433,20 @@ function renderMsgs(){
 function scrollMsgs(){msgsEl.scrollTop=msgsEl.scrollHeight}
 function noteChat(t){const n=$('chatNote');n.hidden=!t;n.textContent=t||''}
 function parseMsg(d){if(!d||typeof d!=='object')return null;const text=cleanStr(d.text,280),name=cleanStr(d.name,20);if(!text||!name)return null;return{text,name,look:sanLook(d.look),t:+d.t||0}}
-function onNewIncoming(){if(tab!=='chat'||(isMobile()&&!panel.classList.contains('open'))){unread++;updBadge()}}
+function onNewIncoming(){playSfx('in');if(tab!=='chat'||!panel.classList.contains('open')){unread++;updBadge()}}
 const RO='Tu acceso es de solo lectura: puedes leer el chat pero no escribir.';
+/* Sonidos del chat: "swoosh" al enviar, "ding" al recibir */
+let sfxCtx=null;
+function sfxUnlock(){try{if(!sfxCtx){const AC=window.AudioContext||window.webkitAudioContext;if(AC)sfxCtx=new AC()}if(sfxCtx&&sfxCtx.state==='suspended')sfxCtx.resume()}catch(e){}}
+addEventListener('pointerdown',sfxUnlock,{passive:true});addEventListener('keydown',sfxUnlock);
+function playSfx(kind){try{sfxUnlock();const c=sfxCtx;if(!c||c.state!=='running')return;const t=c.currentTime;
+  const notes=kind==='out'?[[660,0],[990,.07]]:[[880,0],[1320,.11]];
+  for(const [f,d] of notes){const o=c.createOscillator(),g=c.createGain();o.type=kind==='out'?'triangle':'sine';o.frequency.setValueAtTime(f,t+d);
+    g.gain.setValueAtTime(0,t+d);g.gain.linearRampToValueAtTime(kind==='out'?.12:.16,t+d+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d+(kind==='out'?.16:.32));
+    o.connect(g).connect(c.destination);o.start(t+d);o.stop(t+d+.35)}}catch(e){}}
 async function sendChat(raw){
   if(!profile)return;const text=cleanStr(raw,140);if(!text)return;
+  playSfx('out');
   me.say={t:text,i:++saySeq+Math.floor(Math.random()*1e6)};mySay.sayText=text;mySay.sayAt=performance.now();pushPresence(true);
   const msg={text,name:profile.name,look:profile.look,t:Date.now()};
   if(db&&canWrite){try{await db.collection('chat').add(msg)}catch(err){
@@ -1490,12 +1513,15 @@ const GAMES={
     intro:'Partido a 5 puntos contra Dexi. Cada victoria suma al ranking.'},
   fish:{name:'Pesca DXD',unit:'pts',mode:'max',help:'Espacio, clic o toca para lanzar. Cuando aparezca "!" presiona rápido. Luego mantén presionado para subir la zona verde y mantener al pez dentro hasta llenar la barra.',
     intro:'Tienes 60 segundos para pescar todo lo que puedas. Los peces más difíciles valen más.'},
+  kart:{name:'Karting DXD',unit:'victorias',mode:'add',help:'Acelera con ↑ o W (o Espacio), frena con ↓, gira con ← →. En celular mantén el dedo donde quieras ir. Fuera de la pista vas más lento. Gana quien complete primero 3 vueltas.',
+    intro:'Carrera de 3 vueltas. Corre contra Dexi o contra quien abra la consola al mismo tiempo.'},
   run:{name:'Salta Santiago',unit:'pts',mode:'max',help:'Espacio, ↑ o toca la pantalla para saltar. Puedes saltar dos veces en el aire. Corre por los techos, junta logos DXD y no te caigas.',
     intro:'Corre por los techos de Santiago con la Costanera de fondo. Cada metro suma y cada logo DXD vale 10 puntos.'},
   duel:{name:'Arena DXD',unit:'victorias',mode:'add',help:'',intro:''},
 };
 const GAME_NAMES=Object.assign({stop:'Stop'},...Object.entries(GAMES).map(([k,v])=>({[k]:v.name})));
-const gcv=$('gcv'),gx=gcv.getContext('2d');const gkeys=new Set();let gptr=null,gcur=null,gstate=null,boards={};
+const gcv=$('gcv'),gx=gcv.getContext('2d');gx.setTransform(2,0,0,2,0,0); // lienzo 2x: se sigue dibujando en 480x320
+const gkeys=new Set();let gptr=null,gcur=null,gstate=null,boards={};
 function gameKey(e,down){
   if(down&&e.key==='Escape'){closeGame();return}
   const m={ArrowUp:'u',KeyW:'u',ArrowDown:'d',KeyS:'d',ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r'}[e.code];
@@ -1509,12 +1535,13 @@ gcv.addEventListener('pointermove',e=>{gptr=gpos(e)});gcv.addEventListener('poin
 function openGame(k){gcur=k;me.game=k;pushPresence(true);keys.clear();
   $('gTitle').textContent=GAMES[k].name;$('gHelp').textContent=GAMES[k].help;
   showOver(GAMES[k].name,GAMES[k].intro,'Jugar');gstate=null;gameModal.hidden=false;loadBoard(k);drawGameIdle();
-  if(k==='pong')pongJoin()}
-function closeGame(){pongLeave();gameModal.hidden=true;gcur=null;gstate=null;me.game=null;gkeys.clear();pushPresence(true);promptKey=null}
+  if(k==='pong')pongJoin();else if(k==='kart')kartJoin()}
+function closeGame(){pongLeave();kartLeave();gameModal.hidden=true;gcur=null;gstate=null;me.game=null;gkeys.clear();pushPresence(true);promptKey=null}
 $('gClose').onclick=closeGame;$('gStart').onclick=()=>startGame();
-function showOver(t,p,b){$('gOverT').textContent=t;$('gOverP').textContent=p;$('gStart').textContent=b;$('gOver').hidden=false}
+function showOver(t,p,b){$('gOverT').textContent=t;$('gOverP').textContent=p;$('gStart').textContent=b;$('gStart').hidden=false;$('gOver').hidden=false;const pl=$('gOver').querySelector('.plist');if(pl)pl.remove()}
 function startGame(){
   if(gcur==='pong'&&pr&&(pnet.role==='host'||pnet.role==='guest')){if(!pnet.ready){pnet.ready=true;pr.presence({r:1,st:null}).catch(()=>{});pongLobby();pongPeers()}return}
+  if(gcur==='kart'){kartStart();return}
   $('gOver').hidden=true;gptr=null;
   if(gcur==='pong')gstate={py:160,cy:160,bx:240,by:160,vx:0,vy:0,ps:0,cs:0,wait:1,dirn:1,lpy:160,lcy:160,pw:0,cw:0,ph:0,ch:0};
   else if(gcur==='run')gstate={t:0,dist:0,y:230,vy:0,ground:true,jumps:0,speed:190,plats:[{x:0,w:420,y:230}],obs:[],coins:[],coinsN:0,prev:false,walk:0};
@@ -1524,6 +1551,7 @@ function startGame(){
 function drawGameIdle(){gx.fillStyle='#0b0d1c';gx.fillRect(0,0,480,320);drawMark(gx,200,100,80)}
 function gameStep(dt,now){
   if(!gstate){return}
+  if(gcur==='kart'){kartStep(dt,now);return}
   if(gcur==='pong'){if(gstate.net==='guest')guestStep(dt);else pongStep(dt,now)}else if(gcur==='run')runStep(dt,now);else if(gcur==='fish')fishStep(dt,now);else catchStep(dt);
 }
 function pongStep(dt){const s=gstate;
@@ -1545,6 +1573,132 @@ function pongStep(dt){const s=gstate;
       else showOver('Perdiste '+s.ps+' a '+s.cs,rn+' se llevó este partido. ¿La revancha?',on?'Revancha':'Jugar de nuevo');return}}
   if(s.net==='host'&&pr)pr.presence({st:{m:s.mid,bx:Math.round(s.bx),by:Math.round(s.by),ps:s.ps,cs:s.cs,py:Math.round(s.py),ph:'play'}}).catch(()=>{});
   drawPong(s,profile.look,profile.name,s.net==='host'&&pnet.opp?pnet.opp.look:DEXI_LOOK,s.net==='host'&&pnet.opp?pnet.opp.name:'Dexi')}
+/* ---- Karting DXD: carrera de 3 vueltas, hasta 4 personas a la vez ----
+   Quien abre la consola entra a la sala 'kart'. Con más gente: todos presionan
+   Listo, semáforo y corren juntos (los karts se ven en vivo, sin choques).
+   Solo: carrera contra Dexi. Cada victoria suma al ranking. */
+const K_LAPS=3,K_HW=21,K_MAX=4,K_COL=['#3d4cff','#e0455a','#1f9e74','#f2a93b'],K_BOT='#8a63d2';
+const K_CTRL=[[160,48],[300,46],[392,52],[440,98],[430,162],[362,176],[300,202],[332,250],[300,286],[160,286],[106,252],[150,204],[110,162],[50,152],[44,92],[86,54]];
+const KP=(()=>{const o=[],n=K_CTRL.length,S=12;for(let i=0;i<n;i++){const p0=K_CTRL[(i-1+n)%n],p1=K_CTRL[i],p2=K_CTRL[(i+1)%n],p3=K_CTRL[(i+2)%n];
+  for(let j=0;j<S;j++){const t=j/S,t2=t*t,t3=t2*t;const f=(a,b,c,d)=>.5*(2*b+(-a+c)*t+(2*a-5*b+4*c-d)*t2+(-a+3*b-3*c+d)*t3);o.push([f(p0[0],p1[0],p2[0],p3[0]),f(p0[1],p1[1],p2[1],p3[1])])}}return o})();
+const KN=KP.length;
+function kNear(x,y,hint){let best=hint|0,bd=1e9;const scan=(a,b)=>{for(let i=a;i<=b;i++){const k=((i%KN)+KN)%KN,p=KP[k],d=(p[0]-x)**2+(p[1]-y)**2;if(d<bd){bd=d;best=k}}};
+  if(hint==null)scan(0,KN-1);else scan(hint-14,hint+14);return{i:best,d:Math.sqrt(bd)}}
+function kDir(i){const a=KP[((i-1)%KN+KN)%KN],b=KP[(i+1)%KN];return Math.atan2(b[1]-a[1],b[0]-a[0])}
+let kTrack=null;
+function kTrackArt(){if(kTrack)return kTrack;const c=document.createElement('canvas');c.width=960;c.height=640;const g=c.getContext('2d');g.scale(2,2);
+  g.fillStyle='#3f8f4a';g.fillRect(0,0,480,320);g.fillStyle='#46994f';for(let x=0;x<480;x+=40)g.fillRect(x,0,20,320);
+  const path=()=>{g.beginPath();KP.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.closePath()};
+  g.lineJoin='round';g.lineCap='round';
+  path();g.strokeStyle='#f1f2ff';g.lineWidth=K_HW*2+8;g.stroke();
+  path();g.strokeStyle='#e0455a';g.setLineDash([8,8]);g.stroke();g.setLineDash([]);
+  path();g.strokeStyle='#3a3d4f';g.lineWidth=K_HW*2;g.stroke();
+  path();g.strokeStyle='rgba(255,255,255,.18)';g.lineWidth=2;g.setLineDash([10,12]);g.stroke();g.setLineDash([]);
+  const p=KP[0],a=kDir(0)+Math.PI/2;g.save();g.translate(p[0],p[1]);g.rotate(a);
+  for(let i=-K_HW;i<K_HW;i+=6)for(let j=0;j<2;j++){g.fillStyle=((i/6|0)+j)%2?'#fff':'#111';g.fillRect(i,-6+j*6,6,6)}g.restore();
+  drawMark(g,200,92,56);g.fillStyle='rgba(255,255,255,.85)';g.font='700 11px Silkscreen, monospace';g.textAlign='center';g.fillText('KARTING DXD',228,166);
+  return kTrack=c}
+function kGrid(slot){const back=16+18*Math.floor(slot/2),side=(slot%2?1:-1)*9;let i=KN-1,acc=0;
+  while(acc<back){const a=KP[i],b=KP[(i+1)%KN];acc+=Math.hypot(b[0]-a[0],b[1]-a[1]);i--}
+  i=(i+KN)%KN;const p=KP[i],d=kDir(i);return{x:p[0]-Math.sin(d)*side,y:p[1]+Math.cos(d)*side,a:d,i}}
+function kNewKart(slot,name,col){const g=kGrid(slot);return{x:g.x,y:g.y,a:g.a,v:0,i:g.i,lap:0,ft:0,name,col}}
+function kPhys(k,thr,brk,steer,dt){const off=kNear(k.x,k.y,k.i);k.i=off.i;const onT=off.d<=K_HW+2;const max=onT?195:85;
+  if(thr)k.v+=260*dt;else if(!brk)k.v-=k.v*(onT?.9:2.4)*dt;
+  if(brk)k.v-=(k.v>0?380:120)*dt;
+  if(k.v>max)k.v=Math.max(max,k.v-420*dt);if(k.v<-50)k.v=-50;
+  k.a+=steer*3.1*dt*Math.min(1,Math.abs(k.v)/70)*(k.v<0?-1:1);
+  k.x=Math.max(8,Math.min(472,k.x+Math.cos(k.a)*k.v*dt));k.y=Math.max(8,Math.min(312,k.y+Math.sin(k.a)*k.v*dt));
+  const ni=kNear(k.x,k.y,k.i).i;if(k.i>KN*.75&&ni<KN*.25)k.lap++;else if(k.i<KN*.25&&ni>KN*.75)k.lap--;k.i=ni}
+function kProg(k){return k.ft?1e9-k.ft:k.lap*KN+k.i}
+function kFmt(ms){ms=Math.max(0,ms|0);const m=Math.floor(ms/60000),s=Math.floor(ms/1000)%60,d=Math.floor(ms/100)%10;return m+':'+String(s).padStart(2,'0')+'.'+d}
+function kDrawKart(g,k,label,me){g.save();g.translate(k.x,k.y);g.rotate(k.a);
+  g.fillStyle='rgba(0,0,0,.3)';g.fillRect(-8,-5,18,12);g.fillStyle='#111';g.fillRect(-7,-7,5,3);g.fillRect(-7,4,5,3);g.fillRect(4,-7,5,3);g.fillRect(4,4,5,3);
+  g.fillStyle=k.col;g.fillRect(-8,-5,17,10);g.fillStyle='rgba(255,255,255,.35)';g.fillRect(4,-4,5,8);
+  g.fillStyle='#f1f2ff';g.beginPath();g.arc(-1,0,3.4,0,Math.PI*2);g.fill();g.restore();
+  g.font='700 9px Manrope, sans-serif';g.textAlign='center';const w=g.measureText(label).width+8;
+  g.fillStyle=me?'rgba(61,76,255,.95)':'rgba(6,7,13,.8)';g.fillRect(k.x-w/2,k.y-22,w,12);g.fillStyle='#fff';g.fillText(label,k.x,k.y-13)}
+function kHud(s,now){const g=gx,k=s.me;const t=s.t0?now-s.t0:0;
+  const all=[k,...s.rivals()].sort((a,b)=>kProg(b)-kProg(a));const pos=all.indexOf(k)+1;
+  g.fillStyle='rgba(6,7,13,.82)';g.fillRect(264,82,138,40);g.fillStyle='#fff';g.font='700 14px Syncopate, sans-serif';g.textAlign='left';g.textBaseline='top';
+  g.fillText(pos+'º/'+all.length,272,87);g.font='700 11px Manrope, sans-serif';g.fillStyle='#c6c7ff';
+  g.fillText('Vuelta '+Math.min(K_LAPS,Math.max(1,k.lap))+'/'+K_LAPS+' · '+kFmt(k.ft||t),272,106);g.textBaseline='alphabetic'}
+function kDraw(s,now){const g=gx;g.drawImage(kTrackArt(),0,0,480,320);
+  const rs=s.rivals();for(const r of rs)kDrawKart(g,r,r.name,false);kDrawKart(g,s.me,profile.name,true);
+  if(s.cd>0){const lit=Math.min(3,Math.floor(3-s.cd)+1);g.fillStyle='rgba(6,7,13,.9)';g.fillRect(190,120,100,40);
+    for(let i=0;i<3;i++){g.fillStyle=i<lit?'#e0455a':'#3a1218';g.beginPath();g.arc(210+i*30,140,11,0,Math.PI*2);g.fill()}}
+  else if(s.goFlash>0){g.fillStyle='rgba(61,220,151,.95)';g.font='700 34px Syncopate, sans-serif';g.textAlign='center';g.fillText('¡YA!',240,150)}
+  kHud(s,now)}
+
+let kr=null,kn={ready:false,mid:null,lastGo:null,waitT:null,soloEnd:false};
+function kOver(t,p,b){showOver(t,p,b||'Listo');$('gStart').hidden=!b}
+function kPeers(){if(!kr)return[];return kr.peers().filter(p=>p.kind==='viewer'&&p.presence&&cleanStr(p.presence.n,20))
+  .map(p=>({id:p.peer,me:!!p.sameTab,n:cleanStr(p.presence.n,20),pr:p.presence})).sort((a,b)=>a.id<b.id?-1:1)}
+async function kartJoin(){kartLeave();gx.drawImage(kTrackArt(),0,0,480,320);kLobby([]);if(!room)return;
+  try{const j=await room.join('kart');if(gcur!=='kart'){j.leave().catch(()=>{});return}kr=j;
+    kr.presence({n:profile.name,l:profile.look,r:0,go:null,mid:null,x:0,y:0,a:0,lap:0,i:0,ft:0}).catch(()=>{});
+    kr.onPeers(()=>kUpdate(),()=>{kr=null;kUpdate()});kUpdate()}catch(e){kr=null}}
+function kartLeave(){if(kr){kr.leave().catch(()=>{});kr=null}clearTimeout(kn.waitT);kn={ready:false,mid:null,lastGo:null,waitT:null,soloEnd:false}}
+function kNames(a){return a.map(p=>p.n).join(', ')}
+function kLobby(list){const others=list.filter(p=>!p.me);
+  if(!others.length){kOver('Karting DXD','3 vueltas contra Dexi. Si otra persona abre la consola, corren juntos (hasta 4).','Correr contra Dexi');return}
+  const racing=others.filter(p=>p.pr.mid&&!p.pr.ft&&!p.pr.r);
+  if(racing.length&&!kn.ready){kOver('Carrera en curso',kNames(racing)+(racing.length>1?' están':' está')+' corriendo. Presiona Listo y corres en la próxima.','Listo');return}
+  const waiting=others.filter(p=>!p.pr.r);
+  if(kn.ready)kOver('Karting · '+list.length+' pilotos',waiting.length?'Esperando que '+kNames(waiting)+' presione Listo…':'¡Todos listos! A la parrilla…',null);
+  else kOver('Carrera contra '+kNames(others),'Cuando todos presionen Listo parten juntos. Gana quien complete primero las 3 vueltas.','Listo')}
+function kUpdate(){if(gcur!=='kart')return;const list=kPeers(),others=list.filter(p=>!p.me);
+  if(gstate&&gstate.net){kCheckEnd();return}
+  const host=list[0];
+  if(!kn.ready&&host&&!host.me&&host.pr.go)kn.lastGo=host.pr.go;
+  if(kn.ready&&host&&!host.me&&host.pr.go&&host.pr.go!==kn.lastGo&&host.pr.mid===host.pr.go&&host.pr.r===0){kBegin(host.pr.go,list);return}
+  if(kn.ready&&host&&host.me&&others.length&&list.every(p=>p.pr.r)){const go=Math.random().toString(36).slice(2,8);kBegin(go,list);return}
+  if(!gstate&&!kn.soloEnd)kLobby(list)}
+function kartStart(){kn.soloEnd=false;const others=kPeers().filter(p=>!p.me);
+  if(kr&&others.length){if(!kn.ready){kn.ready=true;kr.presence({r:1,mid:null,ft:0}).catch(()=>{});kUpdate()}return}
+  $('gOver').hidden=true;gptr=null;   // solo contra Dexi
+  const bot=kNewKart(1,'Dexi',K_BOT);bot.bot=1;
+  gstate={net:null,cd:3,goFlash:0,t0:0,me:kNewKart(0,profile.name,K_COL[0]),bot,rivals(){return[this.bot]}}}
+function kBegin(go,list){kn.ready=false;kn.lastGo=go;kn.mid=go;
+  const racers=list.filter(p=>p.me||p.pr.r||p.pr.mid===go).slice(0,K_MAX);let slot=racers.findIndex(p=>p.me);if(slot<0)slot=0;
+  const me=kNewKart(slot,profile.name,K_COL[slot%4]);
+  kr.presence({r:0,go,mid:go,x:Math.round(me.x),y:Math.round(me.y),a:me.a,lap:0,i:me.i,ft:0,c:slot}).catch(()=>{});
+  $('gOver').hidden=true;gptr=null;
+  gstate={net:go,cd:3,goFlash:0,t0:0,me,others:new Map(),done:false,rivals(){return[...this.others.values()]}}}
+function kSyncOthers(s){for(const p of kPeers()){if(p.me)continue;
+    if(p.pr.mid!==s.net){s.others.delete(p.id);continue}
+    let o=s.others.get(p.id);const c=K_COL[(+p.pr.c|0)%4];
+    if(!o){o={x:+p.pr.x||0,y:+p.pr.y||0,a:+p.pr.a||0,name:p.n,col:c};s.others.set(p.id,o)}
+    o.tx=+p.pr.x||0;o.ty=+p.pr.y||0;o.ta=+p.pr.a||0;o.lap=p.pr.lap|0;o.i=p.pr.i|0;o.ft=Math.max(0,+p.pr.ft||0);o.name=p.n;o.col=c}
+  for(const id of [...s.others.keys()])if(!kPeers().some(p=>p.id===id))s.others.delete(id)}
+function kCheckEnd(){const s=gstate;if(!s||!s.net||!s.me.ft)return;
+  const rs=s.rivals(),left=rs.filter(r=>!r.ft);
+  if(!left.length)kResults();else kOver('¡Llegaste!','Tu tiempo: '+kFmt(s.me.ft)+'. Esperando a '+left.map(r=>r.name).join(', ')+'…',null)}
+function kResults(){const s=gstate;if(!s)return;clearTimeout(kn.waitT);
+  const rows=[{n:profile.name,me:true,ft:s.me.ft},...s.rivals().map(r=>({n:r.name,me:false,ft:r.ft||0}))]
+    .sort((a,b)=>(a.ft||9e9)-(b.ft||9e9));
+  gstate=null;kn.soloEnd=true;kDraw({...s,cd:0,goFlash:0},performance.now());
+  const win=rows[0].me&&rows[0].ft;if(win){saveScore('kart',1);sendEmote(7)}
+  if(win)kOver('¡Ganaste la carrera!',(rows.length>1?'Le ganaste a '+rows.filter(r=>!r.me).map(r=>r.n).join(', ')+'. ':'')+'Sumaste una victoria al ranking.','Revancha');
+  else kOver('Ganó '+rows[0].n,'Llegaste '+(rows.findIndex(r=>r.me)+1)+'º. ¿La revancha?','Revancha');
+  const pl=document.createElement('div');pl.className='plist';
+  rows.forEach((r,i)=>{const d=document.createElement('div');if(i===0&&r.ft)d.className='w';const a=document.createElement('span');a.textContent=(i+1)+'. '+r.n+(r.me?' (tú)':'');
+    const b=document.createElement('span');b.textContent=r.ft?kFmt(r.ft):'no terminó';d.append(a,b);pl.appendChild(d)});
+  $('gOver').insertBefore(pl,$('gStart'))}
+function kartStep(dt,now){const s=gstate;if(!s)return;const k=s.me;
+  if(s.cd>0){s.cd-=dt;if(s.cd<=0){s.t0=now;s.goFlash=.8}}
+  else{if(s.goFlash>0)s.goFlash-=dt;
+    if(!k.ft){let thr=gkeys.has('u')||gkeys.has('sp'),brk=gkeys.has('d'),steer=(gkeys.has('r')?1:0)-(gkeys.has('l')?1:0);
+      if(gdown&&gptr){thr=true;const want=Math.atan2(gptr.y-k.y,gptr.x-k.x);let d=want-k.a;d=Math.atan2(Math.sin(d),Math.cos(d));steer=Math.max(-1,Math.min(1,d*2.5))}
+      kPhys(k,thr,brk,steer,dt);if(k.lap>K_LAPS){k.ft=now-s.t0;k.v=0}}
+    if(s.bot&&!s.bot.ft){const b=s.bot,t=KP[(b.i+7)%KN];let d=Math.atan2(t[1]-b.y,t[0]-b.x)-b.a;d=Math.atan2(Math.sin(d),Math.cos(d));
+      kPhys(b,b.v<168,false,Math.max(-1,Math.min(1,d*3)),dt);if(b.v>168)b.v=168;if(b.lap>K_LAPS)b.ft=now-s.t0}}
+  if(s.net){kSyncOthers(s);const kk=Math.min(1,dt*12);
+    for(const o of s.others.values()){o.x+=(o.tx-o.x)*kk;o.y+=(o.ty-o.y)*kk;let d=o.ta-o.a;d=Math.atan2(Math.sin(d),Math.cos(d));o.a+=d*kk}
+    if(kr)kr.presence({x:Math.round(k.x),y:Math.round(k.y),a:Math.round(k.a*100)/100,lap:k.lap,i:k.i,ft:Math.round(k.ft)}).catch(()=>{});
+    if(k.ft&&!s.done){s.done=true;kn.waitT=setTimeout(()=>{if(gstate===s)kResults()},30000)}
+    if(k.ft){kDraw(s,now);kCheckEnd();return}}
+  else if((k.ft&&now-s.t0-k.ft>400)||(!k.ft&&s.bot.ft&&now-s.t0-s.bot.ft>2500)){kResults();return}
+  kDraw(s,now)}
 /* ---- Ping pong entre 2 personas ---- */
 let pr=null,pnet={role:'solo',opp:null,ready:false,oppY:160,doneMid:null};
 async function pongJoin(){pnet={role:'solo',opp:null,ready:false,oppY:160,doneMid:null};
@@ -1764,7 +1918,7 @@ function renderBoard(k){if(gcur!==k)return;const ol=$('gBoard');ol.textContent='
   $('gMine').textContent=b.mine!=null?'Tu marca: '+b.mine+' '+GAMES[k].unit:''}
 function renderRank(){const el=$('rank');el.textContent='';
   for(const k of Object.keys(GAMES)){const h=document.createElement('div');h.className='sec';h.textContent=GAMES[k].name.toUpperCase();el.appendChild(h);
-    const b=boards[k];if(!b||!b.list.length){const e=document.createElement('div');e.className='empty';e.style.padding='6px 8px 10px';e.style.textAlign='left';e.textContent={catch:'Juega en las máquinas arcade de la Sala de juegos.',pong:'Juega en la mesa de ping pong junto al lobby.',fish:'Pesca en el acuario de la Biblioteca.',run:'Juega desde el cuadro de la Costanera en la Galería Chile.',duel:'Gana duelos en la Arena: sal por la puerta principal.'}[k]||'';el.appendChild(e);continue}
+    const b=boards[k];if(!b||!b.list.length){const e=document.createElement('div');e.className='empty';e.style.padding='6px 8px 10px';e.style.textAlign='left';e.textContent={catch:'Juega en las máquinas arcade de la Sala de juegos.',pong:'Juega en la mesa de ping pong junto al lobby.',kart:'Corre en la consola de la Sala de juegos.',fish:'Pesca en el acuario de la Biblioteca.',run:'Juega desde el cuadro de la Costanera en la Galería Chile.',duel:'Gana duelos en la Arena: sal por la puerta principal.'}[k]||'';el.appendChild(e);continue}
     b.list.slice(0,5).forEach((x,i)=>el.appendChild(personRow({name:(i+1)+'. '+x.name,look:x.look,zone:'',me:x.id===k+'-'+pid},x.best+' '+GAMES[k].unit)))}}
 
 /* ================= Conexión ================= */
