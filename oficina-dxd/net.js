@@ -116,8 +116,15 @@
     var DOGS = [['#c98b3c', '#8a5a22'], ['#f2f2f2', '#3b2a20'], ['#3b2a20', '#1d140e'], ['#8a8a8a', '#4a4a4a'], ['#e8d2a8', '#b08a50'], ['#a0522d', '#5e2e14']];
     var CATS = ['#2b2222', '#f2a93b', '#dcdce6', '#7a6a5a'];
     function spawn(now) {
-      var dir = Math.random() < .5 ? 1 : -1, x = dir > 0 ? -20 : W + 20, y = 152 + Math.random() * 24, k = Math.random();
-      if (k < .58) { var d = DOGS[Math.floor(Math.random() * DOGS.length)]; animals.push({ t: Math.random() < .3 ? 'pup' : 'dog', c: d[0], c2: d[1], spot: Math.random() < .35, x: x, y: y, dir: dir, v: 14 + Math.random() * 12, walk: 0, stop: 0 }); }
+      var dir = Math.random() < .5 ? 1 : -1, x = dir > 0 ? -20 : W + 20, y = 152 + Math.random() * 24, k = Math.random(), sc0 = window.__dxdScene;
+      if (k < .45 && sc0 && sc0.randLook) { // personas: caminan, trotan, pasean a su perro o entran a la oficina
+        var jog = Math.random() < .2, dogw = !jog && Math.random() < .4, py = 147 + Math.random() * 4;
+        var per = { t: 'person', look: sc0.randLook(), x: x, y: py, dir: dir, v: jog ? 32 : 15 + Math.random() * 6, walk: 0, stop: 0, enter: !dogw && !jog && Math.random() < .3 };
+        animals.push(per);
+        if (dogw) { var dd = DOGS[Math.floor(Math.random() * DOGS.length)]; animals.push({ t: Math.random() < .4 ? 'pup' : 'dog', c: dd[0], c2: dd[1], spot: Math.random() < .35, x: x + dir * 15, y: py + 3, dir: dir, v: per.v, walk: 0, stop: 0, owner: per }); }
+        nextSpawn = now + 2000 + Math.random() * 3500; return;
+      }
+      if (k < .7) { var d = DOGS[Math.floor(Math.random() * DOGS.length)]; animals.push({ t: Math.random() < .3 ? 'pup' : 'dog', c: d[0], c2: d[1], spot: Math.random() < .35, x: x, y: y, dir: dir, v: 14 + Math.random() * 12, walk: 0, stop: 0 }); }
       else if (k < .86) animals.push({ t: 'cat', c: CATS[Math.floor(Math.random() * CATS.length)], x: x, y: y, dir: dir, v: 10 + Math.random() * 8, walk: 0, stop: 0 });
       else { var n = 2 + Math.floor(Math.random() * 3); for (var i = 0; i <= n; i++) animals.push({ t: i ? 'duckling' : 'duck', x: x - dir * i * 8, y: y, dir: dir, v: 9, walk: Math.random(), stop: 0 }); }
       nextSpawn = now + 2500 + Math.random() * 4000;
@@ -192,13 +199,19 @@
       for (var t = x0 - 30; t > -12; t -= 46) tree(t); for (var t2 = x0 + bw + 30; t2 < W + 12; t2 += 46) tree(t2);
       bench(x0 - 34); bench(x0 + bw + 14);
       // animales
-      if (!reduce) { if (now > nextSpawn && animals.length < 7) spawn(now);
-        animals.forEach(function (a) { if (a.stop > 0) { a.stop -= dt; return; } a.x += a.dir * a.v * dt; a.walk += dt;
-          if ((a.t === 'dog' || a.t === 'pup') && Math.random() < dt * .12) a.stop = .8 + Math.random() * 1.2; });
-        animals = animals.filter(function (a) { return a.x > -40 && a.x < W + 40; }); }
+      if (!reduce) { if (now > nextSpawn && animals.length < 9) spawn(now);
+        animals.forEach(function (a) { if (a.stop > 0) { a.stop -= dt; return; } a.walk += dt;
+          if (a.entering) { a.y -= 9 * dt; if (a.y < 141) a.gone = true; return; }
+          a.x += a.dir * a.v * dt;
+          if (a.enter && Math.abs(a.x - bx) < 2) { a.entering = true; a.x = bx; }
+          if ((a.t === 'dog' || a.t === 'pup') && !a.owner && Math.random() < dt * .12) a.stop = .8 + Math.random() * 1.2; });
+        animals = animals.filter(function (a) { return !a.gone && a.x > -40 && a.x < W + 40; }); }
       var near = null, sc = window.__dxdScene, dexX = bx + 30;
-      animals.slice().sort(function (a, b) { return a.y - b.y; }).forEach(function (a) { if (Math.abs(a.x - dexX) < 34) near = a;
-        if (a.t === 'cat') drawCat(a); else if (a.t === 'duck' || a.t === 'duckling') drawDuck(a); else drawDog(a); });
+      animals.forEach(function (a) { if (!a.owner || a.owner.gone) return; g.strokeStyle = '#3a2a1a'; g.lineWidth = 1; g.beginPath();
+        g.moveTo(Math.round(a.owner.x + a.dir * 4) + .5, Math.round(a.owner.y - 9) + .5); g.lineTo(Math.round(a.x + a.dir * 4) + .5, Math.round(a.y - 7) + .5); g.stroke(); });
+      animals.slice().sort(function (a, b) { return a.y - b.y; }).forEach(function (a) { if (Math.abs(a.x - dexX) < 34 && !a.entering) near = a;
+        if (a.t === 'person') { if (sc && sc.drawChar) try { sc.drawChar(g, a.x, a.y, a.look, a.entering ? 'up' : a.dir > 0 ? 'right' : 'left', Math.floor(a.walk * (a.v > 25 ? 12 : 8)) % 4, false, 1); } catch (e) {} }
+        else if (a.t === 'cat') drawCat(a); else if (a.t === 'duck' || a.t === 'duckling') drawDuck(a); else drawDog(a); });
       if (sc && sc.drawChar) { try { sc.drawChar(g, dexX, gy + 8, sc.DEXI_LOOK, near ? (near.x < dexX ? 'left' : 'right') : 'down', 0, false, 1); } catch (e) {} }
       // velo de noche y tono cálido del atardecer
       if (d > 0) { g.fillStyle = 'rgba(8,10,40,' + (d * .6) + ')'; g.fillRect(0, 84, W, H - 84); g.fillRect(x0 - 4, top - 4, bw + 8, 50); }

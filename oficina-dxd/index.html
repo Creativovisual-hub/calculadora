@@ -1909,7 +1909,7 @@ function guestStep(dt){const s=gstate,h=s.h;
   drawPong(v,pnet.opp?pnet.opp.look:DEXI_LOOK,pnet.opp?pnet.opp.name:'Rival',profile.look,profile.name);s.lpy=v.lpy;s.lcy=v.lcy}
 const DEXI_LOOK=NPCS.find(n=>n.id==='dexi').look;
 // Para la pantalla de login (net.js): dibuja a Dexi y el logo con el mismo estilo
-window.__dxdScene={drawChar,drawMark,headURL,DEXI_LOOK};
+window.__dxdScene={drawChar,drawMark,headURL,DEXI_LOOK,randLook};
 function drawPong(s,LL,LN,RL,RN){LL=LL||profile.look;LN=LN||profile.name;RL=RL||DEXI_LOOK;RN=RN||'Dexi';const g=gx,now=performance.now();g.imageSmoothingEnabled=false;
   for(let y=0;y<320;y+=20)for(let x=0;x<480;x+=20){g.fillStyle=((x+y)/20)%2?'#ece9f2':'#e2dfea';g.fillRect(x,y,20,20)}
   g.fillStyle='rgba(40,30,70,.18)';g.fillRect(46,36,394,264);
