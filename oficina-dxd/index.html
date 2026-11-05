@@ -318,7 +318,7 @@ aside#panel.open{transform:none}
     </div>
     <input class="hud" id="sayBox" maxlength="140" placeholder="Di algo y presiona Enter" autocomplete="off" aria-label="Mensaje sobre tu personaje" hidden>
     <div class="hud bl">
-      <div class="row"><button class="btn atk" id="atkBtn" hidden>⚔️ Atacar <kbd>Espacio</kbd></button><button class="btn pri talk" id="talkBtn">💬 Hablar <kbd>T</kbd></button><button class="btn voice" id="voiceBtn" type="button">🎙️ Voz</button><button class="btn inv" id="tomBtn" type="button" hidden title="Lanzar tomate (Q)">🍅 <span id="tomN">0</span> <kbd>Q</kbd></button><button class="btn inv" id="banBtn" type="button" hidden title="Dejar cáscara de plátano (B)">🍌 <span id="banN">0</span> <kbd>B</kbd></button><button class="btn" id="shareBtn" type="button" hidden>🖥️ Compartir pantalla</button><button class="btn" id="voiceLeave" type="button" hidden title="Salir de la voz">✕</button><div class="emotes" id="emotes" aria-label="Reacciones"></div></div>
+      <div class="row"><button class="btn atk" id="atkBtn" hidden>⚔️ Atacar <kbd>Espacio</kbd></button><button class="btn pri talk" id="talkBtn">💬 Hablar <kbd>T</kbd></button><button class="btn voice" id="voiceBtn" type="button">🎙️ Voz</button><button class="btn inv" id="tomBtn" type="button" hidden title="Lanzar tomate (Q)">🍅 <span id="tomN">0</span> <kbd>Q</kbd></button><button class="btn inv" id="banBtn" type="button" hidden title="Dejar cáscara de plátano (B)">🍌 <span id="banN">0</span> <kbd>B</kbd></button><button class="btn" id="shareBtn" type="button" hidden>🖥️ Compartir pantalla</button><button class="btn" id="feedBtn" type="button" hidden title="Dar comida a tus mascotas y a las que estén cerca (F)">🍖 Alimentar <kbd>F</kbd></button><button class="btn" id="voiceLeave" type="button" hidden title="Salir de la voz">✕</button><div class="emotes" id="emotes" aria-label="Reacciones"></div></div>
       <div class="mecard">
         <img id="meHead" alt="">
         <div><div class="nm" id="meName">Tú</div><div class="zn" id="meZone">Oficina</div></div>
@@ -375,7 +375,7 @@ aside#panel.open{transform:none}
     <h2 id="petTitle">Casita de mascotas</h2>
     <p class="sub">Te siguen por toda la oficina, todos las ven y hacen sus sonidos. Tecla P para llamarlas.</p>
     <canvas id="petCv" width="160" height="90"></canvas>
-    <div class="osec"><h4>Tus mascotas (máx. 3) · toca para dejarla</h4><div class="chips" id="petMine"></div></div>
+    <div class="osec"><h4>Tus mascotas (máx. 2) · toca para dejarla</h4><div class="chips" id="petMine"></div></div>
     <div class="osec"><h4>Adopta una nueva</h4><div class="chips" id="petKinds"></div></div>
     <div class="osec"><h4>Color</h4><div class="chips" id="petCols"></div></div>
     <div class="cardfoot"><button class="btn" id="petClose" type="button">Listo</button><button class="btn pri" id="petOk" type="button">¡Adoptar!</button></div>
@@ -790,10 +790,10 @@ for(const x of [7,8,9,10]){add({t:'mchairD',x,y:5});add({t:'mchairU',x,y:9})}
 add({t:'plant',x:4,y:4,s:1,v:2});add({t:'credenza',x:12,y:4,w:2,s:1});add({t:'plant',x:4,y:11,s:1,v:1});add({t:'plant',x:14,y:11,s:1,v:0});add({t:'lampf',x:14,y:4});
 // Cocina
 WD.push({t:'mugshelf',x:5,y:13,w:3},{t:'menu',x:11,y:13,w:2});
-add({t:'counter',x:4,y:14,w:5,s:1,sink:2,act:'wash'});add({t:'coffee',x:9,y:14,s:1,act:'coffee'});add({t:'fridge',x:10,y:14,s:1});add({t:'counter',x:11,y:14,w:2,s:1,micro:1});add({t:'cooler',x:14,y:14,s:1});add({t:'fruits',x:13,y:14,s:1,act:'banana'});
+add({t:'counter',x:4,y:14,w:5,s:1,sink:2,act:'wash'});add({t:'coffee',x:9,y:14,s:1,act:'coffee'});add({t:'fridge',x:10,y:14,s:1,act:'eat'});add({t:'counter',x:11,y:14,w:2,s:1,micro:1});add({t:'cooler',x:14,y:14,s:1});add({t:'fruits',x:13,y:14,s:1,act:'banana'});
 add({t:'rtable',x:6,y:16,w:2,h:2,s:1});add({t:'rtable',x:11,y:16,w:2,h:2,s:1});
 for(const [x,y] of [[5,16],[5,17],[8,16],[8,17],[10,16],[10,17],[13,16],[13,17]])add({t:'stool',x,y});
-add({t:'plant',x:4,y:20,s:1,v:3});add({t:'vending',x:14,y:20,s:1});add({t:'bin',x:13,y:20,s:1});
+add({t:'plant',x:4,y:20,s:1,v:3});add({t:'vending',x:14,y:20,s:1,act:'eat'});add({t:'bin',x:13,y:20,s:1});
 // Sala de juegos
 WD.push({t:'neon',x:5,y:22,w:3},{t:'tv',x:11,y:22,w:3,game:1});
 add({t:'arcade',x:4,y:23,s:1,c:'#3d4cff',act:'catch'});add({t:'arcade',x:5,y:23,s:1,c:'#e0455a',act:'catch'});add({t:'arcade',x:6,y:23,s:1,c:'#1f9e74',act:'catch'});
@@ -909,7 +909,7 @@ const NPCS=[
       'Presiona T para hablar: tu mensaje aparece sobre tu cabeza y todos lo ven.',
       'En el jardín hay un huerto de tomates 🍅 (Q para lanzarlos) y una casita para adoptar mascota 🐾. En la cocina hay plátanos 🍌: B para dejar la cáscara… ¡cuidado al pisarla!',
       'La Sala Insight es la sala de reuniones: lo que se habla ahí solo se escucha ahí, y con 🖥️ puedes compartir tu pantalla con todos los que estén dentro.',
-      'Con el botón de la carita (abajo a la izquierda) eliges tu estado de ánimo. En la casita del jardín puedes adoptar hasta 3 mascotas, ¡hasta un tigre! P para llamarlas.',
+      'Con el botón de la carita (abajo a la izquierda) eliges tu estado de ánimo. En la casita del jardín puedes adoptar hasta 2 mascotas, ¡hasta un tigre! P para llamarlas y F para darles comida cuando tengan hambre. Si a ti te da hambre, come en la cocina.',
       'Toma el ascensor al Piso 2: ¡es la fiesta! Cada uno pega canciones de Spotify en el panel del DJ y suenan para todos.',
       'Con el botón 🎙️ Voz hablas con tu micrófono: te escuchan quienes estén en tu misma sala, y más bajito los que estén cerca. M para silenciarte.',
       'Sam Tomaz está en el piso 14: toma el ascensor del pasillo norte. Carito está en Equipo Producto, Sabi en la Biblioteca y Yab en la Sala Insight.',
@@ -954,7 +954,7 @@ for(const f of FUR){const X=f.x*T,Y=f.y*T,w=f.w||1;
   if(f.t==='sofaU')for(let i=0;i<w;i++)SEATS.push({x:X+i*T+16,y:Y+18,dir:'up',f});
   if(f.act)ACTS.push(f);
 }
-const ACT_LABEL={arena:'Entrar a la Arena de espadas',leave:'Salir de la Arena',art:'Mirar el cuadro',stop:'Jugar Stop (Bachillerato)',coffee:'Servirte un café',catch:'Jugar Atrapa Datos',pong:'Jugar Ping Pong DXD',kart:'Jugar Karting DXD',dj:'Poner música 🎧',elev:'Tomar el ascensor',tomato:'Sacar tomates 🍅',wash:'Lavarte la cara 🚿',banana:'Sacar plátanos 🍌',pet:'Elegir mascota 🐾',fish:'Pescar en el acuario',up:'Tomar el ascensor',down:'Tomar el ascensor'};
+const ACT_LABEL={arena:'Entrar a la Arena de espadas',leave:'Salir de la Arena',art:'Mirar el cuadro',stop:'Jugar Stop (Bachillerato)',coffee:'Servirte un café',catch:'Jugar Atrapa Datos',pong:'Jugar Ping Pong DXD',kart:'Jugar Karting DXD',dj:'Poner música 🎧',elev:'Tomar el ascensor',tomato:'Sacar tomates 🍅',eat:'Comer algo 🍔',wash:'Lavarte la cara 🚿',banana:'Sacar plátanos 🍌',pet:'Elegir mascota 🐾',fish:'Pescar en el acuario',up:'Tomar el ascensor',down:'Tomar el ascensor'};
 function rectDist(px,py,f){const x0=f.x*T,y0=f.y*T,x1=x0+(f.w||1)*T,y1=y0+(f.h||1)*T;const cy=py-6;
   const dx=Math.max(x0-px,0,px-x1),dy=Math.max(y0-cy,0,cy-y1);return Math.hypot(dx,dy)}
 
@@ -1242,6 +1242,7 @@ addEventListener('keydown',e=>{
   else if(e.code==='KeyQ'){e.preventDefault();throwTomato()}
   else if(e.code==='KeyB'){e.preventDefault();dropPeel()}
   else if(e.code==='KeyP'){e.preventDefault();callPets()}
+  else if(e.code==='KeyF'){e.preventDefault();feedPets()}
   else if(/^[1-6]$/.test(e.key))sendEmote(+e.key-1);
 });
 addEventListener('keyup',e=>{if(KEYMAP[e.code])keys.delete(KEYMAP[e.code]);if(!gameModal.hidden)gameKey(e,false)});
@@ -1311,6 +1312,7 @@ function doAct(f){
   if(f.act==='tomato'){inv.tom=5;invUI();toast('🍅 Tienes 5 tomates. Q para lanzar: apunta con el mouse o va a la persona más cercana.')}
   if(f.act==='banana'){inv.ban=3;invUI();toast('🍌 Tienes 3 plátanos. B para comerte uno y dejar la cáscara en el suelo.')}
   if(f.act==='pet'){openPet();return}
+  if(f.act==='eat'){eatFood();return}
   if(f.act==='wash'){if(me.tomN){me.tomN=0;me.tomAt=0;pushPresence(true);toast('🚿 Quedaste limpiecito. ¡Por ahora!')}else toast('🚿 Ya estás limpio.')}
   if(f.act==='fish')openGame('fish');
   if(f.act==='catch'||f.act==='pong'||f.act==='kart')openGame(f.act);
@@ -1336,7 +1338,7 @@ function claimDesk(i){const cur=deskOwners()[i];
 
 /* ================= Presencia ================= */
 let lastPush=0,pushPending=false,lastSent='';
-function presencePayload(){return{n:profile.name,l:profile.look,x:Math.round(me.x),y:Math.round(me.y),d:me.dir,m:me.moving?1:0,e:me.emote,s:me.say,st:me.sit?1:0,g:me.game,ty:me.typing?1:0,v:vc.on?1:0,oc:VR_OPUS?1:0,sp:vc.speaking&&!vc.muted?1:0,fl:me.fallAt?1:0,tm:me.tomN||0,pl:myPeels.map(p=>[p.id,p.x,p.y]),pt:profile.pets||[],md:profile.mood,sh:sc.stream?1:0,dk:me.desk==null?null:me.desk,hp:inArena()?me.hp:null,ko:me.ko?1:0,a:me.atkSeq}}
+function presencePayload(){return{n:profile.name,l:profile.look,x:Math.round(me.x),y:Math.round(me.y),d:me.dir,m:me.moving?1:0,e:me.emote,s:me.say,st:me.sit?1:0,g:me.game,ty:me.typing?1:0,v:vc.on?1:0,oc:VR_OPUS?1:0,sp:vc.speaking&&!vc.muted?1:0,fl:me.fallAt?1:0,tm:me.tomN||0,pl:myPeels.map(p=>[p.id,p.x,p.y]),pt:profile.pets||[],md:profile.mood,hg:meHungry()?1:0,ph:(profile.pets||[]).map((_,i)=>petHungry(i)?1:0),sh:sc.stream?1:0,dk:me.desk==null?null:me.desk,hp:inArena()?me.hp:null,ko:me.ko?1:0,a:me.atkSeq}}
 function pushPresence(force){
   if(!room||!profile)return;const now=performance.now();
   const p=presencePayload();const k=JSON.stringify(p);if(k===lastSent&&!force)return;
@@ -1353,7 +1355,7 @@ function applyPeers(list){
     let o=others.get(p.peer);
     if(!o){o={x,y,walk:0,emoteAt:0,sayAt:0,emoteId:null,sayId:null};others.set(p.peer,o);if(announceReady)sysMsg(name+' llegó a la oficina')}
     o.name=name;o.look=sanLook(pr.l);o.tx=x;o.ty=y;o.dir=DIRS.includes(pr.d)?pr.d:'down';o.m=!!pr.m;o.st=!!pr.st;o.typ=!!pr.ty;o.v=!!pr.v;o.sp=!!pr.sp;o.oc=pr.oc===undefined?undefined:!!pr.oc;if(pr.fl&&!o.fl)o.flAt=performance.now();o.fl=!!pr.fl;{const tn=Math.max(0,Math.min(10,pr.tm|0));if(tn>(o.tmN||0))o.tmAt=performance.now();o.tmN=tn}
-    o.pl=Array.isArray(pr.pl)?pr.pl.slice(0,3).filter(q=>Array.isArray(q)&&typeof q[0]==='string').map(q=>[q[0].slice(0,10),Math.max(0,Math.min(MW*T,+q[1]||0)),Math.max(0,Math.min(MH*T,+q[2]||0))]):[];o.pt=sanPets(pr.pt);o.md=Number.isInteger(pr.md)&&pr.md>=0&&pr.md<MOODS.length?pr.md:null;o.sh=!!pr.sh;o.dk=Number.isInteger(pr.dk)&&pr.dk>=0&&pr.dk<DESKS.length?pr.dk:null;o.g=GAME_NAMES[pr.g]?pr.g:null;
+    o.pl=Array.isArray(pr.pl)?pr.pl.slice(0,3).filter(q=>Array.isArray(q)&&typeof q[0]==='string').map(q=>[q[0].slice(0,10),Math.max(0,Math.min(MW*T,+q[1]||0)),Math.max(0,Math.min(MH*T,+q[2]||0))]):[];o.pt=sanPets(pr.pt);o.hg=!!pr.hg;o.ph=Array.isArray(pr.ph)?pr.ph.slice(0,PET_MAX).map(Boolean):[];o.md=Number.isInteger(pr.md)&&pr.md>=0&&pr.md<MOODS.length?pr.md:null;o.sh=!!pr.sh;o.dk=Number.isInteger(pr.dk)&&pr.dk>=0&&pr.dk<DESKS.length?pr.dk:null;o.g=GAME_NAMES[pr.g]?pr.g:null;
     o.hp=Number.isFinite(pr.hp)?Math.max(0,Math.min(100,pr.hp)):100;o.ko=!!pr.ko;if(pr.a!==o.atkSeq){if(o.atkSeq!==undefined)o.atkAt=performance.now();o.atkSeq=pr.a}o.guest=!!p.guest;o.mine=p.isMe;
     const e=pr.e&&typeof pr.e==='object'?pr.e:null;
     if(e&&e.i!==o.emoteId){o.emoteId=e.i;o.emote=EMOTES[(e.k|0)]||null;o.emoteAt=performance.now()}
@@ -1433,7 +1435,7 @@ function npcTick(dt,now){
     if(d<=sp){n.x=px;n.y=py;n.path.shift();if(!n.path.length){n.path=null;n.wait=now+2500+Math.random()*6000;n.dir=['down','left','right','down'][Math.floor(Math.random()*4)]}}
     else{n.x+=dx/d*sp;n.y+=dy/d*sp;n.walk+=dt;n.dir=Math.abs(dx)>Math.abs(dy)?(dx<0?'left':'right'):(dy<0?'up':'down')}}}
 function step(now){
-  musicUpdate();vcTick();scTick(now);djTick(now);
+  musicUpdate();vcTick();scTick(now);djTick(now);hungerTick(now);
   const dt=Math.min(.05,(now-last)/1000);last=now;
   if(profile&&gameModal.hidden&&stopModal.hidden&&artModal.hidden)updateMe(dt);
   if(profile)arenaStep(dt,now);
@@ -1538,7 +1540,7 @@ function draw(now){
     const sx=(a.x-camX)*zoom,sy=(a.y-camY)*zoom,top=sy-(a.ko&&myReg===2?30:a.sit?52:58)*zoom;
     if(a.isMe&&!sayBox.hidden){sayBox.style.left=sx+'px';sayBox.style.top=(top-34)+'px'}
     if(sx<-150||sx>vw+150||sy<-80||sy>vh+150)continue;
-    {const md=a.isMe?profile.mood:a.o.md;moodFx(sx,top-6,md,now,sy);nameTag(sx,top-6,a.name,a.isMe,a.g,vcState(a.isMe?null:a.o),md)}
+    {const md=a.isMe?profile.mood:a.o.md;moodFx(sx,top-6,md,now,sy);nameTag(sx,top-6,(a.isMe?meHungry():a.o.hg)?'🍔 '+a.name:a.name,a.isMe,a.g,vcState(a.isMe?null:a.o),md)}
     if(myReg===2)hpBar(sx,top-1,a.hp,a.ko);
     if(a.isMe&&!sayBox.hidden)continue;
     const em=a.isMe?myEmote:a.o;let by=top-30;
@@ -1632,7 +1634,7 @@ function sfxUnlock(){try{if(!sfxCtx){const AC=window.AudioContext||window.webkit
 addEventListener('pointerdown',sfxUnlock,{passive:true});addEventListener('keydown',sfxUnlock);
 let sfxBus=null;function sfxDest(){if(!sfxBus){sfxBus=sfxCtx.createGain();sfxBus.gain.value=sfxVol;sfxBus.connect(sfxCtx.destination)}return sfxBus}
 function playSfx(kind){try{sfxUnlock();const c=sfxCtx;if(!c||c.state!=='running')return;const t=c.currentTime;
-  const notes=kind==='out'?[[660,0],[990,.07]]:kind==='throw'?[[300,0],[520,.05]]:kind==='splat'?[[160,0],[90,.05]]:kind==='slip'?[[900,0],[600,.08],[330,.16],[200,.26]]:[[880,0],[1320,.11]];
+  const notes=kind==='out'?[[660,0],[990,.07]]:kind==='throw'?[[300,0],[520,.05]]:kind==='splat'?[[160,0],[90,.05]]:kind==='slip'?[[900,0],[600,.08],[330,.16],[200,.26]]:kind==='eat'?[[420,0],[380,.1],[460,.2],[400,.3]]:[[880,0],[1320,.11]];
   for(const [f,d] of notes){const o=c.createOscillator(),g=c.createGain();o.type=kind==='out'?'triangle':'sine';o.frequency.setValueAtTime(f,t+d);
     g.gain.setValueAtTime(0,t+d);g.gain.linearRampToValueAtTime(kind==='out'?.12:.16,t+d+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d+(kind==='out'?.16:.32));
     o.connect(g).connect(sfxDest());o.start(t+d);o.stop(t+d+.35)}}catch(e){}}
@@ -1975,7 +1977,7 @@ const PETS=[
   {n:'Elefante',e:'🐘',s:'trumpet',t:'¡Pruuuu!',wild:1,big:1,cols:['#9aa0b0']}];
 function sanPet(p){if(!p||typeof p!=='object')return null;const k=p.k|0,c=p.c|0;if(k<0||k>=PETS.length)return null;return{k,c:c>=0&&c<PETS[k].cols.length?c:0}}
 function sanPets(a){if(a&&!Array.isArray(a))a=[a];return Array.isArray(a)?a.map(sanPet).filter(Boolean).slice(0,PET_MAX):[]}
-const PET_MAX=3;
+const PET_MAX=2;
 function invUI(){$('tomBtn').hidden=inv.tom<=0;$('tomN').textContent=inv.tom;$('banBtn').hidden=inv.ban<=0;$('banN').textContent=inv.ban}
 function fxSend(d){const local=()=>onFx({data:d,peer:myPeer||'me',sameTab:true});if(room)room.emit('fx',d).catch(local);else local()}
 cv.addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect();lastPtr={x:e.clientX-r.left,y:e.clientY-r.top,t:performance.now()}});
@@ -1997,6 +1999,7 @@ function onFx(m){const d=m.data;if(!d||typeof d!=='object')return;const by=clean
   if(d.t==='tom'){const n=['fx','fy','tx','ty'].map(k=>Math.max(-500,Math.min(MW*T+500,+d[k]||0)));const dist=Math.hypot(n[2]-n[0],n[3]-n[1]);
     projs.push({fx:n[0],fy:n[1],tx:n[2],ty:n[3],t0:performance.now(),dur:450+dist*1.1,by,mine:!!m.sameTab})}
   if(d.t==='pet'){const key=m.sameTab?'me':m.peer,now=performance.now();for(const [k,pp] of pets)if(pp.owner===key)petSound(pp,now,true)}
+  if(d.t==='feed'){onFeed(m,d)}
   if(d.t==='hit'){const v=cleanStr(d.victim,20)||'alguien';
     if(profile&&by===profile.name&&!m.sameTab)toast('🍅 ¡Le diste a '+v+'! 😂'+((d.n|0)>2?' Ya lleva '+(d.n|0)+' tomates encima.':''));
     else if(!m.sameTab&&profile&&v!==profile.name){const o=others.get(m.peer);if(o&&regionOf(o.tx,o.ty)===regionOf(me.x,me.y))toast('🍅 '+by+' le dio a '+v+' 😂')}}
@@ -2018,19 +2021,49 @@ function fxTick(dt,now){if(!profile)return;const reg=regionOf(me.x,me.y);
     me.fallAt=now;me.path=null;me.auto=null;removedPeels.add(pe.id);playSfx('slip');pushPresence(true);
     fxSend({t:'slip',pid:pe.id,by:profile.name});toast('🍌 ¡Te resbalaste con una cáscara de plátano'+(pe.mine?'… ¡tuya!':'!'));break}
   petTick(dt,now)}
-// --- Mascotas (hasta 3 por persona) ---
+// --- Hambre: personas cada ~30 min, mascotas cada ~10 min ---
+const HUN_KEY='dxd-hunger',ME_HUNGRY=30*60e3,PET_HUNGRY=10*60e3;
+let hun={me:Date.now(),pets:[]};try{const h=JSON.parse(localStorage.getItem(HUN_KEY)||'null');if(h&&typeof h.me==='number')hun={me:h.me,pets:Array.isArray(h.pets)?h.pets:[]}}catch(e){}
+function saveHun(){try{localStorage.setItem(HUN_KEY,JSON.stringify(hun))}catch(e){}}
+const meHungry=()=>Date.now()-hun.me>ME_HUNGRY;
+const petHungry=i=>Date.now()-(hun.pets[i]||Date.now())>PET_HUNGRY;
+let hunTold=0,hunWas=false;
+function eatFood(){hun.me=Date.now();saveHun();pushPresence(true);playSfx('eat');sendEmote(1);toast('🍔 ¡Ñam! Comiste algo rico. Ya no tienes hambre.')}
+function feedPets(){if(!profile)return;const targets=[],now=performance.now();
+  (profile.pets||[]).forEach((_,i)=>targets.push([myPeer||'me',i]));
+  for(const [k,pp] of pets){if(pp.owner==='me')continue;const [oid,ii]=k.split('#');if(Math.hypot(pp.x-me.x,pp.y-me.y)<90)targets.push([oid,+ii])}
+  if(!targets.length){toast('🍖 No hay mascotas cerca para alimentar. Adopta en la casita del jardín.');return}
+  fxSend({t:'feed',tg:targets.slice(0,6),by:profile.name})}
+function onFeed(m,d){const now=performance.now(),by=cleanStr(d.by,20)||'Alguien';if(!Array.isArray(d.tg))return;
+  for(const t of d.tg){if(!Array.isArray(t))continue;const oid=String(t[0]),i=t[1]|0,mine=oid===myPeer||oid==='me';const pp=pets.get((mine?'me':oid)+'#'+i);
+    if(pp){pp.say='❤️ ¡Ñam ñam!';pp.sayAt=now;pp.happy=now;if(Math.hypot(pp.x-me.x,pp.y-me.y)<10*T)animalSfx(PETS[pp.pet.k].s,.6)}
+    if(mine&&profile&&profile.pets&&profile.pets[i]){hun.pets[i]=Date.now();saveHun();pushPresence(true);if(!m.sameTab)toast('🍖 '+by+' le dio comida a tu '+PETS[profile.pets[i].k].n.toLowerCase()+' ❤️')}}
+  if(m.sameTab)toast('🍖 ¡Les diste comida! Están felices ❤️')}
+function hungerTick(now){if(!profile)return;const h=meHungry();
+  if(h!==hunWas){hunWas=h;pushPresence(true);if(h){hunTold=now;toast('🍔 ¡Tienes hambre! Ve a la cocina a comer algo (refrigerador o máquina de snacks).')}}
+  if(h&&now-hunTold>5*60e3){hunTold=now;toast('🍔 Sigues con hambre… la cocina está en el Piso 1.')}
+  $('feedBtn').hidden=!(profile.pets&&profile.pets.length)}
+// --- Mascotas (hasta 2 por persona) ---
 const pets=new Map(),petTalk=new Map();
 function petOwners(){const out=[];
   if(profile&&profile.pets)profile.pets.forEach((pt,i)=>out.push({key:'me#'+i,owner:'me',i,x:me.x,y:me.y,dir:me.dir,pet:pt}));
   for(const [id,o] of others)if(o.pt)o.pt.forEach((pt,i)=>out.push({key:id+'#'+i,owner:id,i,x:o.x,y:o.y,dir:o.dir,pet:pt}));return out}
 function petTick(dt,now){const seen=new Set();
-  for(const ow of petOwners()){seen.add(ow.key);let p=pets.get(ow.key);const v=DV[ow.dir]||[0,1],back=26+ow.i*22,side=[0,14,-14][ow.i];
-    const tx=ow.x-v[0]*back+(v[1]?side+10:0),ty=ow.y-v[1]*(back-4)+(v[0]?side*.5+6:0);
-    if(!p||Math.hypot(tx-p.x,ty-p.y)>300){p={x:tx,y:ty,walk:0,dir:1,mv:false,next:now+15000+Math.random()*40000};pets.set(ow.key,p)}
-    p.pet=ow.pet;p.owner=ow.owner;const dx=tx-p.x,dy=ty-p.y,d=Math.hypot(dx,dy);
-    if(d>5){const sp=Math.min(d*5,280)*dt;p.x+=dx/d*Math.min(sp,d);p.y+=dy/d*Math.min(sp,d);p.walk+=dt;p.mv=true;if(Math.abs(dx)>1)p.dir=dx>0?1:-1}else p.mv=false;
+  for(const ow of petOwners()){seen.add(ow.key);let p=pets.get(ow.key);const v=DV[ow.dir]||[0,1],bird=ow.pet.k===5;
+    const back=26+ow.i*22,side=[0,14][ow.i]||0;let tx=ow.x-v[0]*back+(v[1]?side+10:0),ty=ow.y-v[1]*(back-4)+(v[0]?side*.5+6:0);
+    const o=ow.owner==='me'?null:others.get(ow.owner),moving=ow.owner==='me'?me.moving:!!(o&&o.walk>0);
+    if(bird){const sh=ow.dir==='left'?-9:ow.dir==='right'?9:(ow.i?-10:10);tx=ow.x+sh;ty=ow.y+1}
+    if(!p||Math.hypot(tx-p.x,ty-p.y)>300){p={x:tx,y:ty,walk:0,dir:1,mv:false,h:bird?34:0,next:now+15000+Math.random()*40000,hnext:now+8000+Math.random()*10000};pets.set(ow.key,p)}
+    p.pet=ow.pet;p.owner=ow.owner;p.i=ow.i;p.hungry=ow.owner==='me'?petHungry(ow.i):!!(o&&o.ph&&o.ph[ow.i]);
+    const dx=tx-p.x,dy=ty-p.y,d=Math.hypot(dx,dy);
+    if(bird){const th=moving||d>10?58+Math.sin(now/260)*6:34;p.h+=(th-p.h)*Math.min(1,dt*6);p.fly=p.h>38;
+      if(d>1){const sp=Math.min(d*8,420)*dt;p.x+=dx/d*Math.min(sp,d);p.y+=dy/d*Math.min(sp,d);p.walk+=dt}p.mv=p.fly;p.dir=ow.dir==='left'?-1:ow.dir==='right'?1:p.dir}
+    else{p.h=0;p.fly=false;const slow=p.hungry?.7:1;
+      if(d>5){const sp=Math.min(d*5,280)*slow*dt;p.x+=dx/d*Math.min(sp,d);p.y+=dy/d*Math.min(sp,d);p.walk+=dt;p.mv=true;if(Math.abs(dx)>1)p.dir=dx>0?1:-1}else p.mv=false}
+    // hambre: piden comida
+    if(p.hungry&&now>p.hnext){p.hnext=now+25000+Math.random()*15000;if(regionOf(p.x,p.y)===regionOf(me.x,me.y)&&Math.hypot(p.x-me.x,p.y-me.y)<10*T){p.say='🍖 ¡Tengo hambre!';p.sayAt=now;animalSfx(PETS[p.pet.k].s,.5)}}
     // de vez en cuando hacen su sonido (lo oye quien esté cerca)
-    if(now>p.next){p.next=now+30000+Math.random()*60000;petSound(p,now,false)}}
+    else if(now>p.next){p.next=now+30000+Math.random()*60000;petSound(p,now,false)}}
   for(const k of [...pets.keys()])if(!seen.has(k))pets.delete(k)}
 function petList(){return [...pets.values()].filter(p=>regionOf(p.x,p.y)===regionOf(me.x,me.y))}
 function petSound(p,now,loud){if(regionOf(p.x,p.y)!==regionOf(me.x,me.y))return;const d=Math.hypot(p.x-me.x,p.y-me.y);if(d>10*T)return;
@@ -2061,14 +2094,15 @@ function animalSfx(kind,vol){try{sfxUnlock();const c=sfxCtx;if(!c||c.state!=='ru
   setTimeout(()=>out.disconnect(),2000)}catch(e){}}
 function drawPet(g,p,now){const pt=p.pet,kind=pt.k,info=PETS[kind],c=info.cols[pt.c]||info.cols[0],c2=shade(c,-.35),f=p.mv?Math.floor(p.walk*9)%2:0,sit=!p.mv;
   const R=(x,y,w,h,col)=>{g.fillStyle=col;g.fillRect(x,y,w,h)},legs4=(xs,h,col)=>(sit?xs.map((x,i)=>x+(i<2?1:-1)):f?xs.map((x,i)=>x+(i%2?1:-1)):xs).forEach(x=>R(x,-h,1+(info.big?1:0),h,col)),eye=(x,y)=>R(x,y,1,1,'#111');
-  const big=info.big?1.4:1;g.save();g.translate(Math.round(p.x),Math.round(p.y));g.fillStyle='rgba(0,0,0,.18)';g.beginPath();g.ellipse(0,0,13*big,4,0,0,Math.PI*2);g.fill();g.scale(p.dir*2,2);
+  const big=info.big?1.4:1,lift=Math.round(p.h||0);g.save();g.translate(Math.round(p.x),Math.round(p.y));g.fillStyle='rgba(0,0,0,'+(lift>40?.1:.18)+')';g.beginPath();g.ellipse(0,0,(lift?7:13*big),lift?2.5:4,0,0,Math.PI*2);g.fill();g.translate(0,-lift);g.scale(p.dir*2,2);
   switch(kind){
     case 0:legs4([-4,-1,1,4],3,c2);R(-5,-7,10,4,c);R(-2,-7,3,2,c2);R(3,-10,5,4,c);R(7,-8,2,2,c2);R(3,-11,2,2,c2);eye(6,-9);R(-7,-9+(Math.floor(now/140)%2?-1:0),2,2,c);break;
     case 1:legs4([-3,0,1,3],2,c);R(-4,-5,9,3,c);R(4,-8,4,4,c);R(4,-9,1,1,c);R(7,-9,1,1,c);R(6,-7,1,1,'#3ddc97');{const tw=Math.floor(now/400)%2;R(-6,-9+tw,1,5-tw,c);R(-5,-10+tw,1,1,c)}break;
     case 2:R(-4,-6,7,4,c);R(2,-10,3,4,c);R(5,-9,2,1,'#f2a93b');eye(3,-9);R(-5,-6,1,2,c2);R(-1+f,-2,1,2,'#f2a93b');R(1-f,-2,1,2,'#f2a93b');break;
     case 3:{const hop=p.mv?-Math.abs(Math.sin(p.walk*10))*3:0;g.translate(0,hop);R(-4,-6,8,5,c);R(3,-9,4,4,c);R(4,-14,1,5,c);R(6,-14,1,5,c);R(4,-13,1,3,'#f2b8c6');R(-5,-6,2,2,'#ffffff');eye(6,-8);R(-3,-1,2,1,c2);R(2,-1,2,1,c2)}break;
     case 4:R(-3,-5,7,5,c);R(-2,-3,5,3,'#f6e6d0');R(2,-7,1,1,c2);R(-1,-7,1,1,c2);eye(3,-4);R(4,-3,1,1,'#f2a0b0');R(-2+f,0,1,1,'#f2a0b0');R(2-f,0,1,1,'#f2a0b0');break;
-    case 5:R(-2,-9,4,6,c);R(0,-12,4,4,c);R(4,-11,2,2,'#f2d23a');R(4,-10,1,2,'#333');eye(2,-11);R(-1,-8,2,4,c2);R(-4,-5,2,5,'#e0453a');R(-1,-3,1,3,'#777');R(1,-3,1,3,'#777');break;
+    case 5:{R(-2,-9,4,6,c);R(0,-12,4,4,c);R(4,-11,2,2,'#f2d23a');R(4,-10,1,2,'#333');eye(2,-11);R(-4,-5,2,5,'#e0453a');
+      if(p.fly){const up=Math.floor(now/90)%2;if(up){R(-5,-13,5,2,c2);R(-3,-11,3,2,c2)}else{R(-5,-6,5,2,c2);R(-3,-8,3,2,c2)}}else{R(-1,-8,2,4,c2);R(-1,-3,1,3,'#777');R(1,-3,1,3,'#777')}}break;
     case 6:R(-5,-6,10,4,c);R(-3,-7,6,1,c);for(const x of [-4,-1,2])R(x,-5,2,2,c2);R(5,-5,3,2,'#8ac06a');eye(7,-5);(f?[-4,3]:[-3,2]).forEach(x=>R(x,-2,2,2,'#8ac06a'));break;
     case 7:legs4([-4,-1,1,4],2,c2);R(-5,-7,10,5,c);R(4,-9,5,5,c);R(8,-7,2,2,'#e07a90');R(8,-6,1,1,'#a04a5a');R(4,-10,2,2,c2);eye(6,-8);R(-6,-7,1,1,c2);R(-7,-8,1,1,c2);break;
     case 8:R(-2,-5,5,5,c);R(1,-7,3,3,c);R(4,-6,2,1,'#f2a93b');eye(2,-6);R(-1+f,0,1,1,'#f2a93b');R(1-f,0,1,1,'#f2a93b');R(-3,-4,1,2,shade(c,-.15));break;
@@ -2081,8 +2115,10 @@ function drawPet(g,p,now){const pt=p.pet,kind=pt.k,info=PETS[kind],c=info.cols[p
     case 15:legs4([-6,-3,3,6],4,shade(c,-.15));R(-7,-12,14,8,c);R(5,-14,6,7,c);R(3,-13,3,6,shade(c,-.15));R(10,-9,2,5,c);R(11,-4,1,1,c);eye(8,-11);R(9,-7,1,2,'#f6f6f6');R(-8,-10,1,4,c);break;
   }
   g.restore();
+  if(p.hungry&&!(p.say&&now-p.sayAt<1600)){g.font='14px system-ui, "Segoe UI Emoji", sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('🍖',p.x,p.y-(lift||0)-(info.big?40:28)+Math.sin(now/300)*2)}
+  if(p.happy&&now-p.happy<2000){const k=(now-p.happy)/2000;g.globalAlpha=1-k;g.font='13px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('❤️',p.x-8,p.y-(lift||0)-30-k*20);g.fillText('❤️',p.x+8,p.y-(lift||0)-24-k*26);g.globalAlpha=1}
   if(p.say&&now-p.sayAt<1600){const a=Math.min(1,(1600-(now-p.sayAt))/300),y=Math.round(p.y)-(info.big?52:38)-Math.min(6,(now-p.sayAt)/60);
-    g.globalAlpha=a;g.font='700 11px Manrope, sans-serif';const w=g.measureText(p.say).width+12;g.fillStyle='rgba(255,255,255,.95)';g.beginPath();g.roundRect(p.x-w/2,y-16,w,18,8);g.fill();
+    g.globalAlpha=a;g.font='700 11px Manrope, sans-serif';const w=g.measureText(p.say).width+12;const ly=y-(p.h||0);g.fillStyle='rgba(255,255,255,.95)';g.beginPath();g.roundRect(p.x-w/2,ly-16,w,18,8);g.fill();
     g.fillStyle='#14162a';g.textAlign='center';g.textBaseline='middle';g.fillText(p.say,p.x,y-7);g.globalAlpha=1}}
 // --- Dibujo: suelo (cáscaras y manchas), aire (tomates) y efectos en personas ---
 function fxDrawFloor(now){const g=ctx;
@@ -2120,7 +2156,7 @@ function buildPetOpts(){const kinds=$('petKinds'),cols=$('petCols'),mine=$('petM
   const list=profile.pets||[];
   if(!list.length){const e=document.createElement('span');e.className='petnone';e.textContent='Todavía no tienes mascotas.';mine.appendChild(e)}
   list.forEach((pt,i)=>{const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=PETS[pt.k].e+' '+PETS[pt.k].n+'  ✕';b.title='Dejar en la casita';
-    b.onclick=()=>{profile.pets.splice(i,1);savePets();buildPetOpts();toast('Dejaste a tu '+PETS[pt.k].n.toLowerCase()+' en la casita.')};mine.appendChild(b)});
+    b.onclick=()=>{profile.pets.splice(i,1);hun.pets.splice(i,1);saveHun();savePets();buildPetOpts();toast('Dejaste a tu '+PETS[pt.k].n.toLowerCase()+' en la casita.')};mine.appendChild(b)});
   PETS.forEach((p,i)=>{if(i&&PETS[i-1].wild!==p.wild){const sep=document.createElement('div');sep.className='petsep';sep.textContent='Salvajes';kinds.appendChild(sep)}
     const b=document.createElement('button');b.type='button';b.className='chip';b.textContent=p.e+' '+p.n;b.setAttribute('aria-pressed',petDraft.k===i);
     b.onclick=()=>{petDraft={k:i,c:0};buildPetOpts();animalSfx(PETS[i].s,.6)};kinds.appendChild(b)});
@@ -2130,10 +2166,10 @@ function buildPetOpts(){const kinds=$('petKinds'),cols=$('petCols'),mine=$('petM
 function drawPetPreview(now){const c=$('petCv');if($('petModal').hidden||!petDraft)return;const g=c.getContext('2d');g.imageSmoothingEnabled=false;g.clearRect(0,0,c.width,c.height);
   const pv={x:c.width/2,y:c.height-14,dir:Math.floor(now/1500)%2?1:-1,mv:true,walk:now/1000,pet:petDraft};drawPet(g,pv,now)}
 function savePets(){try{localStorage.setItem(PROFILE_KEY,JSON.stringify(profile))}catch(e){}pushPresence(true)}
-$('petOk').onclick=()=>{if(!profile.pets)profile.pets=[];if(profile.pets.length>=PET_MAX)return;const pt=sanPets([petDraft])[0];if(!pt)return;profile.pets.push(pt);savePets();
+$('petOk').onclick=()=>{if(!profile.pets)profile.pets=[];if(profile.pets.length>=PET_MAX)return;const pt=sanPets([petDraft])[0];if(!pt)return;profile.pets.push(pt);hun.pets[profile.pets.length-1]=Date.now();saveHun();savePets();
   animalSfx(PETS[pt.k].s,1);toast('🐾 ¡Adoptaste un '+PETS[pt.k].n.toLowerCase()+'! P para llamar a tus mascotas.');buildPetOpts()};
 $('petClose').onclick=()=>{$('petModal').hidden=true};
-$('tomBtn').onclick=()=>throwTomato();$('banBtn').onclick=()=>dropPeel();invUI();
+$('feedBtn').onclick=()=>feedPets();$('tomBtn').onclick=()=>throwTomato();$('banBtn').onclick=()=>dropPeel();invUI();
 try{const sp=JSON.parse(localStorage.getItem(PROFILE_KEY)||'null');if(profile&&sp)profile.pets=sanPets(sp.pets||(sp.pet?[sp.pet]:[]))}catch(e){} // mascotas guardadas
 moodUI();
 /* ================= Sala de reuniones: pantalla compartida ================= */
@@ -2731,7 +2767,7 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(paintAll);
 renderMsgs();renderPeople();updateStatus();
 if(profile)refreshMe();else openEditor(true);
 // Cada vez que alguien inicia sesión crea un personaje nuevo (al recargar se mantiene el actual).
-addEventListener('dxd:login',()=>{profile=null;try{localStorage.removeItem(PROFILE_KEY)}catch(e){}optTab=0;prevDir=0;openEditor(true)});
+addEventListener('dxd:login',()=>{profile=null;try{localStorage.removeItem(PROFILE_KEY)}catch(e){}hun={me:Date.now(),pets:[]};saveHun();optTab=0;prevDir=0;openEditor(true)});
 requestAnimationFrame(step);
 connect();
 setInterval(updateStatus,3000);
