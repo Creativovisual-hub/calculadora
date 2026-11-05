@@ -150,13 +150,15 @@ form#send{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
 #djPanel{position:fixed;z-index:25;top:64px;right:12px;width:min(360px,calc(100vw - 24px));max-height:calc(100vh - 150px);display:flex;flex-direction:column;background:var(--ink);border:1px solid #4a3a8a;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 0 3px rgba(255,61,139,.15);overflow:hidden}
 #djPanel .djh{display:flex;align-items:center;gap:6px;padding:10px 10px 8px 14px;background:linear-gradient(90deg,#2a1f4e,#3d1f4e)}#djPanel .djh b{flex:1;font-size:14px}#djPanel .djh .btn{padding:5px 9px;font-size:12px}
 #djPanel .djb{padding:12px 14px;overflow:auto;display:flex;flex-direction:column;gap:10px}#djPanel.mini .djb{display:none}
-#djNow{display:flex;gap:10px;align-items:center}#djNow img{width:56px;height:56px;border-radius:8px;background:#2a1f4e;object-fit:cover}#djNow .djt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;position:relative;padding-bottom:6px}
-#djNow .djt b{font-size:13px;line-height:1.3}#djNow .djt span{font-size:12px;color:var(--muted)}#djNow .djt i{position:absolute;left:0;bottom:0;height:3px;border-radius:2px;background:linear-gradient(90deg,#ff3d8b,#3d4cff);width:0}
-#djNow .btn{padding:6px 9px;font-size:12px}.djempty{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+#djNow{display:grid;grid-template-columns:84px minmax(0,1fr);gap:12px;align-items:center}#djNow .djcov{width:84px;height:84px;border-radius:10px;background:linear-gradient(135deg,#3d1f4e,#2a1f4e);object-fit:cover;box-shadow:0 6px 20px rgba(0,0,0,.4)}#djNow .djt{min-width:0;display:flex;flex-direction:column;gap:3px}
+#djNow .djt b{font-size:15px;line-height:1.3}#djNow .djt span{font-size:12px;color:var(--muted)}.djprog{height:5px;border-radius:3px;background:#2a2d45;margin-top:6px;overflow:hidden}.djprog i{display:block;height:100%;background:linear-gradient(90deg,#ff3d8b,#3d4cff);width:0;transition:width .9s linear}
+.djtime{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}.djctr{grid-column:1/-1;display:flex;gap:8px}.djctr .btn{flex:1;padding:10px;font-size:14px}.djctr .djbig{flex:2}
+.djmini{display:none;border:0;background:#1a1238;color:var(--text);font:inherit;font-size:12px;font-weight:700;text-align:left;padding:8px 14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}#djPanel.mini .djmini{display:block}
+.djempty{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
 #djEmbed iframe{border-radius:12px;display:block}.djadd{display:flex;gap:6px}.djadd input{flex:1;min-width:0;font:inherit;font-size:14px;color:var(--text);background:var(--ink-3);border:1px solid var(--line);border-radius:10px;padding:9px 10px}
 .djnote{margin:0;color:var(--bad);font-size:12px;min-height:0}.djqh{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-#djQueue{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}#djQueue li{display:flex;gap:8px;align-items:center;font-size:13px;background:var(--ink-2);border-radius:8px;padding:6px 8px}
-#djQueue .djq{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#djQueue .djn{color:var(--muted);font-weight:800}#djQueue button{border:0;background:none;color:var(--muted);font-weight:800}
+#djQueue{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}#djQueue li{display:flex;gap:8px;align-items:center;font-size:13px;background:var(--ink-2);border-radius:8px;padding:6px 8px}#djQueue .djqc{width:32px;height:32px;border-radius:6px;background:#2a1f4e;object-fit:cover;flex:none}#djQueue .djq b{display:block;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#djQueue .djq small{color:var(--muted);font-size:11px}#djQueue .djqempty{color:var(--muted);background:none;padding:2px 0}
+#djQueue .djq{flex:1;min-width:0}#djQueue .djn{color:var(--muted);font-weight:800}#djQueue button{border:0;background:none;color:var(--muted);font-weight:800}
 .djhelp{margin:0;color:var(--muted);font-size:12px;line-height:1.5}.djhelp b{color:var(--text)}
 .djlogin{display:block;text-align:center;text-decoration:none;color:#fff;background:#1a7f3c;padding:10px;font-size:13px}.djlogin:hover{background:#1f9a49}
 .elevcard{width:min(400px,100%)}#elevBtns{display:flex;flex-direction:column;gap:8px;margin-top:12px}#elevBtns .btn{padding:14px 16px;font-size:15px;text-align:left;color:var(--text);background:var(--ink-3);border:2px solid #4a5088;display:flex;justify-content:space-between;align-items:center}
@@ -354,12 +356,13 @@ aside#panel.open{transform:none}
   <p class="vnote">Las voces y la música de Spotify de la fiesta no cambian aquí: Spotify se controla con el volumen de tu computador.</p>
 </div>
 <aside id="djPanel" hidden aria-label="DJ de la fiesta">
-  <div class="djh"><b>🎧 DJ DXD · Piso 2</b><button id="djMute" type="button" class="btn">🔊 Escuchando</button><button id="djMin" type="button" class="btn" aria-label="Achicar">–</button></div>
+  <div class="djh"><b>🎧 Fiesta DXD</b><button id="djMute" type="button" class="btn">🔊 Sonando</button><button id="djMin" type="button" class="btn">Ocultar ▾</button></div>
+  <button class="djmini" id="djMiniT" type="button"></button>
   <div class="djb">
     <div id="djNow"></div><div id="djEmbed"></div>
     <div class="djadd"><input id="djLink" placeholder="Pega un link de canción de Spotify" autocomplete="off"><button id="djAdd" type="button" class="btn pri">Agregar</button></div>
     <p id="djNote" class="djnote"></p>
-    <div class="djqh">Siguen <span id="djCount"></span></div><ol id="djQueue"></ol>
+    <div class="djqh">Siguen en la cola <span id="djCount"></span></div><ol id="djQueue"></ol>
     <a class="btn djlogin" href="https://accounts.spotify.com/login?continue=https%3A%2F%2Fopen.spotify.com%2F" target="_blank" rel="noopener">🟢 Iniciar sesión en Spotify (canciones completas)</a>
     <p class="djhelp"><b>¿Solo suenan 30 segundos?</b> Inicia sesión en Spotify en este mismo navegador con el botón de arriba y vuelve a esta pestaña. Si sigue igual, tu navegador está bloqueando las cookies de Spotify: en Chrome, Configuración → Privacidad → Cookies de terceros → permitir para <i>open.spotify.com</i> (en modo incógnito no funciona). Para agregar: en Spotify, Compartir → Copiar enlace de la canción. Si no suena, toca ▶ en el reproductor.</p>
   </div>
@@ -1535,7 +1538,7 @@ function draw(now){
     const sx=(a.x-camX)*zoom,sy=(a.y-camY)*zoom,top=sy-(a.ko&&myReg===2?30:a.sit?52:58)*zoom;
     if(a.isMe&&!sayBox.hidden){sayBox.style.left=sx+'px';sayBox.style.top=(top-34)+'px'}
     if(sx<-150||sx>vw+150||sy<-80||sy>vh+150)continue;
-    {const md=a.isMe?profile.mood:a.o.md;nameTag(sx,top-6,a.name,a.isMe,a.g,vcState(a.isMe?null:a.o),md);moodFx(sx,top-6,md,now)}
+    {const md=a.isMe?profile.mood:a.o.md;moodFx(sx,top-6,md,now,sy);nameTag(sx,top-6,a.name,a.isMe,a.g,vcState(a.isMe?null:a.o),md)}
     if(myReg===2)hpBar(sx,top-1,a.hp,a.ko);
     if(a.isMe&&!sayBox.hidden)continue;
     const em=a.isMe?myEmote:a.o;let by=top-30;
@@ -1818,7 +1821,7 @@ function vrOnAudio(m){const d=m.data,from=m.peer;if(m.sameTab||!vc.on||!d||!Arra
 function vrTick(){for(const [id,p] of vr.peers){const o=others.get(id);const v=o&&!vrDirect(id)?vcVol(o):0;p.gain.gain.value+=(v-p.gain.gain.value)*.15}}
 /* ================= Estado de ánimo ================= */
 const MOODS=[{e:'😊',n:'Feliz'},{e:'😠',n:'Enojado'},{e:'😡',n:'Con rabia'},{e:'😴',n:'Con sueño'},{e:'🎨',n:'Creativo'},{e:'💻',n:'Trabajando'},
-  {e:'😒',n:'Molesto'},{e:'🤔',n:'Pensando'},{e:'🎧',n:'Concentrado'},{e:'☕',n:'En pausa'},{e:'🥳',n:'Celebrando'},{e:'🤒',n:'Enfermo'}];
+  {e:'😒',n:'Molesto'},{e:'🤔',n:'Pensando'},{e:'🎧',n:'Concentrado'},{e:'☕',n:'En pausa'},{e:'🥳',n:'Celebrando'},{e:'🤒',n:'Enfermo'},{e:'😌',n:'Tranquilo'}];
 function moodUI(){const m=profile&&Number.isInteger(profile.mood)?MOODS[profile.mood]:null;$('moodBtn').textContent=m?m.e:'😶';$('moodBtn').title=m?'Ánimo: '+m.n+' (cambiar)':'Elige tu estado de ánimo'}
 function buildMoodPop(){const box=$('moodPop');box.textContent='';const h=document.createElement('div');h.className='mph';h.textContent='¿Cómo estás?';box.appendChild(h);
   const grid=document.createElement('div');grid.className='chips';
@@ -1828,14 +1831,51 @@ function setMood(i){profile.mood=i;try{localStorage.setItem(PROFILE_KEY,JSON.str
   if(i!=null)toast(MOODS[i].e+' Ahora todos ven que estás: '+MOODS[i].n.toLowerCase())}
 $('moodBtn').onclick=e=>{e.stopPropagation();if(!profile)return;const p=$('moodPop');if(p.hidden){buildMoodPop();p.hidden=false}else p.hidden=true};
 addEventListener('pointerdown',e=>{const p=$('moodPop');if(!p.hidden&&!p.contains(e.target)&&e.target!==$('moodBtn'))p.hidden=true});
-function moodFx(x,y,md,now){if(md==null)return;const g=ctx;g.textAlign='center';g.textBaseline='middle';
-  if(md===3)for(let i=0;i<3;i++){const t=((now/1000)+i*.6)%1.8;g.globalAlpha=Math.max(0,1-t/1.8);g.font='800 '+(10+i*3)+'px Manrope, sans-serif';g.lineWidth=3;g.strokeStyle='#14162a';
-    const zx=x+34+t*12,zy=y-26-t*22;g.strokeText('z',zx,zy);g.fillStyle='#fff';g.fillText('z',zx,zy)}
-  if(md===2){const k=1+.25*Math.sin(now/120);g.font=Math.round(18*k)+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('💢',x+34,y-30)}
-  if(md===1)for(let i=0;i<2;i++){const t=((now/900)+i*.5)%1;g.globalAlpha=(1-t)*.8;g.fillStyle='#c8cbe0';g.beginPath();g.arc(x+(i?-30:30)+(i?-1:1)*t*8,y-30-t*16,4+t*5,0,Math.PI*2);g.fill()}
-  if(md===4){const t=now/300;g.font='14px system-ui, "Segoe UI Emoji", sans-serif';g.globalAlpha=.6+.4*Math.sin(t);g.fillText('✨',x+34,y-32+Math.sin(t)*3);g.globalAlpha=.6+.4*Math.cos(t);g.fillText('✨',x-34,y-24+Math.cos(t)*3)}
-  if(md===10)for(let i=0;i<6;i++){const t=((now/1200)+i/6)%1;g.globalAlpha=1-t;g.fillStyle=['#ff6b7a','#ffd23d','#3ddc97','#5cc6e0','#8a92ff','#e86fa8'][i];g.fillRect(x-24+i*9,y-30-t*24+Math.sin(t*9+i)*3,3,4)}
-  g.globalAlpha=1}
+// Efectos del ánimo sobre la cabeza (y aura en los pies). x,y = base de la etiqueta del nombre; fy = pies.
+function moodFx(x,y,md,now,fy){if(md==null)return;const g=ctx,z=Math.max(1.5,zoom*1.35),t=now/1000,hy=y-18*z,bc=fy-26*zoom;g.save();g.textAlign='center';g.textBaseline='middle';
+  const star=(cx,cy,r,col)=>{g.fillStyle=col;g.strokeStyle='rgba(60,40,0,.55)';g.lineWidth=1.2;g.beginPath();g.moveTo(cx,cy-r);g.quadraticCurveTo(cx,cy,cx+r,cy);g.quadraticCurveTo(cx,cy,cx,cy+r);g.quadraticCurveTo(cx,cy,cx-r,cy);g.quadraticCurveTo(cx,cy,cx,cy-r);g.stroke();g.fill()};
+  const flame=(cx,by,h,w,ph)=>{const fl=Math.sin(t*14+ph)*w*.25,gr=g.createLinearGradient(cx,by,cx,by-h);gr.addColorStop(0,'#ff3b1f');gr.addColorStop(.45,'#ff8a1f');gr.addColorStop(1,'#ffe066');g.fillStyle=gr;
+    g.beginPath();g.moveTo(cx-w/2,by);g.quadraticCurveTo(cx-w*.7,by-h*.5,cx+fl,by-h);g.quadraticCurveTo(cx+w*.7,by-h*.5,cx+w/2,by);g.closePath();g.fill();
+    g.fillStyle='rgba(255,240,180,.85)';g.beginPath();g.moveTo(cx-w*.2,by);g.quadraticCurveTo(cx-w*.25,by-h*.35,cx+fl*.5,by-h*.55);g.quadraticCurveTo(cx+w*.25,by-h*.35,cx+w*.2,by);g.fill()};
+  const aura=(col,a,r)=>{const R2=r*zoom*1.1,rg=g.createRadialGradient(x,bc,4,x,bc,R2);rg.addColorStop(0,col.replace('A',a*1.4));rg.addColorStop(1,col.replace('A',0));g.fillStyle=rg;g.beginPath();g.arc(x,bc,R2,0,Math.PI*2);g.fill()};
+  switch(md){
+    case 0: // feliz: brillos
+      aura('rgba(255,220,90,A)',.2,46);for(let i=0;i<9;i++){const an=t*1.2+i*.7,r=(24+8*Math.sin(t*2+i))*zoom,k=.5+.5*Math.sin(t*5+i*1.7);g.globalAlpha=.35+.65*k;star(x+Math.cos(an)*r,bc-6*zoom+Math.sin(an)*r*.9,(3+4*k)*z,i%2?'#fff6c2':'#ffd23d')}break;
+    case 1: // enojado: fuego
+      for(let i=-1;i<=1;i++)flame(x+i*9*z,hy+2*z,(16+(i?0:6))*z,10*z,i*2);break;
+    case 2: // rabia: fuego grande + 💢 + aura roja
+      aura('rgba(255,40,40,A)',.28,52);for(let i=-2;i<=2;i++)flame(x+i*8*z,hy+2*z,(18+(2-Math.abs(i))*6)*z,11*z,i*1.3);
+      g.font=Math.round(16*z*(1+.15*Math.sin(t*8)))+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('💢',x+26*z,hy-18*z);break;
+    case 3: // sueño: zzz y aura azul
+      aura('rgba(120,140,255,A)',.16,44);for(let i=0;i<3;i++){const p=(t+i*.6)%1.8;g.globalAlpha=Math.max(0,1-p/1.8);g.font='800 '+Math.round((10+i*4)*z)+'px Manrope, sans-serif';g.lineWidth=3;g.strokeStyle='#14162a';const zx=x+(22+p*12)*z,zy=hy-(4+p*22)*z;g.strokeText('z',zx,zy);g.fillStyle='#dfe3ff';g.fillText('z',zx,zy)}break;
+    case 4: {// creativo: ampolleta brillando
+      const k=.6+.4*Math.sin(t*4),by=hy-12*z;g.globalAlpha=.5*k;g.strokeStyle='#ffe066';g.lineWidth=2*z;for(let i=0;i<8;i++){const an=i*Math.PI/4;g.beginPath();g.moveTo(x+Math.cos(an)*12*z,by+Math.sin(an)*12*z);g.lineTo(x+Math.cos(an)*18*z,by+Math.sin(an)*18*z);g.stroke()}
+      g.globalAlpha=1;g.font=Math.round(20*z)+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('💡',x,by);g.globalAlpha=k;star(x+20*z,by-10*z,4*z,'#fff6c2');star(x-20*z,by+2*z,3*z,'#ffd23d');break}
+    case 5: // trabajando: código flotando
+      g.font='800 '+Math.round(10*z)+'px ui-monospace, Menlo, monospace';['</>','{ }','01','=>',';'].forEach((c,i)=>{const p=(t*.6+i/5)%1;g.globalAlpha=Math.sin(p*Math.PI);g.fillStyle=i%2?'#8a92ff':'#5cc6e0';g.fillText(c,x+(i-2)*12*z+Math.sin(t+i)*3,hy-(2+p*26)*z)});break;
+    case 6: {// molesto: nube con lluvia
+      const cy=hy-14*z;g.fillStyle='#6b6f86';for(const [dx,dy,r] of [[-8,0,7],[0,-4,9],[9,0,7],[3,3,7]]){g.beginPath();g.arc(x+dx*z,cy+dy*z,r*z,0,Math.PI*2);g.fill()}
+      g.fillStyle='#8fb4ff';for(let i=0;i<5;i++){const p=(t*1.8+i*.37)%1;g.globalAlpha=1-p;g.fillRect(x+(-10+i*5)*z,cy+(7+p*16)*z,1.5*z,4*z)}break}
+    case 7: // pensando: burbujas con ?
+      g.fillStyle='rgba(255,255,255,.92)';[[10,-2,2.5],[16,-9,4]].forEach(([dx,dy,r])=>{g.beginPath();g.arc(x+dx*z,hy+dy*z,r*z,0,Math.PI*2);g.fill()});
+      g.beginPath();g.ellipse(x+26*z,hy-22*z,13*z,10*z,0,0,Math.PI*2);g.fill();g.fillStyle='#3d4cff';g.font='800 '+Math.round(13*z*(1+.1*Math.sin(t*4)))+'px Manrope, sans-serif';g.fillText('?',x+26*z,hy-21*z);break;
+    case 8: // concentrado: aura zen que respira
+      {const br=.5+.5*Math.sin(t*1.2);aura('rgba(170,150,255,A)',.22+.12*br,40+10*br);g.strokeStyle='rgba(200,190,255,.7)';g.lineWidth=1.5*z;
+      for(let i=0;i<3;i++){const p=(t*.35+i/3)%1;g.globalAlpha=(1-p)*.8;g.beginPath();g.ellipse(x,fy-2*z,(12+p*30)*z,(4+p*9)*z,0,0,Math.PI*2);g.stroke()}
+      g.globalAlpha=.75+.25*br;g.font=Math.round(15*z)+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('🧘',x,hy-16*z-br*4*z)}break;
+    case 9: {// en pausa: tacita con vapor
+      const cx=x+20*z,cy=hy-6*z;g.font=Math.round(15*z)+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('☕',cx,cy);g.strokeStyle='rgba(255,255,255,.7)';g.lineWidth=1.5*z;
+      for(let i=0;i<2;i++){const p=(t*.7+i*.5)%1;g.globalAlpha=1-p;g.beginPath();for(let k=0;k<=8;k++){const yy=cy-8*z-k*2*z-p*10*z,xx=cx+(i?3:-3)*z+Math.sin(k*.9+t*3)*2.5*z;k?g.lineTo(xx,yy):g.moveTo(xx,yy)}g.stroke()}break}
+    case 10: // celebrando: confeti
+      for(let i=0;i<14;i++){const p=((t*.8)+i/14)%1;g.globalAlpha=1-p;g.fillStyle=['#ff6b7a','#ffd23d','#3ddc97','#5cc6e0','#8a92ff','#e86fa8'][i%6];g.save();g.translate(x+(-30+i*4.6)*z+Math.sin(p*9+i)*5,hy-(28*p)*z+p*p*40*z);g.rotate(p*8+i);g.fillRect(-2*z,-3*z,4*z,6*z);g.restore()}
+      g.globalAlpha=1;g.font=Math.round(15*z)+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText('🎉',x+24*z,hy-14*z);break;
+    case 11: // enfermo: burbujas verdes
+      aura('rgba(120,220,120,A)',.16,42);for(let i=0;i<6;i++){const p=(t*.5+i/6)%1;g.globalAlpha=(1-p)*.8;g.strokeStyle='#7fe08a';g.lineWidth=1.5*z;g.beginPath();g.arc(x+(-14+i*6)*z+Math.sin(t*2+i)*4,hy-(p*28)*z,(2+p*4)*z,0,Math.PI*2);g.stroke()}break;
+    case 12: // tranquilo: hojitas flotando y aura verde
+      aura('rgba(110,220,170,A)',.2,46);for(let i=0;i<4;i++){const p=(t*.25+i/4)%1,lx=x+Math.sin(p*Math.PI*2+i)*26*z,ly=hy+10*z-p*36*z;g.globalAlpha=Math.sin(p*Math.PI);
+        g.save();g.translate(lx,ly);g.rotate(Math.sin(t*2+i)*.8);g.fillStyle=i%2?'#7fd18a':'#a6e3a1';g.beginPath();g.ellipse(0,0,6*z,3*z,0,0,Math.PI*2);g.fill();g.strokeStyle='#4f9a5a';g.lineWidth=1;g.beginPath();g.moveTo(-6*z,0);g.lineTo(6*z,0);g.stroke();g.restore()}break;
+  }
+  g.restore()}
 /* ================= Piso 2 · Fiesta DXD: DJ con Spotify ================= */
 // Cola compartida (tabla dxd_dj): cada uno agrega canciones de Spotify y suenan
 // sincronizadas para todos los que están en el Piso 2, con el reproductor de Spotify.
@@ -1851,7 +1891,9 @@ function djLoadApi(){if(dj.api||dj.loading)return;dj.loading=true;window.onSpoti
 function djMakeCtrl(uri){const host=$('djEmbed');host.textContent='';const el=document.createElement('div');host.appendChild(el);dj.ready=false;
   dj.api.createController(el,{uri,width:'100%',height:80},c=>{dj.ctrl=c;dj.uri=uri;
     c.addListener('ready',()=>{dj.ready=true;setTimeout(()=>{if(djPlaying()&&onParty()){c.play();const cur=djCur();if(cur)setTimeout(()=>c.seek(Math.max(0,djOff(cur))/1000),700)}},300)});
-    c.addListener('playback_update',e=>{const d=e.data||{};dj.pos=d.position||0;dj.dur=d.duration||0;dj.paused=!!d.isPaused;
+    c.addListener('playback_update',e=>{const d=e.data||{};const was=dj.paused;dj.pos=d.position||0;dj.dur=d.duration||0;dj.paused=!!d.isPaused;
+      if(was&&!dj.paused){const cu=djCur();if(cu&&cu.uri===dj.uri){const ex=djOff(cu);if(dj.dur>0&&ex<dj.dur-2000&&Math.abs(dj.pos-ex)>2500){dj.lastSeek=Date.now();try{c.seek(ex/1000)}catch(err){}}}}
+      djPlayUI();
       const cur=djCur();if(cur&&cur.uri===dj.uri&&dj.dur>0&&dj.dur>cur.dur&&!dj.reported.has(cur.id+':'+dj.dur)){dj.reported.add(cur.id+':'+dj.dur);window.dxdRpc('dxd_dj_dur',{p_id:cur.id,p_ms:Math.round(dj.dur)}).catch(()=>{})}})})}
 function djSync(){const cur=djCur();
   if(!onParty()||!cur||dj.muted){if(dj.ctrl&&!dj.paused)try{dj.ctrl.pause()}catch(e){}return}
@@ -1859,8 +1901,13 @@ function djSync(){const cur=djCur();
   if(!dj.ctrl){djMakeCtrl(cur.uri);return}
   if(dj.uri!==cur.uri){dj.uri=cur.uri;dj.ready=false;dj.ctrl.loadUri(cur.uri);setTimeout(()=>{try{dj.ctrl.play();setTimeout(()=>dj.ctrl.seek(Math.max(0,djOff(cur))/1000),700)}catch(e){}dj.ready=true},900);return}
   if(!dj.ready)return;
-  if(dj.paused&&Date.now()-dj.lastSeek>3000){dj.lastSeek=Date.now();try{dj.ctrl.play()}catch(e){}}
+  if(dj.paused&&!dj.blocked&&Date.now()-dj.lastSeek>3000){dj.lastSeek=Date.now();try{dj.ctrl.resume()}catch(e){}setTimeout(()=>{if(dj.paused)dj.blocked=true;djPlayUI()},2500)}
   const exp=djOff(cur);if(dj.dur>0&&exp<dj.dur-2000&&Math.abs(dj.pos-exp)>4000&&Date.now()-dj.lastSeek>6000){dj.lastSeek=Date.now();try{dj.ctrl.seek(exp/1000)}catch(e){}}}
+function djListen(){const cur=djCur();if(!cur||!dj.ctrl)return;dj.blocked=false;dj.muted=false;
+  try{if(dj.uri!==cur.uri){dj.uri=cur.uri;dj.ctrl.loadUri(cur.uri);setTimeout(()=>{dj.ctrl.play();setTimeout(()=>dj.ctrl.seek(Math.max(0,djOff(cur))/1000),700)},800)}
+    else if(dj.pos<1500&&djOff(cur)>3000){dj.ctrl.play();setTimeout(()=>dj.ctrl.seek(djOff(cur)/1000),600)}else{dj.ctrl.resume()}}catch(e){}djRender()}
+function djPlayUI(){const b=document.getElementById('djListen');if(b)b.hidden=!(djCur()&&dj.ctrl&&dj.paused&&!dj.muted)}
+const fmtT=ms=>{ms=Math.max(0,ms|0);const m=Math.floor(ms/60000),s2=Math.floor(ms/1000)%60;return m+':'+String(s2).padStart(2,'0')};
 function djParse(t){t=String(t||'').trim();let m=t.match(/open\.spotify\.com\/(?:intl-[a-z-]+\/)?track\/([A-Za-z0-9]{22})/)||t.match(/^spotify:track:([A-Za-z0-9]{22})$/);
   if(m)return m[1];if(/open\.spotify\.com\/(?:intl-[a-z-]+\/)?(album|playlist|artist|episode)/.test(t))return 'otro';return null}
 async function djAdd(){const inp=$('djLink'),id=djParse(inp.value);
@@ -1874,19 +1921,25 @@ async function djAdd(){const inp=$('djLink'),id=djParse(inp.value);
   $('djAdd').disabled=false}
 async function djSkip(id){try{dj.state=await window.dxdRpc('dxd_dj_skip',{p_id:id});dj.at=Date.now();djNotify();djRender();djSync()}catch(e){}}
 function djRender(){const items=(dj.state&&dj.state.items)||[],cur=djCur(),np=$('djNow'),q=$('djQueue');np.textContent='';q.textContent='';
-  if(cur){const im=document.createElement('img');im.alt='';if(cur.thumb)im.src=cur.thumb;const tx=document.createElement('div');tx.className='djt';
-    const t=document.createElement('b');t.textContent=cur.title;const by=document.createElement('span');by.textContent='La puso '+cur.by;const bar=document.createElement('i');bar.id='djBar';tx.append(t,by,bar);
-    const sk=document.createElement('button');sk.className='btn';sk.type='button';sk.textContent='⏭ Saltar';sk.onclick=()=>djSkip(cur.id);np.append(im,tx,sk)}
-  else{const e=document.createElement('p');e.className='djempty';e.textContent='No suena nada. ¡Agrega la primera canción y que empiece la fiesta! 🎉';np.appendChild(e)}
-  const next=items.filter(i=>i!==cur);$('djCount').textContent=next.length?next.length+' en cola':'';
-  next.forEach((it,k)=>{const li=document.createElement('li');const n=document.createElement('span');n.className='djn';n.textContent=(k+1)+'.';
-    const t=document.createElement('span');t.className='djq';t.textContent=it.title+' · '+it.by;li.append(n,t);
-    if(profile&&it.by===profile.name){const x=document.createElement('button');x.type='button';x.textContent='✕';x.title='Quitar de la cola';x.onclick=()=>djSkip(it.id);li.appendChild(x)}q.appendChild(li)});
-  $('djMute').textContent=dj.muted?'🔇 Fiesta silenciada':'🔊 Escuchando'}
+  const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+  if(cur){const im=mk('img','djcov');im.alt='';if(cur.thumb)im.src=cur.thumb;const tx=mk('div','djt');
+    tx.append(mk('b',null,cur.title),mk('span',null,'Puesta por '+cur.by));
+    const pr=mk('div','djprog');const bar=mk('i');bar.id='djBar';pr.appendChild(bar);const tm=mk('div','djtime');tm.id='djTime';tx.append(pr,tm);
+    const ctr=mk('div','djctr');const ls=mk('button','btn pri djbig','▶ Escuchar');ls.id='djListen';ls.type='button';ls.hidden=true;ls.onclick=djListen;
+    const sk=mk('button','btn','⏭ Saltar');sk.type='button';sk.onclick=()=>djSkip(cur.id);ctr.append(ls,sk);np.append(im,tx,ctr);
+    $('djMiniT').textContent='♫ '+cur.title+' · '+cur.by}
+  else{np.appendChild(mk('p','djempty','No suena nada. ¡Agrega la primera canción y que empiece la fiesta! 🎉'));$('djMiniT').textContent='No suena nada todavía'}
+  const next=items.filter(i=>i!==cur);$('djCount').textContent=next.length?'('+next.length+')':'';
+  if(!next.length)q.appendChild(mk('li','djqempty','La cola está vacía.'));
+  next.forEach((it,k)=>{const li=mk('li');li.appendChild(mk('span','djn',(k+1)+''));const im=mk('img','djqc');im.alt='';if(it.thumb)im.src=it.thumb;li.appendChild(im);
+    const t=mk('span','djq');t.append(mk('b',null,it.title),mk('small',null,it.by));li.appendChild(t);
+    if(profile&&it.by===profile.name){const x=mk('button',null,'✕');x.type='button';x.title='Quitar de la cola';x.setAttribute('aria-label','Quitar '+it.title);x.onclick=()=>djSkip(it.id);li.appendChild(x)}q.appendChild(li)});
+  $('djMute').textContent=dj.muted?'🔇 Silenciada':'🔊 Sonando';$('djMute').title=dj.muted?'Volver a escuchar la fiesta':'Silenciar la fiesta solo para ti';
+  const mini=$('djPanel').classList.contains('mini');$('djMin').textContent=mini?'Abrir reproductor ▴':'Ocultar ▾';djPlayUI()}
 function djTick(now){const here=onParty();
   if(here!==dj.wasHere){dj.wasHere=here;$('djPanel').hidden=!here;if(here){djLoadApi();djRefresh();toast('🎉 Piso 2 · Fiesta DXD: pega un link de Spotify para poner música')}else djSync()}
   if(!here)return;if(now-dj.lastPoll>4000){dj.lastPoll=now;djRefresh()}
-  const cur=djCur(),bar=document.getElementById('djBar');if(cur&&bar){const d=cur.dur||dj.dur;bar.style.width=d?Math.min(100,djOff(cur)/d*100)+'%':'0%'}}
+  const cur=djCur(),bar=document.getElementById('djBar');if(cur&&bar){const d=cur.dur||dj.dur,o=djOff(cur);bar.style.width=d?Math.min(100,o/d*100)+'%':'0%';const tm=document.getElementById('djTime');if(tm)tm.textContent=fmtT(Math.min(o,d||o))+(d?' / '+fmtT(d):'')}}
 function djOnMsg(m){if(onParty())djRefresh()}
 // luces de la pista y bola disco
 const DANCE={x0:84,y0:9,x1:97,y1:17};const onDance=(x,y)=>{const tx=Math.floor(x/T),ty=Math.floor((y-4)/T);return regionOf(x,y)===3&&tx>=DANCE.x0&&tx<=DANCE.x1&&ty>=DANCE.y0&&ty<=DANCE.y1};
@@ -1903,7 +1956,7 @@ function djDrawAir(now){if(regionOf(me.x,me.y)!==3)return;const g=ctx,cx=90.5*T+
   if(on)for(let i=0;i<8;i++){const a=now/700+i*.785;g.fillStyle=['#ff3d8b','#3ddc97','#ffd23d','#5cc6e0'][i%4];g.globalAlpha=.8;g.fillRect(cx+Math.cos(a)*(40+i*14),cy+30+Math.sin(a)*(20+i*6),3,3)}
   g.globalAlpha=1}
 $('djAdd').onclick=()=>djAdd();$('djLink').addEventListener('keydown',e=>{e.stopPropagation();if(e.key==='Enter')djAdd()});
-$('djMute').onclick=()=>{dj.muted=!dj.muted;djRender();djSync()};$('djMin').onclick=()=>$('djPanel').classList.toggle('mini');
+$('djMute').onclick=()=>{dj.muted=!dj.muted;if(!dj.muted)dj.blocked=false;djRender();djSync()};$('djMin').onclick=()=>{$('djPanel').classList.toggle('mini');djRender()};$('djMiniT').onclick=()=>{$('djPanel').classList.remove('mini');djRender()};
 $('elevClose').onclick=()=>{$('elevModal').hidden=true};
 /* ================= Travesuras y mascotas ================= */
 // Tomates para lanzar (Q), cáscaras de plátano para dejar en el suelo (B) y mascotas que te siguen.
