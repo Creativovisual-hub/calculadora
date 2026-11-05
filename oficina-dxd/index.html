@@ -716,7 +716,7 @@ for(const x of [7,8,9,10]){add({t:'mchairD',x,y:5});add({t:'mchairU',x,y:9})}
 add({t:'plant',x:4,y:4,s:1,v:2});add({t:'credenza',x:12,y:4,w:2,s:1});add({t:'plant',x:4,y:11,s:1,v:1});add({t:'plant',x:14,y:11,s:1,v:0});add({t:'lampf',x:14,y:4});
 // Cocina
 WD.push({t:'mugshelf',x:5,y:13,w:3},{t:'menu',x:11,y:13,w:2});
-add({t:'counter',x:4,y:14,w:5,s:1,sink:2});add({t:'coffee',x:9,y:14,s:1,act:'coffee'});add({t:'fridge',x:10,y:14,s:1});add({t:'counter',x:11,y:14,w:2,s:1,micro:1});add({t:'cooler',x:14,y:14,s:1});add({t:'fruits',x:13,y:14,s:1,act:'banana'});
+add({t:'counter',x:4,y:14,w:5,s:1,sink:2,act:'wash'});add({t:'coffee',x:9,y:14,s:1,act:'coffee'});add({t:'fridge',x:10,y:14,s:1});add({t:'counter',x:11,y:14,w:2,s:1,micro:1});add({t:'cooler',x:14,y:14,s:1});add({t:'fruits',x:13,y:14,s:1,act:'banana'});
 add({t:'rtable',x:6,y:16,w:2,h:2,s:1});add({t:'rtable',x:11,y:16,w:2,h:2,s:1});
 for(const [x,y] of [[5,16],[5,17],[8,16],[8,17],[10,16],[10,17],[13,16],[13,17]])add({t:'stool',x,y});
 add({t:'plant',x:4,y:20,s:1,v:3});add({t:'vending',x:14,y:20,s:1});add({t:'bin',x:13,y:20,s:1});
@@ -868,7 +868,7 @@ for(const f of FUR){const X=f.x*T,Y=f.y*T,w=f.w||1;
   if(f.t==='sofaU')for(let i=0;i<w;i++)SEATS.push({x:X+i*T+16,y:Y+18,dir:'up',f});
   if(f.act)ACTS.push(f);
 }
-const ACT_LABEL={arena:'Entrar a la Arena de espadas',leave:'Salir de la Arena',art:'Mirar el cuadro',stop:'Jugar Stop (Bachillerato)',coffee:'Servirte un café',catch:'Jugar Atrapa Datos',pong:'Jugar Ping Pong DXD',kart:'Jugar Karting DXD',tomato:'Sacar tomates 🍅',banana:'Sacar plátanos 🍌',pet:'Elegir mascota 🐾',fish:'Pescar en el acuario',up:'Subir al piso 14',down:'Bajar al piso 1'};
+const ACT_LABEL={arena:'Entrar a la Arena de espadas',leave:'Salir de la Arena',art:'Mirar el cuadro',stop:'Jugar Stop (Bachillerato)',coffee:'Servirte un café',catch:'Jugar Atrapa Datos',pong:'Jugar Ping Pong DXD',kart:'Jugar Karting DXD',tomato:'Sacar tomates 🍅',wash:'Lavarte la cara 🚿',banana:'Sacar plátanos 🍌',pet:'Elegir mascota 🐾',fish:'Pescar en el acuario',up:'Subir al piso 14',down:'Bajar al piso 1'};
 function rectDist(px,py,f){const x0=f.x*T,y0=f.y*T,x1=x0+(f.w||1)*T,y1=y0+(f.h||1)*T;const cy=py-6;
   const dx=Math.max(x0-px,0,px-x1),dy=Math.max(y0-cy,0,cy-y1);return Math.hypot(dx,dy)}
 
@@ -1209,6 +1209,7 @@ function doAct(f){
   if(f.act==='tomato'){inv.tom=5;invUI();toast('🍅 Tienes 5 tomates. Q para lanzar: apunta con el mouse o va a la persona más cercana.')}
   if(f.act==='banana'){inv.ban=3;invUI();toast('🍌 Tienes 3 plátanos. B para comerte uno y dejar la cáscara en el suelo.')}
   if(f.act==='pet'){openPet();return}
+  if(f.act==='wash'){if(me.tomN){me.tomN=0;me.tomAt=0;pushPresence(true);toast('🚿 Quedaste limpiecito. ¡Por ahora!')}else toast('🚿 Ya estás limpio.')}
   if(f.act==='fish')openGame('fish');
   if(f.act==='catch'||f.act==='pong'||f.act==='kart')openGame(f.act);
   pushPresence(true)}
@@ -1233,7 +1234,7 @@ function claimDesk(i){const cur=deskOwners()[i];
 
 /* ================= Presencia ================= */
 let lastPush=0,pushPending=false,lastSent='';
-function presencePayload(){return{n:profile.name,l:profile.look,x:Math.round(me.x),y:Math.round(me.y),d:me.dir,m:me.moving?1:0,e:me.emote,s:me.say,st:me.sit?1:0,g:me.game,ty:me.typing?1:0,v:vc.on?1:0,sp:vc.speaking&&!vc.muted?1:0,fl:me.fallAt?1:0,tm:me.splatAt?1:0,pl:myPeels.map(p=>[p.id,p.x,p.y]),pt:profile.pet||null,dk:me.desk==null?null:me.desk,hp:inArena()?me.hp:null,ko:me.ko?1:0,a:me.atkSeq}}
+function presencePayload(){return{n:profile.name,l:profile.look,x:Math.round(me.x),y:Math.round(me.y),d:me.dir,m:me.moving?1:0,e:me.emote,s:me.say,st:me.sit?1:0,g:me.game,ty:me.typing?1:0,v:vc.on?1:0,sp:vc.speaking&&!vc.muted?1:0,fl:me.fallAt?1:0,tm:me.tomN||0,pl:myPeels.map(p=>[p.id,p.x,p.y]),pt:profile.pet||null,dk:me.desk==null?null:me.desk,hp:inArena()?me.hp:null,ko:me.ko?1:0,a:me.atkSeq}}
 function pushPresence(force){
   if(!room||!profile)return;const now=performance.now();
   const p=presencePayload();const k=JSON.stringify(p);if(k===lastSent&&!force)return;
@@ -1249,7 +1250,7 @@ function applyPeers(list){
     const x=Math.max(0,Math.min(MW*T,+pr.x||0)),y=Math.max(0,Math.min(MH*T,+pr.y||0));
     let o=others.get(p.peer);
     if(!o){o={x,y,walk:0,emoteAt:0,sayAt:0,emoteId:null,sayId:null};others.set(p.peer,o);if(announceReady)sysMsg(name+' llegó a la oficina')}
-    o.name=name;o.look=sanLook(pr.l);o.tx=x;o.ty=y;o.dir=DIRS.includes(pr.d)?pr.d:'down';o.m=!!pr.m;o.st=!!pr.st;o.typ=!!pr.ty;o.v=!!pr.v;o.sp=!!pr.sp;if(pr.fl&&!o.fl)o.flAt=performance.now();o.fl=!!pr.fl;if(pr.tm&&!o.tm)o.tmAt=performance.now();o.tm=!!pr.tm;
+    o.name=name;o.look=sanLook(pr.l);o.tx=x;o.ty=y;o.dir=DIRS.includes(pr.d)?pr.d:'down';o.m=!!pr.m;o.st=!!pr.st;o.typ=!!pr.ty;o.v=!!pr.v;o.sp=!!pr.sp;if(pr.fl&&!o.fl)o.flAt=performance.now();o.fl=!!pr.fl;{const tn=Math.max(0,Math.min(10,pr.tm|0));if(tn>(o.tmN||0))o.tmAt=performance.now();o.tmN=tn}
     o.pl=Array.isArray(pr.pl)?pr.pl.slice(0,3).filter(q=>Array.isArray(q)&&typeof q[0]==='string').map(q=>[q[0].slice(0,10),Math.max(0,Math.min(MW*T,+q[1]||0)),Math.max(0,Math.min(MH*T,+q[2]||0))]):[];o.pt=sanPet(pr.pt);o.dk=Number.isInteger(pr.dk)&&pr.dk>=0&&pr.dk<DESKS.length?pr.dk:null;o.g=GAME_NAMES[pr.g]?pr.g:null;
     o.hp=Number.isFinite(pr.hp)?Math.max(0,Math.min(100,pr.hp)):100;o.ko=!!pr.ko;if(pr.a!==o.atkSeq){if(o.atkSeq!==undefined)o.atkAt=performance.now();o.atkSeq=pr.a}o.guest=!!p.guest;o.mine=p.isMe;
     const e=pr.e&&typeof pr.e==='object'?pr.e:null;
@@ -1652,6 +1653,7 @@ addEventListener('pagehide',()=>vcLeave());vcUI();
 /* ================= Travesuras y mascotas ================= */
 // Tomates para lanzar (Q), cáscaras de plátano para dejar en el suelo (B) y mascotas que te siguen.
 const inv={tom:0,ban:0};
+const TOM_PHRASES=['¡Puaj! 🍅','¡Oyeee! 😂','¡Me las vas a pagar! 😤','¡Noooo, mi ropa!','😳🍅','¡Justo en la cara!','¡Esto es la guerra! 🍅','¿En serio? 😂'];
 let myPeels=[],removedPeels=new Set(),projs=[],splats=[],lastPtr=null;
 const PETS=[{n:'Perro',cols:['#c98b3c','#f2f2f2','#3b2a20','#8a8a8a','#e8d2a8']},{n:'Gato',cols:['#2b2222','#f2a93b','#dcdce6','#7a6a5a']},
   {n:'Pato',cols:['#f6f6f6','#ffd23d']},{n:'Conejo',cols:['#f6f6f6','#a07a5a','#4a4a4a']}];
@@ -1661,9 +1663,10 @@ function fxSend(d){const local=()=>onFx({data:d,peer:myPeer||'me',sameTab:true})
 cv.addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect();lastPtr={x:e.clientX-r.left,y:e.clientY-r.top,t:performance.now()}});
 function throwTomato(){if(!profile||inv.tom<=0||me.fallAt&&performance.now()-me.fallAt<1600)return;
   const fx=me.x,fy=me.y-30;let tx,ty;const reg=regionOf(me.x,me.y);
-  if(lastPtr&&performance.now()-lastPtr.t<4000){tx=camX+lastPtr.x/zoom;ty=camY+lastPtr.y/zoom}
+  if(lastPtr&&performance.now()-lastPtr.t<4000){tx=camX+lastPtr.x/zoom;ty=camY+lastPtr.y/zoom;
+    let sn=null,sd=80;for(const o of others.values()){if(regionOf(o.tx,o.ty)!==reg)continue;const d=Math.hypot(o.x-tx,o.y-28-ty);if(d<sd){sd=d;sn=o}}if(sn){tx=sn.x;ty=sn.y-28}}
   else{let best=null,bd=9*T;for(const o of others.values()){if(regionOf(o.tx,o.ty)!==reg)continue;const d=Math.hypot(o.x-me.x,o.y-me.y);if(d<bd){bd=d;best=o}}
-    if(best){tx=best.x;ty=best.y-20}else{const v=DV[me.dir];tx=me.x+v[0]*5*T;ty=me.y-20+v[1]*5*T}}
+    if(best){tx=best.x;ty=best.y-28}else{const v=DV[me.dir];tx=me.x+v[0]*5*T;ty=me.y-20+v[1]*5*T}}
   const d=Math.hypot(tx-fx,ty-fy);if(d>9*T){tx=fx+(tx-fx)/d*9*T;ty=fy+(ty-fy)/d*9*T}
   me.dir=Math.abs(tx-fx)>Math.abs(ty-fy)?(tx<fx?'left':'right'):(ty<fy?'up':'down');
   inv.tom--;invUI();playSfx('throw');fxSend({t:'tom',fx:Math.round(fx),fy:Math.round(fy),tx:Math.round(tx),ty:Math.round(ty),by:profile.name})}
@@ -1675,15 +1678,20 @@ function allPeels(){const out=[];for(const p of myPeels)if(!removedPeels.has(p.i
 function onFx(m){const d=m.data;if(!d||typeof d!=='object')return;const by=cleanStr(d.by,20)||'Alguien';
   if(d.t==='tom'){const n=['fx','fy','tx','ty'].map(k=>Math.max(-500,Math.min(MW*T+500,+d[k]||0)));const dist=Math.hypot(n[2]-n[0],n[3]-n[1]);
     projs.push({fx:n[0],fy:n[1],tx:n[2],ty:n[3],t0:performance.now(),dur:450+dist*1.1,by,mine:!!m.sameTab})}
+  if(d.t==='hit'){const v=cleanStr(d.victim,20)||'alguien';
+    if(profile&&by===profile.name&&!m.sameTab)toast('🍅 ¡Le diste a '+v+'! 😂'+((d.n|0)>2?' Ya lleva '+(d.n|0)+' tomates encima.':''));
+    else if(!m.sameTab&&profile&&v!==profile.name){const o=others.get(m.peer);if(o&&regionOf(o.tx,o.ty)===regionOf(me.x,me.y))toast('🍅 '+by+' le dio a '+v+' 😂')}}
   if(d.t==='slip'&&typeof d.pid==='string'){removedPeels.add(d.pid);
     if(myPeels.some(p=>p.id===d.pid)){myPeels=myPeels.filter(p=>p.id!==d.pid);pushPresence(true);if(!m.sameTab)toast('🍌 ¡'+by+' pisó tu cáscara de plátano!')}
     else if(!m.sameTab){const o=others.get(m.peer);if(o&&regionOf(o.tx,o.ty)===regionOf(me.x,me.y))toast('🍌 '+by+' se resbaló con una cáscara de plátano')}}}
 function fxTick(dt,now){if(!profile)return;const reg=regionOf(me.x,me.y);
   for(const p of projs)if(now-p.t0>=p.dur&&!p.done){p.done=true;splats.push({x:p.tx,y:p.ty+18,t0:now,r:Math.random()*6});playSfx('splat');
-    if(!p.mine&&Math.hypot(me.x-p.tx,me.y-20-p.ty)<24&&regionOf(p.tx,p.ty)===reg){me.splatAt=now;pushPresence(true);toast('🍅 ¡'+p.by+' te dio con un tomate!')}
-    if(p.mine)for(const o of others.values())if(Math.hypot(o.x-p.tx,o.y-20-p.ty)<24){toast('🍅 ¡Le diste a '+o.name+'!');break}}
+    if(!p.mine&&Math.hypot(me.x-p.tx,me.y-28-p.ty)<36&&regionOf(p.tx,p.ty)===reg){
+      me.tomN=Math.min(10,(me.tomN||0)+1);me.tomAt=now;
+      const ph=TOM_PHRASES[Math.floor(Math.random()*TOM_PHRASES.length)];me.say={t:ph,i:++saySeq+Math.floor(Math.random()*1e6)};mySay.sayText=ph;mySay.sayAt=now;
+      pushPresence(true);toast('🍅 ¡'+p.by+' te dio con un tomate!');fxSend({t:'hit',by:p.by,victim:profile.name,n:me.tomN})}}
   projs=projs.filter(p=>!p.done);splats=splats.filter(s=>now-s.t0<25000);
-  if(me.splatAt&&now-me.splatAt>6000){me.splatAt=0;pushPresence(true)}
+  if(me.tomN&&now-me.tomAt>60000){me.tomN=0;me.tomAt=0;pushPresence(true);toast('🍅 Las manchas de tomate se secaron y se cayeron.')}
   if(me.fallAt&&now-me.fallAt>1600){me.fallAt=0;pushPresence(true)}
   const old=myPeels.length;myPeels=myPeels.filter(p=>Date.now()-p.t<180000);if(myPeels.length!==old)pushPresence(true);
   if(!me.fallAt&&!me.sit)for(const pe of allPeels()){if(pe.mine&&Date.now()-myPeels.find(q=>q.id===pe.id).t<1500)continue;
@@ -1726,15 +1734,21 @@ function fxDrawAir(now){const g=ctx;
   for(const p of projs){const t=Math.min(1,(now-p.t0)/p.dur),x=p.fx+(p.tx-p.fx)*t,y=p.fy+(p.ty-p.fy)*t,h=Math.sin(t*Math.PI)*(30+Math.hypot(p.tx-p.fx,p.ty-p.fy)*.18);
     g.fillStyle='rgba(0,0,0,.18)';g.beginPath();g.ellipse(x,y+18,6,2,0,0,Math.PI*2);g.fill();
     g.fillStyle='#e0453a';g.beginPath();g.arc(x,y-h,6,0,Math.PI*2);g.fill();g.fillStyle='#ff8a7a';g.fillRect(x-3,y-h-4,2,2);g.fillStyle='#3f9a55';g.fillRect(x-2,y-h-8,4,3)}}
-function avatarFx(a){if(a.isMe)return{fall:me.fallAt||0,splat:me.splatAt||0};return{fall:a.o.flAt||0,splat:a.o.tmAt||0}}
+function avatarFx(a){if(a.isMe)return{fall:me.fallAt||0,n:me.tomN||0,at:me.tomAt||0};return{fall:a.o.flAt||0,n:a.o.tmN||0,at:a.o.tmAt||0}}
+const TOM_SPOTS=[[-5,-56,7],[6,-38,7],[-7,-30,5],[8,-50,5],[0,-46,6],[-9,-44,4],[4,-26,5],[9,-60,4],[-3,-36,5],[2,-20,4]];
 function drawAvatarFx(a,now){const fx=avatarFx(a),x=Math.round(a.x),y=Math.round(a.y);
   if(fx.fall&&now-fx.fall<1600){const e=now-fx.fall,k=e<180?e/180:e>1350?Math.max(0,(1600-e)/250):1,sg=a.dir==='left'?-1:1;
     ctx.save();ctx.translate(x,y-4);ctx.rotate(sg*k*Math.PI/2);drawChar(ctx,0,4,a.look,a.dir,0,false,2);ctx.restore();
     if(e>200&&e<1400)for(let i=0;i<3;i++){const an=now/180+i*2.1;ctx.fillStyle='#ffd23d';ctx.fillRect(x+sg*30+Math.cos(an)*12-2,y-22+Math.sin(an)*5-2,4,4)}}
   else drawChar(ctx,x,y,a.look,a.dir,a.frame,a.sit,2);
-  if(fx.splat&&now-fx.splat<6000){ctx.globalAlpha=Math.min(1,(6000-(now-fx.splat))/800);ctx.fillStyle='#d8352a';
-    for(const [dx,dy,r] of [[-6,-58,6],[5,-54,5],[0,-40,7],[-9,-34,4],[8,-30,4],[2,-62,3]]){ctx.beginPath();ctx.arc(x+dx,y+dy,r,0,Math.PI*2);ctx.fill()}
-    ctx.fillStyle='#ff8a7a';ctx.fillRect(x-7,y-61,3,3);ctx.globalAlpha=1}}
+  if(fx.n>0&&!(fx.fall&&now-fx.fall<1600)){const fresh=Math.min(1,(now-fx.at)/120);
+    for(let i=0;i<fx.n;i++){const [dx,dy,r]=TOM_SPOTS[i],sx=x+dx,sy=y+dy,rr=r*(i===fx.n-1?.6+.4*fresh:1);
+      ctx.fillStyle='#d8352a';ctx.beginPath();ctx.arc(sx,sy,rr,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(sx+rr*.7,sy+rr*.5,rr*.5,0,Math.PI*2);ctx.fill();
+      const drip=Math.min(10,((now-fx.at)/400+i*2)%14);ctx.fillRect(sx-1,sy,3,drip);ctx.beginPath();ctx.arc(sx+.5,sy+drip,2,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#ffd23d';ctx.fillRect(sx-2,sy-1,2,2);ctx.fillRect(sx+2,sy+2,2,2);ctx.fillStyle='#ff8a7a';ctx.fillRect(sx-rr*.5,sy-rr*.6,3,3)}
+    // medio tomate en la cabeza
+    const hx=x+3,hy=y-70;ctx.fillStyle='#e0453a';ctx.beginPath();ctx.arc(hx,hy,9,Math.PI,0);ctx.fill();ctx.fillRect(hx-9,hy-1,18,3);
+    ctx.fillStyle='#ffb0a0';ctx.fillRect(hx-6,hy-1,12,2);ctx.fillStyle='#3f9a55';ctx.fillRect(hx-3,hy-12,6,3);ctx.fillRect(hx-1,hy-15,2,4)}}
 // --- Elegir mascota ---
 let petDraft=null;
 function openPet(){petDraft=profile.pet?{...profile.pet}:{k:0,c:0};buildPetOpts();$('petModal').hidden=false}
