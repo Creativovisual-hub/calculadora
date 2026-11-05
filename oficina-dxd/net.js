@@ -14,11 +14,20 @@
   var SUPABASE_URL = 'https://wmgdqegwwtxydsrubjka.supabase.co';
   var SUPABASE_KEY = 'sb_publishable_Lc_U7a9MxoyE_XyemPOjDA_zK4o9T-e';
   var LS_KEY = 'dxd-session-v1';
+  var SHARED_USERS = ['dxd'];
 
   function err(code, message) { var e = new Error(message || code); e.code = code; return e; }
   function later(fn) { setTimeout(fn, 0); }
   function lsGet() { try { return JSON.parse(localStorage.getItem(LS_KEY) || 'null'); } catch (e) { return null; } }
   function lsSet(v) { try { if (v) localStorage.setItem(LS_KEY, JSON.stringify(v)); else localStorage.removeItem(LS_KEY); } catch (e) {} }
+
+  // La oficina queda oculta (fondo oscuro) hasta que la sesión esté validada.
+  document.documentElement.classList.add('dxd-locked');
+  var lockCss = document.createElement('style');
+  lockCss.textContent = 'html.dxd-locked,html.dxd-locked body{background:#06070d!important}' +
+    'html.dxd-locked body>*:not(#dxdLogin){visibility:hidden!important}';
+  document.head.appendChild(lockCss);
+  function unlock() { document.documentElement.classList.remove('dxd-locked'); }
 
   var hasSb = !!(window.supabase && typeof window.supabase.createClient === 'function');
   var sb = hasSb ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
@@ -41,43 +50,118 @@
   function onSessionLost() { lsSet(null); location.reload(); }
 
   /* ======================= Login ======================= */
+  // Escena pixel: fachada de la Oficina DXD al atardecer, con la cordillera,
+  // el letrero DXD, la puerta con el felpudo "BIENVENIDOS" y Dexi recibiendo.
   var css = '' +
-    '#dxdLogin{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;' +
-    'background:radial-gradient(120% 90% at 80% 0%,#1a2070 0%,#06070d 60%);font-family:Manrope,system-ui,sans-serif;color:#f1f2ff}' +
-    '#dxdLogin form{width:100%;max-width:360px;background:#0d1020;border:1px solid #262b4c;border-radius:20px;padding:28px 24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 30px 80px rgba(0,0,0,.5)}' +
-    '#dxdLogin h1{margin:0;font-family:Syncopate,"Arial Black",sans-serif;font-size:22px;letter-spacing:.06em;' +
+    '#dxdLogin{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:flex-end;padding:16px 7vw;' +
+    'background:#0b0f2a;font-family:Manrope,system-ui,sans-serif;color:#f1f2ff;overflow:hidden}' +
+    '#dxdLogin canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}' +
+    '#dxdLogin form{position:relative;width:100%;max-width:360px;background:rgba(13,16,32,.94);border:1px solid #262b4c;border-radius:20px;padding:24px 22px 22px;' +
+    'display:flex;flex-direction:column;gap:14px;box-shadow:0 30px 80px rgba(0,0,0,.55),0 0 0 4px rgba(61,76,255,.18)}' +
+    '#dxdLogin .rec{display:flex;align-items:center;gap:12px}' +
+    '#dxdLogin .rec img{width:46px;height:38px;image-rendering:pixelated;background:#171b33;border-radius:12px;padding:4px}' +
+    '#dxdLogin .rec small{display:block;font-family:Silkscreen,monospace;font-size:10px;letter-spacing:.12em;color:#8d93ba}' +
+    '#dxdLogin h1{margin:2px 0 0;font-family:Syncopate,"Arial Black",sans-serif;font-size:19px;letter-spacing:.06em;' +
     'background:linear-gradient(135deg,#dcdaff 0%,#8a92ff 42%,#3141f0 100%);-webkit-background-clip:text;background-clip:text;color:transparent}' +
-    '#dxdLogin p{margin:0 0 6px;color:#8d93ba;font-size:13px}' +
+    '#dxdLogin .say{position:relative;margin:0;background:#f1f2ff;color:#14162a;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600;line-height:1.4}' +
+    '#dxdLogin .say:before{content:"";position:absolute;top:-6px;left:22px;border:6px solid transparent;border-top:0;border-bottom-color:#f1f2ff}' +
     '#dxdLogin label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:#c6c7ff}' +
     '#dxdLogin input{font:inherit;font-size:16px;color:#f1f2ff;background:#171b33;border:1px solid #262b4c;border-radius:12px;padding:12px 14px}' +
     '#dxdLogin input:focus{outline:2px solid #c6c7ff;outline-offset:1px}' +
-    '#dxdLogin button{font:inherit;font-weight:800;font-size:15px;border:0;border-radius:12px;padding:13px;margin-top:4px;cursor:pointer;color:#fff;background:#3d4cff}' +
+    '#dxdLogin button{font:inherit;font-weight:800;font-size:15px;border:0;border-radius:12px;padding:13px;margin-top:2px;cursor:pointer;color:#fff;' +
+    'background:linear-gradient(135deg,#8a92ff 0%,#3d4cff 60%,#2f3ff0 100%)}' +
     '#dxdLogin button[disabled]{opacity:.6;cursor:wait}' +
-    '#dxdLogin .err{min-height:18px;color:#ff6b7a;font-size:13px;font-weight:600}';
+    '#dxdLogin .err{min-height:18px;color:#ff6b7a;font-size:13px;font-weight:600}' +
+    '@media (max-width:760px){#dxdLogin{justify-content:center;align-items:flex-end;padding:16px 16px calc(20px + env(safe-area-inset-bottom,0px))}}';
+
+  function drawScene(cv) {
+    var vw = cv.clientWidth || innerWidth, vh = cv.clientHeight || innerHeight;
+    var H = 180, W = Math.max(150, Math.round(H * vw / vh));
+    cv.width = W; cv.height = H;
+    var g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
+    var narrow = vw < 760, bx = Math.round(narrow ? W / 2 : W * 0.34); // centro del edificio
+    function R(x, y, w, h, c) { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); }
+    // cielo y estrellas
+    var sky = g.createLinearGradient(0, 0, 0, 120);
+    sky.addColorStop(0, '#070a1f'); sky.addColorStop(.55, '#1b2170'); sky.addColorStop(1, '#5a4fc2');
+    g.fillStyle = sky; g.fillRect(0, 0, W, 120);
+    var seed = 7; function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    for (var i = 0; i < W / 3; i++) R(rnd() * W, rnd() * 70, 1, 1, rnd() < .3 ? '#ffffff' : '#9aa2ff');
+    g.fillStyle = '#f1f2ff'; g.beginPath(); g.arc(Math.round(W * .84), 20, 6, 0, 7); g.fill(); // luna creciente
+    g.fillStyle = '#0a0e28'; g.beginPath(); g.arc(Math.round(W * .84) + 3, 18, 5, 0, 7); g.fill();
+    // cordillera
+    g.fillStyle = '#2a2f6e'; g.beginPath(); g.moveTo(0, 112);
+    for (var x = 0; x <= W; x += 6) g.lineTo(x, 84 + Math.abs(Math.sin(x * .045)) * 20 + Math.sin(x * .13) * 4); g.lineTo(W, 120); g.lineTo(0, 120); g.fill();
+    g.fillStyle = '#e8e9ff';
+    for (var x2 = 0; x2 <= W; x2 += 6) { var y = 84 + Math.abs(Math.sin(x2 * .045)) * 20 + Math.sin(x2 * .13) * 4; if (y < 92) R(x2 - 2, y, 5, 3, '#e8e9ff'); }
+    R(0, 108, W, 14, '#1c2050');
+    // edificio
+    var bw = 132, top = 38, x0 = bx - bw / 2;
+    R(x0 - 4, top - 4, bw + 8, 6, '#262b4c'); R(x0, top, bw, 120 - top + 26, '#171b33');
+    R(x0, top, 3, 120 - top + 26, '#262b4c'); R(x0 + bw - 3, top, 3, 120 - top + 26, '#0d1020');
+    // letrero DXD
+    R(bx - 34, top - 22, 68, 18, '#06070d'); R(bx - 34, top - 22, 68, 1, '#3d4cff'); R(bx - 34, top - 5, 68, 1, '#3d4cff');
+    var sc = window.__dxdScene;
+    if (sc && sc.drawMark) { sc.drawMark(g, bx - 30, top - 20, 14); }
+    g.fillStyle = '#f1f2ff'; g.font = '700 10px Silkscreen, monospace'; g.textBaseline = 'middle'; g.textAlign = 'left'; g.fillText('DXD', bx - 8, top - 12.5);
+    // ventanas (algunas encendidas, con pantallas)
+    for (var r = 0; r < 4; r++) for (var c = 0; c < 6; c++) {
+      var wx = x0 + 10 + c * 19, wy = top + 8 + r * 17; if (r === 3 && (c === 2 || c === 3)) continue;
+      var on = rnd() < .62; R(wx, wy, 14, 11, '#0b0d1c'); R(wx + 1, wy + 1, 12, 9, on ? '#ffd98a' : '#232850');
+      if (on && rnd() < .5) { R(wx + 3, wy + 5, 6, 4, '#3d4cff'); R(wx + 5, wy + 9, 2, 1, '#14162a'); }
+      if (on && rnd() < .3) R(wx + 9, wy + 4, 2, 5, '#3ddc97');
+    }
+    // puerta
+    var dy = top + 8 + 3 * 17, dh = 120 + 26 - dy - 4;
+    R(bx - 15, dy - 2, 30, dh + 2, '#0b0d1c'); R(bx - 13, dy, 12, dh, '#ffe6a8'); R(bx + 1, dy, 12, dh, '#ffe6a8');
+    R(bx - 13, dy, 12, 2, '#fff4d6'); R(bx - 3, dy + dh / 2, 1, 4, '#8a6a2a'); R(bx + 2, dy + dh / 2, 1, 4, '#8a6a2a');
+    // vereda, felpudo y jardín
+    var gy = 146; R(0, gy - 2, W, 4, '#3a3d4f'); R(0, gy + 2, W, H - gy, '#3f8f4a');
+    for (var s2 = 0; s2 < W; s2 += 16) R(s2, gy + 2, 8, H - gy, '#46994f');
+    R(bx - 16, gy - 2, 32, H - gy + 2, '#cfc6b0'); for (var p = gy; p < H; p += 6) R(bx - 16, p, 32, 1, '#b9ae95');
+    R(bx - 18, gy - 4, 36, 6, '#14162a'); for (var m = 0; m < 5; m++) R(bx - 15 + m * 7, gy - 2, 4, 2, m % 2 ? '#8a92ff' : '#3d4cff'); // felpudo
+    // maceteros junto a la puerta
+    [bx - 24, bx + 20].forEach(function (px) { R(px, gy - 9, 6, 6, '#c2603b'); R(px - 1, gy - 15, 8, 7, '#2f8a4a'); R(px + 1, gy - 17, 4, 3, '#3fb05f'); });
+    // árboles y bancas
+    function tree(tx) { R(tx - 1, gy - 2, 4, 14, '#6b4a2a'); g.fillStyle = '#2f8a4a'; g.beginPath(); g.arc(tx + 1, gy - 8, 10, 0, 7); g.fill();
+      g.fillStyle = '#3fb05f'; g.beginPath(); g.arc(tx - 2, gy - 11, 6, 0, 7); g.fill(); }
+    function bench(bx2) { R(bx2, gy + 10, 22, 3, '#8a5a32'); R(bx2, gy + 6, 22, 2, '#8a5a32'); R(bx2 + 2, gy + 13, 2, 4, '#3a2a1a'); R(bx2 + 18, gy + 13, 2, 4, '#3a2a1a'); }
+    for (var t = x0 - 26; t > -12; t -= 46) tree(t);
+    for (var t2 = x0 + bw + 26; t2 < W + 12; t2 += 46) tree(t2);
+    bench(x0 - 30); bench(x0 + bw + 8);
+    // Dexi en la puerta
+    if (sc && sc.drawChar) { try { sc.drawChar(g, bx + 30, gy + 8, sc.DEXI_LOOK, 'down', 0, false, 1); } catch (e) {} }
+  }
 
   function showLogin() {
     return new Promise(function (resolve) {
       function mount() {
         var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
         var box = document.createElement('div'); box.id = 'dxdLogin';
-        box.innerHTML = '<form autocomplete="on" novalidate>' +
-          '<h1>DXD</h1><p>Oficina virtual del equipo. Ingresa con tu usuario.</p>' +
+        var sc = window.__dxdScene, head = '';
+        try { if (sc && sc.headURL) head = sc.headURL(sc.DEXI_LOOK); } catch (e) {}
+        box.innerHTML = '<canvas aria-hidden="true"></canvas><form autocomplete="on" novalidate>' +
+          '<div class="rec">' + (head ? '<img alt="" src="' + head + '">' : '') + '<div><small>RECEPCIÓN</small><h1>OFICINA DXD</h1></div></div>' +
+          '<p class="say">¡Hola! Soy Dexi. Muéstrame tu acceso y te abro la puerta de la oficina.</p>' +
           '<label>Usuario<input name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>' +
           '<label>Clave<input name="password" type="password" autocomplete="current-password" required></label>' +
           '<div class="err" role="alert"></div>' +
-          '<button type="submit">Entrar</button></form>';
+          '<button type="submit">Entrar a la oficina</button></form>';
         document.body.appendChild(box);
+        var cv = box.querySelector('canvas'), redraw = function () { drawScene(cv); };
+        redraw(); addEventListener('resize', redraw);
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(redraw);
         var f = box.querySelector('form'), u = f.username, p = f.password, b = f.querySelector('button'), e = f.querySelector('.err');
         setTimeout(function () { u.focus(); }, 50);
         f.addEventListener('submit', function (ev) {
           ev.preventDefault();
           if (!u.value.trim() || !p.value) { e.textContent = 'Escribe tu usuario y tu clave.'; return; }
-          b.disabled = true; b.textContent = 'Entrando…'; e.textContent = '';
+          b.disabled = true; b.textContent = 'Abriendo la puerta…'; e.textContent = '';
           rpc('dxd_login', { p_user: u.value, p_pass: p.value }).then(function (s) {
             if (!s || !s.token) { e.textContent = 'Usuario o clave incorrectos.'; p.value = ''; p.focus(); return; }
-            lsSet(s); box.remove(); resolve(s);
+            lsSet(s); removeEventListener('resize', redraw); box.remove(); resolve(s);
           }, function () { e.textContent = 'No se pudo conectar. Revisa tu internet e intenta de nuevo.'; })
-            .then(function () { b.disabled = false; b.textContent = 'Entrar'; });
+            .then(function () { b.disabled = false; b.textContent = 'Entrar a la oficina'; });
         });
       }
       if (document.body) mount(); else document.addEventListener('DOMContentLoaded', mount);
@@ -100,7 +184,9 @@
       ? rpc('dxd_me', { p_token: saved.token }).then(function (m) { return m ? { token: saved.token, user: m.user, room: m.room } : null; }, function () { return null; })
       : Promise.resolve(null);
     return check.then(function (s) { return s || showLogin(); }).then(function (s) {
-      session = s; lsSet(s); prefillName(s.user); return s;
+      session = s; lsSet(s); unlock();
+      if (SHARED_USERS.indexOf(String(s.user).toLowerCase()) < 0) prefillName(s.user); // usuario compartido: cada uno pone su nombre
+      return s;
     });
   })();
 
