@@ -381,7 +381,7 @@ aside#panel.open{transform:none}
   <div class="card petcard" role="dialog" aria-modal="true" aria-labelledby="petTitle">
     <div class="eyebrow">Casita DXD</div>
     <h2 id="petTitle">Casita de mascotas</h2>
-    <p class="sub">Te siguen por toda la oficina, todos las ven y hacen sus sonidos. Tecla P para llamarlas.</p>
+    <p class="sub">Te siguen por toda la oficina y todos las ven. Tecla P para llamarlas y F para darles comida.</p>
     <canvas id="petCv" width="160" height="90"></canvas>
     <div class="osec"><h4>Tus mascotas (máx. 2) · toca para dejarla</h4><div class="chips" id="petMine"></div></div>
     <div class="osec"><h4>Adopta una nueva</h4><div class="chips" id="petKinds"></div></div>
@@ -2255,7 +2255,9 @@ function petSound(p,now,loud){if(regionOf(p.x,p.y)!==regionOf(me.x,me.y))return;
   const info=PETS[p.pet.k];p.say=info.t;p.sayAt=now;animalSfx(info.s,Math.max(.15,1-d/(10*T))*(loud?1:.7))}
 function callPets(){if(!profile||!profile.pets||!profile.pets.length){toast('🐾 No tienes mascotas. Adopta en la casita del jardín.');return}fxSend({t:'pet',by:profile.name})}
 // Sonidos de animales hechos con Web Audio (sin archivos)
-function animalSfx(kind,vol){try{sfxUnlock();const c=sfxCtx;if(!c||c.state!=='running')return;const t0=c.currentTime,out=c.createGain();out.gain.value=.5*vol;out.connect(sfxDest());
+// Sonidos de animales desactivados (eran molestos): solo quedan las burbujas de texto.
+const ANIMAL_SOUNDS=false;
+function animalSfx(kind,vol){if(!ANIMAL_SOUNDS)return;try{sfxUnlock();const c=sfxCtx;if(!c||c.state!=='running')return;const t0=c.currentTime,out=c.createGain();out.gain.value=.5*vol;out.connect(sfxDest());
   const tone=(type,f0,f1,st,dur,g=.3,lp)=>{const o=c.createOscillator(),gg=c.createGain();o.type=type;o.frequency.setValueAtTime(f0,t0+st);o.frequency.exponentialRampToValueAtTime(Math.max(20,f1),t0+st+dur);
     gg.gain.setValueAtTime(0,t0+st);gg.gain.linearRampToValueAtTime(g,t0+st+.015);gg.gain.exponentialRampToValueAtTime(.0001,t0+st+dur);let n=o;if(lp){const f=c.createBiquadFilter();f.type='lowpass';f.frequency.value=lp;o.connect(f);n=f}n.connect(gg).connect(out);o.start(t0+st);o.stop(t0+st+dur+.05)};
   const noise=(st,dur,g,fq,type='bandpass')=>{const b=c.createBuffer(1,c.sampleRate*dur,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
