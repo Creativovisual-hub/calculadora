@@ -143,6 +143,9 @@ form#send{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
 #screenPanel.mini{top:auto;bottom:96px;left:auto;right:12px;transform:none;width:300px}
 #shareBtn.on{background:var(--bad);color:#fff}
 #moodBtn{font-size:18px;padding:6px 9px}
+#giftPop{position:fixed;z-index:40;left:12px;bottom:84px;width:min(440px,calc(100vw - 24px));background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:8px}
+#giftPop .mph{font-family:var(--f-brand);font-size:13px;letter-spacing:.06em}#giftPop .gsub{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:4px}#giftPop .gnote{margin:0;color:var(--muted);font-size:13px}
+#giftPop .ggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}#giftPop .gchip{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;min-height:0}#giftPop .gchip .ge{font-size:24px;line-height:1}#giftPop .gchip small{font-size:10px;color:var(--muted);text-align:center;line-height:1.2}
 .chatfilter{display:flex;gap:6px;padding:8px 12px 0}.chatfilter .chip{min-height:32px;padding:5px 10px;font-size:12px}#msgs .msg.far{opacity:.6}
 #teleOv{position:fixed;inset:0;z-index:60;background:#000}#teleCv{width:100%;height:100%;display:block;object-fit:cover;image-rendering:pixelated}#teleOv .teletop{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:12px;padding:16px 20px;background:linear-gradient(rgba(6,7,13,.7),transparent)}#teleOv .teletop b{flex:1;font-family:var(--f-brand);font-size:18px;letter-spacing:.04em;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5)}
 #volPop{position:fixed;z-index:40;top:56px;left:12px;width:min(320px,calc(100vw - 24px));background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:12px}
@@ -320,7 +323,7 @@ aside#panel.open{transform:none}
     </div>
     <input class="hud" id="sayBox" maxlength="140" placeholder="Di algo y presiona Enter" autocomplete="off" aria-label="Mensaje sobre tu personaje" hidden>
     <div class="hud bl">
-      <div class="row"><button class="btn atk" id="atkBtn" hidden>⚔️ Atacar <kbd>Espacio</kbd></button><button class="btn pri talk" id="talkBtn">💬 Hablar <kbd>T</kbd></button><button class="btn voice" id="voiceBtn" type="button">🎙️ Voz</button><button class="btn inv" id="tomBtn" type="button" hidden title="Lanzar tomate (Q)">🍅 <span id="tomN">0</span> <kbd>Q</kbd></button><button class="btn inv" id="banBtn" type="button" hidden title="Dejar cáscara de plátano (B)">🍌 <span id="banN">0</span> <kbd>B</kbd></button><button class="btn pri" id="actStop" type="button" hidden>⏹ Terminar <kbd>Esc</kbd></button><button class="btn" id="shareBtn" type="button" hidden>🖥️ Compartir pantalla</button><button class="btn" id="feedBtn" type="button" hidden title="Dar comida a tus mascotas y a las que estén cerca (F)">🍖 Alimentar <kbd>F</kbd></button><button class="btn" id="voiceLeave" type="button" hidden title="Salir de la voz">✕</button><div class="emotes" id="emotes" aria-label="Reacciones"></div></div>
+      <div class="row"><button class="btn atk" id="atkBtn" hidden>⚔️ Atacar <kbd>Espacio</kbd></button><button class="btn pri talk" id="talkBtn">💬 Hablar <kbd>T</kbd></button><button class="btn voice" id="voiceBtn" type="button">🎙️ Voz</button><button class="btn" id="giftBtn" type="button" title="Regalar algo a alguien cercano (G)">🎁 Regalar <kbd>G</kbd></button><button class="btn inv" id="tomBtn" type="button" hidden title="Lanzar tomate (Q)">🍅 <span id="tomN">0</span> <kbd>Q</kbd></button><button class="btn inv" id="banBtn" type="button" hidden title="Dejar cáscara de plátano (B)">🍌 <span id="banN">0</span> <kbd>B</kbd></button><button class="btn pri" id="actStop" type="button" hidden>⏹ Terminar <kbd>Esc</kbd></button><button class="btn" id="shareBtn" type="button" hidden>🖥️ Compartir pantalla</button><button class="btn" id="feedBtn" type="button" hidden title="Dar comida a tus mascotas y a las que estén cerca (F)">🍖 Alimentar <kbd>F</kbd></button><button class="btn" id="voiceLeave" type="button" hidden title="Salir de la voz">✕</button><div class="emotes" id="emotes" aria-label="Reacciones"></div></div>
       <div class="mecard">
         <img id="meHead" alt="">
         <div><div class="nm" id="meName">Tú</div><div class="zn" id="meZone">Oficina</div></div>
@@ -352,6 +355,7 @@ aside#panel.open{transform:none}
 </div>
 
 <div id="moodPop" hidden></div>
+<div id="giftPop" hidden role="dialog" aria-label="Regalar"></div>
 <div id="teleOv" hidden><canvas id="teleCv"></canvas><div class="teletop"><b id="teleTitle"></b><button id="teleSkip" type="button" class="btn">Saltar ⏭</button></div></div>
 <div id="volPop" hidden role="dialog" aria-label="Volumen">
   <label class="vrow vtog"><input type="checkbox" id="volOn"> Música de fondo</label>
@@ -936,6 +940,7 @@ const NPCS=[
       'Con el botón de la carita (abajo a la izquierda) eliges tu estado de ánimo. En la casita del jardín puedes adoptar hasta 2 mascotas, ¡hasta un tigre! P para llamarlas y F para darles comida cuando tengan hambre. Si a ti te da hambre, come en la cocina.',
       'En el jardín está el teleférico al Cerro San Cristóbal 🚡: arriba hay mirador, yoga, ejercicio y un espacio para conversar.',
       'Toma el ascensor al Piso 2: ¡es la fiesta! Cada uno pega canciones de Spotify en el panel del DJ y suenan para todos.',
+      'Con 🎁 Regalar (tecla G) puedes darle flores, café, chocolates o una estrella de reconocimiento a quien esté cerca. ¡Y si tiene hambre, la comida se la quita!',
       'Con el botón 🎙️ Voz hablas con tu micrófono: te escuchan quienes estén en tu misma sala, y más bajito los que estén cerca. M para silenciarte.',
       'Sam Tomaz está en el piso 14: toma el ascensor del pasillo norte. Carito está en Equipo Producto, Sabi en la Biblioteca y Yab en la Sala Insight.',
       'En la Galería Chile hay cuadros de Santiago y la cordillera. Acércate y presiona E para verlos en grande.',
@@ -1285,6 +1290,7 @@ addEventListener('keydown',e=>{
   else if(e.code==='KeyB'){e.preventDefault();dropPeel()}
   else if(e.code==='KeyP'){e.preventDefault();callPets()}
   else if(e.code==='KeyF'){e.preventDefault();feedPets()}
+  else if(e.code==='KeyG'){e.preventDefault();const gp=$('giftPop');if(gp.hidden)openGiftPop();else gp.hidden=true}
   else if(/^[1-6]$/.test(e.key))sendEmote(+e.key-1);
 });
 addEventListener('keyup',e=>{if(KEYMAP[e.code])keys.delete(KEYMAP[e.code]);if(!gameModal.hidden)gameKey(e,false)});
@@ -1391,7 +1397,7 @@ function claimDesk(i){const cur=deskOwners()[i];
 
 /* ================= Presencia ================= */
 let lastPush=0,pushPending=false,lastSent='';
-function presencePayload(){return{n:profile.name,l:profile.look,x:Math.round(me.x),y:Math.round(me.y),d:me.dir,m:me.moving?1:0,e:me.emote,s:me.say,st:me.sit?1:0,g:me.game,ty:me.typing?1:0,v:vc.on?1:0,oc:VR_OPUS?1:0,sp:vc.speaking&&!vc.muted?1:0,fl:me.fallAt?1:0,tm:me.tomN||0,pl:myPeels.map(p=>[p.id,p.x,p.y]),pt:profile.pets||[],md:profile.mood,hg:meHungry()?1:0,ac:me.act?me.act.t:null,ph:(profile.pets||[]).map((_,i)=>petHungry(i)?1:0),sh:sc.stream?1:0,dk:me.desk==null?null:me.desk,hp:inArena()?me.hp:null,ko:me.ko?1:0,a:me.atkSeq}}
+function presencePayload(){return{n:profile.name,l:profile.look,x:Math.round(me.x),y:Math.round(me.y),d:me.dir,m:me.moving?1:0,e:me.emote,s:me.say,st:me.sit?1:0,g:me.game,ty:me.typing?1:0,v:vc.on?1:0,oc:VR_OPUS?1:0,sp:vc.speaking&&!vc.muted?1:0,fl:me.fallAt?1:0,tm:me.tomN||0,pl:myPeels.map(p=>[p.id,p.x,p.y]),pt:profile.pets||[],md:profile.mood,hg:meHungry()?1:0,ac:me.act?me.act.t:null,gf:me.gift?[me.gift.e,me.giftSeq|0]:null,ph:(profile.pets||[]).map((_,i)=>petHungry(i)?1:0),sh:sc.stream?1:0,dk:me.desk==null?null:me.desk,hp:inArena()?me.hp:null,ko:me.ko?1:0,a:me.atkSeq}}
 function pushPresence(force){
   if(!room||!profile)return;const now=performance.now();
   const p=presencePayload();const k=JSON.stringify(p);if(k===lastSent&&!force)return;
@@ -1408,7 +1414,8 @@ function applyPeers(list){
     let o=others.get(p.peer);
     if(!o){o={x,y,walk:0,emoteAt:0,sayAt:0,emoteId:null,sayId:null};others.set(p.peer,o);if(announceReady)sysMsg(name+' llegó a la oficina')}
     o.name=name;o.look=sanLook(pr.l);o.tx=x;o.ty=y;o.dir=DIRS.includes(pr.d)?pr.d:'down';o.m=!!pr.m;o.st=!!pr.st;o.typ=!!pr.ty;o.v=!!pr.v;o.sp=!!pr.sp;o.oc=pr.oc===undefined?undefined:!!pr.oc;if(pr.fl&&!o.fl)o.flAt=performance.now();o.fl=!!pr.fl;{const tn=Math.max(0,Math.min(10,pr.tm|0));if(tn>(o.tmN||0))o.tmAt=performance.now();o.tmN=tn}
-    o.pl=Array.isArray(pr.pl)?pr.pl.slice(0,3).filter(q=>Array.isArray(q)&&typeof q[0]==='string').map(q=>[q[0].slice(0,10),Math.max(0,Math.min(MW*T,+q[1]||0)),Math.max(0,Math.min(MH*T,+q[2]||0))]):[];o.pt=sanPets(pr.pt);o.hg=!!pr.hg;o.ac=pr.ac==='yoga'||pr.ac==='ex'?pr.ac:null;o.ph=Array.isArray(pr.ph)?pr.ph.slice(0,PET_MAX).map(Boolean):[];o.md=Number.isInteger(pr.md)&&pr.md>=0&&pr.md<MOODS.length?pr.md:null;o.sh=!!pr.sh;o.dk=Number.isInteger(pr.dk)&&pr.dk>=0&&pr.dk<DESKS.length?pr.dk:null;o.g=GAME_NAMES[pr.g]?pr.g:null;
+    o.pl=Array.isArray(pr.pl)?pr.pl.slice(0,3).filter(q=>Array.isArray(q)&&typeof q[0]==='string').map(q=>[q[0].slice(0,10),Math.max(0,Math.min(MW*T,+q[1]||0)),Math.max(0,Math.min(MH*T,+q[2]||0))]):[];o.pt=sanPets(pr.pt);o.hg=!!pr.hg;o.ac=pr.ac==='yoga'||pr.ac==='ex'?pr.ac:null;
+    {const gs=Array.isArray(pr.gf)?pr.gf[1]|0:0;if(o.giftSeq!==undefined&&gs!==o.giftSeq&&Array.isArray(pr.gf)&&GIFTS.some(g=>g.e===pr.gf[0]))o.gift={e:pr.gf[0],at:performance.now()};o.giftSeq=gs}o.ph=Array.isArray(pr.ph)?pr.ph.slice(0,PET_MAX).map(Boolean):[];o.md=Number.isInteger(pr.md)&&pr.md>=0&&pr.md<MOODS.length?pr.md:null;o.sh=!!pr.sh;o.dk=Number.isInteger(pr.dk)&&pr.dk>=0&&pr.dk<DESKS.length?pr.dk:null;o.g=GAME_NAMES[pr.g]?pr.g:null;
     o.hp=Number.isFinite(pr.hp)?Math.max(0,Math.min(100,pr.hp)):100;o.ko=!!pr.ko;if(pr.a!==o.atkSeq){if(o.atkSeq!==undefined)o.atkAt=performance.now();o.atkSeq=pr.a}o.guest=!!p.guest;o.mine=p.isMe;
     const e=pr.e&&typeof pr.e==='object'?pr.e:null;
     if(e&&e.i!==o.emoteId){o.emoteId=e.i;o.emote=EMOTES[(e.k|0)]||null;o.emoteAt=performance.now()}
@@ -1496,7 +1503,7 @@ function npcTick(dt,now){
     if(d<=sp){n.x=px;n.y=py;n.path.shift();if(!n.path.length){n.path=null;n.wait=now+6000+Math.random()*10000;n.dir=['down','left','right','down'][Math.floor(Math.random()*4)]}}
     else{n.x+=dx/d*sp;n.y+=dy/d*sp;n.walk+=dt;n.dir=Math.abs(dx)>Math.abs(dy)?(dx<0?'left':'right'):(dy<0?'up':'down')}}}
 function step(now){
-  musicUpdate();vcTick();scTick(now);djTick(now);hungerTick(now);actTick(now);
+  musicUpdate();vcTick();scTick(now);djTick(now);hungerTick(now);actTick(now);giftTick(now);
   const dt=Math.min(.05,(now-last)/1000);last=now;
   if(profile&&gameModal.hidden&&stopModal.hidden&&artModal.hidden)updateMe(dt);
   if(profile)arenaStep(dt,now);
@@ -1586,7 +1593,7 @@ function draw(now){
     else if(it.b){const b=it.b;drawFighter(b.x,b.y,BOT_LOOK,b.dir,b.moving?Math.floor(now/120)%4:0,!!b.ko,b.atkAt||0,b.hitAt||0,now)}
     else if(it.pet)drawPet(ctx,it.pet,now);
     else{const a=it.a;if(regionOf(a.x,a.y)===2)drawFighter(Math.round(a.x),Math.round(a.y),a.look,a.dir,a.frame,a.ko,a.atkAt,a.hitAt,now);else drawAvatarFx(a,now)}}
-  fxDrawAir(now);djDrawAir(now);
+  fxDrawAir(now);djDrawAir(now);giftDrawAir(now);
   ctx.restore();
   ctx.setTransform(dpr,0,0,dpr,0,0);
   const sameReg=(x,y)=>regionOf(x,y)===myReg;
@@ -1604,7 +1611,7 @@ function draw(now){
     const sx=(a.x-camX)*zoom,sy=(a.y-camY)*zoom,top=sy-(a.ko&&myReg===2?30:a.sit?52:58)*zoom;
     if(a.isMe&&!sayBox.hidden){sayBox.style.left=sx+'px';sayBox.style.top=(top-34)+'px'}
     if(sx<-150||sx>vw+150||sy<-80||sy>vh+150)continue;
-    {const md=a.isMe?profile.mood:a.o.md;moodFx(sx,top-6,md,now,sy);actFx(sx,top,sy,actOf(a),now,a.isMe);nameTag(sx,top-6,(a.isMe?meHungry():a.o.hg)?'🍔 '+a.name:a.name,a.isMe,a.g,vcState(a.isMe?null:a.o),md)}
+    {const md=a.isMe?profile.mood:a.o.md;moodFx(sx,top-6,md,now,sy);actFx(sx,top,sy,actOf(a),now,a.isMe);giftFx(sx,top-6,a,now);nameTag(sx,top-6,(a.isMe?meHungry():a.o.hg)?'🍔 '+a.name:a.name,a.isMe,a.g,vcState(a.isMe?null:a.o),md)}
     if(myReg===2)hpBar(sx,top-1,a.hp,a.ko);
     if(a.isMe&&!sayBox.hidden)continue;
     const em=a.isMe?myEmote:a.o;let by=top-30;
@@ -2137,6 +2144,7 @@ function actFx(x,top,fy,t,now,isMe){if(!t)return;const g=ctx,z=Math.max(1.5,zoom
   g.restore()}
 $('teleSkip').onclick=()=>{};$('actStop').onclick=()=>stopAct();addEventListener('keydown',e=>{if(e.key==='Escape'&&me.act&&modal.hidden){stopAct()}});
 /* ================= Travesuras y mascotas ================= */
+
 // Tomates para lanzar (Q), cáscaras de plátano para dejar en el suelo (B) y mascotas que te siguen.
 const inv={tom:0,ban:0};
 const TOM_PHRASES=['¡Puaj! 🍅','¡Oyeee! 😂','¡Me las vas a pagar! 😤','¡Noooo, mi ropa!','😳🍅','¡Justo en la cara!','¡Esto es la guerra! 🍅','¿En serio? 😂'];
@@ -2176,6 +2184,7 @@ function onFx(m){const d=m.data;if(!d||typeof d!=='object')return;const by=clean
     projs.push({fx:n[0],fy:n[1],tx:n[2],ty:n[3],t0:performance.now(),dur:450+dist*1.1,by,mine:!!m.sameTab})}
   if(d.t==='pet'){const key=m.sameTab?'me':m.peer,now=performance.now();for(const [k,pp] of pets)if(pp.owner===key)petSound(pp,now,true)}
   if(d.t==='feed'){onFeed(m,d)}
+  if(d.t==='gift'){onGift(m,d)}
   if(d.t==='hit'){const v=cleanStr(d.victim,20)||'alguien';
     if(profile&&by===profile.name&&!m.sameTab)toast('🍅 ¡Le diste a '+v+'! 😂'+((d.n|0)>2?' Ya lleva '+(d.n|0)+' tomates encima.':''));
     else if(!m.sameTab&&profile&&v!==profile.name){const o=others.get(m.peer);if(o&&regionOf(o.tx,o.ty)===regionOf(me.x,me.y))toast('🍅 '+by+' le dio a '+v+' 😂')}}
@@ -2418,6 +2427,42 @@ $('shareBtn').onclick=()=>scStart();$('scrStop').onclick=()=>scStop();
 $('scrMin').onclick=()=>$('screenPanel').classList.toggle('mini');
 $('scrFull').onclick=()=>{const v=$('scrVideo');(v.requestFullscreen||v.webkitRequestFullscreen||v.webkitEnterFullscreen||(()=>{})).call(v)};
 addEventListener('pagehide',()=>scStop());
+/* ================= Regalos ================= */
+const GIFTS=[{e:'🌹',n:'una rosa'},{e:'💐',n:'un ramo de flores'},{e:'🌻',n:'un girasol'},{e:'🎁',n:'un regalo sorpresa'},{e:'☕',n:'un café',food:1},{e:'🍫',n:'un chocolate',food:1},
+  {e:'🧁',n:'un cupcake',food:1},{e:'🍪',n:'una galleta',food:1},{e:'🍕',n:'un trozo de pizza',food:1},{e:'🎈',n:'un globo'},{e:'⭐',n:'una estrella de reconocimiento'},{e:'🏆',n:'un trofeo'}];
+const GIFT_R=6*T;let giftTo=null,giftLast=0,gprojs=[];
+function giftNearby(){const reg=regionOf(me.x,me.y);return [...others.entries()].filter(([id,o])=>regionOf(o.tx,o.ty)===reg&&Math.hypot(o.x-me.x,o.y-me.y)<=GIFT_R).sort((a,b)=>Math.hypot(a[1].x-me.x,a[1].y-me.y)-Math.hypot(b[1].x-me.x,b[1].y-me.y))}
+function openGiftPop(){if(!profile)return;const box=$('giftPop'),near=giftNearby();box.textContent='';const mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+  box.appendChild(mk('div','mph','🎁 Regalar'));
+  if(!near.length){box.appendChild(mk('p','gnote','Acércate a alguien (unas 6 casillas) para regalarle algo.'));box.hidden=false;return}
+  if(!giftTo||!near.some(([id])=>id===giftTo))giftTo=near[0][0];
+  box.appendChild(mk('div','gsub','¿Para quién?'));const pp=mk('div','chips');
+  near.slice(0,6).forEach(([id,o])=>{const b=mk('button','chip',o.name);b.type='button';b.setAttribute('aria-pressed',id===giftTo);b.onclick=()=>{giftTo=id;openGiftPop()};pp.appendChild(b)});box.appendChild(pp);
+  box.appendChild(mk('div','gsub','¿Qué le regalas?'));const gg=mk('div','chips ggrid');
+  GIFTS.forEach((g,i)=>{const b=mk('button','chip gchip');b.type='button';b.title=g.n;b.setAttribute('aria-label','Regalar '+g.n);const em=mk('span','ge',g.e),nm=mk('small',null,g.n.replace(/^(un|una) /,''));b.append(em,nm);b.onclick=()=>sendGift(i);gg.appendChild(b)});box.appendChild(gg);
+  box.hidden=false}
+function sendGift(i){const o=others.get(giftTo),now=performance.now();if(!o){$('giftPop').hidden=true;return}
+  if(now-giftLast<2500){toast('🎁 Espera un segundito antes del próximo regalo');return}giftLast=now;$('giftPop').hidden=true;
+  fxSend({t:'gift',g:i,to:giftTo,toName:o.name,by:profile.name,fx:Math.round(me.x),fy:Math.round(me.y)});playSfx('throw')}
+function onGift(m,d){const g=GIFTS[d.g|0];if(!g||typeof d.to!=='string')return;const by=cleanStr(d.by,20)||'Alguien',toName=cleanStr(d.toName,20)||'alguien';
+  const fromId=m.sameTab?'me':m.peer;gprojs.push({g,from:fromId,to:d.to,fx:+d.fx||0,fy:+d.fy||0,t0:performance.now(),dur:850,by,toName,mine:!!m.sameTab})}
+function giftPos(id){if(id==='me'||id===myPeer)return{x:me.x,y:me.y};const o=others.get(id);return o?{x:o.x,y:o.y}:null}
+function giftTick(now){for(const p of gprojs){if(p.done||now-p.t0<p.dur)continue;p.done=true;const toMe=p.to===myPeer;
+    if(toMe){me.gift={e:p.g.e,at:now};me.giftSeq=(me.giftSeq||0)+1;const ph='¡Gracias, '+p.by+'! '+p.g.e;me.say={t:ph,i:++saySeq+Math.floor(Math.random()*1e6)};mySay.sayText=ph;mySay.sayAt=now;
+      if(p.g.food&&meHungry()){hun.me=Date.now();saveHun();toast(p.g.e+' '+p.by+' te regaló '+p.g.n+'. ¡Se te quitó el hambre! 😋')}else toast(p.g.e+' '+p.by+' te regaló '+p.g.n+' ❤️');
+      playSfx('in');pushPresence(true)}
+    else if(p.mine)toast(p.g.e+' Le regalaste '+p.g.n+' a '+p.toName+' ❤️');
+    else{const q=giftPos(p.to);if(q&&regionOf(q.x,q.y)===regionOf(me.x,me.y)&&Math.hypot(q.x-me.x,q.y-me.y)<14*T)toast(p.g.e+' '+p.by+' le regaló '+p.g.n+' a '+p.toName)}}
+  gprojs=gprojs.filter(p=>!p.done)}
+function giftDrawAir(now){const g=ctx;for(const p of gprojs){const q=giftPos(p.to);if(!q)continue;const t=Math.min(1,(now-p.t0)/p.dur),x=p.fx+(q.x-p.fx)*t,y=p.fy-30+(q.y-30-(p.fy-30))*t-Math.sin(t*Math.PI)*40;
+    g.save();g.textAlign='center';g.textBaseline='middle';g.font='22px system-ui, "Segoe UI Emoji", sans-serif';g.fillText(p.g.e,x,y);
+    for(let i=0;i<4;i++){const a=now/150+i*1.57;g.fillStyle=['#ffd23d','#fff6c2','#ff9ec4','#c6c7ff'][i];g.fillRect(x+Math.cos(a)*14-1.5,y+Math.sin(a)*14-1.5,3,3)}g.restore()}}
+function giftShown(a){const gd=a.isMe?me.gift:a.o.gift;return gd&&performance.now()-gd.at<7000?gd:null}
+function giftFx(x,y,a,now){const gd=giftShown(a);if(!gd)return;const g=ctx,k=(now-gd.at)/7000,z=Math.max(1.4,zoom*1.2);g.save();g.globalAlpha=k>.85?(1-k)/.15:1;g.textAlign='center';g.textBaseline='middle';
+  const gx=x+40*z,gy=y-14*z+Math.sin(now/260)*3;g.font=Math.round(20*z)+'px system-ui, "Segoe UI Emoji", sans-serif';g.fillText(gd.e,gx,gy);
+  g.font=Math.round(10*z)+'px system-ui, "Segoe UI Emoji", sans-serif';for(let i=0;i<3;i++){const p=((now/1100)+i/3)%1;g.globalAlpha=Math.min(g.globalAlpha,1-p);g.fillText('❤️',gx+(i-1)*9*z,gy-10*z-p*16*z)}g.restore()}
+$('giftBtn').onclick=e=>{e.stopPropagation();const p=$('giftPop');if(p.hidden)openGiftPop();else p.hidden=true};
+addEventListener('pointerdown',e=>{const p=$('giftPop');if(!p.hidden&&!p.contains(e.target)&&e.target!==$('giftBtn'))p.hidden=true});
 async function sendChat(raw){
   if(!profile)return;const text=cleanStr(raw,140);if(!text)return;
   playSfx('out');
