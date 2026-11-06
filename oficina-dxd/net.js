@@ -390,7 +390,7 @@
 
   /* ======================= db ======================= */
   function wrapDoc(row, pending) {
-    var data = { text: row.text, name: row.name, look: row.look, t: Number(row.t), game: row.game, best: row.best };
+    var data = { text: row.text, name: row.name, look: row.look, t: Number(row.t), game: row.game, best: row.best, x: row.x, y: row.y };
     return { id: String(row.id), exists: true, data: function () { return data; }, metadata: { hasPendingWrites: !!pending } };
   }
   var myWrites = {};
@@ -440,7 +440,7 @@
       var q = chatQuery(0);
       q.add = function (obj) {
         myWrites[obj.t + '|' + obj.text] = true;
-        return rpc('dxd_chat_add', { p_token: session.token, p_text: obj.text, p_name: obj.name, p_look: obj.look || null, p_t: obj.t })
+        return rpc('dxd_chat_add', { p_token: session.token, p_text: obj.text, p_name: obj.name, p_look: obj.look || null, p_t: obj.t, p_x: obj.x == null ? null : Math.round(obj.x), p_y: obj.y == null ? null : Math.round(obj.y) })
           .then(function () { chatListeners.forEach(function (f) { f(); }); if (mainRoom) mainRoom._ping(); });
       };
       return q;

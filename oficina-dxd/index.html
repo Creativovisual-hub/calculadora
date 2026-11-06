@@ -143,6 +143,7 @@ form#send{display:flex;gap:6px;padding:10px;border-top:1px solid var(--line)}
 #screenPanel.mini{top:auto;bottom:96px;left:auto;right:12px;transform:none;width:300px}
 #shareBtn.on{background:var(--bad);color:#fff}
 #moodBtn{font-size:18px;padding:6px 9px}
+.chatfilter{display:flex;gap:6px;padding:8px 12px 0}.chatfilter .chip{min-height:32px;padding:5px 10px;font-size:12px}#msgs .msg.far{opacity:.6}
 #teleOv{position:fixed;inset:0;z-index:60;background:#000}#teleCv{width:100%;height:100%;display:block;object-fit:cover;image-rendering:pixelated}#teleOv .teletop{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:12px;padding:16px 20px;background:linear-gradient(rgba(6,7,13,.7),transparent)}#teleOv .teletop b{flex:1;font-family:var(--f-brand);font-size:18px;letter-spacing:.04em;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.5)}
 #volPop{position:fixed;z-index:40;top:56px;left:12px;width:min(320px,calc(100vw - 24px));background:var(--ink-2);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:12px}
 #volPop .vrow{display:grid;grid-template-columns:86px minmax(0,1fr) 40px;align-items:center;gap:8px;font-size:13px;font-weight:700}#volPop .vrow b{text-align:right;color:var(--lav);font-size:12px}
@@ -340,9 +341,10 @@ aside#panel.open{transform:none}
       <button class="close btn" id="closePanel" aria-label="Cerrar panel">✕</button>
     </div>
     <div class="view" id="chatView">
+      <div class="chatfilter"><button type="button" id="chatNear" class="chip" aria-pressed="true">📍 Cerca de ti</button><button type="button" id="chatAllB" class="chip" aria-pressed="false">🌐 Toda la oficina</button></div>
       <div id="msgs" aria-live="polite"></div>
       <div class="note" id="chatNote" hidden></div>
-      <div class="howto">Presiona <kbd>T</kbd> en la oficina para hablar. Tu mensaje aparece sobre tu cabeza y queda guardado aquí.</div>
+      <div class="howto">Presiona <kbd>T</kbd> para hablar. Te leen y escuchan quienes estén cerca (unas 14 casillas, en el mismo piso).</div>
     </div>
     <div class="view" id="peopleView" hidden><div class="list" id="people"></div></div>
     <div class="view" id="rankView" hidden><div class="list" id="rank"></div></div>
@@ -1200,7 +1202,7 @@ function drawItem(g,f,rnd){
   }
 }
 function sortYOf(f){const H=(f.h||1)*T;
-  if(f.t==='elevpad')return -1;
+  if(f.t==='elevpad'||f.t==='yogamat')return -1;
   if(['xchair','mchairD','stool','beanbag','sofa','armchair'].includes(f.t))return f.y*T+10;
   if(f.t==='chair'||f.t==='mchairU'||f.t==='sofaU')return f.y*T+H+6;
   return f.y*T+H-2}
@@ -1328,7 +1330,7 @@ function finishAuto(){const a=me.auto;me.auto=null;if(!a)return;
   if(a.type==='npc'&&Math.hypot(a.n.x-me.x,a.n.y-me.y)<50){const dx=a.n.x-me.x,dy=a.n.y-me.y;me.dir=Math.abs(dx)>Math.abs(dy)?(dx<0?'left':'right'):(dy<0?'up':'down');openTalk(a.n)}}
 function faceTo(f){const cx=(f.x+(f.w||1)/2)*T,cy=(f.y+(f.h||1)/2)*T;const dx=cx-me.x,dy=cy-me.y;me.dir=Math.abs(dx)>Math.abs(dy)?(dx<0?'left':'right'):(dy<0?'up':'down')}
 function travel(a){const fade=document.getElementById('fade');fade.classList.add('on');closeTalk();
-    setTimeout(()=>{if(me.sit)standUp();stopAct();me.path=null;me.auto=null;me.desk=null;me.dir='down';
+    setTimeout(()=>{if(me.sit)standUp();stopAct();me.path=null;me.auto=null;me.dir='down';
       if(a==='up'||a==='f14'){me.x=67*T;me.y=5*T+22;toast('Piso 14 · Oficina de Sam Tomaz')}
       else if(a==='down'||a==='f1'){me.x=30*T;me.y=5*T+22;toast('Piso 1 · Oficina DXD')}
       else if(a==='f2'){me.x=82*T;me.y=5*T+22;toast('🎉 Piso 2 · Fiesta DXD')}
@@ -1377,12 +1379,14 @@ function nextLine(){if(!dlgNpc)return;if(dlgIdx<dlgNpc.lines.length-1){dlgIdx++;
 function closeTalk(){if(!dlgNpc)return;dlgNpc.sayText='';dlgNpc=null;document.getElementById('dlg').hidden=true;promptKey=null}
 let toastT=0;function toast(t){const el=document.getElementById('toast');el.textContent=t;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,2600)}
 
-function deskOwners(){const o={};if(profile&&me.desk!=null)o[me.desk]={name:profile.name,mine:true};
-  for(const p of others.values())if(p.dk!=null&&!o[p.dk])o[p.dk]={name:p.name,mine:false};return o}
+const AWAY={1:'🏢 en el piso 14',2:'⚔️ en la Arena',3:'🎉 en la fiesta',4:'🏔️ en el cerro'};
+function deskOwners(){const o={};if(profile&&me.desk!=null)o[me.desk]={name:profile.name,mine:true,away:AWAY[regionOf(me.x,me.y)]};
+  for(const p of others.values())if(p.dk!=null&&!o[p.dk])o[p.dk]={name:p.name,mine:false,away:AWAY[regionOf(p.tx,p.ty)]};return o}
+function saveDesk(){try{if(me.desk==null)localStorage.removeItem('dxd-desk');else localStorage.setItem('dxd-desk',String(me.desk))}catch(e){}}
 function claimDesk(i){const cur=deskOwners()[i];
-  if(cur&&cur.mine){me.desk=null;toast('Liberaste el escritorio')}
+  if(cur&&cur.mine){me.desk=null;saveDesk();toast('Liberaste el escritorio')}
   else if(cur){toast('Ese escritorio lo está usando '+cur.name)}
-  else{me.desk=i;toast('Este escritorio es tuyo mientras estés en la oficina')}
+  else{me.desk=i;saveDesk();toast('Este escritorio es tuyo: sigue marcado aunque vayas a otro piso o al cerro. Vuelve a él para liberarlo.')}
   promptKey=null;pushPresence(true)}
 
 /* ================= Presencia ================= */
@@ -1587,7 +1591,7 @@ function draw(now){
   ctx.setTransform(dpr,0,0,dpr,0,0);
   const sameReg=(x,y)=>regionOf(x,y)===myReg;
   // placas de escritorio
-  for(const [id,d] of Object.entries(deskOwners())){const f=DESKS[+id];if(!f||up)continue;const sx=(f.x*T+48-camX)*zoom,sy=(f.y*T-22-camY)*zoom;if(sx<-80||sx>vw+80||sy<-40||sy>vh+40)continue;deskTag(sx,sy,d.name,d.mine)}
+  for(const [id,d] of Object.entries(deskOwners())){const f=DESKS[+id];if(!f||up)continue;const sx=(f.x*T+48-camX)*zoom,sy=(f.y*T-22-camY)*zoom;if(sx<-80||sx>vw+80||sy<-40||sy>vh+40)continue;deskTag(sx,sy,d.away?d.name+' · '+d.away:d.name,d.mine)}
   for(const n of NPCS){if(!sameReg(n.x,n.y))continue;const sx=(n.x-camX)*zoom,sy=(n.y-camY)*zoom,top=sy-58*zoom;
     if(sx<-150||sx>vw+150||sy<-80||sy>vh+150)continue;
     npcTag(sx,top-6,n.name,n.role);
@@ -1672,21 +1676,29 @@ let dbMsgs=[],localMsgs=[],sysMsgs=[];
 function fmtTime(t){return new Date(t).toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'})}
 function sysMsg(text){sysMsgs.push({sys:true,text,t:Date.now()});if(sysMsgs.length>30)sysMsgs.shift();renderMsgs()}
 function renderMsgs(){
-  const all=[...dbMsgs,...localMsgs,...sysMsgs].sort((a,b)=>a.t-b.t).slice(-150);
+  const all=[...dbMsgs,...localMsgs,...sysMsgs].filter(m=>m.sys||chatAll||msgNear(m)).sort((a,b)=>a.t-b.t).slice(-150);
   const atBottom=msgsEl.scrollHeight-msgsEl.scrollTop-msgsEl.clientHeight<60;msgsEl.textContent='';
-  if(!all.length){const e=document.createElement('div');e.className='empty';e.textContent='Todavía no hay mensajes. Saluda al equipo: lo que escribas aquí lo ve todo el que esté en la oficina.';msgsEl.appendChild(e)}
+  if(!all.length){const e=document.createElement('div');e.className='empty';e.textContent=chatAll?'Todavía no hay mensajes.':'No hay mensajes cerca de ti. Escribe con T: te leen quienes estén cerca, o mira 🌐 Toda la oficina.';msgsEl.appendChild(e)}
   for(const m of all){
     if(m.sys){const d=document.createElement('div');d.className='sys';d.textContent=m.text+' · '+fmtTime(m.t);msgsEl.appendChild(d);continue}
     const d=document.createElement('div');d.className='msg';const im=document.createElement('img');im.alt='';im.src=headURL(m.look);
     const body=document.createElement('div');const h=document.createElement('div');h.className='h';
     const n=document.createElement('span');n.className='n';n.textContent=m.name;n.style.color=shade(CLOTH[m.look.sc],.45);
     const tm=document.createElement('span');tm.className='tm';tm.textContent=fmtTime(m.t);
-    const x=document.createElement('div');x.className='x';x.textContent=m.text;h.append(n,tm);body.append(h,x);d.append(im,body);msgsEl.appendChild(d)}
+    if(chatAll&&!msgNear(m)){d.classList.add('far');const zl=document.createElement('span');zl.className='tm';zl.textContent='· '+zoneAt(m.x,m.y);h.append(n,tm,zl)}else h.append(n,tm);
+    const x=document.createElement('div');x.className='x';x.textContent=m.text;body.append(h,x);d.append(im,body);msgsEl.appendChild(d)}
   if(atBottom)scrollMsgs()}
 function scrollMsgs(){msgsEl.scrollTop=msgsEl.scrollHeight}
+function setChatAll(v){chatAll=v;$('chatNear').setAttribute('aria-pressed',!v);$('chatAllB').setAttribute('aria-pressed',v);renderMsgs();scrollMsgs()}
+$('chatNear').onclick=()=>setChatAll(false);$('chatAllB').onclick=()=>setChatAll(true);
+let chatZoneKey='';setInterval(()=>{if(!profile)return;const k=regionOf(me.x,me.y)+':'+Math.floor(me.x/(4*T))+':'+Math.floor(me.y/(4*T));if(k!==chatZoneKey){chatZoneKey=k;if(!chatAll)renderMsgs()}},1500);
 function noteChat(t){const n=$('chatNote');n.hidden=!t;n.textContent=t||''}
-function parseMsg(d){if(!d||typeof d!=='object')return null;const text=cleanStr(d.text,280),name=cleanStr(d.name,20);if(!text||!name)return null;return{text,name,look:sanLook(d.look),t:+d.t||0}}
-function onNewIncoming(){playSfx('in');if(tab!=='chat'||!panel.classList.contains('open')){unread++;updBadge()}}
+function parseMsg(d){if(!d||typeof d!=='object')return null;const text=cleanStr(d.text,280),name=cleanStr(d.name,20);if(!text||!name)return null;
+  const x=Number.isFinite(+d.x)&&d.x!==null?+d.x:null,y=Number.isFinite(+d.y)&&d.y!==null?+d.y:null;return{text,name,look:sanLook(d.look),t:+d.t||0,x,y}}
+// Chat por cercanía: se ven y se escuchan los mensajes escritos cerca (misma zona del mapa, ~14 casillas)
+const CHAT_R=14*T;let chatAll=false;
+function msgNear(m){if(!m||m.x==null||!profile)return true;if(regionOf(m.x,m.y)!==regionOf(me.x,me.y))return false;if(inMeet(m.x,m.y)!==inMeet(me.x,me.y))return false;return Math.hypot(m.x-me.x,m.y-me.y)<=CHAT_R}
+function onNewIncoming(m){if(m&&!msgNear(m))return;playSfx('in');if(tab!=='chat'||!panel.classList.contains('open')){unread++;updBadge()}}
 const RO='Tu acceso es de solo lectura: puedes leer el chat pero no escribir.';
 /* Sonidos del chat: "swoosh" al enviar, "ding" al recibir */
 let sfxCtx=null;
@@ -1832,7 +1844,10 @@ async function vcOnMsg(m){const d=m.data;if(!d||typeof d!=='object'||m.sameTab||
   }catch(e){vcClose(from)}}
 // Todos los que están en voz se escuchan siempre; la cercanía solo cambia el volumen.
 // Todos se escuchan igual, estén donde estén. La sala de reuniones sigue insonorizada.
-function vcVol(o){const mi=inMeet(me.x,me.y),oi=inMeet(o.tx,o.ty);if(mi||oi)return mi&&oi?1:0;return 1}
+// Voz por cercanía: fuerte a menos de ~5 casillas, se apaga a las ~12. Otro piso: no se oye. Sala de reuniones insonorizada.
+const VOICE_NEAR=5*T,VOICE_FAR=12*T;
+function vcVol(o){const mi=inMeet(me.x,me.y),oi=inMeet(o.tx,o.ty);if(mi||oi)return mi&&oi?1:0;if(regionOf(o.tx,o.ty)!==regionOf(me.x,me.y))return 0;
+  const d=Math.hypot(o.tx-me.x,o.ty-me.y);return d<=VOICE_NEAR?1:d>=VOICE_FAR?0:1-(d-VOICE_NEAR)/(VOICE_FAR-VOICE_NEAR)}
 function vcTick(){if(!vc.on)return;vrTick();
   for(const [id,p] of vc.pcs){const o=others.get(id);if(!o){vcClose(id);continue}const v=vcVol(o);
     if(p.gain){const gv=p.gain.gain;gv.value+=(v-gv.value)*.15}else{p.audio.volume+=(v-p.audio.volume)*.15;if(Math.abs(p.audio.volume-v)<.01)p.audio.volume=v}}
@@ -2334,6 +2349,7 @@ $('petClose').onclick=()=>{$('petModal').hidden=true};
 $('feedBtn').onclick=()=>feedPets();$('tomBtn').onclick=()=>throwTomato();$('banBtn').onclick=()=>dropPeel();invUI();
 try{const sp=JSON.parse(localStorage.getItem(PROFILE_KEY)||'null');if(profile&&sp)profile.pets=sanPets(sp.pets||(sp.pet?[sp.pet]:[]))}catch(e){} // mascotas guardadas
 moodUI();
+try{const dk=parseInt(localStorage.getItem('dxd-desk'),10);if(Number.isInteger(dk)&&dk>=0&&dk<DESKS.length&&profile)me.desk=dk}catch(e){}
 /* ================= Sala de reuniones: pantalla compartida ================= */
 // En la Sala Insight: lo que se habla se escucha claro solo adentro, y quien quiera
 // comparte su pantalla con todos los que estén en la sala (WebRTC, quien comparte inicia).
@@ -2406,7 +2422,7 @@ async function sendChat(raw){
   if(!profile)return;const text=cleanStr(raw,140);if(!text)return;
   playSfx('out');
   me.say={t:text,i:++saySeq+Math.floor(Math.random()*1e6)};mySay.sayText=text;mySay.sayAt=performance.now();pushPresence(true);
-  const msg={text,name:profile.name,look:profile.look,t:Date.now()};
+  const msg={text,name:profile.name,look:profile.look,t:Date.now(),x:Math.round(me.x),y:Math.round(me.y)};
   if(db&&canWrite){try{await db.collection('chat').add(msg)}catch(err){
       if(err&&err.code==='invalid_argument'){canWrite=false;noteChat('Tu acceso es de solo lectura: tu globo se ve en vivo, pero no queda guardado en el historial.')}
       else if(err&&err.code==='quota_exceeded')noteChat('El historial se llenó. Pídele a quien creó la oficina que lo limpie.');
@@ -2908,7 +2924,7 @@ async function connect(){
     room.on('fx',onFx,()=>{});
     room.on('scr',onScr,()=>{});
     room.on('dj',djOnMsg,()=>{});
-    if(!db)room.on('chat',m=>{const p=parseMsg(m.data);if(!p)return;localMsgs.push(p);if(localMsgs.length>150)localMsgs.shift();renderMsgs();if(!m.sameTab)onNewIncoming()},()=>{});
+    if(!db)room.on('chat',m=>{const p=parseMsg(m.data);if(!p)return;localMsgs.push(p);if(localMsgs.length>150)localMsgs.shift();renderMsgs();if(!m.sameTab)onNewIncoming(p)},()=>{});
     setTimeout(()=>{announceReady=true},3000);pushPresence(true)}
   if(db){
     let loaded=false;const timer=setTimeout(()=>{if(!loaded)noteChat('No se pudo cargar el historial todavía. Seguimos intentando…')},10000);
@@ -2916,7 +2932,7 @@ async function connect(){
     db.collection('chat').orderBy('t','desc').limit(120).onSnapshot(snap=>{
       if(!snap.metadata.fromCache){loaded=true;clearTimeout(timer);if($('chatNote').textContent.startsWith('No se pudo cargar'))noteChat('')}
       dbMsgs=snap.docs.map(x=>parseMsg(x.data())).filter(Boolean);
-      if(init){for(const c of snap.docChanges())if(c.type==='added'&&!c.doc.metadata.hasPendingWrites){onNewIncoming();break}}init=true;renderMsgs()},
+      if(init){for(const c of snap.docChanges())if(c.type==='added'&&!c.doc.metadata.hasPendingWrites){const pm=parseMsg(c.doc.data());if(!pm||msgNear(pm)){onNewIncoming(pm);break}}}init=true;renderMsgs()},
       ()=>{clearTimeout(timer);noteChat('El chat no está disponible en esta vista.')});
     for(const k of Object.keys(GAMES))loadBoard(k);
     if(u&&typeof u.can==='function'){try{const w=await u.can('data.write');if(w===false){canWrite=false;noteChat(RO)}}catch(e){}}}
@@ -2929,7 +2945,7 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(paintAll);
 renderMsgs();renderPeople();updateStatus();
 if(profile)refreshMe();else openEditor(true);
 // Cada vez que alguien inicia sesión crea un personaje nuevo (al recargar se mantiene el actual).
-addEventListener('dxd:login',()=>{profile=null;try{localStorage.removeItem(PROFILE_KEY)}catch(e){}hun={me:Date.now(),pets:[]};saveHun();optTab=0;prevDir=0;openEditor(true)});
+addEventListener('dxd:login',()=>{profile=null;try{localStorage.removeItem(PROFILE_KEY)}catch(e){}hun={me:Date.now(),pets:[]};saveHun();me.desk=null;saveDesk();optTab=0;prevDir=0;openEditor(true)});
 requestAnimationFrame(step);
 connect();
 setInterval(updateStatus,3000);
