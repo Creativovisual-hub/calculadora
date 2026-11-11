@@ -1,0 +1,50 @@
+<svg width="327" height="220" viewBox="0 0 327 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.055" d="M190.5 31H112.5C95.9315 31 82.5 44.4315 82.5 61V162C82.5 178.569 95.9315 192 112.5 192H190.5C207.069 192 220.5 178.569 220.5 162V61C220.5 44.4315 207.069 31 190.5 31Z" fill="#094AFF"/>
+<path opacity="0.23" d="M200.5 27H204.5C221.5 27 232.5 39 232.5 55V80C232.5 84 230.5 87 226.5 87L218.5 50L200.5 27Z" fill="#06C2FA"/>
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="url(#bg_cuenta_creada)" stroke="#E1E9FF"/>
+<mask id="mask_cuenta_creada" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="90" y="23" width="139" height="161">
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="white"/>
+</mask>
+<g mask="url(#mask_cuenta_creada)">
+<rect x="108" y="56" width="103" height="78" rx="12" fill="white" stroke="#E1E9FF"/>
+<rect x="108" y="56" width="103" height="16" rx="12" fill="#094AFF"/>
+<rect x="108" y="64" width="103" height="8" fill="#094AFF"/>
+<circle cx="136" cy="100" r="17" fill="#EEF3FF" stroke="#D8E4FF"/>
+<g clip-path="url(#av_cc)">
+<path d="M123.25 117C124.1 105.95 130.05 102.55 136 102.55C141.95 102.55 147.9 105.95 148.75 117Z" fill="#094AFF"/>
+<circle cx="136" cy="95.75" r="5.61" fill="#D8E4FF"/>
+<path d="M129.88 94.9C129.88 89.46000000000001 133.45 88.78 136 88.78C139.4 88.78 142.12 90.65 142.12 94.9C138.55 93.88 135.15 92.52 129.88 94.9Z" fill="#131252"/>
+</g>
+<rect x="161" y="88" width="38" height="6" rx="3" fill="#131252"/>
+<rect x="161" y="100" width="28" height="5" rx="2.5" fill="#D8E4FF"/>
+<rect x="161" y="110" width="33" height="5" rx="2.5" fill="#D8E4FF"/>
+<rect x="120" y="148" width="80" height="16" rx="8" fill="#094AFF"/>
+<rect opacity="0.6" x="142" y="154" width="36" height="4" rx="2" fill="#EEF3FF"/>
+</g>
+<rect x="112" y="36" width="7" height="4" rx="2" transform="rotate(-30 112 36)" fill="#06C2FA"/>
+<rect x="196" y="38" width="7" height="4" rx="2" transform="rotate(25 196 38)" fill="#094AFF"/>
+<circle cx="160" cy="38" r="3" fill="#094AFF" opacity="0.4"/>
+<circle cx="99" cy="120" r="2.5" fill="#06C2FA"/>
+<path d="M219 100L220.2 103.8L224 105L220.2 106.2L219 110L217.8 106.2L214 105L217.8 103.8L219 100Z" fill="#06C2FA"/>
+<g id="badge" filter="url(#shadow_cuenta_creada)">
+<rect x="211" y="144" width="48" height="48" rx="24" fill="white"/>
+<rect x="211.5" y="144.5" width="47" height="47" rx="23.5" stroke="#E4E8F2"/>
+<path d="M227 168.5L232.5 174L243 162.5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke="#084AFE"/>
+</g>
+<defs>
+<filter id="shadow_cuenta_creada" x="199" y="136" width="72" height="72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="6"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.290196 0 0 0 0 0.996078 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<linearGradient id="bg_cuenta_creada" x1="98.5" y1="30" x2="216.5" y2="183" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EEF3FF"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<clipPath id="av_cc"><circle cx="136" cy="100" r="17"/></clipPath>
+</defs>
+</svg>
