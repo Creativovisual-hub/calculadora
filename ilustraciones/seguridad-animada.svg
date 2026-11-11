@@ -1,0 +1,124 @@
+<svg width="327" height="220" viewBox="0 0 327 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+:root,svg{--d:8s}
+.a{transform-box:fill-box;transform-origin:center}
+@keyframes k-bg1{0%,0%{opacity:0;transform:scale(.7)}8%,92%{opacity:1;transform:none}98%,100%{opacity:0;transform:scale(.7)}}
+.bg1{animation:k-bg1 var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-bg2{0%,3%{opacity:0;transform:translate(-10px,10px) scale(.6)}11%,91%{opacity:1;transform:none}97%,100%{opacity:0;transform:translate(-10px,10px) scale(.6)}}
+.bg2{animation:k-bg2 var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-card{0%,4%{opacity:0;transform:scale(.6)}14%,90%{opacity:1;transform:none}96%,100%{opacity:0;transform:scale(.6)}}
+.card{animation:k-card var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-body{0%,12%{opacity:0;transform:translateY(45px)}22%,89%{opacity:1;transform:none}94%,100%{opacity:0;transform:translateY(45px)}}
+.body{animation:k-body var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-neck{0%,15%{opacity:0;transform:translateY(22px)}24%,88%{opacity:1;transform:none}93%,100%{opacity:0;transform:translateY(22px)}}
+.neck{animation:k-neck var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-ears{0%,18%{opacity:0;transform:scaleX(.4)}26%,87%{opacity:1;transform:none}92%,100%{opacity:0;transform:scaleX(.4)}}
+.ears{animation:k-ears var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-face{0%,19%{opacity:0;transform:scale(.5)}28%,87%{opacity:1;transform:none}92%,100%{opacity:0;transform:scale(.5)}}
+.face{animation:k-face var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-hair{0%,24%{opacity:0;transform:translateY(-34px)}32%,86%{opacity:1;transform:none}91%,100%{opacity:0;transform:translateY(-34px)}}
+.hair{animation:k-hair var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-feat{0%,30%{opacity:0;transform:scale(.4)}36%,85%{opacity:1;transform:none}90%,100%{opacity:0;transform:scale(.4)}}
+.feat{animation:k-feat var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-br1{0%,34%{opacity:0;transform:translate(-14px,-14px)}42%,84%{opacity:1;transform:none}89%,100%{opacity:0;transform:translate(-14px,-14px)}}
+.br1{animation:k-br1 var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-br2{0%,35%{opacity:0;transform:translate(14px,-14px)}43%,84%{opacity:1;transform:none}89%,100%{opacity:0;transform:translate(14px,-14px)}}
+.br2{animation:k-br2 var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-br3{0%,36%{opacity:0;transform:translate(-14px,14px)}44%,84%{opacity:1;transform:none}89%,100%{opacity:0;transform:translate(-14px,14px)}}
+.br3{animation:k-br3 var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-br4{0%,37%{opacity:0;transform:translate(14px,14px)}45%,84%{opacity:1;transform:none}89%,100%{opacity:0;transform:translate(14px,14px)}}
+.br4{animation:k-br4 var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+@keyframes k-badge{0%,58%{opacity:0;transform:scale(.2)}66%,82%{opacity:1;transform:none}87%,100%{opacity:0;transform:scale(.2)}}
+.badge{animation:k-badge var(--d) cubic-bezier(.34,1.56,.64,1) infinite}
+.body,.neck{transform-origin:center bottom}
+.shackle{transform-box:fill-box;transform-origin:center bottom;animation:k-shackle var(--d) ease-in-out infinite}
+@keyframes k-shackle{0%,62%{transform:translateY(-4px)}67%,82%{transform:translateY(0)}87%,100%{transform:translateY(-4px)}}
+.ring{transform-box:fill-box;transform-origin:center;animation:k-ring var(--d) ease-out infinite}
+@keyframes k-ring{0%,66%{opacity:0;transform:scale(1)}67%{opacity:.5;transform:scale(1)}78%,100%{opacity:0;transform:scale(1.6)}}
+.scan{animation:k-scan var(--d) ease-in-out infinite}
+@keyframes k-scan{0%,44%{opacity:0;transform:translateY(0)}46%{opacity:.55}52%{transform:translateY(70px)}58%{transform:translateY(0);opacity:.55}60%,100%{opacity:0;transform:translateY(0)}}
+.blink{transform-box:fill-box;transform-origin:center;animation:k-blink 3.2s ease-in-out infinite}
+@keyframes k-blink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}}
+.bob{transform-box:fill-box;transform-origin:center;animation:k-bob 2.6s ease-in-out infinite}
+@keyframes k-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;opacity:1!important}.scan,.ring{opacity:0!important}}
+</style>
+<g class="a bg1">
+<path opacity="0.055" d="M190.5 31H112.5C95.9315 31 82.5 44.4315 82.5 61V162C82.5 178.569 95.9315 192 112.5 192H190.5C207.069 192 220.5 178.569 220.5 162V61C220.5 44.4315 207.069 31 190.5 31Z" fill="#094AFF"/>
+</g>
+<g class="a bg2">
+<path opacity="0.23" d="M200.5 27H204.5C221.5 27 232.5 39 232.5 55V80C232.5 84 230.5 87 226.5 87L218.5 50L200.5 27Z" fill="#06C2FA"/>
+</g>
+<g class="a card">
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="url(#paint0_linear_1295_13977)" stroke="#E1E9FF"/>
+</g>
+<mask id="mask0_1295_13977" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="90" y="23" width="139" height="161">
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_1295_13977)">
+<g class="a body">
+<path d="M101.5 185L106.5 159C109.5 143 120.5 135 137.5 131L147.5 128H171.5L181.5 131C198.5 135 209.5 143 212.5 159L217.5 185H101.5Z" fill="#094AFF"/>
+<path opacity="0.12" d="M183.5 135C196.5 141 201.5 149 203.5 162L206.5 185H217.5L212.5 159C209.5 147 199.5 139 183.5 135Z" fill="#131252"/>
+<path opacity="0.5" d="M123.5 159L119.5 183M195.5 159L199.5 183" stroke-width="1.5" stroke-linecap="round" stroke="#EEF3FF"/>
+</g>
+<g class="a neck">
+<path d="M147.5 110H171.5V128C171.5 132 176.5 134 180.5 135C176.5 144 168.5 148 159.5 148C150.5 148 142.5 144 138.5 135C143.5 133 147.5 131 147.5 127V110Z" fill="#D8E4FF"/>
+<path opacity="0.12" d="M147.5 112H171.5V122C163.5 127 154.5 126 147.5 122V112Z" fill="#094AFF"/>
+<path d="M139.5 136C143.5 144 151.5 149 159.5 149C167.5 149 175.5 144 179.5 136" stroke-width="2.5" stroke-linecap="round" stroke="#06C2FA"/>
+</g>
+<g class="a ears">
+<path d="M133.5 83.0002C125.5 79.0002 123.5 86.0002 127.5 93.0002C129.5 97.0002 132.5 98.0002 136.5 97.0002H182.5C186.5 98.0002 189.5 95.0002 191.5 90.0002C193.5 84.0002 188.5 80.0002 184.5 83.0002H133.5Z" fill="#D8E4FF"/>
+</g>
+<g class="a hair">
+<path d="M130.5 86L128.5 74C125.5 53 138.5 43 156.5 43C162.5 43 168.5 45 172.5 48C185.5 47 192.5 58 190.5 72L187.5 88L130.5 86Z" fill="#131252"/>
+</g>
+<g class="a face">
+<path d="M135.5 72C144.5 72 152.5 67 156.5 60C163.5 67 173.5 71 183.5 70V92C183.5 109 173.5 122 159.5 122C145.5 122 135.5 109 135.5 92V72Z" fill="#EEF3FF"/>
+<path d="M176.5 70L183.5 71V92C183.5 107 174.5 120 162.5 122C171.5 116 176.5 105 176.5 93V70Z" fill="#D8E4FF"/>
+<path opacity="0.25" d="M138.5 60.0002C143.5 53.0002 151.5 51.0002 158.5 52.0002" stroke-width="1.4" stroke-linecap="round" stroke="#EEF3FF"/>
+</g>
+<g class="a feat"><g class="bob">
+<path d="M142.5 80.9996C145.5 78.9996 148.5 78.9996 151.5 79.9996M167.5 79.9996C170.5 78.9996 173.5 78.9996 176.5 80.9996" stroke-width="1.8" stroke-linecap="round" stroke="#131252"/>
+<g class="blink"><path d="M147.5 88V90M171.5 88V90" stroke-width="2.5" stroke-linecap="round" stroke="#131252"/></g>
+<path d="M158.5 89L156.5 99H160.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#AABCE8"/>
+<path d="M153.5 107C157.5 110 162.5 110 166.5 106" stroke-width="1.7" stroke-linecap="round" stroke="#131252"/>
+</g></g>
+<rect class="scan" opacity="0" x="104" y="50" width="111" height="3" rx="1.5" fill="#06C2FA"/>
+</g>
+<g class="a br1">
+<path d="M122.5 48H115.5C112.5 48 110.5 50 110.5 53V61" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="#094AFF"/>
+</g>
+<g class="a br2">
+<path d="M196.5 48H203.5C206.5 48 208.5 50 208.5 53V61" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="#094AFF"/>
+</g>
+<g class="a br3">
+<path d="M110.5 109V117C110.5 120 112.5 122 115.5 122H122.5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="#094AFF"/>
+</g>
+<g class="a br4">
+<path d="M208.5 109V117C208.5 120 206.5 122 203.5 122H196.5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="#094AFF"/>
+</g>
+<circle class="ring" cx="235" cy="168" r="24" stroke="#084AFE" stroke-width="2" opacity="0"/>
+<g class="a badge">
+<g filter="url(#filter0_d_1295_13977)">
+<rect x="211" y="144" width="48" height="48" rx="24" fill="white"/>
+<rect x="211.5" y="144.5" width="47" height="47" rx="23.5" stroke="#E4E8F2"/>
+<path d="M229 167H241C242.105 167 243 167.895 243 169V175C243 176.105 242.105 177 241 177H229C227.895 177 227 176.105 227 175V169C227 167.895 227.895 167 229 167Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#084AFE"/>
+<g class="shackle"><path d="M231 167V163C231 161.939 231.421 160.922 232.172 160.172C232.922 159.421 233.939 159 235 159C236.061 159 237.078 159.421 237.828 160.172C238.579 160.922 239 161.939 239 163V167" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#084AFE"/></g>
+</g>
+</g>
+<defs>
+<filter id="filter0_d_1295_13977" x="199" y="136" width="72" height="72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="6"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.290196 0 0 0 0 0.996078 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1295_13977"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1295_13977" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_1295_13977" x1="98.5" y1="30" x2="216.5" y2="183" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EEF3FF"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+</defs>
+</svg>
