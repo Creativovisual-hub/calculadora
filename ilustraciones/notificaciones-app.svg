@@ -1,0 +1,41 @@
+<svg width="327" height="220" viewBox="0 0 327 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.055" d="M190.5 31H112.5C95.9315 31 82.5 44.4315 82.5 61V162C82.5 178.569 95.9315 192 112.5 192H190.5C207.069 192 220.5 178.569 220.5 162V61C220.5 44.4315 207.069 31 190.5 31Z" fill="#094AFF"/>
+<path opacity="0.23" d="M200.5 27H204.5C221.5 27 232.5 39 232.5 55V80C232.5 84 230.5 87 226.5 87L218.5 50L200.5 27Z" fill="#06C2FA"/>
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="url(#bg_notificaciones_app)" stroke="#E1E9FF"/>
+<mask id="mask_notificaciones_app" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="90" y="23" width="139" height="161">
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="white"/>
+</mask>
+<g id="marca" mask="url(#mask_notificaciones_app)">
+<path opacity="0.06" transform="translate(84 92) scale(0.33)" d="M425.001 287.209L280.826 21.0908C265.586 -7.03026 225.231 -7.03026 209.991 21.0908L143.607 143.612C222.917 143.612 287.208 207.916 287.208 287.224H424.986L425.001 287.209Z" fill="#094AFF"/>
+<path opacity="0.16" transform="translate(84 92) scale(0.33)" d="M143.615 143.597C64.3054 143.597 0 207.887 0 287.209H65.8088L143.615 143.597Z" fill="#06C2FA"/>
+</g>
+<g mask="url(#mask_notificaciones_app)">
+<rect x="130" y="40" width="60" height="124" rx="12" fill="#131252"/>
+<rect x="135" y="48" width="50" height="108" rx="8" fill="#EEF3FF"/><rect x="152" y="43" width="16" height="3" rx="1.5" fill="#26257A"/>
+<g id="Notif 1"><rect x="116" y="64" width="88" height="22" rx="8" fill="white" stroke="#E1E9FF"/><circle cx="128" cy="75" r="6" fill="#094AFF"/><rect x="139" y="70" width="40" height="4" rx="2" fill="#131252"/><rect x="139" y="77" width="54" height="3" rx="1.5" fill="#D8E4FF"/></g><g id="Notif 2"><rect x="116" y="92" width="88" height="22" rx="8" fill="white" stroke="#E1E9FF"/><circle cx="128" cy="103" r="6" fill="#06C2FA"/><rect x="139" y="98" width="40" height="4" rx="2" fill="#131252"/><rect x="139" y="105" width="54" height="3" rx="1.5" fill="#D8E4FF"/></g><g id="Notif 3"><rect x="116" y="120" width="88" height="22" rx="8" fill="white" stroke="#E1E9FF"/><circle cx="128" cy="131" r="6" fill="#131252"/><rect x="139" y="126" width="40" height="4" rx="2" fill="#131252"/><rect x="139" y="133" width="54" height="3" rx="1.5" fill="#D8E4FF"/></g>
+<g id="Campana"><path d="M188 66H208L205.5 62.5V56C205.5 50.8 202 47 198 47C194 47 190.5 50.8 190.5 56V62.5L188 66Z" fill="#094AFF"/><path d="M195 68.5C195.6 70 196.7 71 198 71C199.3 71 200.4 70 201 68.5" stroke="#131252" stroke-width="2" stroke-linecap="round"/></g>
+<circle id="Contador" cx="206" cy="48" r="5" fill="#FF4D5E" stroke="white" stroke-width="2"/>
+</g>
+<g id="Destellos"><path d="M104 40L105.2 43.8L109 45L105.2 46.2L104 50L102.8 46.2L99 45L102.8 43.8L104 40Z" fill="#06C2FA"/><circle cx="100" cy="120" r="2.5" fill="#06C2FA" opacity="1"/></g>
+<g id="badge" filter="url(#shadow_notificaciones_app)">
+<rect x="211" y="144" width="48" height="48" rx="24" fill="white"/>
+<rect x="211.5" y="144.5" width="47" height="47" rx="23.5" stroke="#E4E8F2"/>
+<g id="Icono"><path d="M229 172H241L239.5 170V165.5C239.5 163 237.5 161 235 161C232.5 161 230.5 163 230.5 165.5V170L229 172ZM233 175C233.4 176 234.1 176.5 235 176.5C235.9 176.5 236.6 176 237 175" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#084AFE"/></g>
+</g>
+<defs>
+<filter id="shadow_notificaciones_app" x="199" y="136" width="72" height="72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="6"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.290196 0 0 0 0 0.996078 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<linearGradient id="bg_notificaciones_app" x1="98.5" y1="30" x2="216.5" y2="183" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EEF3FF"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+
+</defs>
+</svg>

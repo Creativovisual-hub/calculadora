@@ -1,0 +1,44 @@
+<svg width="327" height="220" viewBox="0 0 327 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.055" d="M190.5 31H112.5C95.9315 31 82.5 44.4315 82.5 61V162C82.5 178.569 95.9315 192 112.5 192H190.5C207.069 192 220.5 178.569 220.5 162V61C220.5 44.4315 207.069 31 190.5 31Z" fill="#094AFF"/>
+<path opacity="0.23" d="M200.5 27H204.5C221.5 27 232.5 39 232.5 55V80C232.5 84 230.5 87 226.5 87L218.5 50L200.5 27Z" fill="#06C2FA"/>
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="url(#bg_sucursales)" stroke="#E1E9FF"/>
+<mask id="mask_sucursales" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="90" y="23" width="139" height="161">
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="white"/>
+</mask>
+<g id="marca" mask="url(#mask_sucursales)">
+<path opacity="0.06" transform="translate(84 92) scale(0.33)" d="M425.001 287.209L280.826 21.0908C265.586 -7.03026 225.231 -7.03026 209.991 21.0908L143.607 143.612C222.917 143.612 287.208 207.916 287.208 287.224H424.986L425.001 287.209Z" fill="#094AFF"/>
+<path opacity="0.16" transform="translate(84 92) scale(0.33)" d="M143.615 143.597C64.3054 143.597 0 207.887 0 287.209H65.8088L143.615 143.597Z" fill="#06C2FA"/>
+</g>
+<g mask="url(#mask_sucursales)">
+<path id="Ruta" d="M106 72C126 36 194 34 214 74" stroke="#AABCE8" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 5"/>
+<g id="Tienda"><rect x="104" y="148" width="112" height="4" rx="2" fill="#D8E4FF"/>
+<rect x="118" y="82" width="84" height="66" fill="white" stroke="#E1E9FF"/>
+<rect id="Ventana 1" x="126" y="96" width="18" height="16" rx="3" fill="#D8E4FF"/><rect id="Ventana 2" x="176" y="96" width="18" height="16" rx="3" fill="#D8E4FF"/>
+<rect x="150" y="110" width="20" height="38" rx="3" fill="#094AFF"/><circle cx="165" cy="130" r="1.5" fill="white"/>
+<rect x="112" y="62" width="96" height="10" rx="4" fill="#131252"/><rect opacity="0.5" x="146" y="65.5" width="28" height="3" rx="1.5" fill="#EEF3FF"/>
+<g id="Toldo"><path d="M112 72H128V82A8 8 0 0 1 112 82Z" fill="#094AFF"/><path d="M128 72H144V82A8 8 0 0 1 128 82Z" fill="#06C2FA"/><path d="M144 72H160V82A8 8 0 0 1 144 82Z" fill="#094AFF"/><path d="M160 72H176V82A8 8 0 0 1 160 82Z" fill="#06C2FA"/><path d="M176 72H192V82A8 8 0 0 1 176 82Z" fill="#094AFF"/><path d="M192 72H208V82A8 8 0 0 1 192 82Z" fill="#06C2FA"/></g></g>
+<g id="Pin 1"><path d="M106 72C106 72 115 64.5 115 58C115 53 111 49 106 49C101 49 97 53 97 58C97 64.5 106 72 106 72Z" fill="#06C2FA"/><circle cx="106" cy="58" r="3.5" fill="white"/></g><g id="Pin 2"><path d="M214 76C214 76 223 68.5 223 62C223 57 219 53 214 53C209 53 205 57 205 62C205 68.5 214 76 214 76Z" fill="#094AFF"/><circle cx="214" cy="62" r="3.5" fill="white"/></g>
+</g>
+<g id="Destellos"><path d="M216 30L217.2 33.8L221 35L217.2 36.2L216 40L214.8 36.2L211 35L214.8 33.8L216 30Z" fill="#06C2FA"/><circle cx="100" cy="120" r="2.5" fill="#094AFF" opacity="0.35"/></g>
+<g id="badge" filter="url(#shadow_sucursales)">
+<rect x="211" y="144" width="48" height="48" rx="24" fill="white"/>
+<rect x="211.5" y="144.5" width="47" height="47" rx="23.5" stroke="#E4E8F2"/>
+<g id="Icono"><path d="M235 176C235 176 241 170.5 241 166C241 162.7 238.3 160 235 160C231.7 160 229 162.7 229 166C229 170.5 235 176 235 176Z" stroke-width="2" stroke-linejoin="round" stroke="#084AFE"/><circle cx="235" cy="166" r="2" stroke-width="2" stroke="#084AFE"/></g>
+</g>
+<defs>
+<filter id="shadow_sucursales" x="199" y="136" width="72" height="72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="6"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.290196 0 0 0 0 0.996078 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<linearGradient id="bg_sucursales" x1="98.5" y1="30" x2="216.5" y2="183" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EEF3FF"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+
+</defs>
+</svg>
