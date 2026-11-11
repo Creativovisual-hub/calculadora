@@ -1,0 +1,49 @@
+<svg width="327" height="220" viewBox="0 0 327 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.055" d="M190.5 31H112.5C95.9315 31 82.5 44.4315 82.5 61V162C82.5 178.569 95.9315 192 112.5 192H190.5C207.069 192 220.5 178.569 220.5 162V61C220.5 44.4315 207.069 31 190.5 31Z" fill="#094AFF"/>
+<path opacity="0.23" d="M200.5 27H204.5C221.5 27 232.5 39 232.5 55V80C232.5 84 230.5 87 226.5 87L218.5 50L200.5 27Z" fill="#06C2FA"/>
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="url(#bg_terminos_condiciones)" stroke="#E1E9FF"/>
+<mask id="mask_terminos_condiciones" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="90" y="23" width="139" height="161">
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="white"/>
+</mask>
+<g id="marca" mask="url(#mask_terminos_condiciones)">
+<path opacity="0.06" transform="translate(84 92) scale(0.33)" d="M425.001 287.209L280.826 21.0908C265.586 -7.03026 225.231 -7.03026 209.991 21.0908L143.607 143.612C222.917 143.612 287.208 207.916 287.208 287.224H424.986L425.001 287.209Z" fill="#094AFF"/>
+<path opacity="0.16" transform="translate(84 92) scale(0.33)" d="M143.615 143.597C64.3054 143.597 0 207.887 0 287.209H65.8088L143.615 143.597Z" fill="#06C2FA"/>
+</g>
+<g mask="url(#mask_terminos_condiciones)">
+<g id="Documento"><path d="M128 46H176L196 66V146C196 150.4 192.4 154 188 154H128C123.6 154 120 150.4 120 146V54C120 49.6 123.6 46 128 46Z" fill="white" stroke="#E1E9FF"/>
+<path d="M176 46V61C176 63.8 178.2 66 181 66H196" fill="#EEF3FF" stroke="#E1E9FF" stroke-linejoin="round"/>
+<rect x="132" y="56" width="36" height="6" rx="3" fill="#131252"/>
+<rect x="132" y="76" width="10" height="10" rx="3" fill="white" stroke="#AABCE8" stroke-width="1.5"/>
+<g id="Check 1"><rect x="132" y="76" width="10" height="10" rx="3" fill="#094AFF"/><path d="M134.5 81L136.5 83L139.5 79" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+<rect x="148" y="77" width="36" height="4" rx="2" fill="#D8E4FF"/><rect x="148" y="83" width="24" height="3" rx="1.5" fill="#EEF3FF"/><rect x="132" y="92" width="10" height="10" rx="3" fill="white" stroke="#AABCE8" stroke-width="1.5"/>
+<g id="Check 2"><rect x="132" y="92" width="10" height="10" rx="3" fill="#094AFF"/><path d="M134.5 97L136.5 99L139.5 95" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+<rect x="148" y="93" width="30" height="4" rx="2" fill="#D8E4FF"/><rect x="148" y="99" width="24" height="3" rx="1.5" fill="#EEF3FF"/><rect x="132" y="108" width="10" height="10" rx="3" fill="white" stroke="#AABCE8" stroke-width="1.5"/>
+<g id="Check 3"><rect x="132" y="108" width="10" height="10" rx="3" fill="#094AFF"/><path d="M134.5 113L136.5 115L139.5 111" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+<rect x="148" y="109" width="36" height="4" rx="2" fill="#D8E4FF"/><rect x="148" y="115" width="28" height="3" rx="1.5" fill="#EEF3FF"/>
+<path d="M132 141H174" stroke="#D8E4FF" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Firma" d="M134 136C136 130 139 128 140 132C141 136 143 129 146 130C149 131 149 136 153 133C156 130 158 128 160 132C161 134 163 134 165 132" stroke="#094AFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>
+<g id="Lapiz"><path d="M165 132L167.5 124.5L192 100L197 105L172.5 129.5L165 132Z" fill="#131252"/><path d="M165 132L167.5 124.5L172.5 129.5L165 132Z" fill="#FFD9A8"/><path d="M165 132L166.2 128.4L168.6 130.8L165 132Z" fill="#131252"/><path d="M188 104L193 109" stroke="#06C2FA" stroke-width="3"/></g>
+</g>
+<path d="M216 36L217.2 39.8L221 41L217.2 42.2L216 46L214.8 42.2L211 41L214.8 39.8L216 36Z" fill="#06C2FA"/><circle cx="100" cy="70" r="2.5" fill="#094AFF" opacity="0.35"/><circle cx="104" cy="130" r="2.5" fill="#06C2FA" opacity="1"/>
+<g id="badge" filter="url(#shadow_terminos_condiciones)">
+<rect x="211" y="144" width="48" height="48" rx="24" fill="white"/>
+<rect x="211.5" y="144.5" width="47" height="47" rx="23.5" stroke="#E4E8F2"/>
+<path d="M230 160H237L241 164V174.5C241 175.3 240.3 176 239.5 176H230.5C229.7 176 229 175.3 229 174.5V161.5C229 160.7 229.7 160 230.5 160H230Z" stroke-width="2" stroke-linejoin="round" stroke="#084AFE"/><path d="M232 168.5L234 170.5L238 166.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#084AFE"/>
+</g>
+<defs>
+<filter id="shadow_terminos_condiciones" x="199" y="136" width="72" height="72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="6"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.290196 0 0 0 0 0.996078 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<linearGradient id="bg_terminos_condiciones" x1="98.5" y1="30" x2="216.5" y2="183" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EEF3FF"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+
+</defs>
+</svg>
