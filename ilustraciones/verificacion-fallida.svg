@@ -5,6 +5,10 @@
 <mask id="mask_verificacion_fallida" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="90" y="23" width="139" height="161">
 <path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="white"/>
 </mask>
+<g id="marca" mask="url(#mask_verificacion_fallida)">
+<path opacity="0.06" transform="translate(84 92) scale(0.33)" d="M425.001 287.209L280.826 21.0908C265.586 -7.03026 225.231 -7.03026 209.991 21.0908L143.607 143.612C222.917 143.612 287.208 207.916 287.208 287.224H424.986L425.001 287.209Z" fill="#094AFF"/>
+<path opacity="0.16" transform="translate(84 92) scale(0.33)" d="M143.615 143.597C64.3054 143.597 0 207.887 0 287.209H65.8088L143.615 143.597Z" fill="#06C2FA"/>
+</g>
 <g mask="url(#mask_verificacion_fallida)">
 <path d="M101.5 185L106.5 159C109.5 143 120.5 135 137.5 131L147.5 128H171.5L181.5 131C198.5 135 209.5 143 212.5 159L217.5 185H101.5Z" fill="#094AFF"/>
 <path opacity="0.12" d="M183.5 135C196.5 141 201.5 149 203.5 162L206.5 185H217.5L212.5 159C209.5 147 199.5 139 183.5 135Z" fill="#131252"/>

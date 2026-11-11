@@ -1,0 +1,43 @@
+<svg width="327" height="220" viewBox="0 0 327 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.055" d="M190.5 31H112.5C95.9315 31 82.5 44.4315 82.5 61V162C82.5 178.569 95.9315 192 112.5 192H190.5C207.069 192 220.5 178.569 220.5 162V61C220.5 44.4315 207.069 31 190.5 31Z" fill="#094AFF"/>
+<path opacity="0.23" d="M200.5 27H204.5C221.5 27 232.5 39 232.5 55V80C232.5 84 230.5 87 226.5 87L218.5 50L200.5 27Z" fill="#06C2FA"/>
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="url(#bg_ubicacion_activada)" stroke="#E1E9FF"/>
+<mask id="mask_ubicacion_activada" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="90" y="23" width="139" height="161">
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="white"/>
+</mask>
+<g id="marca" mask="url(#mask_ubicacion_activada)">
+<path opacity="0.06" transform="translate(84 92) scale(0.33)" d="M425.001 287.209L280.826 21.0908C265.586 -7.03026 225.231 -7.03026 209.991 21.0908L143.607 143.612C222.917 143.612 287.208 207.916 287.208 287.224H424.986L425.001 287.209Z" fill="#094AFF"/>
+<path opacity="0.16" transform="translate(84 92) scale(0.33)" d="M143.615 143.597C64.3054 143.597 0 207.887 0 287.209H65.8088L143.615 143.597Z" fill="#06C2FA"/>
+</g>
+<g mask="url(#mask_ubicacion_activada)">
+<path d="M112 80L144 70V144L112 154Z" fill="#D8E4FF"/><path d="M144 70L176 80V154L144 144Z" fill="white"/><path d="M176 80L208 70V144L176 154Z" fill="#D8E4FF"/>
+<path d="M112 80L144 70L176 80L208 70V144L176 154L144 144L112 154Z" stroke="#E1E9FF" stroke-linejoin="round"/>
+<path d="M122 140C134 128 146 138 156 126C162 119 160 112 164 108" stroke="#AABCE8" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 5"/>
+<ellipse cx="164" cy="114" rx="10" ry="3.5" fill="#131252" opacity="0.15"/>
+<path d="M164 113C164 113 182 97 182 84C182 74 174 66 164 66C154 66 146 74 146 84C146 97 164 113 164 113Z" fill="#094AFF"/>
+<circle cx="164" cy="84" r="7" fill="white"/>
+<circle cx="122" cy="140" r="4" fill="#06C2FA"/>
+</g>
+<path d="M216 36L217.2 39.8L221 41L217.2 42.2L216 46L214.8 42.2L211 41L214.8 39.8L216 36Z" fill="#06C2FA"/><circle cx="100" cy="62" r="2.5" fill="#094AFF" opacity="0.35"/>
+<g id="badge" filter="url(#shadow_ubicacion_activada)">
+<rect x="211" y="144" width="48" height="48" rx="24" fill="white"/>
+<rect x="211.5" y="144.5" width="47" height="47" rx="23.5" stroke="#E4E8F2"/>
+<path d="M227 168.5L232.5 174L243 162.5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke="#084AFE"/>
+</g>
+<defs>
+<filter id="shadow_ubicacion_activada" x="199" y="136" width="72" height="72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="6"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.290196 0 0 0 0 0.996078 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<linearGradient id="bg_ubicacion_activada" x1="98.5" y1="30" x2="216.5" y2="183" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EEF3FF"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+
+</defs>
+</svg>

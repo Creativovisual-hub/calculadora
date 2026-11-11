@@ -1,0 +1,39 @@
+<svg width="327" height="220" viewBox="0 0 327 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="amask_marca_notificaciones" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="327" height="220">
+<path transform="translate(20 24) scale(0.6)" d="M425.001 287.209L280.826 21.0908C265.586 -7.03026 225.231 -7.03026 209.991 21.0908L143.607 143.612C222.917 143.612 287.208 207.916 287.208 287.224H424.986L425.001 287.209Z" fill="black"/>
+<path transform="translate(20 24) scale(0.6)" d="M0 287.209A143.6 143.6 0 0 1 287.208 287.209Z" fill="black" stroke="black" stroke-width="3"/>
+</mask>
+<path id="marca-a" transform="translate(20 24) scale(0.6)" d="M425.001 287.209L280.826 21.0908C265.586 -7.03026 225.231 -7.03026 209.991 21.0908L143.607 143.612C222.917 143.612 287.208 207.916 287.208 287.224H424.986L425.001 287.209Z" fill="url(#abg_marca_notificaciones)"/>
+<path id="marca-arco" transform="translate(20 24) scale(0.6)" d="M0 287.209A143.6 143.6 0 0 1 287.208 287.209Z" fill="#C9D8FF"/>
+<g id="personaje" mask="url(#amask_marca_notificaciones)" transform="translate(0 0)">
+<g transform="translate(14 12)">
+<path d="M101.5 185L106.5 159C109.5 143 120.5 135 137.5 131L147.5 128H171.5L181.5 131C198.5 135 209.5 143 212.5 159L217.5 185H101.5Z" fill="#094AFF"/>
+<path opacity="0.12" d="M183.5 135C196.5 141 201.5 149 203.5 162L206.5 185H217.5L212.5 159C209.5 147 199.5 139 183.5 135Z" fill="#131252"/>
+<path opacity="0.5" d="M123.5 159L119.5 183M195.5 159L199.5 183" stroke-width="1.5" stroke-linecap="round" stroke="#EEF3FF"/><circle cx="159.5" cy="40" r="11" fill="#131252"/><path d="M131 86L129 72C127 54 140 46 159.5 46C179 46 192 54 190 72L188 86Z" fill="#131252"/><path d="M147.5 110H171.5V128C171.5 132 176.5 134 180.5 135C176.5 144 168.5 148 159.5 148C150.5 148 142.5 144 138.5 135C143.5 133 147.5 131 147.5 127V110Z" fill="#D8E4FF"/>
+<path opacity="0.12" d="M147.5 112H171.5V122C163.5 127 154.5 126 147.5 122V112Z" fill="#094AFF"/>
+<path d="M139.5 136C143.5 144 151.5 149 159.5 149C167.5 149 175.5 144 179.5 136" stroke-width="2.5" stroke-linecap="round" stroke="#06C2FA"/><path d="M133.5 83C125.5 79 123.5 86 127.5 93C129.5 97 132.5 98 136.5 97H182.5C186.5 98 189.5 95 191.5 90C193.5 84 188.5 80 184.5 83H133.5Z" fill="#D8E4FF"/><path d="M135.5 78C135.5 62 146 54 159.5 54C173 54 183.5 62 183.5 78V92C183.5 109 173.5 122 159.5 122C145.5 122 135.5 109 135.5 92V78Z" fill="#EEF3FF"/>
+<path d="M174 60C180 64 183.5 70 183.5 78V92C183.5 107 174.5 120 162.5 122C171.5 116 176.5 105 176.5 93V72C176.5 67 175.5 63 174 60Z" fill="#D8E4FF"/><path d="M147.5 88V90M171.5 88V90" stroke-width="2.5" stroke-linecap="round" stroke="#131252"/>
+<path d="M158.5 89L156.5 99H160.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#AABCE8"/><path d="M143 81C145.5 79.3 148.5 79 151.5 80M167.5 80C170.5 79 173.5 79.3 176 81" stroke-width="1.6" stroke-linecap="round" stroke="#131252"/><path d="M153.5 107C157.5 110.5 162.5 110.5 166.5 106.5" stroke-width="1.7" stroke-linecap="round" stroke="#131252"/><path d="M135.5 82C135 62 146 52.5 159.5 52.5C173 52.5 184.5 62 183.5 82C175 77 164.5 70 159.5 61C154.5 70 144 77 135.5 82Z" fill="#131252"/><circle cx="129.5" cy="100" r="2.5" fill="#06C2FA"/><circle cx="189.5" cy="100" r="2.5" fill="#06C2FA"/>
+</g>
+</g>
+<path id="marca-cuarto" transform="translate(20 24) scale(0.6)" d="M143.615 143.597C64.3054 143.597 0 207.887 0 287.209H65.8088L143.615 143.597Z" fill="#06C2FA"/>
+<g id="badge" filter="url(#shadow_marca_notificaciones)">
+<rect x="235" y="148" width="48" height="48" rx="24" fill="white"/>
+<rect x="235.5" y="148.5" width="47" height="47" rx="23.5" stroke="#E4E8F2"/>
+<g transform="translate(24 4)"><path d="M229 172H241L239.5 170V165.5C239.5 163 237.5 161 235 161C232.5 161 230.5 163 230.5 165.5V170L229 172ZM233 175C233.4 176 234.1 176.5 235 176.5C235.9 176.5 236.6 176 237 175" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#084AFE"/></g>
+</g>
+<path d="M64 52L65.2 55.8L69 57L65.2 58.2L64 62L62.8 58.2L59 57L62.8 55.8L64 52Z" fill="#06C2FA"/><circle cx="270" cy="60" r="2.5" fill="#094AFF" opacity="0.35"/><path d="M268 100L269.2 103.8L273 105L269.2 106.2L268 110L266.8 106.2L263 105L266.8 103.8L268 100Z" fill="#094AFF"/>
+<defs>
+<filter id="shadow_marca_notificaciones" x="223" y="140" width="72" height="72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/><feGaussianBlur stdDeviation="6"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.290196 0 0 0 0 0.996078 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<linearGradient id="abg_marca_notificaciones" x1="120" y1="24" x2="230" y2="196" gradientUnits="userSpaceOnUse">
+<stop stop-color="#D8E4FF"/><stop offset="1" stop-color="#EEF3FF"/>
+</linearGradient>
+</defs>
+</svg>

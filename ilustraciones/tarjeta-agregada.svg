@@ -1,0 +1,43 @@
+<svg width="327" height="220" viewBox="0 0 327 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.055" d="M190.5 31H112.5C95.9315 31 82.5 44.4315 82.5 61V162C82.5 178.569 95.9315 192 112.5 192H190.5C207.069 192 220.5 178.569 220.5 162V61C220.5 44.4315 207.069 31 190.5 31Z" fill="#094AFF"/>
+<path opacity="0.23" d="M200.5 27H204.5C221.5 27 232.5 39 232.5 55V80C232.5 84 230.5 87 226.5 87L218.5 50L200.5 27Z" fill="#06C2FA"/>
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="url(#bg_tarjeta_agregada)" stroke="#E1E9FF"/>
+<mask id="mask_tarjeta_agregada" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="90" y="23" width="139" height="161">
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="white"/>
+</mask>
+<g id="marca" mask="url(#mask_tarjeta_agregada)">
+<path opacity="0.06" transform="translate(84 92) scale(0.33)" d="M425.001 287.209L280.826 21.0908C265.586 -7.03026 225.231 -7.03026 209.991 21.0908L143.607 143.612C222.917 143.612 287.208 207.916 287.208 287.224H424.986L425.001 287.209Z" fill="#094AFF"/>
+<path opacity="0.16" transform="translate(84 92) scale(0.33)" d="M143.615 143.597C64.3054 143.597 0 207.887 0 287.209H65.8088L143.615 143.597Z" fill="#06C2FA"/>
+</g>
+<g mask="url(#mask_tarjeta_agregada)">
+<rect x="118" y="62" width="92" height="58" rx="10" transform="rotate(-10 164 91)" fill="#06C2FA" opacity="0.35"/>
+<rect x="110" y="82" width="98" height="62" rx="11" fill="url(#cardgrad)"/>
+<rect x="122" y="96" width="15" height="11" rx="3" fill="#D8E4FF"/><path d="M122 101.5H137M129.5 96V107" stroke="#AABCE8" stroke-width="1"/>
+<path d="M122 122H130M135 122H143M148 122H156M161 122H169" stroke="#EEF3FF" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+<rect x="122" y="131" width="30" height="4" rx="2" fill="#EEF3FF" opacity="0.5"/>
+<circle cx="188" cy="131" r="6" fill="white" opacity="0.5"/><circle cx="195" cy="131" r="6" fill="white" opacity="0.3"/>
+<path opacity="0.2" d="M110 108C140 118 175 100 208 112" stroke="white" stroke-width="10"/>
+</g>
+<path d="M216 36L217.2 39.8L221 41L217.2 42.2L216 46L214.8 42.2L211 41L214.8 39.8L216 36Z" fill="#06C2FA"/><circle cx="100" cy="70" r="2.5" fill="#094AFF" opacity="0.35"/><path d="M108 50L109.2 53.8L113 55L109.2 56.2L108 60L106.8 56.2L103 55L106.8 53.8L108 50Z" fill="#094AFF"/>
+<g id="badge" filter="url(#shadow_tarjeta_agregada)">
+<rect x="211" y="144" width="48" height="48" rx="24" fill="white"/>
+<rect x="211.5" y="144.5" width="47" height="47" rx="23.5" stroke="#E4E8F2"/>
+<path d="M227 168.5L232.5 174L243 162.5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke="#084AFE"/>
+</g>
+<defs>
+<filter id="shadow_tarjeta_agregada" x="199" y="136" width="72" height="72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="6"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.290196 0 0 0 0 0.996078 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<linearGradient id="bg_tarjeta_agregada" x1="98.5" y1="30" x2="216.5" y2="183" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EEF3FF"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+<linearGradient id="cardgrad" x1="110" y1="82" x2="208" y2="144" gradientUnits="userSpaceOnUse"><stop stop-color="#094AFF"/><stop offset="1" stop-color="#131252"/></linearGradient>
+</defs>
+</svg>
