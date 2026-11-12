@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <title>Equipo DXD</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap">
@@ -35,10 +36,11 @@ svg.i{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke
 .authcard{width:min(460px,100%);padding:34px 34px 36px;display:flex;flex-direction:column;gap:16px;border-radius:0 24px 24px 24px;position:relative;background:var(--glass);border:1px solid var(--edge)}
 .authcard::before{content:"";position:absolute;left:-1px;top:-22px;width:44%;height:23px;border-radius:16px 16px 0 0;background:inherit;border:1px solid var(--edge);border-bottom:0;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
 .authcard .in{padding:14px 16px;border-radius:16px}.authcard .btn{min-height:52px;font-size:15px;margin-top:6px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800}.logo .mk{height:34px;flex:none;display:flex;align-items:center}.logo .mk img{height:34px;width:auto;display:block}.logo .mk img+.wm{display:none}.logo .wm{font-size:24px;font-weight:800;letter-spacing:.04em}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800}.logo .mk{height:36px;flex:none;display:flex;align-items:center;gap:10px}.logo .mk img{height:36px;width:36px;display:block}.logo .wm{font-size:24px;font-weight:800;letter-spacing:.04em}
 .logo b{font-size:20px;letter-spacing:.02em;line-height:1}.logo small{display:block;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .authcard h1{font-size:32px;font-weight:600;letter-spacing:-.02em;margin:0;line-height:1.15}.authcard p{margin:0;color:var(--muted);font-size:14px}
 label.f{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+select.in option{background:#141318;color:#fff}
 .in{background:rgba(255,255,255,.06);border:1px solid var(--edge);border-radius:14px;padding:12px 14px;font-size:15px;width:100%;color:var(--text)}
 .in:focus{border-color:rgba(255,255,255,.4);outline:none;background:rgba(255,255,255,.09)}textarea.in{min-height:90px;resize:vertical}
 .err{color:#ff9fb0;font-size:13px;font-weight:700;min-height:18px}
@@ -171,7 +173,7 @@ fieldset.pick{grid-column:1/-1;border:0;padding:0;margin:0;min-width:0}.pick leg
 <body>
 
 <div id="auth">
-  <header class="top"><div class="logo"><span class="mk"><img src="logo.svg" alt="DXD" onerror="this.remove()"><span class="wm">DXD</span></span><div><b>Equipo</b><small>Directorio</small></div></div></header>
+  <header class="top"><div class="logo"><span class="mk"><img src="logo.svg" alt="" onerror="this.remove()"><span class="wm">DXD</span></span><div><b>Equipo</b><small>Directorio</small></div></div></header>
   <main class="authmain">
   <form class="glass authcard" id="loginForm" novalidate hidden>
     <h1>Bienvenido al equipo</h1>
@@ -198,7 +200,7 @@ fieldset.pick{grid-column:1/-1;border:0;padding:0;margin:0;min-width:0}.pick leg
 <div id="app" hidden>
   <h1 class="sr-only">Equipo DXD</h1>
   <header class="top">
-    <div class="logo"><span class="mk"><img src="logo.svg" alt="DXD" onerror="this.remove()"><span class="wm">DXD</span></span><div><b>Equipo</b><small>Directorio</small></div></div>
+    <div class="logo"><span class="mk"><img src="logo.svg" alt="" onerror="this.remove()"><span class="wm">DXD</span></span><div><b>Equipo</b><small>Directorio</small></div></div>
     <nav class="pills" aria-label="Secciones">
       <button type="button" data-v="home" aria-current="true"><span class="dot" aria-hidden="true"></span>Cumpleaños</button>
       <button type="button" data-v="dir" aria-current="false"><span class="dot" aria-hidden="true"></span>Directorio</button>
@@ -365,7 +367,7 @@ function openPerson(p){const d=$('drawer');d.textContent='';const h=el('div','he
   const x=el('button','ico','✕');x.type='button';x.style.marginLeft='auto';x.setAttribute('aria-label','Cerrar');x.onclick=closePerson;h.appendChild(x);d.appendChild(h);
   const b1=el('div','box');b1.appendChild(el('h4',null,'Contacto'));const dl=el('dl','kv');const row=(k,v,cp)=>{dl.append(el('dt',null,k));const dd=el('dd');if(v){if(k==='Correo'){const a=el('a',null,v);a.href='mailto:'+v;dd.appendChild(a)}else dd.append(v);if(cp)dd.appendChild(copyBtn(v,k))}else dd.append('—');dl.appendChild(dd)};
   row('Correo',p.email,true);row('Teléfono',p.phone,true);row('Cumpleaños',p.birthday?nextBday(p.birthday).label:'');b1.appendChild(dl);d.appendChild(b1);
-  const b2=el('div','box');b2.appendChild(el('h4',null,'Ideas de regalo'));b2.appendChild(el('div',null,p.gift_ideas||'Todavía no agregó ideas.'));b2.lastChild.style.whiteSpace='pre-wrap';d.appendChild(b2);if(p.fun_fact){const b4=el('div','box');b4.appendChild(el('h4',null,'Dato curioso'));b4.appendChild(el('div',null,p.fun_fact));d.appendChild(b4)}
+  const b2=el('div','box');b2.appendChild(el('h4',null,'Ideas de regalo'));b2.appendChild(el('div',null,p.gift_ideas||'Todavía no agregó ideas.'));b2.lastChild.style.whiteSpace='pre-wrap';d.appendChild(b2);{const ex=p.extra||{},ks=REFS.map(r=>r[0]).filter(k=>ex[k]);if(ks.length){const bR=el('div','box');bR.appendChild(el('h4',null,'Referencias'));const dl2=el('dl','kv');for(const k of ks)dl2.append(el('dt',null,REFN[k]),el('dd',null,ex[k]));bR.appendChild(dl2);d.appendChild(bR)}}if(p.fun_fact){const b4=el('div','box');b4.appendChild(el('h4',null,'Dato curioso'));b4.appendChild(el('div',null,p.fun_fact));d.appendChild(b4)}
   if(p.private){const b3=el('div','box lock');b3.appendChild(el('h4',null,p.username===me.user?'Privado · solo tú y administración':'Privado · lo ves como administrador'));const d2=el('dl','kv');
     d2.append(el('dt',null,'Dirección'),el('dd',null,p.address||'—'),el('dt',null,'Emergencia'),el('dd',null,[p.emergency_name,p.emergency_relation&&'('+p.emergency_relation+')',p.emergency_phone].filter(Boolean).join(' ')||'—'));b3.appendChild(d2);d.appendChild(b3)}
   if(me.is_admin||p.username===me.user){const e=el('button','btn white',p.username===me.user?'Editar mi ficha':'Editar ficha');e.type='button';e.style.justifyContent='center';e.onclick=()=>{if(p.username===me.user){closePerson();go('me')}else openEdit(p)};d.appendChild(e)}
@@ -385,6 +387,9 @@ const COLORS=[['#e23bd0','Magenta'],['#8b3dff','Violeta'],['#3a4bff','Índigo'],
 const GIFTS=['Café','Libros','Plantas','Chocolate','Música','Vino','Juegos','Arte','Bienestar','Dulces','Viajes','Experiencias'];
 const SIGNS=[[1,20,'','Capricornio'],[2,19,'','Acuario'],[3,21,'','Piscis'],[4,20,'','Aries'],[5,21,'','Tauro'],[6,21,'','Géminis'],[7,23,'','Cáncer'],[8,23,'','Leo'],[9,23,'','Virgo'],[10,23,'','Libra'],[11,22,'','Escorpio'],[12,22,'','Sagitario'],[12,32,'','Capricornio']];
 function sign(iso){if(!iso)return null;const[,m,d]=iso.split('-').map(Number);for(const s of SIGNS)if(m<s[0]||(m===s[0]&&d<s[1]))return s;return null}
+const REFS=[['talla_ropa','TALLA DE ROPA','sel',['','XS','S','M','L','XL','XXL']],['talla_calzado','TALLA DE CALZADO','text',{ph:'Ej: 38'}],['comida','COMIDA FAVORITA','text',{ph:'Ej: sushi, pastas'}],['bebida','BEBIDA FAVORITA','text',{ph:'Ej: café cortado, té verde'}],
+  ['musica','MÚSICA QUE TE GUSTA','text',{ph:'Ej: indie, reggaetón'}],['hobbies','HOBBIES','text',{ph:'Ej: escalar, cerámica'}],['evitar','MEJOR NO REGALARME','text',{ph:'Ej: tazas, perfumes',full:1}],['restricciones','ALERGIAS O RESTRICCIONES ALIMENTARIAS','text',{ph:'Ej: vegetariana, sin lactosa',full:1}]];
+const REFN=Object.fromEntries(REFS.map(r=>[r[0],r[1].charAt(0)+r[1].slice(1).toLowerCase()]));
 const giftList=s=>(s||'').split(/[\n,]+/).map(x=>x.trim()).filter(Boolean);
 const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('still');
 function confetti(){if(reduced())return;const c=el('div','confetti');c.setAttribute('aria-hidden','true');document.body.appendChild(c);
@@ -409,9 +414,13 @@ function buildForm(f,p,isMe,onDone){f.textContent='';const id=++fid,gifts=giftLi
   const gfs=el('div','full gbox');const gl=el('p','glab','IDEAS DE REGALO · toca para agregar o quitar');gl.id='gl'+id;gfs.appendChild(gl);const gs=el('div','gs');gs.setAttribute('role','group');gs.setAttribute('aria-labelledby',gl.id);gfs.appendChild(gs);
   const addRow=el('div','addg');const gi=el('input','in');gi.placeholder='Otra idea (ej: libros de diseño)';gi.maxLength=60;gi.setAttribute('aria-label','Escribe otra idea de regalo');const gb=el('button','btn','Agregar');gb.type='button';addRow.append(gi,gb);gfs.appendChild(addRow);
   const ul=el('ul','glist');ul.setAttribute('aria-label','Tus ideas de regalo');gfs.appendChild(ul);s2.appendChild(gfs);steps.appendChild(s2);
-  const s3=sec(3,'Cómo contactarte',null);s3.append(inp('email','CORREO ELECTRÓNICO','email',120,{ac:'email'}),inp('phone','TELÉFONO','tel',40,{ac:'tel'}));steps.appendChild(s3);
-  const s4=sec(4,'Dato curioso','Algo que pocos saben de ti. ¡Sin presión!');const ff=inp('fun_fact','TU DATO CURIOSO','area',160,{full:1,ph:'Ej: sé tocar el ukelele y una vez conocí a un pingüino'});const cnt2=el('span','hint cc');cnt2.id='cc'+id;ff.querySelector('textarea').setAttribute('aria-describedby',cnt2.id);ff.appendChild(cnt2);s4.appendChild(ff);steps.appendChild(s4);
-  const s5=sec(5,'Privado',(isMe?'Solo tú':'Solo la persona')+' y administración pueden verlo.','lock');s5.append(inp('address','DIRECCIÓN','text',200,{full:1,ph:'Calle, número, comuna',ac:'street-address'}),inp('emergency_name','CONTACTO DE EMERGENCIA','text',80),inp('emergency_relation','PARENTESCO','text',40,{ph:'Ej: hermana'}),inp('emergency_phone','TELÉFONO DE EMERGENCIA','tel',40,{full:1}));steps.appendChild(s5);
+  const sR=sec(3,'Referencias','Datos útiles para regalos, almuerzos y salidas del equipo. Todo es opcional.');const ex=p.extra||{};
+  for(const[k,lab,type,o]of REFS){if(type==='sel'){const l=el('label','f');l.append(lab);const se=el('select','in');se.name='x_'+k;for(const v of o){const op=el('option',null,v||'Elegir…');op.value=v;se.appendChild(op)}se.value=ex[k]||'';l.appendChild(se);sR.appendChild(l)}
+    else{const l=inp('x_'+k,lab,'text',120,o);l.querySelector('input').value=ex[k]||'';sR.appendChild(l)}}
+  sR.appendChild(el('p','hint full','Las alergias y restricciones las verá todo el equipo; agrégalas solo si quieres.'));steps.appendChild(sR);
+  const s3=sec(4,'Cómo contactarte',null);s3.append(inp('email','CORREO ELECTRÓNICO','email',120,{ac:'email'}),inp('phone','TELÉFONO','tel',40,{ac:'tel'}));steps.appendChild(s3);
+  const s4=sec(5,'Dato curioso','Algo que pocos saben de ti. ¡Sin presión!');const ff=inp('fun_fact','TU DATO CURIOSO','area',160,{full:1,ph:'Ej: sé tocar el ukelele y una vez conocí a un pingüino'});const cnt2=el('span','hint cc');cnt2.id='cc'+id;ff.querySelector('textarea').setAttribute('aria-describedby',cnt2.id);ff.appendChild(cnt2);s4.appendChild(ff);steps.appendChild(s4);
+  const s5=sec(6,'Privado',(isMe?'Solo tú':'Solo la persona')+' y administración pueden verlo.','lock');s5.append(inp('address','DIRECCIÓN','text',200,{full:1,ph:'Calle, número, comuna',ac:'street-address'}),inp('emergency_name','CONTACTO DE EMERGENCIA','text',80),inp('emergency_relation','PARENTESCO','text',40,{ph:'Ej: hermana'}),inp('emergency_phone','TELÉFONO DE EMERGENCIA','tel',40,{full:1}));steps.appendChild(s5);
   const msg=el('div','full');msg.setAttribute('role','alert');const bar=el('div','savebar');if(onDone){const c=el('button','btn','Cancelar');c.type='button';c.onclick=onDone;bar.appendChild(c)}const sv=el('button','btn white','Guardar ficha');sv.type='submit';bar.appendChild(sv);steps.append(msg,bar);
   // regalos
   const drawGifts=()=>{gs.textContent='';for(const g of GIFTS){const b=el('button',null,g);b.type='button';const on=gifts.some(x=>x.toLowerCase()===g.toLowerCase());b.setAttribute('aria-pressed',on);b.onclick=()=>{const i=gifts.findIndex(x=>x.toLowerCase()===g.toLowerCase());if(i>=0)gifts.splice(i,1);else gifts.push(g);drawGifts();refresh()};gs.appendChild(b)}
@@ -422,15 +431,15 @@ function buildForm(f,p,isMe,onDone){f.textContent='';const id=++fid,gifts=giftLi
   // vista previa en vivo
   const val=k=>{const e=f.elements[k];return e?(e.value||'').trim():''};
   const data=()=>{const d={};for(const k of['full_name','role_title','birthday','email','phone','fun_fact','address','emergency_name','emergency_relation','emergency_phone'])d[k]=val(k);
-    const r=k=>{const c=f.querySelector('input[name='+k+']:checked');return c?c.value:''};d.emoji='';d.color=r('color');d.gift_ideas=gifts.join(', ');return d};
+    const r=k=>{const c=f.querySelector('input[name='+k+']:checked');return c?c.value:''};d.emoji='';d.extra={};for(const[k]of REFS){const v=val('x_'+k);if(v)d.extra[k]=v}d.color=r('color');d.gift_ideas=gifts.join(', ');return d};
   let lastPct=-1;
   function refresh(){const d=data(),q=Object.assign({username:p.username},d);card.textContent='';card.appendChild(avatar(q,108));card.append(el('h3',null,d.full_name||p.username),el('div','role',d.role_title||'Equipo DXD'));
-    const tg=el('div','tags'),nb=d.birthday?nextBday(d.birthday):null,sg=sign(d.birthday);if(nb)tg.appendChild(el('span','tag',nb.label));if(sg)tg.appendChild(el('span','tag',sg[3]));if(tg.childNodes.length)card.appendChild(tg);
+    const tg=el('div','tags'),nb=d.birthday?nextBday(d.birthday):null,sg=sign(d.birthday);if(nb)tg.appendChild(el('span','tag',nb.label));if(sg)tg.appendChild(el('span','tag',sg[3]));if(d.extra.talla_ropa)tg.appendChild(el('span','tag','Talla '+d.extra.talla_ropa));if(d.extra.talla_calzado)tg.appendChild(el('span','tag','Calzado '+d.extra.talla_calzado));if(tg.childNodes.length)card.appendChild(tg);
     if(d.fun_fact)card.appendChild(el('blockquote','quote','“'+d.fun_fact+'”'));
     if(gifts.length){const g=el('div','tags');for(const x of gifts.slice(0,6))g.appendChild(el('span','tag soft',x));card.appendChild(g)}
     live.textContent=nb?(nb.days===0?'¡Es hoy! Feliz cumpleaños':'Faltan '+nb.days+(nb.days===1?' día':' días')+(sg?' · '+sg[3]:'')):'';
     cnt2.textContent=d.fun_fact.length+' de 160 caracteres';
-    const items=[d.full_name,d.role_title,d.birthday,d.email,d.phone,gifts.length,d.fun_fact,d.address,d.emergency_name&&d.emergency_phone],ok=items.filter(Boolean).length,pct=Math.round(ok/items.length*100);
+    const items=[d.full_name,d.role_title,d.birthday,d.email,d.phone,gifts.length,d.fun_fact,Object.keys(d.extra).length,d.address,d.emergency_name&&d.emergency_phone],ok=items.filter(Boolean).length,pct=Math.round(ok/items.length*100);
     const rg=el('div','ring');const C=2*Math.PI*24;rg.innerHTML='<svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="24" class="tr"/><circle cx="28" cy="28" r="24" class="pg" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-pct/100))+'"/></svg>';
     const pb=el('div');pb.setAttribute('role','progressbar');pb.setAttribute('aria-valuemin','0');pb.setAttribute('aria-valuemax','100');pb.setAttribute('aria-valuenow',pct);pb.setAttribute('aria-label','Ficha completa');
     pb.append(el('b',null,pct+'% completa'),el('small',null,pct===100?'Ficha completa. ¡Gracias!':pct>=70?'Te falta muy poco':pct>=40?'Vas bien, sigue así':'Cuéntale al equipo un poco de ti'));rg.appendChild(pb);card.appendChild(rg);
