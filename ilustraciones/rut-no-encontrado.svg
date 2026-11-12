@@ -1,0 +1,50 @@
+<svg width="327" height="220" viewBox="0 0 327 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.055" d="M190.5 31H112.5C95.9315 31 82.5 44.4315 82.5 61V162C82.5 178.569 95.9315 192 112.5 192H190.5C207.069 192 220.5 178.569 220.5 162V61C220.5 44.4315 207.069 31 190.5 31Z" fill="#094AFF"/>
+<path opacity="0.23" d="M200.5 27H204.5C221.5 27 232.5 39 232.5 55V80C232.5 84 230.5 87 226.5 87L218.5 50L200.5 27Z" fill="#06C2FA"/>
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="url(#bg_rut_no_encontrado)" stroke="#E1E9FF"/>
+<mask id="mask_rut_no_encontrado" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="90" y="23" width="139" height="161">
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="white"/>
+</mask>
+<g id="marca" mask="url(#mask_rut_no_encontrado)">
+<path opacity="0.06" transform="translate(84 92) scale(0.33)" d="M425.001 287.209L280.826 21.0908C265.586 -7.03026 225.231 -7.03026 209.991 21.0908L143.607 143.612C222.917 143.612 287.208 207.916 287.208 287.224H424.986L425.001 287.209Z" fill="#094AFF"/>
+<path opacity="0.16" transform="translate(84 92) scale(0.33)" d="M143.615 143.597C64.3054 143.597 0 207.887 0 287.209H65.8088L143.615 143.597Z" fill="#06C2FA"/>
+</g>
+<g mask="url(#mask_rut_no_encontrado)">
+<g id="Ficha vacia"><rect x="108" y="54" width="104" height="72" rx="12" fill="white" stroke="#E1E9FF"/>
+<rect x="108" y="54" width="104" height="14" rx="12" fill="#D8E4FF"/><rect x="108" y="61" width="104" height="7" fill="#D8E4FF"/>
+<g id="Perfil vacio"><circle cx="132" cy="92" r="13" fill="#EEF3FF" stroke="#AABCE8" stroke-width="1.5" stroke-dasharray="3 3"/>
+<path d="M126 100.5C126.8 97.2 129.2 95.5 132 95.5C134.8 95.5 137.2 97.2 138 100.5" stroke="#AABCE8" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2.5"/><circle cx="132" cy="88" r="3.5" stroke="#AABCE8" stroke-width="1.5" stroke-dasharray="2 2"/></g>
+<path d="M153 85H196M153 95H184M153 105H190" stroke="#D8E4FF" stroke-width="4" stroke-linecap="round" stroke-dasharray="6 5"/></g>
+<g id="Campo RUT"><rect x="108" y="138" width="104" height="24" rx="12" fill="white" stroke="#E1E9FF"/>
+<rect x="122" y="147.5" width="52" height="5" rx="2.5" fill="#131252" fill-opacity="0.75"/>
+<g id="Sin resultado"><circle cx="198" cy="150" r="7" fill="#EEF3FF"/><path d="M195.5 147.5L200.5 152.5M200.5 147.5L195.5 152.5" stroke="#094AFF" stroke-width="1.8" stroke-linecap="round"/></g></g>
+<g id="Lupa"><path d="M190 112L204 126" stroke="#131252" stroke-width="8" stroke-linecap="round"/>
+<circle cx="174" cy="96" r="24" fill="white" fill-opacity="0.92" stroke="#094AFF" stroke-width="6"/>
+<path opacity="0.5" d="M158 90C159.5 84 164 80 169 79" stroke="#06C2FA" stroke-width="2.5" stroke-linecap="round"/>
+<g id="Pregunta"><path d="M168 91C168 87.5 170.7 85 174 85C177.3 85 180 87.5 180 90.5C180 95 174 95.5 174 100" stroke="#131252" stroke-width="3.5" stroke-linecap="round"/><circle cx="174" cy="106" r="2.2" fill="#131252"/></g></g>
+<g id="Duda 1"><circle cx="112" cy="44" r="7" fill="#06C2FA"/><path d="M109.8 42.3C109.8 41 110.8 40 112 40C113.2 40 114.2 41 114.2 42.1C114.2 43.7 112 44 112 45.6M112 48V48.1" stroke="white" stroke-width="1.5" stroke-linecap="round"/></g>
+<g id="Duda 2"><circle cx="100" cy="128" r="5" fill="#094AFF" fill-opacity="0.85"/><path d="M98.4 126.8C98.4 125.9 99.1 125.2 100 125.2C100.9 125.2 101.6 125.9 101.6 126.7C101.6 127.8 100 128 100 129.2M100 130.9V131" stroke="white" stroke-width="1.2" stroke-linecap="round"/></g>
+</g>
+<g id="Destellos"><path d="M216 30L217.2 33.8L221 35L217.2 36.2L216 40L214.8 36.2L211 35L214.8 33.8L216 30Z" fill="#06C2FA"/><circle cx="222" cy="118" r="2.5" fill="#094AFF" opacity="0.35"/></g>
+<g id="badge" filter="url(#shadow_rut_no_encontrado)">
+<rect x="211" y="144" width="48" height="48" rx="24" fill="white"/>
+<rect x="211.5" y="144.5" width="47" height="47" rx="23.5" stroke="#E4E8F2"/>
+<g id="Icono"><circle cx="233.5" cy="166.5" r="6" stroke-width="2" stroke="#084AFE"/><path d="M238 171L242.5 175.5M231.5 164.5L235.5 168.5M235.5 164.5L231.5 168.5" stroke-width="2" stroke-linecap="round" stroke="#084AFE"/></g>
+</g>
+<defs>
+<filter id="shadow_rut_no_encontrado" x="199" y="136" width="72" height="72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="6"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.290196 0 0 0 0 0.996078 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<linearGradient id="bg_rut_no_encontrado" x1="98.5" y1="30" x2="216.5" y2="183" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EEF3FF"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+
+</defs>
+</svg>
