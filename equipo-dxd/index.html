@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Equipo DXD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Syncopate:wght@400;700&display=swap">
+<script src="supabase.js"></script>
+<style>
+:root{--ink:#06070d;--ink-2:#0d1020;--ink-3:#171b33;--line:#262b4c;--text:#f1f2ff;--muted:#9aa0c6;--blue:#3d4cff;--blue-2:#2a35d6;--lav:#c6c7ff;--ok:#3ddc97;--bad:#ff6b7a;--warm:#ffd23d;
+  --f-brand:"Syncopate","Arial Black",sans-serif;--f-body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;color-scheme:dark}
+*{box-sizing:border-box}html,body{margin:0;background:var(--ink);color:var(--text);font-family:var(--f-body);font-size:15px;line-height:1.5}
+a{color:var(--lav)}button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--lav);outline-offset:2px}
+[hidden]{display:none!important}
+.btn{border:1px solid transparent;border-radius:10px;padding:9px 14px;font-weight:800;font-size:14px;background:var(--ink-3);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;color:var(--text)}
+.btn:hover{border-color:#4a5088}.btn.pri{background:linear-gradient(135deg,var(--blue),var(--blue-2));color:#fff}.btn.pri:hover{background:#2f3ff0}
+.btn.danger{background:transparent;border-color:#5a2a35;color:#ffb3bc}.btn.danger:hover{background:#2a1218}
+.btn.sm{padding:6px 10px;font-size:12px}.btn:disabled{opacity:.55;cursor:not-allowed}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+/* login */
+#auth{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(120% 80% at 80% 0%,#1a2070 0%,#06070d 60%)}
+.card{background:var(--ink-2);border:1px solid var(--line);border-radius:20px;padding:26px;width:min(420px,100%);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.brand{display:flex;align-items:center;gap:10px}.brand svg{width:30px;height:30px}.brand b{font-family:var(--f-brand);letter-spacing:.06em;font-size:16px}.brand small{display:block;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted)}
+.card h1{font-family:var(--f-brand);font-size:20px;letter-spacing:.04em;margin:18px 0 6px}.card p.sub{color:var(--muted);margin:0 0 16px;font-size:14px}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700;color:var(--lav)}
+input.in,textarea.in,select.in{background:var(--ink-3);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:15px;width:100%}
+textarea.in{min-height:84px;resize:vertical}
+.stack{display:flex;flex-direction:column;gap:12px}.err{color:var(--bad);font-size:13px;font-weight:700;min-height:18px}.okmsg{color:var(--ok);font-size:13px;font-weight:700}
+/* app */
+header.top{position:sticky;top:0;z-index:5;background:rgba(6,7,13,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:12px;min-height:64px}
+header.top .sp{flex:1}.who{font-size:13px;color:var(--muted)}.who b{color:var(--text)}.tag{font-size:11px;font-weight:800;background:var(--blue);color:#fff;border-radius:999px;padding:2px 8px;margin-left:6px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;padding:16px 0 4px}nav.tabs button{border:1px solid var(--line);background:var(--ink-2);border-radius:999px;padding:8px 14px;font-weight:800;font-size:14px;cursor:pointer}
+nav.tabs button[aria-selected=true]{background:var(--blue);border-color:var(--blue);color:#fff}
+section.view{padding:18px 0 48px}h2.sec{font-family:var(--f-brand);font-size:15px;letter-spacing:.06em;margin:22px 0 12px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.kpi{background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:16px}.kpi small{display:block;color:var(--muted);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.kpi b{display:block;font-size:26px;font-weight:800;margin-top:4px;line-height:1.15}.kpi span{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.bday{background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.bday.today{border-color:var(--warm);box-shadow:0 0 0 3px rgba(255,210,61,.18)}.bday.soon{border-color:#4a5088}
+.bday .h{display:flex;align-items:center;gap:10px}.av{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:15px;color:#fff;flex:none}
+.bday .when{font-size:13px;color:var(--muted)}.bday .count{margin-left:auto;font-weight:800;font-size:13px;background:var(--ink-3);border-radius:999px;padding:4px 10px;white-space:nowrap}
+.bday.today .count{background:var(--warm);color:#14162a}.gifts{font-size:13px;color:var(--text);background:var(--ink-3);border-radius:10px;padding:8px 10px;white-space:pre-wrap}.gifts b{color:var(--lav);font-size:12px;display:block}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.toolbar input{max-width:340px}
+.person{background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.person .h{display:flex;gap:10px;align-items:center}.person .h b{font-size:16px}.person .h small{display:block;color:var(--muted);font-size:13px}
+dl.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;margin:0;font-size:14px}dl.kv dt{color:var(--muted);font-weight:700}dl.kv dd{margin:0;overflow-wrap:anywhere}
+.priv{border-top:1px dashed var(--line);padding-top:10px}.priv .lock{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:6px}
+.copy{border:0;background:none;color:var(--lav);font-weight:800;cursor:pointer;padding:0 4px;font-size:12px}
+.empty{color:var(--muted);font-size:14px}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:20px}
+.form .full{grid-column:1/-1}.form fieldset{grid-column:1/-1;border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0}
+.form legend{padding:0 6px;font-weight:800;font-size:13px;color:var(--lav)}.hint{font-size:12px;color:var(--muted);font-weight:600}
+table.adm{width:100%;border-collapse:collapse;font-size:14px}table.adm th,table.adm td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}table.adm th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.panel{background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:18px}
+.cred{background:#10301f;border:1px solid #1f6b43;border-radius:12px;padding:12px;font-size:14px}.cred code{background:#071a10;border-radius:6px;padding:2px 6px;font-size:14px}
+dialog{background:var(--ink-2);color:var(--text);border:1px solid var(--line);border-radius:18px;padding:20px;width:min(720px,calc(100vw - 24px))}dialog::backdrop{background:rgba(3,4,10,.75)}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink-3);border:1px solid var(--line);border-radius:12px;padding:10px 16px;font-weight:700;z-index:50}
+@media (max-width:820px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.form{grid-template-columns:1fr}.form fieldset{grid-template-columns:1fr}header.top .who{display:none}}
+</style>
+</head>
+<body>
+<div id="auth">
+  <form class="card stack" id="loginForm" novalidate hidden>
+    <div class="brand"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M30 0h20a50 50 0 0 1 0 100H30z" fill="#8a92ff"/><path d="M0 47h30q30 5 32 53H0z" fill="#2f3ff0"/></svg><div><b>DXD</b><small>Equipo</small></div></div>
+    <h1>Directorio del equipo</h1>
+    <p class="sub">Entra con tu usuario personal. El usuario compartido de la oficina no tiene acceso a estos datos.</p>
+    <label class="f">Usuario<input class="in" name="u" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+    <label class="f">Clave<input class="in" name="p" type="password" autocomplete="current-password" required></label>
+    <div class="err" role="alert" id="loginErr"></div>
+    <button class="btn pri" type="submit">Entrar</button>
+  </form>
+  <form class="card stack" id="pwForm" novalidate hidden>
+    <div class="brand"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M30 0h20a50 50 0 0 1 0 100H30z" fill="#8a92ff"/><path d="M0 47h30q30 5 32 53H0z" fill="#2f3ff0"/></svg><div><b>DXD</b><small>Equipo</small></div></div>
+    <h1>Crea tu clave personal</h1>
+    <p class="sub" id="pwSub">Por seguridad, cambia la clave temporal por una tuya (mínimo 8 caracteres). También la usarás para entrar a la oficina.</p>
+    <label class="f">Clave actual<input class="in" name="o" type="password" autocomplete="current-password" required></label>
+    <label class="f">Clave nueva<input class="in" name="n" type="password" autocomplete="new-password" minlength="8" required></label>
+    <label class="f">Repite la clave nueva<input class="in" name="n2" type="password" autocomplete="new-password" minlength="8" required></label>
+    <div class="err" role="alert" id="pwErr"></div>
+    <div style="display:flex;gap:8px"><button class="btn" type="button" id="pwCancel" hidden>Cancelar</button><button class="btn pri" type="submit" style="flex:1">Guardar clave</button></div>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <header class="top"><div class="wrap">
+    <div class="brand"><svg viewBox="0 0 100 100" aria-hidden="true"><path d="M30 0h20a50 50 0 0 1 0 100H30z" fill="#8a92ff"/><path d="M0 47h30q30 5 32 53H0z" fill="#2f3ff0"/></svg><div><b>DXD</b><small>Equipo</small></div></div>
+    <div class="sp"></div>
+    <span class="who" id="who"></span>
+    <button class="btn sm" id="chPw" type="button">🔑 Mi clave</button>
+    <button class="btn sm" id="logout" type="button">Salir</button>
+  </div></header>
+  <main class="wrap">
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-v="home" aria-selected="true">🎂 Cumpleaños</button>
+      <button role="tab" data-v="dir" aria-selected="false">👥 Directorio</button>
+      <button role="tab" data-v="me" aria-selected="false">✏️ Mi ficha</button>
+      <button role="tab" data-v="adm" aria-selected="false" id="tabAdm" hidden>🛠️ Administración</button>
+    </nav>
+
+    <section class="view" id="v-home">
+      <div class="kpis" id="kpis"></div>
+      <h2 class="sec">Próximos cumpleaños</h2>
+      <div class="grid" id="bdays"></div>
+    </section>
+
+    <section class="view" id="v-dir" hidden>
+      <div class="toolbar"><input class="in" id="q" type="search" placeholder="Buscar por nombre, cargo o correo" aria-label="Buscar en el directorio"><span class="hint" id="dirCount"></span></div>
+      <div class="grid" id="dir"></div>
+    </section>
+
+    <section class="view" id="v-me" hidden>
+      <h2 class="sec">Mi ficha</h2>
+      <form class="form" id="meForm" novalidate></form>
+    </section>
+
+    <section class="view" id="v-adm" hidden>
+      <h2 class="sec">Agregar integrante</h2>
+      <form class="panel stack" id="addForm" novalidate>
+        <div class="form" style="padding:0;border:0;background:none">
+          <label class="f">Usuario (sin espacios)<input class="in" name="u" placeholder="ej: cami" pattern="[a-z0-9._-]{3,20}" required></label>
+          <label class="f">Clave temporal<input class="in" name="p" required minlength="8"></label>
+        </div>
+        <label class="f" style="flex-direction:row;align-items:center;gap:8px;color:var(--text)"><input type="checkbox" name="a"> Es administrador (ve direcciones y contactos de emergencia de todos)</label>
+        <div class="err" id="addErr" role="alert"></div><div id="addOk"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" id="genPw">🎲 Generar clave</button><button class="btn pri" type="submit">Agregar</button></div>
+      </form>
+      <h2 class="sec">Integrantes y accesos</h2>
+      <div class="panel" style="overflow:auto"><table class="adm"><thead><tr><th>Usuario</th><th>Nombre</th><th>Rol</th><th>Ficha</th><th></th></tr></thead><tbody id="admRows"></tbody></table></div>
+      <p style="margin-top:14px"><button class="btn" type="button" id="csv">⬇️ Descargar listado (CSV)</button> <span class="hint">Incluye datos privados: guárdalo en un lugar seguro.</span></p>
+    </section>
+  </main>
+</div>
+
+<dialog id="editDlg"><form id="editForm" class="form" style="border:0;padding:0" novalidate></form></dialog>
+<div id="toast" hidden role="status"></div>
+
+<script>
+(() => {
+'use strict';
+const SUPABASE_URL='https://wmgdqegwwtxydsrubjka.supabase.co',SUPABASE_KEY='sb_publishable_Lc_U7a9MxoyE_XyemPOjDA_zK4o9T-e',LS='dxd-session-v1';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:false,autoRefreshToken:false}});
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s);
+let token=null,me=null,team=[];
+const getS=()=>{try{return JSON.parse(localStorage.getItem(LS)||'null')}catch(e){return null}};
+const setS=v=>{try{v?localStorage.setItem(LS,JSON.stringify(v)):localStorage.removeItem(LS)}catch(e){}};
+function toast(t){const el=$('toast');el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,3200)}
+async function rpc(fn,args){const r=await sb.rpc(fn,Object.assign({p_token:token},args||{}));
+  if(r.error){const m=r.error.message||'';if(r.error.code==='28000'||/no_session/.test(m)){setS(null);showLogin('Tu sesión venció. Vuelve a entrar.')}
+    const e=new Error(m);e.code=r.error.code;throw e}return r.data}
+// ---------- acceso ----------
+function showLogin(msg){$('app').hidden=true;$('auth').hidden=false;$('pwForm').hidden=true;$('loginForm').hidden=false;$('loginErr').textContent=msg||'';setTimeout(()=>$('loginForm').u.focus(),30)}
+function showPw(forced){$('app').hidden=true;$('auth').hidden=false;$('loginForm').hidden=true;$('pwForm').hidden=false;$('pwCancel').hidden=forced;$('pwErr').textContent='';$('pwForm').reset();
+  $('pwSub').textContent=forced?'Por seguridad, cambia la clave temporal por una tuya (mínimo 8 caracteres). También la usarás para entrar a la oficina.':'Cambia tu clave (mínimo 8 caracteres). Se cierra la sesión en tus otros dispositivos.';setTimeout(()=>$('pwForm').o.focus(),30)}
+async function boot(){const s=getS();if(!s||!s.token){showLogin();return}token=s.token;
+  try{me=await rpc('dxd_team_me')}catch(e){if(/cuenta_compartida/.test(e.message)){showLogin('El usuario compartido no tiene acceso. Entra con tu usuario personal.');token=null;return}if(e.code!=='28000')showLogin('No se pudo conectar. Intenta de nuevo.');return}
+  if(me.must_change){showPw(true);return}
+  $('auth').hidden=true;$('app').hidden=false;$('who').innerHTML='';$('who').append('Hola, ',Object.assign(document.createElement('b'),{textContent:me.user}));if(me.is_admin)$('who').append(Object.assign(document.createElement('span'),{className:'tag',textContent:'Admin'}));
+  $('tabAdm').hidden=!me.is_admin;await load()}
+$('loginForm').addEventListener('submit',async e=>{e.preventDefault();const f=e.target,b=f.querySelector('button');$('loginErr').textContent='';
+  if(!f.u.value.trim()||!f.p.value){$('loginErr').textContent='Escribe tu usuario y tu clave.';return}b.disabled=true;
+  const r=await sb.rpc('dxd_login',{p_user:f.u.value,p_pass:f.p.value});b.disabled=false;
+  if(r.error||!r.data||!r.data.token){$('loginErr').textContent=r.error?'No se pudo conectar.':'Usuario o clave incorrectos.';f.p.value='';return}
+  setS(r.data);f.reset();boot()});
+$('pwForm').addEventListener('submit',async e=>{e.preventDefault();const f=e.target;$('pwErr').textContent='';
+  if(f.n.value.length<8){$('pwErr').textContent='La clave nueva debe tener al menos 8 caracteres.';return}if(f.n.value!==f.n2.value){$('pwErr').textContent='Las claves nuevas no coinciden.';return}
+  try{await rpc('dxd_change_password',{p_old:f.o.value,p_new:f.n.value});toast('🔑 Clave actualizada');boot()}catch(err){$('pwErr').textContent=/clave_actual/.test(err.message)?'La clave actual no es correcta.':/clave_corta/.test(err.message)?'Mínimo 8 caracteres.':'No se pudo guardar.'}});
+$('pwCancel').onclick=()=>boot();$('chPw').onclick=()=>showPw(false);
+$('logout').onclick=async()=>{try{await sb.rpc('dxd_logout',{p_token:token})}catch(e){}setS(null);token=null;showLogin('Cerraste sesión.')};
+// ---------- datos ----------
+async function load(){try{team=await rpc('dxd_team_list')||[]}catch(e){team=[];toast('No se pudo cargar el equipo')}renderAll()}
+const MES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function nextBday(iso){if(!iso)return null;const [y,m,d]=iso.split('-').map(Number);const now=new Date(),t0=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  let n=new Date(now.getFullYear(),m-1,d);if(m===2&&d===29&&n.getMonth()!==1)n=new Date(now.getFullYear(),1,28);if(n<t0)n=new Date(now.getFullYear()+1,m-1,d);
+  return{date:n,days:Math.round((n-t0)/864e5),label:d+' de '+MES[m-1]}}
+const COLORS=['#3d4cff','#e0455a','#1f9e74','#c98b3c','#8a63d2','#e86fa8','#2f8fb0','#7a8b4f'];
+function avatar(p){const n=(p.full_name||p.username).trim(),ini=n.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();const el=document.createElement('div');el.className='av';el.textContent=ini;
+  let h=0;for(const c of p.username)h=(h*31+c.charCodeAt(0))>>>0;el.style.background=COLORS[h%COLORS.length];el.setAttribute('aria-hidden','true');return el}
+const nm=p=>p.full_name||p.username;
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+function renderAll(){renderHome();renderDir();renderMe();if(me.is_admin)renderAdm()}
+function renderHome(){const k=$('kpis');k.textContent='';const withB=team.filter(p=>p.birthday).map(p=>({p,nb:nextBday(p.birthday)})).sort((a,b)=>a.nb.days-b.nb.days);
+  const nowM=new Date().getMonth(),thisMonth=withB.filter(x=>x.nb.date.getMonth()===nowM&&x.nb.days<=31).length;
+  const complete=team.filter(p=>p.full_name&&p.birthday&&p.email).length;const nx=withB[0];
+  const kp=(t,b,s)=>{const d=el('div','kpi');d.append(el('small',null,t),el('b',null,b));if(s)d.append(el('span',null,s));k.appendChild(d)};
+  kp('Integrantes',String(team.length));kp('Próximo cumpleaños',nx?nm(nx.p):'—',nx?(nx.nb.days===0?'¡Hoy! 🎉':nx.nb.label+' · en '+nx.nb.days+' día'+(nx.nb.days===1?'':'s')):'Nadie ha puesto su fecha');
+  kp('Cumpleaños este mes',String(thisMonth),MES[nowM]);kp('Fichas completas',complete+' / '+team.length,complete<team.length?'Faltan datos de algunos':'¡Todo al día!');
+  const g=$('bdays');g.textContent='';if(!withB.length){g.appendChild(el('p','empty','Todavía nadie ha agregado su cumpleaños. Hazlo en ✏️ Mi ficha.'));return}
+  for(const {p,nb} of withB){const c=el('article','bday'+(nb.days===0?' today':nb.days<=14?' soon':''));const h=el('div','h');h.appendChild(avatar(p));const t=el('div');t.append(el('b',null,nm(p)),el('div','when',nb.label+(p.role_title?' · '+p.role_title:'')));h.appendChild(t);
+    h.appendChild(el('span','count',nb.days===0?'🎂 ¡Hoy!':nb.days===1?'Mañana':'en '+nb.days+' días'));c.appendChild(h);
+    const gi=el('div','gifts');gi.appendChild(el('b',null,'🎁 Ideas de regalo'));gi.append(p.gift_ideas||'Todavía no agregó ideas.');c.appendChild(gi);g.appendChild(c)}
+  const sinFecha=team.filter(p=>!p.birthday);if(sinFecha.length)g.appendChild(el('p','empty','Sin fecha de cumpleaños: '+sinFecha.map(nm).join(', ')+'.'))}
+function copyBtn(v,label){const b=el('button','copy','Copiar');b.type='button';b.setAttribute('aria-label','Copiar '+label);b.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(v).then(()=>toast('Copiado: '+v))};return b}
+function renderDir(){const g=$('dir'),q=$('q').value.trim().toLowerCase();g.textContent='';
+  const list=team.filter(p=>!q||[p.full_name,p.username,p.role_title,p.email].join(' ').toLowerCase().includes(q));$('dirCount').textContent=list.length+' de '+team.length;
+  if(!list.length)g.appendChild(el('p','empty','No hay coincidencias.'));
+  for(const p of list){const c=el('article','person'),h=el('div','h');h.appendChild(avatar(p));const t=el('div');t.append(el('b',null,nm(p)),el('small',null,(p.role_title||'Sin cargo')+' · @'+p.username));h.appendChild(t);c.appendChild(h);
+    const dl=el('dl','kv');const row=(k,v,copy)=>{dl.append(el('dt',null,k));const dd=el('dd');if(v){if(copy&&k==='Correo'){const a=el('a',null,v);a.href='mailto:'+v;dd.append(a,copyBtn(v,k))}else{dd.append(v);if(copy)dd.append(copyBtn(v,k))}}else dd.append(el('span','empty','—'));dl.append(dd)};
+    row('Correo',p.email,true);row('Teléfono',p.phone,true);row('Cumpleaños',p.birthday?nextBday(p.birthday).label:'');row('Regalos',p.gift_ideas);c.appendChild(dl);
+    if(p.private){const pv=el('div','priv');pv.appendChild(el('div','lock',p.username===me.user?'🔒 Privado: solo tú y administración':'🔒 Privado (lo ves como administrador)'));const d2=el('dl','kv');
+      const r2=(k,v)=>{d2.append(el('dt',null,k),el('dd',null,v||'—'))};r2('Dirección',p.address);r2('Emergencia',[p.emergency_name,p.emergency_relation&&'('+p.emergency_relation+')',p.emergency_phone].filter(Boolean).join(' '));pv.appendChild(d2);c.appendChild(pv)}
+    if(me.is_admin||p.username===me.user){const b=el('button','btn sm',p.username===me.user?'✏️ Editar mi ficha':'✏️ Editar ficha');b.type='button';b.onclick=()=>p.username===me.user?go('me'):openEdit(p);c.appendChild(b)}
+    g.appendChild(c)}}
+$('q').addEventListener('input',renderDir);
+const FIELDS=[['full_name','Nombre completo','text',80,'full'],['role_title','Cargo','text',60],['birthday','Cumpleaños','date'],['email','Correo electrónico','email',120],['phone','Teléfono','tel',40],
+  ['address','Dirección 🔒','text',200,'full'],['gift_ideas','Ideas de regalo 🎁','area',600,'full']];
+const EMERG=[['emergency_name','Nombre','text',80],['emergency_relation','Parentesco','text',40],['emergency_phone','Teléfono','tel',40]];
+function buildForm(f,p,isMe){f.textContent='';const inp=(k,lab,type,max,cls)=>{const l=el('label','f'+(cls?' '+cls:''));l.append(lab);const i=type==='area'?el('textarea','in'):el('input','in');if(type!=='area')i.type=type;i.name=k;if(max)i.maxLength=max;i.value=p[k]||'';
+    if(k==='gift_ideas')i.placeholder='Ej: libros de diseño, plantas, café de especialidad, algo de Star Wars…';if(k==='address')i.placeholder='Calle, número, comuna';l.appendChild(i);return l};
+  if(!isMe){f.appendChild(el('h2','sec','Editar ficha de '+nm(p)))}
+  for(const x of FIELDS)f.appendChild(inp(...x));
+  const fs=el('fieldset');fs.appendChild(el('legend',null,'🚑 Contacto de emergencia 🔒'));for(const x of EMERG)fs.appendChild(inp(...x));f.appendChild(fs);
+  f.appendChild(el('p','hint full','🔒 La dirección y el contacto de emergencia solo los ven '+(isMe?'tú':'la persona')+' y administración. El resto lo ve todo el equipo.'));
+  const msg=el('div','full');msg.setAttribute('role','status');f.appendChild(msg);
+  const bar=el('div','full');bar.style.cssText='display:flex;gap:8px;justify-content:flex-end';if(!isMe){const c=el('button','btn','Cancelar');c.type='button';c.onclick=()=>$('editDlg').close();bar.appendChild(c)}
+  const s=el('button','btn pri','Guardar');s.type='submit';bar.appendChild(s);f.appendChild(bar);
+  f.onsubmit=async e=>{e.preventDefault();const data={};for(const [k] of FIELDS.concat(EMERG))data[k]=(f.elements[k].value||'').trim();
+    if(data.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)){msg.className='full err';msg.textContent='El correo no parece válido.';return}
+    s.disabled=true;try{await rpc('dxd_team_save',{p_username:p.username,p_data:data});msg.className='full okmsg';msg.textContent='✅ Guardado';toast('✅ Ficha guardada');await load();if(!isMe)$('editDlg').close()}
+    catch(err){msg.className='full err';msg.textContent='No se pudo guardar. Revisa los datos.'}s.disabled=false}}
+function renderMe(){const p=team.find(x=>x.username===me.user)||{username:me.user};buildForm($('meForm'),p,true)}
+function openEdit(p){buildForm($('editForm'),p,false);$('editDlg').showModal()}
+// ---------- administración ----------
+function genPw(){const a='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';const r=new Uint32Array(12);crypto.getRandomValues(r);return Array.from(r,x=>a[x%a.length]).join('')}
+$('genPw').onclick=()=>{$('addForm').p.value=genPw()};
+$('addForm').addEventListener('submit',async e=>{e.preventDefault();const f=e.target,u=f.u.value.trim().toLowerCase(),pw=f.p.value;$('addErr').textContent='';$('addOk').textContent='';
+  if(!/^[a-z0-9._-]{3,20}$/.test(u)){$('addErr').textContent='Usuario: 3 a 20 caracteres, solo minúsculas, números, punto, guion.';return}if(pw.length<8){$('addErr').textContent='La clave temporal debe tener al menos 8 caracteres.';return}
+  try{await rpc('dxd_admin_add_user',{p_username:u,p_temp:pw,p_admin:f.a.checked});const c=el('div','cred');c.append('✅ Listo. Comparte estos datos por un canal privado: usuario ',el('code',null,u),' · clave temporal ',el('code',null,pw),'. Al entrar a ',el('b',null,location.origin+location.pathname),' deberá crear su propia clave.');$('addOk').appendChild(c);f.reset();await load()}
+  catch(err){$('addErr').textContent=/usuario_existe/.test(err.message)?'Ese usuario ya existe.':'No se pudo agregar.'}});
+function renderAdm(){const tb=$('admRows');tb.textContent='';for(const p of team){const tr=el('tr');tr.append(el('td',null,'@'+p.username),el('td',null,p.full_name||'—'),el('td',null,p.is_admin?'Administrador':'Integrante'),
+    el('td',null,(p.full_name&&p.birthday&&p.email)?'Completa':'Incompleta'));const td=el('td');td.style.whiteSpace='nowrap';
+    const ed=el('button','btn sm','✏️ Ficha');ed.type='button';ed.onclick=()=>openEdit(p);td.appendChild(ed);
+    if(p.username!==me.user){const rs=el('button','btn sm','🔑 Nueva clave');rs.type='button';rs.style.marginLeft='6px';rs.onclick=async()=>{const pw=genPw();if(!confirm('¿Generar una clave temporal nueva para @'+p.username+'? Se cerrarán sus sesiones.'))return;
+        try{await rpc('dxd_admin_reset_password',{p_username:p.username,p_temp:pw});prompt('Clave temporal para @'+p.username+' (cópiala y compártela por un canal privado):',pw)}catch(e){toast('No se pudo restablecer')}};
+      const rm=el('button','btn sm danger','Quitar acceso');rm.type='button';rm.style.marginLeft='6px';rm.onclick=async()=>{if(!confirm('¿Quitar el acceso de @'+p.username+'? Se borra su usuario y su ficha.'))return;try{await rpc('dxd_admin_remove_user',{p_username:p.username});toast('Acceso quitado');load()}catch(e){toast('No se pudo quitar')}};
+      td.append(rs,rm)}tr.appendChild(td);tb.appendChild(tr)}}
+$('csv').onclick=()=>{const cols=['username','full_name','role_title','birthday','email','phone','address','emergency_name','emergency_relation','emergency_phone','gift_ideas'];
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';const csv=[cols.join(',')].concat(team.map(p=>cols.map(c=>q(p[c])).join(','))).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv'}));a.download='equipo-dxd.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
+// ---------- pestañas ----------
+function go(v){for(const b of document.querySelectorAll('nav.tabs button'))b.setAttribute('aria-selected',b.dataset.v===v);for(const s of document.querySelectorAll('section.view'))s.hidden=s.id!=='v-'+v}
+for(const b of document.querySelectorAll('nav.tabs button'))b.onclick=()=>go(b.dataset.v);
+boot();
+})();
+</script>
+</body>
+</html>
