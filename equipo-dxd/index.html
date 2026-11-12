@@ -39,8 +39,10 @@ label.f{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:70
 .in:focus{border-color:rgba(255,255,255,.4);outline:none;background:rgba(255,255,255,.09)}textarea.in{min-height:90px;resize:vertical}
 .err{color:#ff9fb0;font-size:13px;font-weight:700;min-height:18px}
 /* app */
-#app{position:relative;z-index:1;margin:14px;min-height:calc(100vh - 28px);background:#000;border-radius:34px;display:flex;flex-direction:column;overflow:clip}
-#app main{flex:1;padding-bottom:30px}
+#app{position:relative;z-index:1;margin:clamp(14px,2.6vw,40px);min-height:calc(100vh - 2*clamp(14px,2.6vw,40px));background:#000;border-radius:34px;display:flex;flex-direction:column;overflow:clip}
+body{background:radial-gradient(60% 50% at 50% 0%,#c45ad8 0%,transparent 70%),radial-gradient(50% 60% at 0% 100%,#5a2fd6 0%,transparent 70%),radial-gradient(50% 60% at 100% 80%,#9a3fd0 0%,transparent 70%),#2b1653;background-attachment:fixed}
+#app main{flex:1;padding-bottom:60px;border-radius:0 0 34px 34px;background:linear-gradient(180deg,#000 0%,#000 38%,#0b0870 62%,#2622e0 80%,#6a68f4 92%,#b9b6f6 100%)}
+.top{background:#000}
 .authcard{background:#000}
 .top{display:flex;align-items:center;gap:16px;padding:20px clamp(16px,4vw,44px)}
 .pills{display:flex;gap:4px;margin:0 auto;padding:5px;border-radius:999px}
@@ -52,7 +54,7 @@ h2.title{font-family:var(--mono);font-size:clamp(26px,3vw,40px);font-weight:700;
 /* inicio: tablero */
 .board{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr) minmax(0,1fr);grid-template-areas:"q0 c q1" "q2 c q3";gap:150px 44px;padding:200px 0 20px;align-items:start}
 .board>.c{grid-area:c;align-self:center}
-.tf{position:relative;text-align:left;width:100%;padding:22px 22px 18px;border-radius:0 22px 22px 22px;background:rgba(38,36,46,.62);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:1;color:var(--text)}
+.tf{position:relative;text-align:left;width:100%;padding:22px 22px 18px;border-radius:0 22px 22px 22px;background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.07);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);z-index:1;color:var(--text)}
 .tf::before{content:"";position:absolute;left:-1px;top:-20px;width:44%;height:21px;border-radius:16px 16px 0 0;background:inherit;border:1px solid rgba(255,255,255,.06);border-bottom:0;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
 button.tf{cursor:pointer;transition:transform .2s}button.tf:hover{transform:translateY(-3px)}
 .tf .hd{display:flex;align-items:center;justify-content:space-between;gap:10px}.tf h3{margin:0;font-size:19px;font-weight:600;letter-spacing:.01em}
@@ -105,7 +107,7 @@ dl.kv{display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px 12px;margi
 .rows{display:flex;flex-direction:column;gap:8px}.row{display:flex;align-items:center;gap:12px;padding:10px;border-radius:16px;background:rgba(255,255,255,.04)}.row .n{flex:1;min-width:0}.row .n small{display:block;color:var(--muted);font-size:12px}
 .cred{border:1px solid rgba(157,255,58,.35);background:rgba(157,255,58,.07);border-radius:16px;padding:12px;font-size:14px}.cred code{font-family:var(--mono);background:rgba(0,0,0,.35);border-radius:6px;padding:1px 6px}
 /* barra inferior */
-.dock{position:sticky;z-index:20;bottom:0;display:flex;align-items:center;gap:16px;padding:14px clamp(16px,4vw,44px) calc(14px + env(safe-area-inset-bottom,0px));background:#000;border-radius:0 0 34px 34px}
+.dock{position:sticky;z-index:20;bottom:0;margin-top:-1px;display:flex;align-items:center;gap:16px;padding:14px clamp(16px,4vw,44px) calc(14px + env(safe-area-inset-bottom,0px));background:#000;border-radius:0 0 34px 34px}
 .dock .sec{font-family:var(--mono);font-size:clamp(18px,2.2vw,30px);font-weight:700;min-width:180px}
 .dock nav{display:flex;gap:10px;margin:0 auto}.dock nav button{width:60px;height:60px;border-radius:50%;border:1px solid var(--edge);background:#1c1b21;display:grid;place-items:center;cursor:pointer;color:#fff}
 .dock nav button svg{width:24px;height:24px}.dock nav button[aria-current=true]{background:#fff;color:#0b0a14;border-color:#fff}
