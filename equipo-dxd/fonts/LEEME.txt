@@ -1,0 +1,7 @@
+Fuente Averta (de pago, no se incluye en el repositorio).
+Si tienen la licencia, copien aquí estos archivos y vuelvan a subir el sitio:
+  Averta-Regular.woff2
+  Averta-Semibold.woff2
+  Averta-Bold.woff2
+Mientras no estén, la página usa Averta si está instalada en el computador,
+y si no, Figtree (gratuita y muy parecida).

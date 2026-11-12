@@ -18,3 +18,9 @@ dirección y contacto de emergencia. Es un sitio aparte de la oficina virtual.
 ## Publicar en Netlify
 Arrastra esta carpeta (`equipo-dxd`) a https://app.netlify.com/drop como un sitio
 nuevo, o conecta el repo con **Base directory** = `equipo-dxd`.
+
+## Fuente
+
+El diseño usa **Averta**. Como es una fuente con licencia, no viene incluida:
+copia `Averta-Regular.woff2`, `Averta-Semibold.woff2` y `Averta-Bold.woff2` en la carpeta `fonts/`.
+Sin esos archivos se usa Figtree, que es muy parecida.
