@@ -24,3 +24,7 @@ nuevo, o conecta el repo con **Base directory** = `equipo-dxd`.
 El diseño usa **Averta**. Como es una fuente con licencia, no viene incluida:
 copia `Averta-Regular.woff2`, `Averta-Semibold.woff2` y `Averta-Bold.woff2` en la carpeta `fonts/`.
 Sin esos archivos se usa Figtree, que es muy parecida.
+
+## Publicar en Vercel
+
+Importa el repositorio en Vercel y en "Root Directory" elige `equipo-dxd` (Framework: Other, sin comando de build). `vercel.json` aplica las mismas cabeceras que `netlify.toml`.
