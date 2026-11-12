@@ -236,10 +236,10 @@ fieldset.pick{grid-column:1/-1;border:0;padding:0;margin:0;min-width:0}.pick leg
           <label class="f">CLAVE TEMPORAL<input class="in" name="p" required minlength="8"></label>
           <label style="display:flex;gap:8px;align-items:center;font-size:14px"><input type="checkbox" name="a"> Es administrador (ve direcciones y contactos de emergencia)</label>
           <div class="err" id="addErr" role="alert"></div><div id="addOk"></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" id="genPw">🎲 Generar clave</button><button class="btn white" type="submit">Agregar</button></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" id="genPw">Generar clave</button><button class="btn white" type="submit">Agregar</button></div>
         </form>
         <div class="glass panel"><h3>Integrantes y accesos</h3><div class="rows" id="admRows"></div>
-          <p style="margin:16px 0 0"><button class="btn sm" type="button" id="csv">⬇️ Descargar listado (CSV)</button> <span class="hint">Incluye datos privados: guárdalo en un lugar seguro.</span></p></div>
+          <p style="margin:16px 0 0"><button class="btn sm" type="button" id="csv">Descargar listado (CSV)</button> <span class="hint">Incluye datos privados: guárdalo en un lugar seguro.</span></p></div>
       </div>
     </section>
   </main>
@@ -287,7 +287,7 @@ $('loginForm').addEventListener('submit',async e=>{e.preventDefault();const f=e.
   if(r.error||!r.data||!r.data.token){$('loginErr').textContent=r.error?'No se pudo conectar.':'Usuario o clave incorrectos.';f.p.value='';return}setS(r.data);f.reset();boot()});
 $('pwForm').addEventListener('submit',async e=>{e.preventDefault();const f=e.target;$('pwErr').textContent='';
   if(f.n.value.length<8){$('pwErr').textContent='La clave nueva debe tener al menos 8 caracteres.';return}if(f.n.value!==f.n2.value){$('pwErr').textContent='Las claves nuevas no coinciden.';return}
-  try{await rpc('equipo_change_password',{p_old:f.o.value,p_new:f.n.value});toast('🔑 Clave actualizada');boot()}catch(err){$('pwErr').textContent=/clave_actual/.test(err.message)?'La clave actual no es correcta.':/clave_corta/.test(err.message)?'Mínimo 8 caracteres.':'No se pudo guardar.'}});
+  try{await rpc('equipo_change_password',{p_old:f.o.value,p_new:f.n.value});toast('Clave actualizada');boot()}catch(err){$('pwErr').textContent=/clave_actual/.test(err.message)?'La clave actual no es correcta.':/clave_corta/.test(err.message)?'Mínimo 8 caracteres.':'No se pudo guardar.'}});
 $('pwCancel').onclick=()=>boot();$('chPw').onclick=()=>showPw(false);
 $('logout').onclick=async()=>{try{await sb.rpc('equipo_logout',{p_token:token})}catch(e){}setS(null);token=null;showLogin('Cerraste sesión.')};
 // ---------- utilidades ----------
@@ -302,7 +302,7 @@ const TAGC=['#e23bd0','#3a4bff','#ff4d6d','#1fbf8f','#8b3dff','#e08a10','#1a9fd0
 const hash=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h};
 const nm=p=>p.full_name||p.username;
 function avatar(p,size){const n=nm(p).trim(),ini=n.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase(),a=/^#[0-9a-f]{6}$/i.test(p.color||'')?p.color:PAL[hash(p.username)%PAL.length];
-  const e=el('div','av',ini);e.style.cssText='width:'+size+'px;height:'+size+'px;font-size:'+Math.round(size*.36)+'px;background:'+a+';color:'+ink(a)+';text-shadow:none;';if(p.emoji){const b=el('span','emo',p.emoji);b.style.fontSize=Math.max(11,Math.round(size*.3))+'px';e.appendChild(b)}e.setAttribute('aria-hidden','true');return e}
+  const e=el('div','av',ini);e.style.cssText='width:'+size+'px;height:'+size+'px;font-size:'+Math.round(size*.36)+'px;background:'+a+';color:'+ink(a)+';text-shadow:none;';e.setAttribute('aria-hidden','true');return e}
 const ICON={mail:'<path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/>',phone:'<path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/>',cake:'<path d="M4 21h16M5 21v-7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7M12 12V8"/>',gift:'<path d="M3 9h18v4H3zM5 13v8h14v-8M12 9v12M12 9c-2-4-6-3-5-1s5 1 5 1zm0 0c2-4 6-3 5-1s-5 1-5 1z"/>'};
 const svg=k=>'<svg class="i" viewBox="0 0 24 24">'+ICON[k]+'</svg>';
 function copyBtn(v,lab){const b=el('button','copy','Copiar');b.type='button';b.setAttribute('aria-label','Copiar '+lab);b.onclick=e=>{e.stopPropagation();navigator.clipboard&&navigator.clipboard.writeText(v).then(()=>toast('Copiado: '+v))};return b}
@@ -320,7 +320,7 @@ function renderHome(){const list=bdays(),nx=list[0],k=innerWidth<640?.62:innerWi
   const mob=innerWidth<640,P=mob?[{x:18,y:72,s:96,v:1},{x:50,y:52,s:120,v:1},{x:82,y:84,s:96,v:1}]:[{x:0,y:50,s:84,l:1},{x:24,y:105,s:90,l:1},{x:44,y:0,s:124},{x:79,y:70,s:80}];
   const who=(list.length?list.map(x=>x.p):team).slice(0,P.length);
   who.forEach((p,i)=>{const o=P[i],b=el('button','pp'+(o.l?' r':'')+(o.v?' v':''));b.type='button';b.style.cssText='left:'+o.x+'%;bottom:'+Math.round(o.y*k)+'px';b.appendChild(avatar(p,Math.round(o.s*k)));
-    const nb=p.birthday?nextBday(p.birthday):null,t=el('div');t.append(el('b',null,nm(p).split(' ')[0]),el('small',null,mob?(nb?'🎂 '+nb.short:''):(p.role_title||'Equipo DXD')+(nb?' · 🎂 '+nb.short:'')));b.appendChild(t);
+    const nb=p.birthday?nextBday(p.birthday):null,t=el('div');t.append(el('b',null,nm(p).split(' ')[0]),el('small',null,mob?(nb?nb.short:''):(p.role_title||'Equipo DXD')+(nb?' · '+nb.short:'')));b.appendChild(t);
     b.setAttribute('aria-label','Ver ficha de '+nm(p));b.onclick=()=>openPerson(p);pe.appendChild(b)});
   C.appendChild(pe);const f=el('div','tf');C.appendChild(f);
   const r1=el('div','row1'),h=el('div');h.append(el('h3',null,'Próximo cumpleaños'),el('div','sub',nx?nm(nx.p)+' · '+nx.nb.label:'Nadie agregó su fecha todavía'));r1.appendChild(h);
@@ -332,7 +332,7 @@ function renderHome(){const list=bdays(),nx=list[0],k=innerWidth<640?.62:innerWi
   mid.appendChild(dl);f.appendChild(mid);
   const pct=team.length?full/team.length:0,N=56,tk=el('div','ticks');tk.setAttribute('aria-hidden','true');for(let i=0;i<N;i++)tk.appendChild(el('i',i<Math.round(pct*N)?'':'o'));f.appendChild(tk);
   const ft=el('div','foot'),fr=el('span',null,'Completas: ');fr.appendChild(el('b',null,Math.round(pct*100)+'%'));ft.append(el('span',null,'Fichas del equipo'),fr);f.appendChild(ft);
-  const g=el('div','gift');if(nx){g.appendChild(el('span',null,'🎁 '+(nx.p.gift_ideas||'Todavía no agregó ideas de regalo')));const b=el('button','btn white sm','Ver ficha →');b.type='button';b.onclick=()=>openPerson(nx.p);g.appendChild(b)}
+  const g=el('div','gift');if(nx){g.appendChild(el('span',null,'Regalo: '+(nx.p.gift_ideas||'Todavía no agregó ideas de regalo')));const b=el('button','btn white sm','Ver ficha →');b.type='button';b.onclick=()=>openPerson(nx.p);g.appendChild(b)}
   else{g.appendChild(el('span',null,'Agrega tu cumpleaños e ideas de regalo'));const b=el('button','btn white sm','Mi ficha →');b.type='button';b.onclick=()=>go('me');g.appendChild(b)}f.appendChild(g);
   // carpetas por trimestre
   const Q=[[],[],[],[]];for(const x of list)Q[Math.floor(x.nb.date.getMonth()/3)].push(x);const CP=[[55,0,88],[24,62,50],[10,22,30],[86,26,44],[76,92,28],[38,100,30]];
@@ -359,10 +359,10 @@ function openPerson(p){const d=$('drawer');d.textContent='';const h=el('div','he
   const x=el('button','ico','✕');x.type='button';x.style.marginLeft='auto';x.setAttribute('aria-label','Cerrar');x.onclick=closePerson;h.appendChild(x);d.appendChild(h);
   const b1=el('div','box');b1.appendChild(el('h4',null,'Contacto'));const dl=el('dl','kv');const row=(k,v,cp)=>{dl.append(el('dt',null,k));const dd=el('dd');if(v){if(k==='Correo'){const a=el('a',null,v);a.href='mailto:'+v;dd.appendChild(a)}else dd.append(v);if(cp)dd.appendChild(copyBtn(v,k))}else dd.append('—');dl.appendChild(dd)};
   row('Correo',p.email,true);row('Teléfono',p.phone,true);row('Cumpleaños',p.birthday?nextBday(p.birthday).label:'');b1.appendChild(dl);d.appendChild(b1);
-  const b2=el('div','box');b2.appendChild(el('h4',null,'🎁 Ideas de regalo'));b2.appendChild(el('div',null,p.gift_ideas||'Todavía no agregó ideas.'));b2.lastChild.style.whiteSpace='pre-wrap';d.appendChild(b2);if(p.fun_fact){const b4=el('div','box');b4.appendChild(el('h4',null,'✨ Dato curioso'));b4.appendChild(el('div',null,p.fun_fact));d.appendChild(b4)}
-  if(p.private){const b3=el('div','box lock');b3.appendChild(el('h4',null,p.username===me.user?'🔒 Privado · solo tú y administración':'🔒 Privado · lo ves como administrador'));const d2=el('dl','kv');
+  const b2=el('div','box');b2.appendChild(el('h4',null,'Ideas de regalo'));b2.appendChild(el('div',null,p.gift_ideas||'Todavía no agregó ideas.'));b2.lastChild.style.whiteSpace='pre-wrap';d.appendChild(b2);if(p.fun_fact){const b4=el('div','box');b4.appendChild(el('h4',null,'Dato curioso'));b4.appendChild(el('div',null,p.fun_fact));d.appendChild(b4)}
+  if(p.private){const b3=el('div','box lock');b3.appendChild(el('h4',null,p.username===me.user?'Privado · solo tú y administración':'Privado · lo ves como administrador'));const d2=el('dl','kv');
     d2.append(el('dt',null,'Dirección'),el('dd',null,p.address||'—'),el('dt',null,'Emergencia'),el('dd',null,[p.emergency_name,p.emergency_relation&&'('+p.emergency_relation+')',p.emergency_phone].filter(Boolean).join(' ')||'—'));b3.appendChild(d2);d.appendChild(b3)}
-  if(me.is_admin||p.username===me.user){const e=el('button','btn white',p.username===me.user?'✏️ Editar mi ficha':'✏️ Editar ficha');e.type='button';e.style.justifyContent='center';e.onclick=()=>{if(p.username===me.user){closePerson();go('me')}else openEdit(p)};d.appendChild(e)}
+  if(me.is_admin||p.username===me.user){const e=el('button','btn white',p.username===me.user?'Editar mi ficha':'Editar ficha');e.type='button';e.style.justifyContent='center';e.onclick=()=>{if(p.username===me.user){closePerson();go('me')}else openEdit(p)};d.appendChild(e)}
   openDrawer('Ficha de '+nm(p))}
 let lastFocus=null;
 function openDrawer(label){const d=$('drawer');if(!d.classList.contains('open'))lastFocus=document.activeElement;d.setAttribute('aria-label',label);$('scrim').hidden=false;d.classList.add('open');d.setAttribute('aria-hidden','false');$('app').setAttribute('aria-hidden','true');
@@ -375,15 +375,14 @@ $('drawer').addEventListener('keydown',e=>{if(e.key!=='Tab')return;const f=[...$
   let st=false;try{st=localStorage.getItem('equipo-still')==='1'}catch(e){}if(matchMedia('(prefers-reduced-motion: reduce)').matches)st=true;set(st);b.onclick=()=>set(!document.documentElement.classList.contains('still'))})();
 $('scrim').onclick=closePerson;addEventListener('keydown',e=>{if(e.key==='Escape')closePerson()});
 // ---------- formulario (ficha entretenida) ----------
-const EMOJIS=[['🚀','Cohete'],['🎨','Paleta'],['☕','Café'],['🌱','Planta'],['🎧','Audífonos'],['🐱','Gato'],['🐶','Perro'],['🍕','Pizza'],['⚡','Rayo'],['🌈','Arcoíris'],['🦄','Unicornio'],['🎮','Videojuego'],['📚','Libros'],['🏔️','Montaña'],['🌊','Ola'],['✨','Brillos']];
 const COLORS=[['#e23bd0','Magenta'],['#8b3dff','Violeta'],['#3a4bff','Índigo'],['#2f6bff','Azul'],['#1a9fd0','Océano'],['#1fae7f','Verde'],['#e8c400','Mostaza'],['#f08a1c','Naranja'],['#ff4d6d','Rojo'],['#d4398f','Fucsia']];
-const GIFTS=['☕ Café','📚 Libros','🌱 Plantas','🍫 Chocolate','🎧 Música','🍷 Vino','🎮 Juegos','🎨 Arte','🧘 Bienestar','🍰 Dulces','✈️ Viajes','🧦 Calcetines locos'];
-const SIGNS=[[1,20,'♑','Capricornio'],[2,19,'♒','Acuario'],[3,21,'♓','Piscis'],[4,20,'♈','Aries'],[5,21,'♉','Tauro'],[6,21,'♊','Géminis'],[7,23,'♋','Cáncer'],[8,23,'♌','Leo'],[9,23,'♍','Virgo'],[10,23,'♎','Libra'],[11,22,'♏','Escorpio'],[12,22,'♐','Sagitario'],[12,32,'♑','Capricornio']];
+const GIFTS=['Café','Libros','Plantas','Chocolate','Música','Vino','Juegos','Arte','Bienestar','Dulces','Viajes','Experiencias'];
+const SIGNS=[[1,20,'','Capricornio'],[2,19,'','Acuario'],[3,21,'','Piscis'],[4,20,'','Aries'],[5,21,'','Tauro'],[6,21,'','Géminis'],[7,23,'','Cáncer'],[8,23,'','Leo'],[9,23,'','Virgo'],[10,23,'','Libra'],[11,22,'','Escorpio'],[12,22,'','Sagitario'],[12,32,'','Capricornio']];
 function sign(iso){if(!iso)return null;const[,m,d]=iso.split('-').map(Number);for(const s of SIGNS)if(m<s[0]||(m===s[0]&&d<s[1]))return s;return null}
 const giftList=s=>(s||'').split(/[\n,]+/).map(x=>x.trim()).filter(Boolean);
 const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.classList.contains('still');
 function confetti(){if(reduced())return;const c=el('div','confetti');c.setAttribute('aria-hidden','true');document.body.appendChild(c);
-  for(let i=0;i<70;i++){const p=el('i');p.style.left=(50+(Math.random()-.5)*30)+'%';p.style.top='55%';p.style.background=COLORS[i%COLORS.length][0];c.appendChild(p);
+  for(let i=0;i<70;i++){const p=el('i');p.style.left=(50+(Math.random()-.5)*30)+'%';p.style.top='55%';p.style.background=['#fff','#c9c7ff','#8a87ff'][i%3];c.appendChild(p);
     const dx=(Math.random()-.5)*900,dy=-300-Math.random()*400;p.animate([{transform:'translate(0,0) rotate(0)',opacity:1},{transform:`translate(${dx}px,${dy}px) rotate(${Math.random()*720}deg)`,opacity:1,offset:.55},{transform:`translate(${dx*1.2}px,${dy+700}px) rotate(${Math.random()*1080}deg)`,opacity:0}],{duration:1600+Math.random()*700,easing:'cubic-bezier(.2,.7,.4,1)',fill:'forwards'})}
   setTimeout(()=>c.remove(),2600)}
 let fid=0;
@@ -399,14 +398,14 @@ function buildForm(f,p,isMe,onDone){f.textContent='';const id=++fid,gifts=giftLi
   const card=el('aside','glass carnet');card.setAttribute('aria-label','Vista previa de la ficha');wrap.appendChild(card);
   const steps=el('div','steps');wrap.appendChild(steps);
   if(!isMe)steps.appendChild(el('h3','edt','Editar ficha de '+nm(p)));
-  const s1=sec(1,'Quién eres','Así te verá el equipo en el directorio.');s1.append(inp('full_name','NOMBRE COMPLETO','text',80,{full:1,ac:'name'}),inp('role_title','CARGO','text',60,{full:1,ph:'Ej: Diseñadora UX',ac:'organization-title'}),pick('emoji','TU EMOJI',EMOJIS),pick('color','TU COLOR',COLORS,true));steps.appendChild(s1);
-  const s2=sec(2,'Tu día especial','Para que nadie se olvide de celebrarte 🎉');const bd=inp('birthday','CUMPLEAÑOS','date');s2.appendChild(bd);const live=el('output','live');live.setAttribute('aria-live','polite');s2.appendChild(live);
+  const s1=sec(1,'Quién eres','Así te verá el equipo en el directorio.');s1.append(inp('full_name','NOMBRE COMPLETO','text',80,{full:1,ac:'name'}),inp('role_title','CARGO','text',60,{full:1,ph:'Ej: Diseñadora UX',ac:'organization-title'}),pick('color','TU COLOR',COLORS,true));steps.appendChild(s1);
+  const s2=sec(2,'Tu día especial','Para que nadie se olvide de celebrarte.');const bd=inp('birthday','CUMPLEAÑOS','date');s2.appendChild(bd);const live=el('output','live');live.setAttribute('aria-live','polite');s2.appendChild(live);
   const gfs=el('div','full gbox');const gl=el('p','glab','IDEAS DE REGALO · toca para agregar o quitar');gl.id='gl'+id;gfs.appendChild(gl);const gs=el('div','gs');gs.setAttribute('role','group');gs.setAttribute('aria-labelledby',gl.id);gfs.appendChild(gs);
   const addRow=el('div','addg');const gi=el('input','in');gi.placeholder='Otra idea (ej: libros de diseño)';gi.maxLength=60;gi.setAttribute('aria-label','Escribe otra idea de regalo');const gb=el('button','btn','Agregar');gb.type='button';addRow.append(gi,gb);gfs.appendChild(addRow);
   const ul=el('ul','glist');ul.setAttribute('aria-label','Tus ideas de regalo');gfs.appendChild(ul);s2.appendChild(gfs);steps.appendChild(s2);
   const s3=sec(3,'Cómo contactarte',null);s3.append(inp('email','CORREO ELECTRÓNICO','email',120,{ac:'email'}),inp('phone','TELÉFONO','tel',40,{ac:'tel'}));steps.appendChild(s3);
   const s4=sec(4,'Dato curioso','Algo que pocos saben de ti. ¡Sin presión!');const ff=inp('fun_fact','TU DATO CURIOSO','area',160,{full:1,ph:'Ej: sé tocar el ukelele y una vez conocí a un pingüino'});const cnt2=el('span','hint cc');cnt2.id='cc'+id;ff.querySelector('textarea').setAttribute('aria-describedby',cnt2.id);ff.appendChild(cnt2);s4.appendChild(ff);steps.appendChild(s4);
-  const s5=sec(5,'🔒 Privado',(isMe?'Solo tú':'Solo la persona')+' y administración pueden verlo.','lock');s5.append(inp('address','DIRECCIÓN','text',200,{full:1,ph:'Calle, número, comuna',ac:'street-address'}),inp('emergency_name','CONTACTO DE EMERGENCIA','text',80),inp('emergency_relation','PARENTESCO','text',40,{ph:'Ej: hermana'}),inp('emergency_phone','TELÉFONO DE EMERGENCIA','tel',40,{full:1}));steps.appendChild(s5);
+  const s5=sec(5,'Privado',(isMe?'Solo tú':'Solo la persona')+' y administración pueden verlo.','lock');s5.append(inp('address','DIRECCIÓN','text',200,{full:1,ph:'Calle, número, comuna',ac:'street-address'}),inp('emergency_name','CONTACTO DE EMERGENCIA','text',80),inp('emergency_relation','PARENTESCO','text',40,{ph:'Ej: hermana'}),inp('emergency_phone','TELÉFONO DE EMERGENCIA','tel',40,{full:1}));steps.appendChild(s5);
   const msg=el('div','full');msg.setAttribute('role','alert');const bar=el('div','savebar');if(onDone){const c=el('button','btn','Cancelar');c.type='button';c.onclick=onDone;bar.appendChild(c)}const sv=el('button','btn white','Guardar ficha');sv.type='submit';bar.appendChild(sv);steps.append(msg,bar);
   // regalos
   const drawGifts=()=>{gs.textContent='';for(const g of GIFTS){const b=el('button',null,g);b.type='button';const on=gifts.some(x=>x.toLowerCase()===g.toLowerCase());b.setAttribute('aria-pressed',on);b.onclick=()=>{const i=gifts.findIndex(x=>x.toLowerCase()===g.toLowerCase());if(i>=0)gifts.splice(i,1);else gifts.push(g);drawGifts();refresh()};gs.appendChild(b)}
@@ -417,23 +416,23 @@ function buildForm(f,p,isMe,onDone){f.textContent='';const id=++fid,gifts=giftLi
   // vista previa en vivo
   const val=k=>{const e=f.elements[k];return e?(e.value||'').trim():''};
   const data=()=>{const d={};for(const k of['full_name','role_title','birthday','email','phone','fun_fact','address','emergency_name','emergency_relation','emergency_phone'])d[k]=val(k);
-    const r=k=>{const c=f.querySelector('input[name='+k+']:checked');return c?c.value:''};d.emoji=r('emoji');d.color=r('color');d.gift_ideas=gifts.join(', ');return d};
+    const r=k=>{const c=f.querySelector('input[name='+k+']:checked');return c?c.value:''};d.emoji='';d.color=r('color');d.gift_ideas=gifts.join(', ');return d};
   let lastPct=-1;
   function refresh(){const d=data(),q=Object.assign({username:p.username},d);card.textContent='';card.appendChild(avatar(q,108));card.append(el('h3',null,d.full_name||p.username),el('div','role',d.role_title||'Equipo DXD'));
-    const tg=el('div','tags'),nb=d.birthday?nextBday(d.birthday):null,sg=sign(d.birthday);if(nb)tg.appendChild(el('span','tag','🎂 '+nb.short));if(sg)tg.appendChild(el('span','tag',sg[2]+' '+sg[3]));if(d.emoji)tg.appendChild(el('span','tag',d.emoji+' vibra'));if(tg.childNodes.length)card.appendChild(tg);
+    const tg=el('div','tags'),nb=d.birthday?nextBday(d.birthday):null,sg=sign(d.birthday);if(nb)tg.appendChild(el('span','tag',nb.label));if(sg)tg.appendChild(el('span','tag',sg[3]));if(tg.childNodes.length)card.appendChild(tg);
     if(d.fun_fact)card.appendChild(el('blockquote','quote','“'+d.fun_fact+'”'));
     if(gifts.length){const g=el('div','tags');for(const x of gifts.slice(0,6))g.appendChild(el('span','tag soft',x));card.appendChild(g)}
-    live.textContent=nb?(nb.days===0?'🎉 ¡Es hoy! Feliz cumpleaños':'🎂 Faltan '+nb.days+(nb.days===1?' día':' días')+(sg?' · '+sg[2]+' '+sg[3]:'')):'';
+    live.textContent=nb?(nb.days===0?'¡Es hoy! Feliz cumpleaños':'Faltan '+nb.days+(nb.days===1?' día':' días')+(sg?' · '+sg[3]:'')):'';
     cnt2.textContent=d.fun_fact.length+' de 160 caracteres';
-    const items=[d.full_name,d.role_title,d.birthday,d.email,d.phone,gifts.length,d.emoji,d.fun_fact,d.address,d.emergency_name&&d.emergency_phone],ok=items.filter(Boolean).length,pct=Math.round(ok/items.length*100);
+    const items=[d.full_name,d.role_title,d.birthday,d.email,d.phone,gifts.length,d.fun_fact,d.address,d.emergency_name&&d.emergency_phone],ok=items.filter(Boolean).length,pct=Math.round(ok/items.length*100);
     const rg=el('div','ring');const C=2*Math.PI*24;rg.innerHTML='<svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="24" class="tr"/><circle cx="28" cy="28" r="24" class="pg" stroke-dasharray="'+C+'" stroke-dashoffset="'+(C*(1-pct/100))+'"/></svg>';
     const pb=el('div');pb.setAttribute('role','progressbar');pb.setAttribute('aria-valuemin','0');pb.setAttribute('aria-valuemax','100');pb.setAttribute('aria-valuenow',pct);pb.setAttribute('aria-label','Ficha completa');
-    pb.append(el('b',null,pct+'% completa'),el('small',null,pct===100?'¡Ficha perfecta! 🏆':pct>=70?'¡Casi! Te falta poquito 💪':pct>=40?'Vas bien, sigue así ✨':'Empecemos: cuéntale al equipo de ti 👋'));rg.appendChild(pb);card.appendChild(rg);
+    pb.append(el('b',null,pct+'% completa'),el('small',null,pct===100?'Ficha completa. ¡Gracias!':pct>=70?'Te falta muy poco':pct>=40?'Vas bien, sigue así':'Cuéntale al equipo un poco de ti'));rg.appendChild(pb);card.appendChild(rg);
     if(pct===100&&lastPct>=0&&lastPct<100)card.classList.add('pop'),setTimeout(()=>card.classList.remove('pop'),700);lastPct=pct}
   f.addEventListener('input',refresh);f.addEventListener('change',refresh);drawGifts();refresh();
   f.onsubmit=async e=>{e.preventDefault();const d=data();msg.textContent='';msg.className='full';
     if(d.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)){msg.className='full err';msg.textContent='El correo no parece válido.';f.elements.email.focus();return}
-    sv.disabled=true;sv.textContent='Guardando…';try{await rpc('equipo_save',{p_username:p.username,p_data:d});const full=lastPct===100;toast(full?'🏆 ¡Ficha perfecta guardada!':'✅ Ficha guardada');confetti();await load();if(onDone)onDone()}
+    sv.disabled=true;sv.textContent='Guardando…';try{await rpc('equipo_save',{p_username:p.username,p_data:d});const full=lastPct===100;toast(full?'Ficha completa guardada':'Ficha guardada');confetti();await load();if(onDone)onDone()}
     catch(err){msg.className='full err';msg.textContent='No se pudo guardar. Revisa los datos e intenta de nuevo.'}sv.disabled=false;sv.textContent='Guardar ficha'}}
 function renderMe(){const p=team.find(x=>x.username===me.user)||{username:me.user};buildForm($('meForm'),p,true)}
 function openEdit(p){const d=$('drawer');d.textContent='';const f=el('form');f.noValidate=true;d.appendChild(f);buildForm(f,p,false,closePerson);openDrawer('Editar ficha de '+nm(p))}
@@ -442,11 +441,11 @@ function genPw(){const a='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ2345678
 $('genPw').onclick=()=>{$('addForm').p.value=genPw()};
 $('addForm').addEventListener('submit',async e=>{e.preventDefault();const f=e.target,u=f.u.value.trim().toLowerCase(),pw=f.p.value;$('addErr').textContent='';$('addOk').textContent='';
   if(!/^[a-z0-9._-]{3,20}$/.test(u)){$('addErr').textContent='Usuario: 3 a 20 caracteres, solo minúsculas, números, punto o guion.';return}if(pw.length<8){$('addErr').textContent='La clave temporal debe tener al menos 8 caracteres.';return}
-  try{await rpc('equipo_admin_add_user',{p_username:u,p_temp:pw,p_admin:f.a.checked});const c=el('div','cred');c.append('✅ Listo. Envíale por un canal privado: usuario ',el('code',null,u),' · clave temporal ',el('code',null,pw),'. Al entrar creará su propia clave.');$('addOk').appendChild(c);f.reset();await load()}
+  try{await rpc('equipo_admin_add_user',{p_username:u,p_temp:pw,p_admin:f.a.checked});const c=el('div','cred');c.append('Listo. Envíale por un canal privado: usuario ',el('code',null,u),' · clave temporal ',el('code',null,pw),'. Al entrar creará su propia clave.');$('addOk').appendChild(c);f.reset();await load()}
   catch(err){$('addErr').textContent=/usuario_existe/.test(err.message)?'Ese usuario ya existe.':'No se pudo agregar.'}});
 function renderAdm(){const box=$('admRows');box.textContent='';for(const p of team){const r=el('div','row');r.appendChild(avatar(p,36));const n=el('div','n');n.append(el('b',null,nm(p)),el('small',null,'@'+p.username+' · '+(p.is_admin?'Administrador':'Integrante')+' · ficha '+((p.full_name&&p.birthday&&p.email)?'completa':'incompleta')));r.appendChild(n);
     const ed=el('button','btn sm','Ficha');ed.type='button';ed.onclick=()=>openEdit(p);r.appendChild(ed);
-    if(p.username!==me.user){const rs=el('button','btn sm','🔑');rs.type='button';rs.title='Nueva clave temporal';rs.setAttribute('aria-label','Nueva clave temporal para '+p.username);
+    if(p.username!==me.user){const rs=el('button','btn sm','Nueva clave');rs.type='button';rs.title='Nueva clave temporal';rs.setAttribute('aria-label','Nueva clave temporal para '+p.username);
       rs.onclick=async()=>{const pw=genPw();if(!confirm('¿Generar una clave temporal nueva para @'+p.username+'? Se cerrarán sus sesiones.'))return;try{await rpc('equipo_admin_reset_password',{p_username:p.username,p_temp:pw});prompt('Clave temporal para @'+p.username+' (cópiala y envíala por un canal privado):',pw)}catch(e){toast('No se pudo restablecer')}};
       const rm=el('button','btn sm danger','Quitar');rm.type='button';rm.onclick=async()=>{if(!confirm('¿Quitar el acceso de @'+p.username+'? Se borra su usuario y su ficha.'))return;try{await rpc('equipo_admin_remove_user',{p_username:p.username});toast('Acceso quitado');load()}catch(e){toast('No se pudo quitar')}};r.append(rs,rm)}
     box.appendChild(r)}}
