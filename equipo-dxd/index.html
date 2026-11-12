@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&display=swap">
-<script>try{const a=JSON.parse(localStorage.getItem('equipo-a11y')||'{}'),d=document.documentElement;if(a.theme)d.dataset.theme=a.theme;if(a.size)d.dataset.size=a.size}catch(e){}</script>
+<script>try{const a=JSON.parse(localStorage.getItem('equipo-a11y')||'{}'),d=document.documentElement;if(a.theme)d.dataset.theme=a.theme;if(a.size)d.dataset.size=a.size;if(a.skin)d.dataset.skin=a.skin;const q=new URLSearchParams(location.search).get('estilo');if(q==='claro')d.dataset.skin='claro';if(q==='espacial')delete d.dataset.skin}catch(e){}</script>
 <script src="supabase.js"></script>
 <style>
 :root{--g1:#0b0870;--g2:#2622e0;--g3:#6a68f4;--g4:#b9b6f6;--a1:#d65ce6;--a2:#3a4bff;--a3:#5ac8ff;--a4:#8b3dff;--sky0:#2b1653;--sky1:#c45ad8;--sky2:#5a2fd6;--sky3:#9a3fd0}
@@ -231,6 +231,53 @@ table.cal{width:100%;border-collapse:separate;border-spacing:6px;table-layout:fi
 html[data-theme=hc] .cal td{background:#000;border:1px solid #888}html[data-theme=hc] .cal td.has{border:2px solid #fff}html[data-theme=hc] .cal td.out{border:0}
 @media (max-width:1100px){.calwrap{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr}}
 @media (max-width:640px){.calwrap{padding-top:20px}.calcard{padding:18px 12px}.side{grid-template-columns:1fr}table.cal{border-spacing:3px;margin:0 -3px}.cal td{height:58px;padding:4px;border-radius:10px}.cal th{padding-left:4px;font-size:10px;letter-spacing:0}.cp span{display:none}.cp{margin-top:2px}.mchips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-left:-4px;margin-right:-4px;padding:2px 4px}.mchips button{padding:6px 8px;font-size:13px;flex:none}}
+/* ===== estilo claro ===== */
+html[data-skin=claro]{--text:#16204a;--muted:#5a6384;--edge:#e3e7f2;--glass:#fff;--glass-2:#fff;--acc:#2448e0;--acc-soft:#e9eeff;--acc2:#2448e0;--acc2-soft:#eef2ff;--line:#e6e9f3;--bg2:#f2f4fa;--navy:#0c1550;--band:linear-gradient(120deg,#0b1460 0%,#1b2fc4 55%,#3a5bff 100%);color-scheme:light}
+html[data-skin=claro] body,html[data-skin=claro] #app,html[data-skin=claro] #auth,html[data-skin=claro] #app main,html[data-skin=claro] .authmain{background:var(--bg2);color:var(--text)}
+html[data-skin=claro] body::before,html[data-skin=claro] .aurora,html[data-skin=claro] #app main::before,html[data-skin=claro] .authmain::before{display:none}
+html[data-skin=claro] #motion{display:none}
+html[data-skin=claro] .top{background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+html[data-skin=claro] .logo b,html[data-skin=claro] .logo .wm{color:var(--text)}html[data-skin=claro] .top .logo b{color:var(--muted)}
+html[data-skin=claro] .pills button{color:var(--muted)}html[data-skin=claro] .pills button:hover,html[data-skin=claro] .pills button[aria-current=true]{color:var(--acc)}html[data-skin=claro] .pills button::after{background:var(--acc)}
+html[data-skin=claro] .ico,html[data-skin=claro] .top .ico{background:#fff;border:1px solid var(--line);color:var(--text)}html[data-skin=claro] .ico:hover,html[data-skin=claro] .top .ico:hover{background:var(--acc-soft)}
+html[data-skin=claro] .glass,html[data-skin=claro] .tf,html[data-skin=claro] .folder,html[data-skin=claro] .stp,html[data-skin=claro] .carnet,html[data-skin=claro] .authcard{background:#fff;border:1px solid var(--line);box-shadow:0 1px 2px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.06);text-shadow:none;color:var(--text)}
+html[data-skin=claro] .tf,html[data-skin=claro] .folder,html[data-skin=claro] .authcard{border-radius:20px}html[data-skin=claro] .tf::before,html[data-skin=claro] .folder::before,html[data-skin=claro] .authcard::before{display:none}
+html[data-skin=claro] .box{background:var(--bg2);border-color:var(--line)}html[data-skin=claro] .lock{background:#fff8ec;border-color:#f3dcb3}
+html[data-skin=claro] .drawer,html[data-skin=claro] .a11y{background:#fff;color:var(--text);border:1px solid var(--line);box-shadow:0 20px 50px rgba(16,24,40,.18)}html[data-skin=claro] .scrim{background:rgba(16,24,40,.35)}
+html[data-skin=claro] :is(.cp,.nextc .gl,.ups li b,.calhd h3,.tile .tt b,.tile,.month li button,.ups li button,.nextc .who,.calnav .ico,.gs button,.glist li,.qlist button,.opt span.v,.kvs dd,.gift,.quote,.live,.ring b,.ups li em,.icons,.folder h3,.cal .dn,.mchips button,.tags .tag,.edt,.stp h3,.carnet h3){color:var(--text)}
+html[data-skin=claro] .btn{background:#fff;border-color:var(--line);color:var(--text)}html[data-skin=claro] .btn:hover{background:var(--acc-soft)}
+html[data-skin=claro] .btn.white{background:var(--acc);border-color:var(--acc);color:#fff}html[data-skin=claro] .btn.white:hover{background:#1a36b8}
+html[data-skin=claro] .btn.danger{background:#fff2f2;border-color:#f3b9b9;color:#a12a2a}
+html[data-skin=claro] .in{background:#fff;border:1px solid #d5dae3;color:var(--text)}html[data-skin=claro] .in:focus{border-color:var(--acc);background:#fff;box-shadow:0 0 0 3px var(--acc-soft)}html[data-skin=claro] select.in option{background:#fff;color:var(--text)}
+html[data-skin=claro] .err{color:#b42318}html[data-skin=claro] :focus-visible{outline-color:var(--acc)}
+html[data-skin=claro] .dock{background:#fff;border-top:1px solid var(--line);color:var(--text)}html[data-skin=claro] .dock nav button{background:var(--bg2);border-color:var(--line);color:var(--text)}html[data-skin=claro] .dock nav button[aria-current=true]{background:var(--acc);border-color:var(--acc);color:#fff}
+html[data-skin=claro] #toast{background:var(--text);color:#fff;border:0}
+html[data-skin=claro] .huge{color:var(--text)}html[data-skin=claro] .huge span{color:var(--muted)}
+html[data-skin=claro] .tile .ti{background:var(--acc-soft);color:var(--acc)}html[data-skin=claro] .tile:hover{background:#fff;border-color:#bfe3e8;transform:translateY(-2px)}html[data-skin=claro] .tile .ar{color:var(--acc);opacity:1}
+html[data-skin=claro] .tile .pbar,html[data-skin=claro] .ticks i.o{background:#e6e9ef}html[data-skin=claro] .tile .pbar i{background:var(--acc2)}
+html[data-skin=claro] .month li button{background:var(--bg2);border-color:var(--line)}html[data-skin=claro] .month li button:hover{background:var(--acc-soft)}
+html[data-skin=claro] .mchips button[aria-pressed=true]{background:var(--acc);color:#fff}html[data-skin=claro] .mchips button b{background:#e6e9ef;color:var(--text)}html[data-skin=claro] .mchips button[aria-pressed=true] b{background:#fff;color:var(--acc)}html[data-skin=claro] .mchips button:hover{background:var(--acc-soft);color:var(--text)}
+html[data-skin=claro] .cal td{background:var(--bg2);border-color:transparent}html[data-skin=claro] .cal td.out{background:none}html[data-skin=claro] .cal td.has{background:var(--acc-soft);border-color:#b9c7ff}html[data-skin=claro] .cal td.today .dn{background:var(--acc);color:#fff}html[data-skin=claro] .cp:hover{background:#dce4ff}
+html[data-skin=claro] .ups li button:hover{background:var(--bg2)}html[data-skin=claro] .ups li em{background:var(--acc-soft);color:var(--acc)}
+html[data-skin=claro] .tag,html[data-skin=claro] .gs button,html[data-skin=claro] .glist li{background:var(--bg2);border:1px solid var(--line)}html[data-skin=claro] .gs button[aria-pressed=true]{background:var(--acc);border-color:var(--acc);color:#fff}html[data-skin=claro] .glist button{background:#dfe3ea;color:var(--text)}
+html[data-skin=claro] .ring .tr{stroke:#e6e9ef}html[data-skin=claro] .ring .pg{stroke:var(--acc2)}
+html[data-skin=claro] .opt span.v{background:var(--bg2)}html[data-skin=claro] .sw input:checked+span.v{box-shadow:0 0 0 3px #fff inset;border-color:var(--text)}
+html[data-skin=claro] .stp h3 .n{background:var(--acc);color:#fff}html[data-skin=claro] .row{background:var(--bg2)}html[data-skin=claro] .cred{background:#ecfdf3;border-color:#a6e4bf}
+html[data-skin=claro] .ticks i{background:var(--acc)}html[data-skin=claro] .copy{background:var(--bg2);color:var(--text)}
+html[data-skin=claro] .a11y label.ch{background:var(--bg2)}html[data-skin=claro] .a11y label.ch:has(input:checked){border-color:var(--acc);background:var(--acc-soft)}html[data-skin=claro] .a11y input{accent-color:var(--acc)}
+html[data-skin=claro] .hello p,html[data-skin=claro] .stl{color:var(--muted)}
+html[data-skin=claro] a{color:var(--acc)}
+
+/* claro: franja azul superior + saludo */
+html[data-skin=claro] .top{background:var(--band);border-bottom:0;backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-skin=claro] .top .logo b,html[data-skin=claro] .top .logo .wm{color:#fff}html[data-skin=claro] .top .logo b{opacity:.75}
+html[data-skin=claro] .top .pills button{color:rgba(255,255,255,.72)}html[data-skin=claro] .top .pills button:hover,html[data-skin=claro] .top .pills button[aria-current=true]{color:#fff}html[data-skin=claro] .top .pills button::after{background:#fff}
+html[data-skin=claro] .top .ico{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.22);color:#fff}html[data-skin=claro] .top .ico:hover{background:rgba(255,255,255,.26)}
+
+html[data-skin=claro] .authmain{background:var(--bg2)}html[data-skin=claro] #auth .top{position:relative}
+
+html[data-skin=claro] .tile .ti{background:var(--acc-soft);color:var(--acc)}
+html[data-skin=claro] .month{background:#fff}
 /* administración */
 .admgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:22px;align-items:start}
 .panel{padding:22px}.panel h3{font-family:var(--mono);font-size:16px;margin:0 0 14px}
@@ -241,6 +288,7 @@ html[data-theme=hc] .cal td{background:#000;border:1px solid #888}html[data-them
 .dock .sec{font-family:var(--mono);font-size:clamp(18px,2.2vw,30px);font-weight:700;min-width:180px}
 .dock nav{display:flex;gap:10px;margin:0 auto}.dock nav button{width:60px;height:60px;border-radius:50%;border:1px solid var(--edge);background:#1c1b21;display:grid;place-items:center;cursor:pointer;color:#fff}
 .dock nav button svg{width:24px;height:24px}.dock nav button[aria-current=true]{background:#fff;color:#0b0a14;border-color:#fff}
+.dock nav button .lb{display:none}.seclab{display:none;margin:34px 0 0;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--muted)}.feat{display:none}
 .dock .end{min-width:180px;display:flex;justify-content:flex-end;gap:10px;align-items:center}
 #toast{position:fixed;left:50%;bottom:104px;transform:translateX(-50%);z-index:40;padding:10px 18px;border-radius:999px;font-weight:700;font-size:14px}
 @media (max-width:1100px){.board{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"c c" "q0 q1" "q2 q3";gap:130px 22px;padding-top:200px}.admgrid{grid-template-columns:1fr}.pills{display:none}}
@@ -333,11 +381,11 @@ html[data-theme=hc] .cal td{background:#000;border:1px solid #888}html[data-them
   <div class="dock">
     <div class="sec" id="secName">Inicio</div>
     <nav aria-label="Navegación">
-      <button data-v="start" aria-current="true" title="Inicio" aria-label="Inicio"><svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg></button>
-      <button data-v="home" aria-current="false" title="Cumpleaños" aria-label="Cumpleaños"><svg class="i" viewBox="0 0 24 24"><path d="M4 21h16M5 21v-7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7M5 16c2 1.2 3.5 1.2 5 0s3.5-1.2 5 0 3 1.2 4 0M12 12V8M12 5.5c.8 0 1.2-.6 1.2-1.2S12 2 12 2s-1.2 1.7-1.2 2.3.4 1.2 1.2 1.2z"/></svg></button>
-      <button data-v="dir" title="Directorio" aria-label="Directorio"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg></button>
-      <button data-v="me" title="Mi ficha" aria-label="Mi ficha"><svg class="i" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg></button>
-      <button data-v="adm" title="Administración" aria-label="Administración" data-admin><svg class="i" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></button>
+      <button data-v="start" aria-current="true" title="Inicio" aria-label="Inicio"><svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span class="lb" aria-hidden="true">Inicio</span></button>
+      <button data-v="home" aria-current="false" title="Cumpleaños" aria-label="Cumpleaños"><svg class="i" viewBox="0 0 24 24"><path d="M4 21h16M5 21v-7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7M5 16c2 1.2 3.5 1.2 5 0s3.5-1.2 5 0 3 1.2 4 0M12 12V8M12 5.5c.8 0 1.2-.6 1.2-1.2S12 2 12 2s-1.2 1.7-1.2 2.3.4 1.2 1.2 1.2z"/></svg><span class="lb" aria-hidden="true">Cumpleaños</span></button>
+      <button data-v="dir" title="Directorio" aria-label="Directorio"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg><span class="lb" aria-hidden="true">Directorio</span></button>
+      <button data-v="me" title="Mi ficha" aria-label="Mi ficha"><svg class="i" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg><span class="lb" aria-hidden="true">Mi ficha</span></button>
+      <button data-v="adm" title="Administración" aria-label="Administración" data-admin><svg class="i" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg><span class="lb" aria-hidden="true">Admin</span></button>
     </nav>
     <div class="end"><span class="nm" id="meName" style="font-weight:700"></span></div>
   </div>
@@ -345,6 +393,10 @@ html[data-theme=hc] .cal td{background:#000;border:1px solid #888}html[data-them
 
 <div class="glass a11y" id="a11y" role="dialog" aria-labelledby="a11yT" hidden>
   <div class="hd"><h2 id="a11yT">Accesibilidad</h2><button class="ico" type="button" id="a11yX" aria-label="Cerrar opciones de accesibilidad">✕</button></div>
+  <fieldset><legend>ESTILO</legend>
+    <label class="ch"><input type="radio" name="skin" value=""><span>Espacial<small>Oscuro, con degradado animado</small></span></label>
+    <label class="ch"><input type="radio" name="skin" value="claro"><span>Claro<small>Fondo blanco, tarjetas limpias</small></span></label>
+  </fieldset>
   <fieldset><legend>COLORES</legend>
     <label class="ch"><input type="radio" name="theme" value=""><span>Vibrante<small>Morados y azules de la marca</small></span><span class="sw3" aria-hidden="true"><i style="background:#d65ce6"></i><i style="background:#3a4bff"></i><i style="background:#5ac8ff"></i></span></label>
     <label class="ch"><input type="radio" name="theme" value="cb"><span>Daltonismo<small>Azul y naranja, fáciles de distinguir</small></span><span class="sw3" aria-hidden="true"><i style="background:#0072b2"></i><i style="background:#e69f00"></i><i style="background:#56b4e9"></i></span></label>
@@ -422,6 +474,12 @@ const DSEM=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'
 function fichaPct(p){const x=p.extra||{},it=[p.full_name,p.role_title,p.birthday,p.email,p.phone,p.gift_ideas,p.fun_fact,Object.keys(x).length,p.address,p.emergency_name&&p.emergency_phone];return Math.round(it.filter(Boolean).length/it.length*100)}
 function renderStart(){const root=$('start');root.textContent='';const now=new Date(),mp=team.find(x=>x.username===me.user)||{username:me.user},list=bdays(),nx=list[0];
   const hd=el('div','hello');const h=el('h2',null,'Hola, '+nm(mp).split(' ')[0]);hd.append(h,el('p',null,DSEM[now.getDay()][0].toUpperCase()+DSEM[now.getDay()].slice(1)+' '+now.getDate()+' de '+MES[now.getMonth()]));root.appendChild(hd);
+  // tarjeta destacada (estilo claro)
+  {const pct0=fichaPct(mp),f=el('section','tf feat');f.setAttribute('aria-label','Tu ficha');const top=el('div','fh');const ic=el('span','fi');ic.innerHTML='<svg class="i" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg>';ic.setAttribute('aria-hidden','true');
+   const tx=el('div');tx.append(el('b',null,'Tu ficha'),el('span',null,'@'+me.user+(me.is_admin?' · Administración':'')));const bd=el('span','badge2'+(pct0===100?' ok':''),pct0===100?'COMPLETA':'PENDIENTE');top.append(ic,tx,bd);f.appendChild(top);
+   const pb=el('div','fbar');pb.setAttribute('role','progressbar');pb.setAttribute('aria-label','Ficha completa');pb.setAttribute('aria-valuemin','0');pb.setAttribute('aria-valuemax','100');pb.setAttribute('aria-valuenow',pct0);const pi=el('i');pi.style.width=pct0+'%';pb.appendChild(pi);f.appendChild(pb);
+   const ft=el('div','ff');const l=el('span');l.append('Completada ');l.appendChild(el('b',null,pct0+'%'));const a=el('button','lnk','Ver mi ficha →');a.type='button';a.onclick=()=>go('me');ft.append(l,a);f.appendChild(ft);root.appendChild(f)}
+  root.appendChild(el('h3','seclab','TU ESPACIO'));
   const g=el('div','tiles');root.appendChild(g);
   const tile=(ic,title,sub,fn,extra)=>{const b=el('button','tf tile');b.type='button';const i=el('span','ti');i.innerHTML='<svg class="i" viewBox="0 0 24 24">'+ic+'</svg>';i.setAttribute('aria-hidden','true');
     const t=el('span','tt');t.append(el('b',null,title),el('span',null,sub));b.append(i,t);if(extra)b.appendChild(extra);const ar=el('span','ar','→');ar.setAttribute('aria-hidden','true');b.appendChild(ar);b.onclick=fn;g.appendChild(b);return b};
@@ -435,7 +493,7 @@ function renderStart(){const root=$('start');root.textContent='';const now=new D
   tile(I.a11y,'Accesibilidad','Colores, texto y movimiento',e=>{e.stopPropagation();document.querySelector('#app .a11yBtn').click()});
   // este mes
   const m=now.getMonth(),mes=team.filter(p=>p.birthday&&Number(p.birthday.split('-')[1])===m+1).sort((a,b)=>a.birthday.slice(8)-b.birthday.slice(8));
-  const sec=el('section','tf month');sec.setAttribute('aria-labelledby','hMes');const hh=el('h3',null,'Cumpleaños de '+MES[m]);hh.id='hMes';sec.appendChild(hh);
+  root.appendChild(el('h3','seclab','PARA TI ESTE MES'));const sec=el('section','tf month');sec.setAttribute('aria-labelledby','hMes');const hh=el('h3',null,'Cumpleaños de '+MES[m]);hh.id='hMes';sec.appendChild(hh);
   if(!mes.length)sec.appendChild(el('p','empty','Nadie está de cumpleaños este mes.'));
   const ul=el('ul');for(const p of mes){const d=Number(p.birthday.slice(8)),li=el('li'),b=el('button');b.type='button';b.appendChild(avatar(p,44));const tx=el('span','tx');tx.append(el('b',null,nm(p)),el('span',null,d+' de '+MES[m]+(d===now.getDate()?' · hoy':d<now.getDate()?' · ya pasó':'')));b.appendChild(tx);b.onclick=()=>openPerson(p);if(d<now.getDate())b.classList.add('past');li.appendChild(b);ul.appendChild(li)}
   sec.appendChild(ul);root.appendChild(sec)}
@@ -513,9 +571,10 @@ function setStill(on){const d=document.documentElement,b=$('motion');d.classList
 (()=>{let st=null;try{st=localStorage.getItem('equipo-still')}catch(e){}setStill(st==='1'||(st===null&&matchMedia('(prefers-reduced-motion: reduce)').matches));
   $('motion').onclick=()=>setStill(!document.documentElement.classList.contains('still'));$('a11yMove').onchange=e=>setStill(!e.target.checked);
   const d=document.documentElement,panel=$('a11y');let opener=null;
-  const save=()=>{try{localStorage.setItem('equipo-a11y',JSON.stringify({theme:d.dataset.theme||'',size:d.dataset.size||''}))}catch(e){}};
-  const sync=()=>{for(const r of panel.querySelectorAll('input[name=theme]'))r.checked=r.value===(d.dataset.theme||'');for(const r of panel.querySelectorAll('input[name=size]'))r.checked=r.value===(d.dataset.size||'')};
+  const save=()=>{try{localStorage.setItem('equipo-a11y',JSON.stringify({theme:d.dataset.theme||'',size:d.dataset.size||'',skin:d.dataset.skin||''}))}catch(e){}};
+  const sync=()=>{for(const r of panel.querySelectorAll('input[name=theme]'))r.checked=r.value===(d.dataset.theme||'');for(const r of panel.querySelectorAll('input[name=size]'))r.checked=r.value===(d.dataset.size||'');for(const r of panel.querySelectorAll('input[name=skin]'))r.checked=r.value===(d.dataset.skin||'')};
   panel.addEventListener('change',e=>{const t=e.target;if(t.name==='theme'){if(t.value)d.dataset.theme=t.value;else delete d.dataset.theme;save();if(me)renderAll();toast('Colores: '+t.parentNode.querySelector('span').firstChild.textContent)}
+    if(t.name==='skin'){if(t.value)d.dataset.skin=t.value;else delete d.dataset.skin;save();toast('Estilo: '+(t.value?'Claro':'Espacial'))}
     if(t.name==='size'){if(t.value)d.dataset.size=t.value;else delete d.dataset.size;save();if(me&&cur==='home')renderHome()}});
   const close=()=>{if(panel.hidden)return;panel.hidden=true;for(const b of document.querySelectorAll('.a11yBtn'))b.setAttribute('aria-expanded','false');if(opener)opener.focus()};
   for(const b of document.querySelectorAll('.a11yBtn'))b.onclick=e=>{e.stopPropagation();if(!panel.hidden){close();return}opener=b;sync();panel.hidden=false;b.setAttribute('aria-expanded','true');setTimeout(()=>(panel.querySelector('input:checked')||panel.querySelector('input')).focus(),30)};
