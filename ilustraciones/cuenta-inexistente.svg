@@ -1,0 +1,46 @@
+<svg width="327" height="220" viewBox="0 0 327 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.055" d="M190.5 31H112.5C95.9315 31 82.5 44.4315 82.5 61V162C82.5 178.569 95.9315 192 112.5 192H190.5C207.069 192 220.5 178.569 220.5 162V61C220.5 44.4315 207.069 31 190.5 31Z" fill="#094AFF"/>
+<path opacity="0.23" d="M200.5 27H204.5C221.5 27 232.5 39 232.5 55V80C232.5 84 230.5 87 226.5 87L218.5 50L200.5 27Z" fill="#06C2FA"/>
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="url(#bg_cuenta_inexistente)" stroke="#E1E9FF"/>
+<mask id="mask_cuenta_inexistente" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="90" y="23" width="139" height="161">
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="white"/>
+</mask>
+<g id="marca" mask="url(#mask_cuenta_inexistente)">
+<path opacity="0.06" transform="translate(84 92) scale(0.33)" d="M425.001 287.209L280.826 21.0908C265.586 -7.03026 225.231 -7.03026 209.991 21.0908L143.607 143.612C222.917 143.612 287.208 207.916 287.208 287.224H424.986L425.001 287.209Z" fill="#094AFF"/>
+<path opacity="0.16" transform="translate(84 92) scale(0.33)" d="M143.615 143.597C64.3054 143.597 0 207.887 0 287.209H65.8088L143.615 143.597Z" fill="#06C2FA"/>
+</g>
+<g mask="url(#mask_cuenta_inexistente)">
+<rect x="130" y="40" width="60" height="124" rx="12" fill="#131252"/>
+<rect x="135" y="48" width="50" height="108" rx="8" fill="#EEF3FF"/><rect x="152" y="43" width="16" height="3" rx="1.5" fill="#26257A"/>
+<g id="Perfil vacio"><circle cx="160" cy="76" r="13" fill="white" stroke="#AABCE8" stroke-width="1.5" stroke-dasharray="3 3"/>
+<circle cx="160" cy="72.5" r="3.5" stroke="#AABCE8" stroke-width="1.5" stroke-dasharray="2 2"/><path d="M154 84C154.8 80.8 157.2 79.2 160 79.2C162.8 79.2 165.2 80.8 166 84" stroke="#AABCE8" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2.5"/></g>
+<path d="M143 100H177M147 108H173" stroke="#D8E4FF" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="5 4"/>
+<rect x="141" y="118" width="38" height="10" rx="5" fill="white" stroke="#E1E9FF"/><rect x="146" y="121.5" width="20" height="3" rx="1.5" fill="#131252" fill-opacity="0.6"/>
+<g id="Boton crear"><rect x="141" y="136" width="38" height="12" rx="6" fill="#094AFF"/><rect opacity="0.7" x="150" y="140.5" width="20" height="3" rx="1.5" fill="white"/></g>
+<g id="Sumar"><circle cx="190" cy="56" r="11" fill="#06C2FA" stroke="white" stroke-width="2.5"/><path d="M190 51V61M185 56H195" stroke="#131252" stroke-width="2.4" stroke-linecap="round"/></g>
+<g id="Llave"><circle cx="113" cy="108" r="7" stroke="#094AFF" stroke-width="3"/><path d="M118 103L127 94M123.5 97.5L126.5 100.5M121 100L123 102" stroke="#094AFF" stroke-width="3" stroke-linecap="round"/>
+<circle cx="126" cy="114" r="6" fill="white" stroke="#E1E9FF"/><path d="M124.4 112.6C124.4 111.7 125.1 111 126 111C126.9 111 127.6 111.7 127.6 112.5C127.6 113.6 126 113.8 126 115M126 116.9V117" stroke="#131252" stroke-width="1.4" stroke-linecap="round"/></g>
+</g>
+<g id="Destellos"><path d="M216 30L217.2 33.8L221 35L217.2 36.2L216 40L214.8 36.2L211 35L214.8 33.8L216 30Z" fill="#06C2FA"/><circle cx="104" cy="140" r="2.5" fill="#094AFF" opacity="0.35"/><circle cx="214" cy="120" r="2.5" fill="#06C2FA" opacity="1"/></g>
+<g id="badge" filter="url(#shadow_cuenta_inexistente)">
+<rect x="211" y="144" width="48" height="48" rx="24" fill="white"/>
+<rect x="211.5" y="144.5" width="47" height="47" rx="23.5" stroke="#E4E8F2"/>
+<g id="Icono"><circle cx="232" cy="164" r="3.5" stroke-width="2" stroke="#084AFE"/><path d="M225.5 175C225.5 171.5 228.5 169 232 169C233.6 169 235 169.5 236 170.3M240 166V172M237 169H243" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#084AFE"/></g>
+</g>
+<defs>
+<filter id="shadow_cuenta_inexistente" x="199" y="136" width="72" height="72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="6"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.290196 0 0 0 0 0.996078 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<linearGradient id="bg_cuenta_inexistente" x1="98.5" y1="30" x2="216.5" y2="183" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EEF3FF"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+
+</defs>
+</svg>

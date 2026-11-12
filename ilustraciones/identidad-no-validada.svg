@@ -1,0 +1,50 @@
+<svg width="327" height="220" viewBox="0 0 327 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.055" d="M190.5 31H112.5C95.9315 31 82.5 44.4315 82.5 61V162C82.5 178.569 95.9315 192 112.5 192H190.5C207.069 192 220.5 178.569 220.5 162V61C220.5 44.4315 207.069 31 190.5 31Z" fill="#094AFF"/>
+<path opacity="0.23" d="M200.5 27H204.5C221.5 27 232.5 39 232.5 55V80C232.5 84 230.5 87 226.5 87L218.5 50L200.5 27Z" fill="#06C2FA"/>
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="url(#bg_identidad_no_validada)" stroke="#E1E9FF"/>
+<mask id="mask_identidad_no_validada" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="90" y="23" width="139" height="161">
+<path d="M201.5 23H117.5C102.588 23 90.5 35.0883 90.5 50V157C90.5 171.912 102.588 184 117.5 184H201.5C216.412 184 228.5 171.912 228.5 157V50C228.5 35.0883 216.412 23 201.5 23Z" fill="white"/>
+</mask>
+<g id="marca" mask="url(#mask_identidad_no_validada)">
+<path opacity="0.06" transform="translate(84 92) scale(0.33)" d="M425.001 287.209L280.826 21.0908C265.586 -7.03026 225.231 -7.03026 209.991 21.0908L143.607 143.612C222.917 143.612 287.208 207.916 287.208 287.224H424.986L425.001 287.209Z" fill="#094AFF"/>
+<path opacity="0.16" transform="translate(84 92) scale(0.33)" d="M143.615 143.597C64.3054 143.597 0 207.887 0 287.209H65.8088L143.615 143.597Z" fill="#06C2FA"/>
+</g>
+<g mask="url(#mask_identidad_no_validada)">
+<g id="Cedula"><rect x="108" y="58" width="104" height="66" rx="10" fill="white" stroke="#E1E9FF"/>
+<rect x="116" y="68" width="30" height="36" rx="5" fill="#EEF3FF"/>
+<circle cx="131" cy="81" r="6" fill="#D8E4FF"/><path d="M121 104C122 96.5 126 93 131 93C136 93 140 96.5 141 104Z" fill="#D8E4FF"/>
+<rect x="154" y="70" width="46" height="5" rx="2.5" fill="#131252"/><rect x="154" y="81" width="38" height="4" rx="2" fill="#D8E4FF"/><rect x="154" y="90" width="42" height="4" rx="2" fill="#D8E4FF"/>
+<rect x="116" y="112" width="84" height="4" rx="2" fill="#EEF3FF"/></g>
+<g id="Marco"><path d="M104 64V58C104 55.8 105.8 54 108 54H114M206 54H212C214.2 54 216 55.8 216 58V64M216 118V124C216 126.2 214.2 128 212 128H206M114 128H108C105.8 128 104 126.2 104 124V118" stroke="#094AFF" stroke-width="3" stroke-linecap="round"/></g>
+<rect id="Barra escaneo" x="106" y="60" width="108" height="2.5" rx="1.25" fill="#06C2FA" opacity="0.6"/>
+<g id="Alerta"><circle cx="210" cy="60" r="10" fill="#FF4D5E" stroke="white" stroke-width="2.5"/><path d="M206.5 56.5L213.5 63.5M213.5 56.5L206.5 63.5" stroke="white" stroke-width="2.2" stroke-linecap="round"/></g>
+<g id="Intentos"><rect x="126" y="140" width="68" height="20" rx="10" fill="white" stroke="#E1E9FF"/>
+<g id="Intento 1"><circle cx="141" cy="150" r="5.5" fill="#FFE9EB"/><path d="M139 148L143 152M143 148L139 152" stroke="#FF4D5E" stroke-width="1.6" stroke-linecap="round"/></g>
+<g id="Intento 2"><circle cx="160" cy="150" r="5.5" fill="#FFE9EB"/><path d="M158 148L162 152M162 148L158 152" stroke="#FF4D5E" stroke-width="1.6" stroke-linecap="round"/></g>
+<g id="Intento 3"><circle cx="179" cy="150" r="5.5" fill="#FFE9EB"/><path d="M177 148L181 152M181 148L177 152" stroke="#FF4D5E" stroke-width="1.6" stroke-linecap="round"/></g></g>
+<g id="Ayuda"><path d="M98 132C98 128.7 100.7 126 104 126H118C121.3 126 124 128.7 124 132V140C124 143.3 121.3 146 118 146H108L102 151V146H104C100.7 146 98 143.3 98 140V132Z" fill="#094AFF"/>
+<path d="M105.5 139V137C105.5 133.4 108 131 111 131C114 131 116.5 133.4 116.5 137V139" stroke="white" stroke-width="1.6" stroke-linecap="round"/><rect x="104.3" y="137" width="2.6" height="4" rx="1.3" fill="white"/><rect x="115.1" y="137" width="2.6" height="4" rx="1.3" fill="white"/></g>
+</g>
+<g id="Destellos"><path d="M216 30L217.2 33.8L221 35L217.2 36.2L216 40L214.8 36.2L211 35L214.8 33.8L216 30Z" fill="#06C2FA"/><circle cx="222" cy="100" r="2.5" fill="#094AFF" opacity="0.35"/></g>
+<g id="badge" filter="url(#shadow_identidad_no_validada)">
+<rect x="211" y="144" width="48" height="48" rx="24" fill="white"/>
+<rect x="211.5" y="144.5" width="47" height="47" rx="23.5" stroke="#FFE1E4"/>
+<g id="Icono"><path d="M229.5 162.5L240.5 173.5M240.5 162.5L229.5 173.5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke="#FF4D5E"/></g>
+</g>
+<defs>
+<filter id="shadow_identidad_no_validada" x="199" y="136" width="72" height="72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="6"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0313726 0 0 0 0 0.290196 0 0 0 0 0.996078 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+<linearGradient id="bg_identidad_no_validada" x1="98.5" y1="30" x2="216.5" y2="183" gradientUnits="userSpaceOnUse">
+<stop stop-color="#EEF3FF"/>
+<stop offset="1" stop-color="white"/>
+</linearGradient>
+
+</defs>
+</svg>
