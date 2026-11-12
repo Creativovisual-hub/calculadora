@@ -14,13 +14,12 @@
 <style>
 :root{--g1:#0b0870;--g2:#2622e0;--g3:#6a68f4;--g4:#b9b6f6;--a1:#d65ce6;--a2:#3a4bff;--a3:#5ac8ff;--a4:#8b3dff;--sky0:#2b1653;--sky1:#c45ad8;--sky2:#5a2fd6;--sky3:#9a3fd0}
 html[data-theme=cb]{--g1:#06205a;--g2:#0062a0;--g3:#3d9bd4;--g4:#bfe0f5;--a1:#c98600;--a2:#0072b2;--a3:#56b4e9;--a4:#0072b2;--sky0:#0b1a30;--sky1:#0072b2;--sky2:#c98a00;--sky3:#3d9bd4}
-html[data-theme=cb] .aurora{animation:none}
 html[data-theme=hc]{--muted:#e6e6e6!important;--edge:#fff!important;--glass:#000!important;--sky0:#000}
 html[data-theme=hc] body::before,html[data-theme=hc] .aurora,html[data-theme=hc] main::before{display:none}
 html[data-theme=hc] #app,html[data-theme=hc] #auth{outline:2px solid #fff}
 html[data-theme=hc] .glass,html[data-theme=hc] .tf,html[data-theme=hc] .tf::before,html[data-theme=hc] .folder::before,html[data-theme=hc] .authcard::before,html[data-theme=hc] .box,html[data-theme=hc] .drawer,html[data-theme=hc] .row{background:#000!important;border:2px solid #fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 html[data-theme=hc] .tf::before,html[data-theme=hc] .folder::before,html[data-theme=hc] .authcard::before{border-bottom:0!important}
-html[data-theme=hc] .in{background:#000;border:2px solid #fff}html[data-theme=hc] .pills button{color:#e6e6e6;text-decoration:none}html[data-theme=hc] .pills button[aria-current=true]{color:#fff;text-decoration:underline;text-underline-offset:6px}
+html[data-theme=hc] .in{background:#000;border:2px solid #fff}html[data-theme=hc] .pills button{color:#e6e6e6;text-decoration:none}html[data-theme=hc] .pills button[aria-current=true]{color:#fff}html[data-theme=hc] .pills button::after{height:3px}
 html[data-theme=hc] .tag,html[data-theme=hc] .gs button,html[data-theme=hc] .glist li,html[data-theme=hc] .btn:not(.white),html[data-theme=hc] .ico,html[data-theme=hc] .dock nav button{background:#000!important;border:2px solid #fff!important;color:#fff!important}
 html[data-theme=hc] .gs button[aria-pressed=true]{background:#fff!important;color:#000!important}
 html[data-theme=hc] .dock nav button[aria-current=true]{background:#fff!important;color:#000!important}
@@ -64,20 +63,19 @@ select.in option{background:#141318;color:#fff}
 #app{position:relative;z-index:1;margin:clamp(14px,2.6vw,40px);min-height:calc(100vh - 2*clamp(14px,2.6vw,40px));background:#000;border-radius:34px;display:flex;flex-direction:column;overflow:clip}
 body{background:var(--sky0)}
 #app main{flex:1;padding-bottom:60px;border-radius:0 0 34px 34px;position:relative;isolation:isolate;overflow:clip;background:#000}
-#app main::before,.authmain::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,#000 0%,#000 28%,var(--g1) 52%,var(--g2) 70%,var(--g3) 86%,var(--g4) 100%);background-size:100% 160%;background-position:0 100%;animation:tide 9s ease-in-out infinite alternate}
+#app main::before,.authmain::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(180deg,#000 0%,#000 28%,var(--g1) 52%,var(--g2) 70%,var(--g3) 86%,var(--g4) 100%);background-size:100% 160%;background-repeat:no-repeat;background-position:0 100%;animation:tide 9s ease-in-out infinite alternate}
 .tf,.folder,.stp,.carnet{text-shadow:0 1px 10px rgba(0,0,0,.35)}
 html[data-theme=hc] .tf,html[data-theme=hc] .folder,html[data-theme=hc] .stp,html[data-theme=hc] .carnet{text-shadow:none}
-.aurora{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;border-radius:inherit;animation:hue 16s ease-in-out infinite alternate}
-.aurora i{position:absolute;border-radius:50%;filter:blur(70px);mix-blend-mode:screen;opacity:.6;will-change:transform}
-.aurora i:nth-child(1){width:55%;height:55%;left:-12%;bottom:-36%;background:var(--a1);animation:au1 11s ease-in-out infinite alternate}
-.aurora i:nth-child(2){width:50%;height:55%;right:-12%;bottom:-34%;background:var(--a2);animation:au2 13s ease-in-out infinite alternate}
-.aurora i:nth-child(3){width:36%;height:42%;left:32%;bottom:-28%;background:var(--a3);opacity:.5;animation:au3 8s ease-in-out infinite alternate}
-.aurora i:nth-child(4){width:28%;height:36%;left:55%;bottom:-14%;background:var(--a4);opacity:.35;animation:au4 15s ease-in-out infinite alternate}
-@keyframes au1{0%{transform:translate(0,0) scale(1)}50%{transform:translate(55%,-18%) scale(1.25)}100%{transform:translate(110%,4%) scale(.9)}}
-@keyframes au2{0%{transform:translate(0,0) scale(1.1)}50%{transform:translate(-60%,-22%) scale(1.3)}100%{transform:translate(-110%,0) scale(.95)}}
-@keyframes au3{0%{transform:translate(-40%,0) scale(.9)}100%{transform:translate(45%,-30%) scale(1.2)}}
-@keyframes au4{0%{transform:translate(20%,10%) scale(1)}50%{transform:translate(-80%,-20%) scale(1.3)}100%{transform:translate(-150%,15%) scale(.8)}}
-@keyframes hue{0%{filter:hue-rotate(-12deg)}100%{filter:hue-rotate(22deg)}}
+.aurora{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;border-radius:inherit}
+.aurora i{position:absolute;background:radial-gradient(closest-side,var(--c) 0%,color-mix(in srgb,var(--c) 45%,transparent) 45%,transparent 100%);will-change:transform}
+.aurora i:nth-child(1){--c:var(--a1);width:75%;height:85%;left:-22%;bottom:-48%;opacity:.75;animation:au1 11s ease-in-out infinite alternate}
+.aurora i:nth-child(2){--c:var(--a2);width:70%;height:85%;right:-22%;bottom:-46%;opacity:.8;animation:au2 13s ease-in-out infinite alternate}
+.aurora i:nth-child(3){--c:var(--a3);width:50%;height:65%;left:26%;bottom:-40%;opacity:.55;animation:au3 8s ease-in-out infinite alternate}
+.aurora i:nth-child(4){--c:var(--a4);width:45%;height:60%;left:50%;bottom:-30%;opacity:.45;animation:au4 15s ease-in-out infinite alternate}
+@keyframes au1{0%{transform:translate(0,0) scale(1)}50%{transform:translate(40%,-10%) scale(1.2)}100%{transform:translate(75%,4%) scale(.9)}}
+@keyframes au2{0%{transform:translate(0,0) scale(1.05)}50%{transform:translate(-40%,-12%) scale(1.25)}100%{transform:translate(-75%,2%) scale(.95)}}
+@keyframes au3{0%{transform:translate(-45%,4%) scale(.9)}100%{transform:translate(45%,-14%) scale(1.15)}}
+@keyframes au4{0%{transform:translate(20%,6%) scale(1)}50%{transform:translate(-60%,-10%) scale(1.25)}100%{transform:translate(-110%,8%) scale(.85)}}
 @keyframes tide{0%{background-position:0 100%}100%{background-position:0 62%}}
 @keyframes drift{0%{transform:translateX(-6%) scaleY(.9)}50%{transform:translateX(4%) scaleY(1.1)}100%{transform:translateX(8%) scaleY(.95)}}
 body::before{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;background:radial-gradient(30% 25% at 50% 20%,var(--sky1) 0%,transparent 70%),radial-gradient(25% 30% at 15% 85%,var(--sky2) 0%,transparent 70%),radial-gradient(25% 30% at 85% 70%,var(--sky3) 0%,transparent 70%);animation:sky 14s ease-in-out infinite alternate}
@@ -87,7 +85,7 @@ html.still main::before,html.still .aurora,html.still .aurora i,html.still body:
 .top{display:flex;align-items:center;gap:16px;padding:26px clamp(16px,4vw,48px)}.top .me{gap:12px}.top .ico{width:50px;height:50px;background:#161616;border-color:#232323}.top .ico:hover{background:#222}.top .ico svg{width:21px;height:21px}
 .pills{display:flex;gap:clamp(18px,3vw,40px);margin:0 auto;padding:0}
 .pills button{border:0;background:none;padding:10px 2px;border-radius:8px;font-weight:500;font-size:17px;letter-spacing:.005em;color:#8f8ca8;cursor:pointer;display:flex;align-items:center;gap:10px;transition:color .2s}.pills button:hover{color:#fff}
-.pills button .dot{width:6px;height:6px;border-radius:50%;background:#fff;opacity:0;transform:scale(.2);transition:opacity .2s,transform .25s}.pills button[aria-current=true]{color:#fff}.pills button[aria-current=true] .dot{opacity:1;transform:none}
+.pills button{position:relative}.pills button .dot{display:none}.pills button::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;border-radius:2px;background:#fff;transform:scaleX(0);transition:transform .25s ease}.pills button[aria-current=true]{color:#fff}.pills button[aria-current=true]::after{transform:scaleX(1)}.pills button:hover::after{transform:scaleX(.35)}.pills button[aria-current=true]:hover::after{transform:scaleX(1)}
 .me{display:flex;align-items:center;gap:10px}
 .page{padding:0 clamp(16px,4vw,44px)}
 h2.title{font-size:clamp(26px,3vw,40px);font-weight:600;margin:6px 0 20px;letter-spacing:-.02em}
