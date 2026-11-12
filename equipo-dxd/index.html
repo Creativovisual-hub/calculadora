@@ -188,6 +188,35 @@ fieldset.pick{grid-column:1/-1;border:0;padding:0;margin:0;min-width:0}.pick leg
 .a11y input{width:18px;height:18px;accent-color:#fff;margin:0;flex:none}.a11y small{display:block;color:var(--muted);font-size:12px}
 .sw3{display:flex;margin-left:auto;gap:3px}.sw3 i{width:12px;height:12px;border-radius:50%}
 .a11y .hd{display:flex;align-items:center;justify-content:space-between}
+/* calendario de cumpleaños */
+.calwrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;padding:44px 0 20px;align-items:start;max-width:1400px;margin:0 auto}
+.calcard{padding:26px 26px 22px}
+.calhd{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.calhd h3{font-size:clamp(26px,3vw,36px);font-weight:600;margin:0;letter-spacing:-.02em}.calhd h3 span{color:var(--muted);font-weight:400}
+.calnav{margin-left:auto;display:flex;gap:8px;align-items:center}.calnav .ico{width:40px;height:40px;font-size:22px;line-height:1;color:#fff}
+.mchips{display:flex;gap:4px;flex-wrap:wrap;margin:18px 0 14px}
+.mchips button{border:0;background:none;color:#c9c6e2;padding:7px 11px;border-radius:999px;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:5px}
+.mchips button:hover{background:rgba(255,255,255,.1);color:#fff}.mchips button[aria-pressed=true]{background:#fff;color:#000}
+.mchips button b{font-size:11px;min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.16);font-weight:700}.mchips button[aria-pressed=true] b{background:#000;color:#fff}
+table.cal{width:100%;border-collapse:separate;border-spacing:6px;table-layout:fixed;margin:0 -6px}
+.cal th{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;padding:2px 0 4px;text-align:left;padding-left:8px}
+.cal td{height:84px;vertical-align:top;background:rgba(255,255,255,.035);border-radius:14px;padding:8px;border:1px solid rgba(255,255,255,.06)}
+.cal td.out{background:none;border-color:transparent}
+.cal td.has{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.26)}
+.cal .dn{font-size:13px;color:#dcdaf0;font-weight:600;display:inline-grid;place-items:center;min-width:24px;height:24px}
+.cal td.today .dn{border-radius:50%;background:#fff;color:#000}
+.cp{display:flex;align-items:center;gap:7px;margin-top:6px;border:0;background:none;color:#fff;padding:2px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;max-width:100%;text-align:left}
+.cp:hover{background:rgba(255,255,255,.12)}.cp span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cp .av{font-size:10px!important}
+.calempty{margin:8px 0 0}
+.side{display:flex;flex-direction:column;gap:20px}.side .tf{padding:24px}
+.nextc small{color:var(--muted);font-size:14px}.nextc .who{display:flex;align-items:center;gap:12px;margin-top:14px;border:0;background:none;color:#fff;padding:0;cursor:pointer;text-align:left}
+.nextc .who b{display:block;font-size:18px}.nextc .who span{color:var(--muted);font-size:14px}.nextc .huge{margin-top:18px}.nextc .gl{margin:14px 0 0;font-size:14px;color:#e6e4f2}
+.ups h3{margin:0 0 10px;font-size:17px;font-weight:600}.ups ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.ups li button{width:100%;display:flex;align-items:center;gap:12px;border:0;background:none;color:#fff;padding:8px;border-radius:14px;cursor:pointer;text-align:left}.ups li button:hover{background:rgba(255,255,255,.08)}
+.ups li b{display:block;font-size:14px;font-weight:600}.ups li span{color:var(--muted);font-size:13px}.ups li .tx{flex:1;min-width:0}.ups li em{font-style:normal;font-size:13px;color:#fff;background:rgba(255,255,255,.12);padding:3px 9px;border-radius:999px;white-space:nowrap}
+.stl{margin:12px 0 0}
+html[data-theme=hc] .cal td{background:#000;border:1px solid #888}html[data-theme=hc] .cal td.has{border:2px solid #fff}html[data-theme=hc] .cal td.out{border:0}
+@media (max-width:1100px){.calwrap{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.calwrap{padding-top:20px}.calcard{padding:18px 12px}.side{grid-template-columns:1fr}table.cal{border-spacing:3px;margin:0 -3px}.cal td{height:58px;padding:4px;border-radius:10px}.cal th{padding-left:4px;font-size:10px;letter-spacing:0}.cp span{display:none}.cp{margin-top:2px}.mchips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-left:-4px;margin-right:-4px;padding:2px 4px}.mchips button{padding:6px 8px;font-size:13px;flex:none}}
 /* administración */
 .admgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:22px;align-items:start}
 .panel{padding:22px}.panel h3{font-family:var(--mono);font-size:16px;margin:0 0 14px}
@@ -257,13 +286,7 @@ fieldset.pick{grid-column:1/-1;border:0;padding:0;margin:0;min-width:0}.pick leg
     <div class="aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <section id="v-home" aria-labelledby="hHome">
       <h2 class="sr-only" id="hHome">Cumpleaños</h2>
-      <div class="board">
-        <div class="wrap" style="grid-area:q0" id="q0"></div>
-        <div class="wrap c" id="center"></div>
-        <div class="wrap" style="grid-area:q1" id="q1"></div>
-        <div class="wrap" style="grid-area:q2" id="q2"></div>
-        <div class="wrap" style="grid-area:q3" id="q3"></div>
-      </div>
+      <div class="calwrap" id="cal"></div>
     </section>
     <section id="v-dir" hidden>
       <h2 class="title">Directorio</h2>
@@ -377,33 +400,45 @@ function bdays(){return team.filter(p=>p.birthday).map(p=>({p,nb:nextBday(p.birt
 const QN=['Ene – Mar','Abr – Jun','Jul – Sep','Oct – Dic'];
 const cnt=items=>{const c=el('div','cnt');for(const[k,v,t]of items){const s=el('span');s.title=t;s.innerHTML=svg(k);s.append(String(v));c.appendChild(s)}return c};
 ICON.user='<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M18 8v6M15 11h6"/>';
-function renderHome(){const list=bdays(),nx=list[0],k=innerWidth<640?.62:innerWidth<1100?.8:1;
-  // tarjeta central
-  const C=$('center');C.textContent='';const pe=el('div','people');
-  const mob=innerWidth<640,P=mob?[{x:18,y:72,s:96,v:1},{x:50,y:52,s:120,v:1},{x:82,y:84,s:96,v:1}]:[{x:0,y:50,s:84,l:1},{x:24,y:105,s:90,l:1},{x:44,y:0,s:124},{x:79,y:70,s:80}];
-  const who=(list.length?list.map(x=>x.p):team).slice(0,P.length);
-  who.forEach((p,i)=>{const o=P[i],b=el('button','pp'+(o.l?' r':'')+(o.v?' v':''));b.type='button';b.style.cssText='left:'+o.x+'%;bottom:'+Math.round(o.y*k)+'px';b.appendChild(avatar(p,Math.round(o.s*k)));
-    const nb=p.birthday?nextBday(p.birthday):null,t=el('div');t.append(el('b',null,nm(p).split(' ')[0]),el('small',null,mob?(nb?nb.short:''):(p.role_title||'Equipo DXD')+(nb?' · '+nb.short:'')));b.appendChild(t);
-    b.setAttribute('aria-label','Ver ficha de '+nm(p));b.onclick=()=>openPerson(p);pe.appendChild(b)});
-  C.appendChild(pe);const f=el('div','tf');C.appendChild(f);
-  const r1=el('div','row1'),h=el('div');h.append(el('h3',null,'Próximo cumpleaños'),el('div','sub',nx?nm(nx.p)+' · '+nx.nb.label:'Nadie agregó su fecha todavía'));r1.appendChild(h);
-  r1.appendChild(cnt([['user',team.length,'Integrantes'],['cake',list.length,'Con cumpleaños'],['gift',team.filter(p=>p.gift_ideas).length,'Con ideas de regalo'],['mail',team.filter(p=>p.email).length,'Con correo']]));f.appendChild(r1);
-  const mid=el('div','mid'),L=el('div');L.appendChild(el('small',null,nx?(nx.nb.days===0?'Es hoy':'Faltan'):'Aún nadie agregó su fecha'));
-  const hg=el('div','huge');if(!nx){hg.textContent='¿?';hg.appendChild(el('span',null,'días'))}else if(nx.nb.days===0){hg.textContent='¡Hoy!'}else{hg.textContent=String(nx.nb.days);hg.appendChild(el('span',null,nx.nb.days===1?'día':'días'))}L.appendChild(hg);mid.appendChild(L);
-  const nowM=new Date().getMonth(),full=team.filter(p=>p.full_name&&p.birthday&&p.email).length,dl=el('dl','kvs');
-  for(const[a,b]of[['Integrantes',team.length],['Cumplen este mes',list.filter(x=>x.nb.date.getMonth()===nowM&&x.nb.days<=31).length],['Fichas completas',full+'/'+team.length],['Sin fecha',team.length-list.length]])dl.append(el('dt',null,a),el('dd',null,String(b)));
-  mid.appendChild(dl);f.appendChild(mid);
-  const pct=team.length?full/team.length:0,N=56,tk=el('div','ticks');tk.setAttribute('aria-hidden','true');for(let i=0;i<N;i++)tk.appendChild(el('i',i<Math.round(pct*N)?'':'o'));f.appendChild(tk);
-  const ft=el('div','foot'),fr=el('span',null,'Completas: ');fr.appendChild(el('b',null,Math.round(pct*100)+'%'));ft.append(el('span',null,'Fichas del equipo'),fr);f.appendChild(ft);
-  const g=el('div','gift');if(nx){g.appendChild(el('span',null,'Regalo: '+(nx.p.gift_ideas||'Todavía no agregó ideas de regalo')));const b=el('button','btn white sm','Ver ficha →');b.type='button';b.onclick=()=>openPerson(nx.p);g.appendChild(b)}
-  else{g.appendChild(el('span',null,'Agrega tu cumpleaños e ideas de regalo'));const b=el('button','btn white sm','Mi ficha →');b.type='button';b.onclick=()=>go('me');g.appendChild(b)}f.appendChild(g);
-  // carpetas por trimestre
-  const Q=[[],[],[],[]];for(const x of list)Q[Math.floor(x.nb.date.getMonth()/3)].push(x);const CP=[[55,0,88],[24,62,50],[10,22,30],[86,26,44],[76,92,28],[38,100,30]];
-  Q.forEach((arr,qi)=>{const W=$('q'+qi);W.textContent='';const cl=el('div','cluster');arr.slice(0,6).forEach((x,i)=>{const a=avatar(x.p,Math.round(CP[i][2]*k));a.style.left=CP[i][0]+'%';a.style.bottom=Math.round(CP[i][1]*k)+'px';cl.appendChild(a)});W.appendChild(cl);
-    const b=el('button','tf');b.type='button';b.setAttribute('aria-label','Cumpleaños '+QN[qi]);const hd=el('div','hd');hd.append(el('h3',null,QN[qi]),el('span','plus','+'));b.appendChild(hd);
-    b.appendChild(el('div','sub',arr.length?arr.length+(arr.length===1?' cumpleaños':' cumpleaños'):'Sin cumpleaños'));
-    b.appendChild(cnt([['user',arr.length,'Personas'],['gift',arr.filter(x=>x.p.gift_ideas).length,'Con ideas de regalo'],['mail',arr.filter(x=>x.p.email).length,'Con correo'],['phone',arr.filter(x=>x.p.phone).length,'Con teléfono']]));
-    b.onclick=()=>openQuarter(qi,arr);W.appendChild(b)})}
+// ---------- cumpleaños en calendario ----------
+const MESC=MES.map(m=>m[0].toUpperCase()+m.slice(1)),DIAS=[['Lun','Lunes'],['Mar','Martes'],['Mié','Miércoles'],['Jue','Jueves'],['Vie','Viernes'],['Sáb','Sábado'],['Dom','Domingo']];
+let calM=null,calY=null;
+function calGo(m,y){calM=(m+12)%12;calY=y+(m<0?-1:m>11?1:0);renderHome();const f=document.querySelector('.mchips button[aria-pressed=true]');}
+function renderHome(){const now=new Date(),list=bdays(),nx=list[0];if(calM===null){calM=now.getMonth();calY=now.getFullYear()}
+  const root=$('cal'),keep=document.activeElement&&root.contains(document.activeElement)?document.activeElement.dataset.k:null;root.textContent='';
+  // calendario
+  const card=el('section','tf calcard');card.setAttribute('aria-labelledby','calT');root.appendChild(card);
+  const hd=el('div','calhd'),t=el('h3');t.id='calT';t.append(MESC[calM]+' ');t.appendChild(el('span',null,String(calY)));hd.appendChild(t);
+  const nav=el('div','calnav');const nb=(k,lab,txt,fn)=>{const b=el('button','ico',txt);b.type='button';b.dataset.k=k;b.setAttribute('aria-label',lab);b.title=lab;b.onclick=fn;nav.appendChild(b)};
+  nb('prev','Mes anterior','‹',()=>calGo(calM-1,calY));const h=el('button','btn sm','Hoy');h.type='button';h.dataset.k='hoy';h.onclick=()=>calGo(now.getMonth(),now.getFullYear());nav.appendChild(h);nb('next','Mes siguiente','›',()=>calGo(calM+1,calY));hd.appendChild(nav);card.appendChild(hd);
+  // meses
+  const mc=el('div','mchips');mc.setAttribute('role','group');mc.setAttribute('aria-label','Elegir mes');
+  const per=Array.from({length:12},()=>[]);for(const p of team)if(p.birthday){const[,m,d]=p.birthday.split('-').map(Number);per[m-1].push({p,d})}
+  per.forEach((arr,i)=>{const b=el('button',null,MESC[i].slice(0,3));b.type='button';b.dataset.k='m'+i;b.setAttribute('aria-pressed',i===calM);b.setAttribute('aria-label',MESC[i]+', '+arr.length+(arr.length===1?' cumpleaños':' cumpleaños'));if(arr.length)b.appendChild(el('b',null,String(arr.length)));b.onclick=()=>calGo(i,calY);mc.appendChild(b)});card.appendChild(mc);
+  // tabla
+  const tb=el('table','cal'),cap=el('caption','sr-only','Cumpleaños de '+MESC[calM]+' '+calY);tb.appendChild(cap);const th=el('thead'),tr0=el('tr');for(const[a,f]of DIAS){const c=el('th',null,a);c.scope='col';c.abbr=f;tr0.appendChild(c)}th.appendChild(tr0);tb.appendChild(th);
+  const leap=(calY%4===0&&calY%100!==0)||calY%400===0,dim=new Date(calY,calM+1,0).getDate(),off=(new Date(calY,calM,1).getDay()+6)%7,by={};
+  for(const{p,d}of per[calM]){const dd=(calM===1&&d===29&&!leap)?28:d;(by[dd]=by[dd]||[]).push(p)}
+  const body=el('tbody');let r=el('tr');for(let i=0;i<off;i++)r.appendChild(el('td','out'));
+  for(let d=1;d<=dim;d++){if((off+d-1)%7===0&&d>1){body.appendChild(r);r=el('tr')}const c=el('td');const ps=by[d]||[];if(ps.length)c.className='has';
+    const isT=d===now.getDate()&&calM===now.getMonth()&&calY===now.getFullYear();if(isT){c.classList.add('today');c.setAttribute('aria-current','date')}
+    const n=el('span','dn',String(d));if(isT)n.setAttribute('aria-label',d+', hoy');c.appendChild(n);
+    for(const p of ps){const b=el('button','cp');b.type='button';b.dataset.k='p'+p.username;b.appendChild(avatar(p,26));b.appendChild(el('span',null,nm(p).split(' ')[0]));b.setAttribute('aria-label','Cumpleaños de '+nm(p)+', '+d+' de '+MES[calM]+'. Ver ficha');b.onclick=()=>openPerson(p);c.appendChild(b)}
+    r.appendChild(c)}
+  while(r.children.length<7)r.appendChild(el('td','out'));body.appendChild(r);tb.appendChild(body);card.appendChild(tb);
+  if(!per[calM].length)card.appendChild(el('p','empty calempty','Nadie del equipo está de cumpleaños en '+MES[calM]+'.'));
+  // lateral
+  const side=el('aside','side');side.setAttribute('aria-label','Próximos cumpleaños');root.appendChild(side);
+  const nc=el('section','tf nextc');side.appendChild(nc);nc.appendChild(el('small',null,'Próximo cumpleaños'));
+  if(nx){const w=el('button','who');w.type='button';w.onclick=()=>openPerson(nx.p);w.setAttribute('aria-label','Ver ficha de '+nm(nx.p));w.appendChild(avatar(nx.p,56));const tt=el('div');tt.append(el('b',null,nm(nx.p)),el('span',null,nx.nb.label));w.appendChild(tt);nc.appendChild(w);
+    const big=el('div','huge');if(nx.nb.days===0)big.textContent='¡Hoy!';else{big.textContent=String(nx.nb.days);big.appendChild(el('span',null,nx.nb.days===1?'día':'días'))}nc.appendChild(big);
+    nc.appendChild(el('p','gl',nx.p.gift_ideas?'Regalo: '+nx.p.gift_ideas:'Todavía no agregó ideas de regalo.'))}
+  else nc.appendChild(el('p','empty','Aún nadie agregó su fecha.'));
+  const up=el('section','tf ups');side.appendChild(up);up.appendChild(el('h3',null,'Siguientes'));const ul=el('ul');
+  for(const{p,nb}of list.slice(1,7)){const li=el('li'),b=el('button');b.type='button';b.dataset.k='u'+p.username;b.appendChild(avatar(p,34));const tt=el('div','tx');tt.append(el('b',null,nm(p)),el('span',null,nb.label));b.appendChild(tt);b.appendChild(el('em',null,nb.days===0?'hoy':nb.days===1?'mañana':nb.days+' días'));b.onclick=()=>openPerson(p);li.appendChild(b);ul.appendChild(li)}
+  up.appendChild(ul);
+  const full=team.filter(p=>p.full_name&&p.birthday&&p.email).length,st=el('p','hint stl');st.textContent=team.length+' integrantes · '+full+' fichas completas';up.appendChild(st);
+  if(keep){const k=root.querySelector('[data-k="'+(keep.startsWith('m')?'m'+calM:keep)+'"]');if(k)k.focus()}}
 function openQuarter(qi,arr){const d=$('drawer');d.textContent='';const h=el('div','head');const t=el('div');t.append(el('h3',null,QN[qi]),el('div','role',arr.length+' cumpleaños'));h.appendChild(t);
   const x=el('button','ico','✕');x.type='button';x.style.marginLeft='auto';x.setAttribute('aria-label','Cerrar');x.onclick=closePerson;h.appendChild(x);d.appendChild(h);
   const l=el('div','qlist');for(const{p,nb}of[...arr].sort((a,b)=>a.nb.date.getMonth()-b.nb.date.getMonth()||a.nb.date.getDate()-b.nb.date.getDate())){const b=el('button');b.type='button';b.appendChild(avatar(p,40));const tt=el('div');tt.append(el('b',null,nm(p)),el('small',null,nb.label+' · '+(nb.days===0?'¡hoy!':'en '+nb.days+' días')));b.appendChild(tt);b.onclick=()=>openPerson(p);l.appendChild(b)}
