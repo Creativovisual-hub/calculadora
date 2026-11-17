@@ -1,0 +1,675 @@
+/* =====================================================================
+   Home público multimarca — un solo sistema de diseño, colores por marca
+   Caja Los Andes: azul #084AFE · cian #06C2FA · navy #131252
+   andes noma:     verde #5A6B33 · verde claro #A3B26E (turismo)
+   andes tapp:     lima #C6DA4A · azul #094AFF (pagos)
+   ===================================================================== */
+.home { --bd-accent: #06C2FA; --bd-accent-2: #084AFE; }
+.home[data-brand="noma"] { --bd-accent: #A3B26E; --bd-accent-2: #5A6B33; }
+.home[data-brand="tapp"] { --bd-accent: #C6DA4A; --bd-accent-2: #094AFF; }
+
+/* Solo se ve el contenido de la marca activa */
+.home [data-brand-part] { display: none; }
+.home:not([data-brand]) [data-brand-part="caja"],
+.home[data-brand="caja"] [data-brand-part="caja"] { display: block; }
+.home[data-brand="noma"] [data-brand-part="noma"],
+.home[data-brand="tapp"] [data-brand-part="tapp"] { display: block; }
+.home[data-brand="caja"] .carousel[data-brand-part="caja"], .home[data-brand="noma"] .carousel[data-brand-part="noma"] { display: block; }
+
+/* La "A" de marca detrás del hero toma el color de la marca */
+.home .hero-a circle:first-child { fill: var(--bd-accent); transition: fill .5s; }
+
+/* Mantener presionado sin seleccionar texto ni abrir el menú del sistema */
+.home { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+.home input { -webkit-user-select: text; user-select: text; }
+
+/* Indicador de "mantén presionado" */
+.brand-hold { position: fixed; z-index: 95; left: 0; top: 0; width: 76px; height: 76px; margin: -38px 0 0 -38px; pointer-events: none; opacity: 0; transform: scale(.6); transition: opacity .2s, transform .3s cubic-bezier(.32,.72,0,1); }
+.brand-hold.on { opacity: 1; transform: scale(1); }
+.brand-hold svg { width: 100%; height: 100%; transform: rotate(-90deg); filter: drop-shadow(0 6px 16px rgba(10,12,56,.35)); }
+.bh-bg { fill: rgba(19,18,82,.78); stroke: rgba(255,255,255,.25); stroke-width: 5; }
+.bh-fg { fill: none; stroke: #06C2FA; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: calc(100 - var(--p, 0)); }
+.bh-t { position: absolute; left: 50%; top: calc(100% + 8px); transform: translateX(-50%); white-space: nowrap; padding: 5px 10px; border-radius: 10px; background: rgba(19,18,82,.88); color: #fff; font: 800 12px "Rawson Pro", sans-serif; }
+
+/* ================= andes noma ================= */
+.slide.nm-slide {
+  background:
+    radial-gradient(200px 170px at 40% 38%, rgba(160,176,100,.55), transparent 72%),
+    linear-gradient(140deg, #33401F 0%, #46542A 42%, #5A6B33 72%, #3A4722 100%);
+  border-color: #A3B26E;
+}
+.slide.nm-slide.n2 { background: radial-gradient(200px 170px at 40% 38%, rgba(130,150,80,.5), transparent 72%), linear-gradient(140deg, #2C3618 0%, #4A5A2B 50%, #323D1C 100%); }
+.slide.nm-slide.n3 { background: radial-gradient(200px 170px at 40% 38%, rgba(170,184,100,.5), transparent 72%), linear-gradient(140deg, #343F1A 0%, #5E7034 50%, #38441D 100%); }
+.slide.nm-slide::before { border-color: rgba(163,178,110,.8); background: linear-gradient(180deg, transparent 48%, rgba(90,107,51,.35) 100%); }
+.slide.nm-slide::after { border-color: rgba(163,178,110,.45); background: linear-gradient(135deg, rgba(90,107,51,.5), rgba(40,50,22,.7)); }
+.slide.nm-slide h1 em { background: linear-gradient(90deg, #D6E0A8, #F2F5E1); -webkit-background-clip: text; background-clip: text; }
+.slide.nm-slide .stamp { background: radial-gradient(circle at 40% 35%, #5A6B33, #33401F); border-color: #A3B26E; box-shadow: 0 0 14px rgba(163,178,110,.45); }
+.slide.nm-slide .stamp span { color: #D6E0A8; }
+.slide.nm-slide .stamp::before { border-right-color: #A3B26E; }
+.slide.nm-slide .photo { border-color: #A3B26E; }
+.home[data-brand="noma"] .carousel { box-shadow: 0 18px 36px rgba(70,84,42,.3); }
+.home[data-brand="noma"] .dots button.on { background: #D6E0A8; box-shadow: 0 0 6px rgba(200,232,154,.8); }
+
+/* Accesos turísticos: tarjetas navy con texto blanco (Figma) */
+.tf-card.nm-card { background: linear-gradient(160deg, #221D78, #191467); border-color: #2C2690; color: #fff; }
+.tf-card.nm-card .tr-ico { color: #fff; }
+.tf-card.nm-card strong { color: #fff; }
+.tf-card.nm-card small { color: rgba(255,255,255,.82); }
+.tf-card.nm-card .tf-cta, .tf-card.nm-card .tf-cta svg { color: #fff; }
+.home[data-brand="noma"] .chip-cyan { color: #5A6B33; }
+.home[data-brand="noma"] .bb .coupon { border-color: #D6DCC0; }
+
+/* El contenido de cada marca empieza donde empieza el de Caja */
+.bb .tf { margin-top: 26px; }
+.bb-row { margin-top: 8px; }
+
+/* ================= andes tapp ================= */
+.tp-acct {
+  position: relative; z-index: 1; height: 228px; padding: 20px 20px 18px; border-radius: 22px; overflow: hidden; color: #fff; isolation: isolate;
+  background: radial-gradient(220px 160px at 20% 10%, rgba(60,110,255,.55), transparent 70%), linear-gradient(140deg, #1B1F8E 0%, #0B47F4 55%, #094AFF 100%);
+  border: 1.5px solid #3F7DFF; box-shadow: 0 18px 36px rgba(8,74,254,.28);
+}
+.tp-blob { position: absolute; z-index: -1; right: -56px; top: -64px; width: 190px; height: 190px; border-radius: 50%; background: #C6DA4A; }
+.tp-blob::after { content: ""; position: absolute; left: -26px; top: 70px; width: 90px; height: 90px; border-radius: 50%; background: #D7E77A; opacity: .8; }
+.tp-rings { position: absolute; z-index: -1; right: -40px; top: 30px; width: 260px; height: 260px; }
+.tp-rings i { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(255,255,255,.16); }
+.tp-rings i:nth-child(2) { inset: 26px; } .tp-rings i:nth-child(3) { inset: 52px; }
+.tp-acct-top strong { display: block; font-size: 14px; font-weight: 800; }
+.tp-acct-top small { display: block; margin-top: 2px; font-size: 12px; color: rgba(255,255,255,.78); }
+.tp-lbl { display: block; margin-top: 22px; font-size: 12.5px; color: rgba(255,255,255,.85); }
+.tp-bal { margin-top: 2px; font-size: 38px; font-weight: 700; letter-spacing: -1px; }
+.tp-acct-foot { position: absolute; left: 20px; right: 20px; bottom: 18px; display: flex; align-items: center; justify-content: space-between; }
+.tp-mc { display: inline-flex; }
+.tp-mc i { width: 26px; height: 26px; border-radius: 50%; background: #EB001B; }
+.tp-mc i + i { margin-left: -10px; background: #F79E1B; opacity: .92; }
+.tp-acct-foot a { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: #fff; }
+.tp-acct-foot a svg { color: #fff; }
+
+.tp-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 26px 12px 0; }
+.tp-q { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700; color: var(--navy); text-align: center; }
+.tp-q-ico { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: #094AFF; color: #fff; box-shadow: 0 8px 18px rgba(9,74,255,.28); transition: transform .2s cubic-bezier(.32,.72,0,1); }
+.tp-q-ico svg { width: 24px; height: 24px; }
+.tp-q:active .tp-q-ico { transform: scale(.92); }
+
+.tp-promos { margin-top: 26px; }
+.tp-pre { display: flex; align-items: center; gap: 12px; margin: 0 16px; padding: 12px 14px; border-radius: 18px; background: linear-gradient(120deg, #0B47F4, #131252); color: #fff; font-size: 13px; line-height: 1.35; box-shadow: var(--elev-1); }
+.tp-pre b { color: #C6DA4A; font-weight: 800; }
+.tp-pre-img { flex: none; width: 58px; height: 52px; border-radius: 10px; overflow: hidden; }
+.tp-pre-img img { width: 100%; height: 100%; object-fit: cover; }
+.tp-promo-row { display: flex; gap: 12px; margin-top: 12px; padding: 0 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 16px; scrollbar-width: none; }
+.tp-promo-row::-webkit-scrollbar { display: none; }
+.tp-invite { position: relative; flex: 0 0 100%; display: flex; align-items: center; min-height: 104px; padding: 14px 16px; border-radius: 18px; background: #C6DA4A; color: #131252; overflow: hidden; scroll-snap-align: start; }
+.tp-invite-2 { background: #DDEA94; }
+.tp-invite > div { position: relative; z-index: 1; max-width: 62%; }
+.tp-invite h3 { font-size: 16px; font-weight: 800; line-height: 1.2; letter-spacing: -.2px; }
+.tp-btn-navy { display: inline-flex; align-items: center; height: 32px; margin-top: 10px; padding: 0 16px; border-radius: 16px; background: #131252; color: #fff; font-size: 12.5px; font-weight: 800; }
+.tp-ill { position: absolute; right: 0; top: 0; bottom: 0; width: 40%; background: linear-gradient(160deg, #DDF3FF, #9FD8F7); }
+.tp-ill i { position: absolute; font-style: normal; }
+.tp-ill .s1 { left: 18%; top: 14%; color: #F79E1B; font-size: 18px; } .tp-ill .s2 { right: 14%; top: 22%; color: #094AFF; font-size: 13px; }
+.tp-ill .p1, .tp-ill .p2 { bottom: -12px; width: 46px; height: 64px; border-radius: 24px 24px 8px 8px; background: #094AFF; }
+.tp-ill .p1 { left: 18%; transform: rotate(-12deg); }
+.tp-ill .p2 { right: 16%; height: 72px; background: #131252; transform: rotate(10deg); }
+.tp-ill .p1::before, .tp-ill .p2::before { content: ""; position: absolute; left: 50%; top: -24px; width: 26px; height: 26px; margin-left: -13px; border-radius: 50%; background: #F2C29B; }
+.tp-ill-bus { display: grid; place-items: center; }
+.tp-ill-bus svg { width: 54px; height: 54px; stroke-width: 1.4; }
+.tp-dots { display: flex; justify-content: center; gap: 6px; margin-top: 10px; }
+.tp-dots i { width: 7px; height: 7px; border-radius: 50%; background: #C9D2E6; transition: background .3s; }
+.tp-dots i.on { background: #094AFF; }
+
+.tp-sec { margin-top: 24px; }
+.tp-feat { display: flex; align-items: stretch; margin-top: 12px; height: 84px; border-radius: 16px; overflow: hidden; background: linear-gradient(110deg, #0B47F4, #131252 75%); color: #fff; box-shadow: var(--elev-1); }
+.tp-feat-img { flex: 0 0 38%; }
+.tp-feat-img img { width: 100%; height: 100%; object-fit: cover; }
+.tp-feat-txt { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 14px; line-height: 1.2; }
+.tp-feat-txt small { font-size: 13px; font-weight: 700; }
+.tp-feat-txt strong { font-size: 16px; font-weight: 800; }
+.tp-feat-txt b { margin-top: 4px; font-size: 13px; color: #C6DA4A; }
+.tp-fin { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 18px 16px; border-radius: 20px; background: #fff; border: 1px solid var(--card-line); box-shadow: var(--elev-2); }
+.tp-fin > div { flex: 1; min-width: 0; }
+.tp-fin h3 { font-size: 17px; font-weight: 800; line-height: 1.2; color: var(--navy); }
+.tp-fin p { margin-top: 8px; font-size: 12.5px; line-height: 1.45; color: #5b6078; }
+.tp-btn-out { display: inline-flex; align-items: center; gap: 8px; height: 34px; margin-top: 12px; padding: 0 14px; border-radius: 17px; border: 1.5px solid #094AFF; color: #094AFF; font-size: 13px; font-weight: 800; }
+.tp-btn-out svg { color: #094AFF; }
+.tp-donut { flex: 0 0 120px; width: 120px; height: 120px; }
+.tp-dn-v { font: 800 10.5px "Rawson Pro", sans-serif; fill: #131252; }
+.tp-dn-l { font: 600 7px "Rawson Pro", sans-serif; fill: #5b6078; }
+
+/* Modo oscuro del sitio público */
+.theme-dark .home .tp-q { color: #fff; }
+.theme-dark .home .tp-fin { background: #151A3D; border-color: #262C55; }
+.theme-dark .home .tp-fin h3, .theme-dark .home .tp-dn-v { color: #fff; fill: #fff; }
+.theme-dark .home .tp-fin p { color: #B7BDD8; }
+
+@media (prefers-reduced-motion: reduce) { .brand-hold { transition: none; } }
+
+/* =====================================================================
+   Color de marca bien visible: header, fondo, barra inferior y enlaces
+   (misma estructura y componentes; cambian solo los tokens de color)
+   ===================================================================== */
+.home .header, .home .nav, .home .nav button.on, .home .portal { transition: background .5s, border-color .5s, box-shadow .5s; }
+
+/* ---------- andes noma: base azul de la marca con el verde de turismo como acento ---------- */
+.home[data-brand="noma"] .header { box-shadow: 0 14px 30px -10px rgba(8,74,254,.45), inset 0 -3px 0 #A3B26E; }
+.home[data-brand="noma"] .header::after { display: block; border: 0; content: ""; position: absolute; z-index: -1; right: -40px; bottom: -70px; width: 170px; height: 170px; border-radius: 50%; background: radial-gradient(circle, rgba(163,178,110,.55), transparent 68%); pointer-events: none; }
+.home[data-brand="noma"] .portal-in .chev { background: #5A6B33; }
+.home[data-brand="noma"] .menu-btn path:first-child { stroke: #C2CF8A; }
+.home[data-brand="noma"] .nav { border-color: rgba(163,178,110,.75); }
+.home[data-brand="noma"] .nav button.on { border-color: #A3B26E; box-shadow: 0 0 14px rgba(163,178,110,.45); }
+.home[data-brand="noma"] .nav button.on svg { color: #C2CF8A; }
+.home[data-brand="noma"] .tf-link, .home[data-brand="noma"] .eyebrow, .home[data-brand="noma"] .tour .kicker { color: #5A6B33; }
+.home[data-brand="noma"] .tf-card.nm-card { box-shadow: 0 10px 22px rgba(25,20,103,.25), inset 0 -3px 0 #A3B26E; }
+.home[data-brand="noma"] .tf-card.nm-card .tf-cta, .home[data-brand="noma"] .tf-card.nm-card .tf-cta svg { color: #C2CF8A; }
+.home[data-brand="noma"] .tf-card.nm-card .tr-ico { color: #C2CF8A; }
+.home[data-brand="noma"] .bb .coupon { border-color: #D6DCC0; box-shadow: var(--elev-2), inset 4px 0 0 #A3B26E; }
+
+/* ---------- andes tapp: azul eléctrico + lima ---------- */
+.home[data-brand="tapp"] { background: #F4F7E6; }
+.home[data-brand="tapp"] .header {
+  background:
+    radial-gradient(150px 110px at 88% 10%, rgba(198,218,74,.55), transparent 72%),
+    radial-gradient(190px 120px at 20% 78%, rgba(40,90,255,.55), transparent 72%),
+    linear-gradient(180deg, #0B0D3A 0%, #131252 40%, #0A3BE0 80%, #094AFF 100%);
+  box-shadow: 0 14px 30px -10px rgba(9,74,255,.45), inset 0 -2px 0 #C6DA4A;
+}
+.home[data-brand="tapp"] .portal { border-color: #C6DA4A; box-shadow: 0 0 12px rgba(198,218,74,.45); }
+.home[data-brand="tapp"] .portal-in .chev { background: #C6DA4A; color: #131252; }
+.home[data-brand="tapp"] .menu-btn path:first-child { stroke: #C6DA4A; }
+.home[data-brand="tapp"] .nav { background: rgba(19,18,82,.62); border-color: rgba(198,218,74,.75); }
+.home[data-brand="tapp"] .nav button.on { background: #C6DA4A; border-color: #E2EE9A; color: #131252; box-shadow: 0 0 14px rgba(198,218,74,.55); }
+.home[data-brand="tapp"] .nav button.on svg { color: #131252; }
+.home[data-brand="tapp"] .h2 { color: #131252; }
+.home[data-brand="tapp"] .hero-a path { fill: #094AFF; }
+.home[data-brand="tapp"] .hero-a circle:last-child { fill: #F4F7E6; }
+.home[data-brand="tapp"] .tp-q-ico { background: linear-gradient(145deg, #094AFF, #131252); box-shadow: 0 8px 18px rgba(9,74,255,.28), inset 0 0 0 2px #C6DA4A; }
+
+/* Indicador de mantener presionado con el color de la marca siguiente */
+.brand-hold.to-noma .bh-fg { stroke: #A3B26E; }
+.brand-hold.to-tapp .bh-fg { stroke: #C6DA4A; }
+.brand-hold.to-caja .bh-fg { stroke: #06C2FA; }
+
+/* El contenido de cada marca va por encima de la "A" decorativa del hero */
+.bb > section, .bb > .tp-promos { position: relative; z-index: 1; }
+
+/* ---------- andes tapp más atrevido: el lenguaje de la tarjeta se extiende al home ---------- */
+.home[data-brand="tapp"] .header::after { display: block; border: 0; content: ""; position: absolute; z-index: -1; right: -70px; top: -90px; width: 220px; height: 220px; border-radius: 50%; background: #C6DA4A; opacity: .9; pointer-events: none; }
+.home[data-brand="tapp"] .header::before { display: block; content: ""; position: absolute; z-index: -1; right: -130px; top: -150px; width: 340px; height: 340px; border-radius: 50%; border: 1px solid rgba(255,255,255,.18); box-shadow: 0 0 0 34px rgba(255,255,255,.04), 0 0 0 35px rgba(255,255,255,.14); pointer-events: none; }
+.home[data-brand="tapp"] .menu-btn { background: rgba(19,18,82,.35); }
+/* Banda azul que sale del header y abraza la tarjeta (como en el Figma) */
+.home[data-brand="tapp"] .hero-a { display: none; }
+.home[data-brand="tapp"] .hero-wrap::before { content: ""; position: absolute; z-index: 0; left: 0; right: 0; top: -40px; height: 210px; border-radius: 0 0 34px 34px; background: radial-gradient(160px 120px at 12% 70%, rgba(198,218,74,.35), transparent 70%), linear-gradient(180deg, #094AFF 0%, #0B3BE0 60%, #131252 100%); }
+.home[data-brand="tapp"] .tp-acct { box-shadow: 0 22px 40px rgba(19,18,82,.35); border-color: #C6DA4A; }
+.home[data-brand="tapp"] .tp-acct-foot a { color: #C6DA4A; }
+.home[data-brand="tapp"] .tp-acct-foot a svg { color: #C6DA4A; }
+/* Accesos: círculos azules con anillo lima y etiqueta navy fuerte */
+.home[data-brand="tapp"] .tp-q { font-weight: 800; }
+.home[data-brand="tapp"] .tp-q-ico { width: 60px; height: 60px; background: linear-gradient(145deg, #094AFF, #131252); box-shadow: 0 10px 20px rgba(9,74,255,.3), 0 0 0 3px #C6DA4A; }
+/* Promos con el mismo juego de círculos lima de la tarjeta */
+.home[data-brand="tapp"] .tp-pre { position: relative; overflow: hidden; background: linear-gradient(120deg, #094AFF, #131252); isolation: isolate; }
+.home[data-brand="tapp"] .tp-pre::after { content: ""; position: absolute; z-index: -1; right: -30px; top: -40px; width: 110px; height: 110px; border-radius: 50%; background: #C6DA4A; opacity: .9; }
+.home[data-brand="tapp"] .tp-invite { box-shadow: 0 12px 24px rgba(150,170,40,.3); }
+.home[data-brand="tapp"] .h2 { display: inline-block; padding-bottom: 4px; box-shadow: inset 0 -6px 0 #C6DA4A; }
+.home[data-brand="tapp"] .tp-feat { position: relative; isolation: isolate; border: 2px solid #C6DA4A; }
+.home[data-brand="tapp"] .tp-fin { border: 0; background: linear-gradient(160deg, #131252, #0B3BE0); }
+.home[data-brand="tapp"] .tp-fin h3 { color: #fff; }
+.home[data-brand="tapp"] .tp-fin p { color: rgba(255,255,255,.8); }
+.home[data-brand="tapp"] .tp-btn-out { border-color: #C6DA4A; color: #C6DA4A; }
+.home[data-brand="tapp"] .tp-btn-out svg { color: #C6DA4A; }
+.home[data-brand="tapp"] .tp-dn-v { fill: #fff; }
+.home[data-brand="tapp"] .tp-dn-l { fill: rgba(255,255,255,.75); }
+.home[data-brand="tapp"] .tp-donut circle[stroke="#131252"] { stroke: #fff; }
+
+/* =====================================================================
+   andes noma v3: más verde y enfocado en hoteles y reservas
+   ===================================================================== */
+.home[data-brand="noma"] { background: #F1F3EA; }
+.home[data-brand="noma"] .hero-a circle:last-child { fill: #F1F3EA; }
+.home[data-brand="noma"] .nav button.on { background: linear-gradient(90deg, #46542A, #6B7D3E); }
+.home[data-brand="noma"] .nav button.on svg { color: #E6EDC8; }
+.home[data-brand="noma"] .portal { border-color: #A3B26E; box-shadow: 0 0 12px rgba(163,178,110,.45); }
+.nm-h { display: inline-block; padding-bottom: 3px; box-shadow: inset 0 -6px 0 rgba(163,178,110,.55); }
+
+/* Buscador de disponibilidad */
+.nm-book { margin-top: 24px; position: relative; z-index: 1; }
+.nm-search { padding: 18px 16px 16px; border-radius: 22px; background: #fff; border: 1px solid #DDE2CC; box-shadow: 0 12px 28px rgba(70,84,42,.12); }
+.nm-search h2 { font-size: 17px; font-weight: 800; letter-spacing: -.3px; color: #33401F; }
+.nm-field { display: flex; flex-direction: column; gap: 4px; margin-top: 12px; }
+.nm-field span { font-size: 11px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: #5A6B33; }
+.nm-field select, .nm-field input { width: 100%; min-width: 0; height: 46px; padding: 0 12px; border-radius: 13px; border: 1.5px solid #DDE2CC; background: #F8F9F3; font: 700 14px "Rawson Pro", sans-serif; color: #131252; -webkit-appearance: none; appearance: none; }
+.nm-field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='m1 1.5 5 5 5-5' fill='none' stroke='%233E6B2E' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 12px; padding-right: 34px; }
+.nm-field select:focus, .nm-field input:focus { outline: none; border-color: #5A6B33; box-shadow: 0 0 0 4px rgba(163,178,110,.25); }
+.nm-dates { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.nm-guests { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; }
+.nm-guests > span { font-size: 11px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: #5A6B33; }
+.nm-step { display: flex; align-items: center; gap: 14px; }
+.nm-step button { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid #A3B26E; color: #46542A; font-size: 20px; font-weight: 700; line-height: 1; }
+.nm-step button:active { background: #F1F3EA; }
+.nm-step b { min-width: 14px; text-align: center; font-size: 17px; font-weight: 800; color: #131252; }
+.nm-err { display: block; min-height: 0; margin-top: 8px; font-size: 12.5px; font-weight: 700; color: #C62F34; }
+.nm-err:empty { display: none; }
+.nm-go { width: 100%; height: 50px; margin-top: 14px; border-radius: 16px; background: linear-gradient(90deg, #46542A, #6B7D3E); color: #fff; font-size: 15px; font-weight: 800; box-shadow: 0 12px 22px rgba(70,84,42,.3); }
+.nm-go:active { transform: scale(.98); }
+
+/* Resultados */
+.nm-results { margin-top: 12px; padding: 14px; border-radius: 20px; background: #fff; border: 1px solid #DDE2CC; }
+.nm-res-sum { font-size: 12.5px; line-height: 1.45; color: #5b6078; }
+.nm-res-sum b { color: #33401F; }
+.nm-opt { display: flex; align-items: center; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #EEF0E6; }
+.nm-opt img { flex: none; width: 56px; height: 56px; border-radius: 12px; object-fit: cover; }
+.nm-opt > div:nth-child(2) { flex: 1; min-width: 0; line-height: 1.25; }
+.nm-opt strong { display: block; font-size: 14px; font-weight: 800; color: #131252; }
+.nm-opt small, .nm-opt span { display: block; font-size: 11.5px; color: #5b6078; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nm-opt-r { flex: none; text-align: right; }
+.nm-opt-r b { display: block; font-size: 15px; font-weight: 800; color: #46542A; }
+.nm-opt-r button { height: 32px; margin-top: 4px; padding: 0 12px; border-radius: 11px; background: #5A6B33; color: #fff; font-size: 12.5px; font-weight: 800; }
+
+/* Mis reservas */
+.nm-res { margin-top: 28px; position: relative; z-index: 1; }
+.nm-count { font-size: 12px; font-weight: 800; color: #5A6B33; }
+.nm-tabs { display: inline-flex; gap: 4px; margin-top: 12px; padding: 4px; border-radius: 14px; background: #E5E9D6; }
+.nm-tabs button { height: 34px; padding: 0 16px; border-radius: 10px; font-size: 13px; font-weight: 800; color: #5A6B33; }
+.nm-tabs button.on { background: #fff; color: #33401F; box-shadow: 0 2px 6px rgba(70,84,42,.15); }
+.nm-res-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.nm-rcard { border-radius: 18px; background: #fff; border: 1px solid #DDE2CC; box-shadow: var(--elev-1); overflow: hidden; }
+.nm-rcard.fresh { animation: nmFresh 1.2s ease; }
+@keyframes nmFresh { 0% { box-shadow: 0 0 0 0 rgba(163,178,110,.7); } 100% { box-shadow: 0 0 0 14px rgba(163,178,110,0); } }
+.nm-rcard summary { display: flex; align-items: center; gap: 12px; padding: 12px; list-style: none; cursor: pointer; }
+.nm-rcard summary::-webkit-details-marker { display: none; }
+.nm-rcard summary img { flex: none; width: 60px; height: 60px; border-radius: 14px; object-fit: cover; }
+.nm-rcard summary > div { flex: 1; min-width: 0; line-height: 1.25; }
+.nm-rcard summary strong { display: block; margin-top: 4px; font-size: 15px; font-weight: 800; color: #131252; }
+.nm-rcard summary small { display: block; margin-top: 2px; font-size: 12.5px; color: #5b6078; }
+.nm-chev { flex: none; color: #5A6B33; transition: transform .3s; }
+.nm-rcard[open] .nm-chev { transform: rotate(180deg); }
+.nm-st { display: inline-block; padding: 2px 8px; border-radius: 7px; font-size: 10.5px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; }
+.st-confirmada { background: #E8ECD6; color: #46542A; }
+.st-finalizada { background: #EEF0F6; color: #5b6078; }
+.st-cancelada { background: #FDECEC; color: #C62F34; }
+.nm-rdet { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; margin: 0 12px; padding: 12px 0; border-top: 1px solid #EEF0E6; }
+.nm-rdet dt { font-size: 10.5px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: #6b7089; }
+.nm-rdet dd { margin-top: 2px; font-size: 13px; font-weight: 700; color: #131252; }
+.nm-racts { display: flex; gap: 8px; padding: 0 12px 12px; }
+.nm-racts button { flex: 1; height: 40px; border-radius: 12px; font-size: 13px; font-weight: 800; background: #F1F3EA; color: #46542A; }
+.nm-racts .nm-cancel { background: #fff; border: 1.5px solid #E3A3A5; color: #C62F34; }
+.nm-racts .nm-cancel.confirm { background: #C62F34; border-color: #C62F34; color: #fff; }
+.nm-empty { padding: 16px; border-radius: 16px; border: 1px dashed #CBD2B0; background: #fff; text-align: center; font-size: 13px; color: #5b6078; }
+
+/* Hoteles */
+.nm-hot { margin-top: 28px; position: relative; z-index: 1; }
+.nm-hot-row { display: flex; gap: 12px; margin: 12px -20px 0; padding: 4px 20px 18px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: 20px; scrollbar-width: none; }
+.nm-hot-row::-webkit-scrollbar { display: none; }
+.nm-hotel { flex: 0 0 236px; scroll-snap-align: start; border-radius: 20px; background: #fff; border: 1px solid #DDE2CC; box-shadow: var(--elev-1); overflow: hidden; }
+.nm-hotel-img { position: relative; height: 128px; }
+.nm-hotel-img img { width: 100%; height: 100%; object-fit: cover; }
+.nm-tag { position: absolute; left: 10px; top: 10px; padding: 4px 9px; border-radius: 9px; background: #46542A; color: #fff; font-size: 11px; font-weight: 800; }
+.nm-rate { position: absolute; right: 10px; top: 10px; padding: 4px 8px; border-radius: 9px; background: rgba(255,255,255,.94); color: #131252; font-size: 11.5px; font-weight: 800; }
+.nm-hotel-b { padding: 12px 14px 14px; }
+.nm-hotel-b strong { display: block; font-size: 15.5px; font-weight: 800; color: #131252; }
+.nm-hotel-b small { display: block; margin-top: 2px; font-size: 12px; color: #5b6078; }
+.nm-price { display: flex; align-items: baseline; gap: 6px; margin-top: 8px; }
+.nm-price s { font-size: 12px; color: #9aa0b5; }
+.nm-price b { font-size: 17px; font-weight: 800; color: #46542A; }
+.nm-price span { font-size: 12px; color: #5b6078; }
+.nm-pick { width: 100%; height: 40px; margin-top: 10px; border-radius: 12px; border: 1.5px solid #5A6B33; color: #46542A; font-size: 13.5px; font-weight: 800; }
+.nm-pick:active { background: #F1F3EA; }
+
+/* Aviso de cambio de marca: debajo del header, sin tapar el logo */
+.toast.toast-low { top: calc(150px + env(safe-area-inset-top, 0px)); }
+
+/* =====================================================================
+   Selector de marca integrado en la barra inferior
+   ===================================================================== */
+.home .nav { width: min(372px, calc(100% - 20px)); padding: 0 8px; }
+.nav .nav-brand { flex: 0 0 52px; height: 56px; gap: 3px; padding: 0; border-radius: 16px; }
+.nb-a { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: #fff; box-shadow: 0 0 0 2px var(--bd-accent), 0 4px 10px rgba(0,0,0,.25); transition: box-shadow .4s; }
+.nb-a svg { width: 19px; height: 14px; }
+.nav-brand .nb-t { font-size: 10.5px; font-weight: 700; }
+.nav-brand[aria-expanded="true"] .nb-a { transform: scale(.92); }
+.brand-pop-bd { position: fixed; z-index: 24; inset: 0; background: rgba(10,12,56,.35); opacity: 0; transition: opacity .25s; }
+.brand-pop-bd.open { opacity: 1; }
+.brand-pop {
+  position: fixed; z-index: 25; left: 50%; bottom: calc(102px + env(safe-area-inset-bottom, 0px));
+  width: min(340px, calc(100% - 28px)); padding: 12px; border-radius: 24px; background: #fff;
+  box-shadow: 0 20px 44px rgba(10,12,56,.3); transform: translate(-50%, 16px) scale(.96); transform-origin: 85% 100%; opacity: 0;
+  transition: transform .3s cubic-bezier(.32,.72,0,1), opacity .2s;
+}
+.brand-pop.open { transform: translate(-50%, 0) scale(1); opacity: 1; }
+.bp-t { display: block; padding: 2px 6px 8px; font-size: 11px; font-weight: 800; letter-spacing: .7px; text-transform: uppercase; color: #6b7089; }
+.bp-opt { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 64px; padding: 8px 12px; border-radius: 16px; border: 1.5px solid transparent; text-align: left; transition: background .2s, border-color .2s; }
+.bp-opt + .bp-opt { margin-top: 4px; }
+.bp-opt:active { background: #F3F5FA; }
+.bp-logo { flex: none; width: 96px; height: 31px; }
+.bp-d { flex: 1; min-width: 0; font-size: 12.5px; line-height: 1.3; color: #5b6078; }
+.bp-ck { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: transparent; border: 1.5px solid #D3D7E2; }
+.bp-opt[aria-checked="true"] { background: #F3F6FF; border-color: #CFDCFF; }
+.bp-opt[aria-checked="true"] .bp-ck { background: #084AFE; border-color: #084AFE; }
+.bp-opt[data-brand-pick="noma"][aria-checked="true"] { background: #F3F5EC; border-color: #CBD3AE; }
+.bp-opt[data-brand-pick="noma"][aria-checked="true"] .bp-ck { background: #5A6B33; border-color: #5A6B33; }
+.bp-opt[data-brand-pick="tapp"][aria-checked="true"] { background: #F7FAE4; border-color: #DDE99A; }
+.bp-opt[data-brand-pick="tapp"][aria-checked="true"] .bp-ck { background: #C6DA4A; border-color: #C6DA4A; color: #131252; }
+@media (prefers-reduced-motion: reduce) { .brand-pop, .brand-pop-bd { transition: none; } }
+
+/* ---------- Ajuste: sin línea bajo el header ---------- */
+/* Tapp: header y banda azul son una sola superficie, sin corte ni borde */
+.home[data-brand="tapp"] .header { border-radius: 0; box-shadow: none; }
+.home[data-brand="tapp"] .hero-wrap::before {
+  top: -60px; height: 220px; border-radius: 0 0 36px 36px;
+  background: radial-gradient(160px 120px at 12% 60%, rgba(198,218,74,.3), transparent 70%), linear-gradient(180deg, #094AFF 0%, #0A44F4 100%);
+  box-shadow: 0 16px 30px -12px rgba(9,74,255,.45);
+}
+/* Noma: sin línea verde; el verde vive dentro del header como luz de marca */
+.home[data-brand="noma"] .header {
+  background:
+    radial-gradient(230px 150px at 92% 100%, rgba(163,178,110,.95), transparent 70%),
+    radial-gradient(170px 110px at 8% 110%, rgba(150,166,92,.6), transparent 72%),
+    radial-gradient(190px 120px at 20% 78%, rgba(40,90,255,.45), transparent 72%),
+    linear-gradient(180deg, #0B0D3A 0%, #121150 42%, #0D2FCB 82%, #1F55D8 100%);
+  box-shadow: 0 14px 30px -10px rgba(90,107,51,.45);
+}
+.home[data-brand="noma"] .header::after { display: none; }
+.home[data-brand="tapp"] .header::before { display: none; }
+/* Noma: la parte baja del header pasa de azul a verde (navy arriba, verde abajo) */
+.home[data-brand="noma"] .header {
+  background:
+    radial-gradient(230px 150px at 92% 100%, rgba(163,178,110,.75), transparent 70%),
+    radial-gradient(190px 120px at 18% 82%, rgba(150,166,92,.55), transparent 72%),
+    linear-gradient(180deg, #0B0D3A 0%, #121A45 38%, #3A4722 72%, #5A6B33 100%);
+  box-shadow: 0 14px 30px -10px rgba(70,84,42,.5);
+}
+
+/* =====================================================================
+   andes tapp: tarjeta y fondo según la tarjeta física (índigo + forma diagonal lima)
+   ===================================================================== */
+.home[data-brand="tapp"] .header {
+  background: radial-gradient(200px 140px at 15% 80%, rgba(70,80,240,.55), transparent 72%), linear-gradient(180deg, #0B0D3A 0%, #151A8C 55%, #1C22B3 100%);
+}
+.home[data-brand="tapp"] .header::after { display: none; }
+.home[data-brand="tapp"] .hero-wrap::before {
+  background: radial-gradient(220px 160px at 85% 10%, rgba(80,90,255,.45), transparent 70%), linear-gradient(180deg, #1C22B3 0%, #171CA0 100%);
+  box-shadow: 0 16px 30px -12px rgba(23,28,160,.5);
+}
+.home[data-brand="tapp"] .tp-acct {
+  background: radial-gradient(240px 180px at 20% 20%, rgba(70,80,240,.5), transparent 70%), linear-gradient(135deg, #2A30C8 0%, #1C22B3 45%, #12168A 100%);
+  border: 1px solid rgba(255,255,255,.18); box-shadow: 0 22px 40px rgba(12,16,90,.45);
+}
+.tp-blob, .tp-rings { display: none; }
+.tp-art { position: absolute; z-index: -1; inset: 0; width: 100%; height: 100%; }
+.tp-acct-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.tp-logo { flex: none; width: 74px; height: 24px; --logo-a: #fff; --logo-a2: #fff; --logo-t: #fff; }
+.tp-chip { position: absolute; right: 22px; top: 62px; display: flex; align-items: center; gap: 6px; }
+.tp-chip i { width: 30px; height: 23px; border-radius: 5px; background: linear-gradient(135deg, #E9EDF5, #B9C1D3); box-shadow: inset 0 0 0 1px rgba(0,0,0,.12); position: relative; }
+.tp-chip i::before { content: ""; position: absolute; inset: 5px 9px; border: 1px solid rgba(0,0,0,.2); border-radius: 3px; }
+.tp-chip svg { width: 16px; height: 16px; opacity: .85; }
+.home[data-brand="tapp"] .tp-acct-foot a { color: #fff; }
+.home[data-brand="tapp"] .tp-acct-foot a svg { color: #fff; }
+.tp-acct-foot a { position: relative; z-index: 1; padding: 6px 10px; margin: -6px -10px; border-radius: 12px; background: rgba(18,22,138,.55); }
+.home[data-brand="tapp"] .tp-q-ico { background: linear-gradient(145deg, #2A30C8, #12168A); }
+.home[data-brand="tapp"] .tp-pre, .home[data-brand="tapp"] .tp-feat, .home[data-brand="tapp"] .tp-fin { background: linear-gradient(120deg, #2A30C8, #12168A); }
+/* Ajustes: banda sin corte con el header, chip fuera de la franja y CTA lima legible */
+.home[data-brand="tapp"] .hero-wrap::before { background: linear-gradient(180deg, #1C22B3 0%, #171CA0 100%); }
+.tp-chip { right: 92px; top: 22px; }
+.tp-acct-foot a { background: #C6DA4A; color: #131252 !important; padding: 8px 12px; margin: -8px -6px -8px 0; font-weight: 800; box-shadow: 0 6px 14px rgba(0,0,0,.2); }
+.tp-acct-foot a svg { color: #131252 !important; }
+.home[data-brand="tapp"] .header { background: radial-gradient(200px 120px at 15% 45%, rgba(70,80,240,.45), transparent 72%), linear-gradient(180deg, #0B0D3A 0%, #151A8C 50%, #1C22B3 100%); }
+.home[data-brand="tapp"] .hero-wrap::before { background: linear-gradient(180deg, #1C22B3 0%, #1C22B3 30%, #171CA0 100%); }
+.tp-chip { right: 96px; top: 66px; }
+
+/* ---------- andes noma: verde oliva del manual de marca ---------- */
+.home[data-brand="noma"] .header {
+  background: radial-gradient(220px 140px at 88% 100%, rgba(194,207,138,.45), transparent 70%), linear-gradient(180deg, #2A3315 0%, #3F4C24 50%, #5A6B33 100%);
+  box-shadow: 0 14px 30px -10px rgba(70,84,42,.5);
+}
+.home[data-brand="noma"] .portal { background: rgba(42,51,21,.55); }
+.home[data-brand="noma"] .nav { background: rgba(52,62,28,.72); border-color: rgba(194,207,138,.7); box-shadow: 0 10px 30px rgba(40,50,22,.3), inset 0 1px 0 rgba(255,255,255,.12); }
+.home[data-brand="noma"] .nav button.on { background: linear-gradient(90deg, #46542A, #6B7D3E); border-color: #C2CF8A; box-shadow: 0 0 14px rgba(163,178,110,.5); }
+.home[data-brand="noma"] .hero-a path { fill: #5A6B33; }
+.home[data-brand="noma"] .hero-a circle:first-child { fill: #A3B26E; }
+.home[data-brand="noma"] .carousel { box-shadow: 0 18px 36px rgba(70,84,42,.3); }
+.slide.nm-slide .cta { background: linear-gradient(90deg, #E6EDC8, #FFFFFF); border-color: rgba(255,255,255,.7); box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+.home[data-brand="noma"] .bp-opt[data-brand-pick="noma"][aria-checked="true"] .bp-ck { background: #5A6B33; border-color: #5A6B33; }
+.home[data-brand="noma"] .nb-a, .home[data-brand="noma"] .nav-brand .nb-a { box-shadow: 0 0 0 2px #C2CF8A, 0 4px 10px rgba(0,0,0,.25); }
+
+/* ---------- andes tapp: header con curvatura, CTA sobre la "A" ---------- */
+.home[data-brand="tapp"] .header { border-radius: 0 0 26px 26px; }
+.tp-acct-foot a { background: #12168A; color: #fff !important; box-shadow: 0 6px 14px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.18); }
+.tp-acct-foot a svg { color: #C6DA4A !important; }
+
+/* =====================================================================
+   andes tapp: tarjeta 3D (inclinación + reflejo holográfico + volteo)
+   ===================================================================== */
+.tp-card3d { position: relative; z-index: 1; perspective: 1100px; animation: tpFloat 6s ease-in-out infinite; }
+@keyframes tpFloat { 50% { transform: translateY(-5px); } }
+.tp-tilt { transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transform-style: preserve-3d; will-change: transform; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.tp-flip { position: relative; height: 228px; transform-style: preserve-3d; transition: transform .85s cubic-bezier(.2,.8,.2,1); }
+.tp-flip.flipped { transform: rotateY(180deg); }
+.tp-card3d .tp-acct { position: absolute; inset: 0; height: auto; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.tp-back { transform: rotateY(180deg); }
+.tp-glare {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none; border-radius: inherit; mix-blend-mode: soft-light;
+  background:
+    radial-gradient(circle at var(--gx, 30%) var(--gy, 20%), rgba(255,255,255,.75), transparent 42%),
+    linear-gradient(115deg, transparent 25%, rgba(255,255,255,.25) 42%, rgba(198,218,74,.35) 50%, rgba(100,200,255,.35) 57%, transparent 72%);
+  background-size: 100% 100%, 250% 100%; background-position: 0 0, var(--gx, 30%) 0;
+}
+.tp-tilt.pressing .tp-glare { mix-blend-mode: overlay; }
+.tp-card3d .tp-acct::after { content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; border-radius: inherit; background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,.35) 50%, transparent 65%) no-repeat; background-size: 250% 100%; background-position: 160% 0; animation: tpShine 4.5s 1.2s ease-in-out infinite; }
+@keyframes tpShine { 0%, 55% { background-position: 160% 0; } 100% { background-position: -60% 0; } }
+.tp-hint { position: absolute; z-index: 4; right: 14px; top: 14px; padding: 4px 10px; border-radius: 10px; background: rgba(255,255,255,.16); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); color: #fff; font-size: 11px; font-weight: 800; animation: tpHint 2.4s ease-in-out infinite; }
+@keyframes tpHint { 50% { opacity: .55; } }
+/* Reverso */
+.tp-back { background: linear-gradient(135deg, #12168A 0%, #1C22B3 60%, #2A30C8 100%) !important; }
+.tp-stripe { position: absolute; left: 0; right: 0; top: 24px; height: 40px; background: linear-gradient(180deg, #0B0D2A, #1a1d3d); }
+.tp-num { position: absolute; left: 20px; top: 84px; font: 700 21px/1 ui-monospace, "SF Mono", Menlo, monospace; letter-spacing: 2px; color: #fff; text-shadow: 0 1px 0 rgba(0,0,0,.3); }
+.tp-back-row { position: absolute; left: 20px; right: 20px; top: 122px; display: flex; gap: 18px; }
+.tp-back-row small { display: block; font-size: 10px; letter-spacing: .5px; text-transform: uppercase; color: rgba(255,255,255,.7); }
+.tp-back-row b { font-size: 13px; font-weight: 800; color: #fff; }
+.tp-back-logo { position: absolute; left: 20px; bottom: 18px; width: 86px; height: 28px; --logo-a: #C6DA4A; --logo-a2: #E3E4AB; --logo-t: #fff; }
+.tp-mc-back { position: absolute; right: 20px; bottom: 18px; }
+@media (prefers-reduced-motion: reduce) { .tp-card3d, .tp-card3d .tp-acct::after, .tp-hint { animation: none; } .tp-flip { transition: none; } }
+
+/* =====================================================================
+   andes noma: paleta oliva + navy + azul + cian (barra de marca)
+   ===================================================================== */
+.home[data-brand="noma"] { background: #F3F5FA; }
+.home[data-brand="noma"] .hero-a circle:last-child { fill: #F3F5FA; }
+.home[data-brand="noma"] .hero-a path { fill: #084AFE; }
+.home[data-brand="noma"] .hero-a circle:first-child { fill: #5A6B33; }
+.home[data-brand="noma"] .header {
+  background:
+    radial-gradient(240px 150px at 90% 105%, rgba(90,107,51,.95), transparent 70%),
+    radial-gradient(150px 100px at 6% 110%, rgba(6,194,250,.35), transparent 70%),
+    linear-gradient(180deg, #0B0D3A 0%, #131252 55%, #1A2160 100%);
+  box-shadow: 0 14px 30px -10px rgba(19,18,82,.45);
+}
+.home[data-brand="noma"] .nav { background: rgba(40,48,72,.55); border-color: rgba(110,200,255,.55); box-shadow: 0 10px 30px rgba(10,20,60,.3), inset 0 1px 0 rgba(255,255,255,.12); }
+.home[data-brand="noma"] .nav button.on { background: linear-gradient(90deg, #46542A, #6B7D3E); border-color: #A3B26E; }
+.home[data-brand="noma"] .nav button.on svg { color: #06C2FA; }
+.slide.nm-slide .cta { background: linear-gradient(90deg, #1fb0f5, #3cc6ff); border-color: rgba(200,240,255,.6); box-shadow: 0 4px 16px rgba(31,182,244,.35); }
+.slide.nm-slide .stamp { background: radial-gradient(circle at 40% 35%, #1f3ae0, #0c1890); border-color: #06C2FA; box-shadow: 0 0 14px rgba(31,182,244,.4); }
+.slide.nm-slide .stamp span { color: #06C2FA; }
+.slide.nm-slide .stamp::before { border-right-color: #06C2FA; }
+.nm-go { background: linear-gradient(90deg, #084AFE, #1A3FE0); box-shadow: 0 12px 22px rgba(8,74,254,.3); }
+.nm-opt-r button { background: #084AFE; }
+.nm-pick { border-color: #084AFE; color: #084AFE; }
+.nm-h { box-shadow: inset 0 -6px 0 rgba(6,194,250,.35); }
+.nm-search h2, .nm-hotel-b strong { color: #131252; }
+
+/* Historias de destinos */
+.nm-stories { margin-top: 24px; position: relative; z-index: 1; }
+.nm-pad { margin-left: 20px; }
+.nm-st-row { display: flex; gap: 14px; margin-top: 12px; padding: 4px 20px 6px; overflow-x: auto; scrollbar-width: none; }
+.nm-st-row::-webkit-scrollbar { display: none; }
+.nm-story { flex: none; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 70px; }
+.nm-st-ring { width: 68px; height: 68px; padding: 3px; border-radius: 50%; background: conic-gradient(from 210deg, #5A6B33, #A3B26E, #06C2FA, #084AFE, #131252, #5A6B33); animation: nmRing 6s linear infinite; }
+@keyframes nmRing { to { filter: hue-rotate(0deg); } }
+.nm-st-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #F3F5FA; }
+.nm-story b { font-size: 12px; font-weight: 800; color: #131252; }
+.nm-story:active .nm-st-ring { transform: scale(.94); }
+/* Visor a pantalla completa */
+.nm-sv { position: fixed; z-index: 120; left: 50%; top: 0; bottom: 0; width: 100%; max-width: 430px; transform: translateX(-50%); background: #000; overflow: hidden; opacity: 0; transition: opacity .25s; }
+.nm-sv.open { opacity: 1; }
+.nm-sv-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.nm-sv-img.kb { animation: nmKb 5s linear both; }
+@keyframes nmKb { from { transform: scale(1.12) translateY(10px); } to { transform: scale(1); } }
+.nm-sv::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.45) 0%, transparent 22%, transparent 50%, rgba(10,12,40,.9) 100%); pointer-events: none; }
+.nm-sv-bars { position: absolute; z-index: 3; left: 12px; right: 12px; top: calc(14px + env(safe-area-inset-top, 0px)); display: flex; gap: 4px; }
+.nm-sv-bars i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.35); overflow: hidden; }
+.nm-sv-bars i b { display: block; height: 100%; width: 0; background: #fff; }
+.nm-sv-bars i.done b { width: 100%; }
+.nm-sv-bars i.run b { animation: nmBar 5s linear forwards; }
+@keyframes nmBar { to { width: 100%; } }
+.nm-sv-x { position: absolute; z-index: 4; right: 12px; top: calc(28px + env(safe-area-inset-top, 0px)); width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,.35); color: #fff; font-size: 16px; }
+.nm-sv-prev, .nm-sv-next { position: absolute; z-index: 2; top: 0; bottom: 30%; width: 35%; }
+.nm-sv-prev { left: 0; } .nm-sv-next { right: 0; }
+.nm-sv-cap { position: absolute; z-index: 3; left: 22px; right: 22px; bottom: calc(34px + env(safe-area-inset-bottom, 0px)); color: #fff; }
+.nm-sv-cap small { font-size: 12px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: #06C2FA; }
+.nm-sv-cap h3 { margin-top: 6px; font-size: 40px; font-weight: 800; letter-spacing: -1px; line-height: 1; }
+.nm-sv-cap p { margin-top: 10px; font-size: 15px; line-height: 1.45; color: rgba(255,255,255,.9); }
+.nm-sv-go { width: 100%; height: 52px; margin-top: 18px; border-radius: 16px; background: linear-gradient(90deg, #5A6B33, #6B7D3E); color: #fff; font-size: 15px; font-weight: 800; box-shadow: 0 10px 24px rgba(0,0,0,.35); }
+
+/* Pase de "Tu próxima estadía" */
+.nm-pass-wrap { margin-top: 22px; position: relative; z-index: 1; }
+.nm-pass-wrap:empty { display: none; }
+.nm-pass { border-radius: 24px; background: #131252; color: #fff; overflow: hidden; box-shadow: 0 18px 36px rgba(19,18,82,.28); }
+.nm-pass-top { position: relative; height: 128px; }
+.nm-pass-top img { width: 100%; height: 100%; object-fit: cover; }
+.nm-pass-top::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(19,18,82,0) 20%, rgba(19,18,82,.95)); }
+.nm-pass-cap { position: absolute; z-index: 1; left: 18px; right: 18px; bottom: 12px; }
+.nm-pass-cap small { font-size: 10.5px; font-weight: 800; letter-spacing: .8px; color: #A3B26E; }
+.nm-pass-cap strong { display: block; margin-top: 2px; font-size: 21px; font-weight: 800; letter-spacing: -.4px; }
+.nm-pass-cap span { font-size: 12px; color: rgba(255,255,255,.8); }
+.nm-pass-cut { position: relative; height: 0; border-top: 2px dashed rgba(255,255,255,.18); margin: 0 16px; }
+.nm-pass-cut::before, .nm-pass-cut::after { content: ""; position: absolute; top: -12px; width: 22px; height: 22px; border-radius: 50%; background: #F3F5FA; }
+.nm-pass-cut::before { left: -28px; } .nm-pass-cut::after { right: -28px; }
+.nm-pass-body { padding: 14px 18px 16px; }
+.nm-pass-dates { display: flex; align-items: center; justify-content: space-between; }
+.nm-pass-dates small { display: block; font-size: 10px; letter-spacing: .6px; text-transform: uppercase; color: rgba(255,255,255,.6); }
+.nm-pass-dates b { display: block; font-size: 15px; font-weight: 800; text-transform: capitalize; }
+.nm-pass-dates em { font-style: normal; font-size: 12px; color: #06C2FA; font-weight: 700; }
+.nm-pass-dates > div:last-child { text-align: right; }
+.nm-pass-arrow { position: relative; flex: 1; margin: 0 12px; text-align: center; font-size: 11px; font-weight: 800; color: #A3B26E; }
+.nm-pass-arrow i { position: absolute; left: 0; right: 0; top: 50%; margin-top: 8px; height: 2px; background: linear-gradient(90deg, #5A6B33, #06C2FA); border-radius: 1px; }
+.nm-pass-arrow i::after { content: ""; position: absolute; right: -2px; top: -4px; border-left: 7px solid #06C2FA; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+.nm-count-down { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 16px; }
+.nm-count-down div { padding: 8px 0; border-radius: 12px; background: rgba(255,255,255,.08); text-align: center; }
+.nm-count-down b { display: block; font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; color: #fff; }
+.nm-count-down small { font-size: 10.5px; color: rgba(255,255,255,.65); }
+.nm-count-down div:first-child { background: linear-gradient(135deg, #5A6B33, #6B7D3E); }
+.nm-pass-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; font-size: 12.5px; color: rgba(255,255,255,.75); }
+.nm-pass-foot b { color: #fff; letter-spacing: 1px; }
+.nm-pass-qr { width: 34px; height: 34px; border-radius: 6px; background: #fff repeating-conic-gradient(#131252 0 25%, #fff 0 50%) 0 0 / 8px 8px; box-shadow: inset 0 0 0 3px #fff; }
+@media (prefers-reduced-motion: reduce) { .nm-sv-img.kb, .nm-sv-bars i.run b { animation: none; } }
+
+/* Aviso de cambio de marca con el color de cada marca */
+html[data-brand="noma"] .toast.toast-low { background: rgba(70,84,42,.95); box-shadow: 0 14px 30px rgba(51,64,31,.35); }
+html[data-brand="noma"] .toast.toast-low .t-ico { background: rgba(214,224,168,.25); color: #E6EDC8; }
+html[data-brand="tapp"] .toast.toast-low { background: rgba(28,34,179,.95); }
+html[data-brand="tapp"] .toast.toast-low .t-ico { background: #C6DA4A; color: #131252; }
+
+/* Experiencia 360° */
+.nm-360 { margin-top: 26px; position: relative; z-index: 1; }
+.nm-360-card { position: relative; display: block; width: 100%; height: 170px; border-radius: 22px; overflow: hidden; text-align: left; box-shadow: 0 16px 32px rgba(19,18,82,.25); isolation: isolate; }
+.nm-360-img { position: absolute; inset: -10px; z-index: -2; background-size: auto 115%; background-position: 0 50%; background-repeat: repeat-x; animation: nmPan 26s linear infinite; }
+@keyframes nmPan { to { background-position: -600px 50%; } }
+.nm-360-card::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(19,18,82,.9) 0%, rgba(19,18,82,.45) 55%, rgba(19,18,82,.1)); }
+.nm-360-badge { position: absolute; right: 16px; top: 16px; display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 17px; background: rgba(255,255,255,.18); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.4); color: #fff; font-size: 14px; font-weight: 800; }
+.nm-360-badge svg { animation: nmSpin 4s linear infinite; }
+@keyframes nmSpin { to { transform: rotateY(360deg); } }
+.nm-360-txt { position: absolute; left: 18px; right: 18px; bottom: 18px; color: #fff; }
+.nm-360-txt small { font-size: 10.5px; font-weight: 800; letter-spacing: .8px; color: #06C2FA; }
+.nm-360-txt strong { display: block; margin-top: 4px; font-size: 22px; font-weight: 800; letter-spacing: -.4px; }
+.nm-360-txt em { display: block; margin-top: 2px; font-style: normal; font-size: 13px; color: rgba(255,255,255,.85); }
+.nm-360b { position: absolute; left: 10px; bottom: 10px; height: 28px; padding: 0 10px; border-radius: 14px; background: rgba(19,18,82,.72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); color: #fff; font-size: 12px; font-weight: 800; border: 1px solid rgba(255,255,255,.35); }
+.nm-pano { position: fixed; z-index: 121; left: 50%; top: 0; bottom: 0; width: 100%; max-width: 430px; transform: translateX(-50%); background: #000; opacity: 0; transition: opacity .25s; overflow: hidden; }
+.nm-pano.open { opacity: 1; }
+.nm-pano-view { position: absolute; inset: 0; background-repeat: repeat-x; background-position: 0 50%; cursor: grab; touch-action: none; }
+.nm-pano-view:active { cursor: grabbing; }
+.nm-pano::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, transparent 22%, transparent 70%, rgba(10,12,40,.85) 100%); }
+.nm-pano-top { position: absolute; z-index: 2; left: 18px; right: 12px; top: calc(20px + env(safe-area-inset-top, 0px)); display: flex; align-items: center; justify-content: space-between; color: #fff; }
+.nm-pano-top small { font-size: 11px; font-weight: 800; letter-spacing: .8px; color: #06C2FA; }
+.nm-pano-top strong { display: block; font-size: 17px; font-weight: 800; }
+.nm-pano-x { position: static; }
+.nm-pano-compass { position: absolute; z-index: 2; right: 18px; bottom: calc(104px + env(safe-area-inset-bottom, 0px)); width: 46px; height: 46px; border-radius: 50%; border: 2px solid rgba(255,255,255,.6); background: rgba(0,0,0,.3); }
+.nm-pano-compass i { position: absolute; left: 50%; top: 50%; width: 0; height: 0; margin: -18px 0 0 -6px; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 18px solid #06C2FA; transform-origin: 6px 18px; }
+.nm-pano-hint { position: absolute; z-index: 2; left: 0; right: 0; bottom: calc(104px + env(safe-area-inset-bottom, 0px)); text-align: center; color: #fff; font-size: 13px; font-weight: 700; text-shadow: 0 1px 6px rgba(0,0,0,.6); transition: opacity .4s; }
+.nm-pano.touched .nm-pano-hint { opacity: 0; }
+.nm-pano-go { position: absolute; z-index: 2; left: 22px; right: 22px; width: auto; bottom: calc(34px + env(safe-area-inset-bottom, 0px)); }
+@media (prefers-reduced-motion: reduce) { .nm-360-img, .nm-360-badge svg { animation: none; } }
+.nm-pano-compass { bottom: calc(150px + env(safe-area-inset-bottom, 0px)); }
+
+/* Recorrido inmersivo (reemplaza el 360 con espejo) */
+.nm-pano-view { background: none !important; }
+.nm-pano-world { position: absolute; left: 0; will-change: transform; transform-origin: 50% 50%; }
+.nm-pano-img { width: 100%; height: 100%; object-fit: cover; -webkit-user-drag: none; user-select: none; pointer-events: none; }
+.nm-spots { position: absolute; inset: 0; }
+.nm-spot { position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; display: grid; place-items: center; }
+.nm-spot i { width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 4px rgba(6,194,250,.55), 0 4px 12px rgba(0,0,0,.4); }
+.nm-spot::before { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: 2px solid rgba(255,255,255,.85); animation: nmPulse 1.8s ease-out infinite; }
+@keyframes nmPulse { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
+.nm-spot.on i { background: #06C2FA; box-shadow: 0 0 0 5px rgba(255,255,255,.9), 0 6px 16px rgba(0,0,0,.45); }
+.nm-spot-card { position: absolute; z-index: 3; left: 22px; right: 22px; bottom: calc(150px + env(safe-area-inset-bottom, 0px)); padding: 14px 16px; border-radius: 18px; background: rgba(19,18,82,.72); -webkit-backdrop-filter: blur(14px) saturate(160%); backdrop-filter: blur(14px) saturate(160%); border: 1px solid rgba(255,255,255,.22); color: #fff; }
+.nm-spot-card b { display: block; font-size: 17px; font-weight: 800; }
+.nm-spot-card p { margin-top: 4px; font-size: 13.5px; line-height: 1.4; color: rgba(255,255,255,.88); }
+.nm-spot-card.in { animation: nmCardIn .5s cubic-bezier(.32,.72,0,1); }
+@keyframes nmCardIn { from { opacity: 0; transform: translateY(14px); } }
+.nm-pano-bar { position: absolute; z-index: 3; left: 22px; right: 22px; bottom: calc(100px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; justify-content: space-between; }
+.nm-tour-btn { height: 34px; padding: 0 14px; border-radius: 17px; background: rgba(255,255,255,.18); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.35); color: #fff; font-size: 12.5px; font-weight: 800; }
+.nm-pano-dots { display: flex; gap: 6px; }
+.nm-pano-dots i { width: 7px; height: 7px; border-radius: 4px; background: rgba(255,255,255,.45); transition: width .3s, background .3s; }
+.nm-pano-dots i.on { width: 20px; background: #06C2FA; }
+.nm-pano-hint { bottom: auto; top: calc(78px + env(safe-area-inset-top, 0px)); }
+.nm-pano-compass { display: none; }
+/* Partículas flotando delante de la foto (profundidad) */
+.nm-dust { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
+.nm-dust i { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,.7); filter: blur(.5px); animation: nmDust 9s linear infinite; transform: translateX(calc(var(--px, 0) * -.6px)); }
+.nm-dust i:nth-child(odd) { width: 6px; height: 6px; opacity: .5; filter: blur(1.5px); }
+.nm-dust i:nth-child(1) { left: 8%; animation-delay: -1s; } .nm-dust i:nth-child(2) { left: 18%; animation-delay: -4s; } .nm-dust i:nth-child(3) { left: 27%; animation-delay: -7s; }
+.nm-dust i:nth-child(4) { left: 36%; animation-delay: -2s; } .nm-dust i:nth-child(5) { left: 44%; animation-delay: -5s; } .nm-dust i:nth-child(6) { left: 52%; animation-delay: -8s; }
+.nm-dust i:nth-child(7) { left: 60%; animation-delay: -3s; } .nm-dust i:nth-child(8) { left: 68%; animation-delay: -6s; } .nm-dust i:nth-child(9) { left: 75%; animation-delay: -.5s; }
+.nm-dust i:nth-child(10) { left: 82%; animation-delay: -3.5s; } .nm-dust i:nth-child(11) { left: 90%; animation-delay: -6.5s; } .nm-dust i:nth-child(12) { left: 14%; animation-delay: -2.5s; }
+.nm-dust i:nth-child(13) { left: 48%; animation-delay: -5.5s; } .nm-dust i:nth-child(14) { left: 94%; animation-delay: -8.5s; }
+@keyframes nmDust { from { top: 105%; } to { top: -5%; } }
+@media (prefers-reduced-motion: reduce) { .nm-dust { display: none; } .nm-spot::before { animation: none; } }
+.nm-360-img { background-repeat: no-repeat; background-size: 170% auto; background-position: 0% 40%; animation: nmPanAlt 14s ease-in-out infinite alternate; }
+@keyframes nmPanAlt { to { background-position: 100% 40%; } }
+
+/* andes noma: todo lo verde con botones e íconos blancos */
+.slide.nm-slide .cta { background: #fff; border-color: #fff; color: #46542A; box-shadow: 0 6px 18px rgba(0,0,0,.22); }
+.slide.nm-slide .cta svg { color: #46542A; }
+.slide.nm-slide .stamp { background: radial-gradient(circle at 40% 35%, #6B7D3E, #3A4722); border-color: #fff; box-shadow: 0 0 14px rgba(255,255,255,.3); color: #fff; }
+.slide.nm-slide .stamp span { color: #E6EDC8; }
+.slide.nm-slide .stamp::before { border-right-color: #fff; }
+.home[data-brand="noma"] .nav button.on svg { color: #fff; }
+.home[data-brand="noma"] .dots button.on { background: #fff; box-shadow: 0 0 6px rgba(255,255,255,.7); }
+.home[data-brand="noma"] .portal-in .chev { background: #5A6B33; color: #fff; }
+.nm-sv-go, .nm-pano-go { background: #fff; color: #46542A; }
+
+/* andes noma: header 100% verde (sin azul) */
+.home[data-brand="noma"] .header {
+  background:
+    radial-gradient(240px 150px at 88% 105%, rgba(194,207,138,.55), transparent 70%),
+    radial-gradient(180px 120px at 12% 95%, rgba(107,125,62,.6), transparent 72%),
+    linear-gradient(180deg, #1A200D 0%, #2F3A1A 45%, #4A5A2A 80%, #5A6B33 100%);
+  box-shadow: 0 14px 30px -10px rgba(58,71,34,.5);
+}
+.home[data-brand="noma"] .hero-a path { fill: #46542A; }
+.home[data-brand="noma"] .hero-a circle:first-child { fill: #A3B26E; }
+
+/* Barra inferior por producto */
+.home #nav > [data-nav-brand] { display: none; }
+.home[data-brand="noma"] #nav > button:not(.nav-brand):not([data-nav-brand="noma"]),
+.home[data-brand="tapp"] #nav > button:not(.nav-brand):not([data-nav-brand="tapp"]) { display: none; }
+.home[data-brand="noma"] #nav > [data-nav-brand="noma"], .home[data-brand="tapp"] #nav > [data-nav-brand="tapp"] { display: flex; }
+#nav > [data-nav-brand] svg { width: 18px; height: 17px; }
+#nav > [data-nav-brand].on svg { width: 16px; height: 16px; }
+#nav > [data-nav-brand="tapp"] span { max-width: 62px; overflow: hidden; text-overflow: ellipsis; }
+
+/* Botones: verdes en Noma y todos redondeados (píldora) */
+.nm-go, .nm-opt-r button, .nm-pick, .nm-racts button, .nm-sv-go, .nm-pano-go, .nm-tabs, .nm-tabs button,
+.tp-btn-navy, .tp-btn-out, .slide.nm-slide .cta, .nm-tour-btn, .nm-360-badge, .nm-360b { border-radius: 999px; }
+.nm-go { background: linear-gradient(90deg, #46542A, #6B7D3E); box-shadow: 0 12px 22px rgba(70,84,42,.3); }
+.nm-opt-r button { background: #5A6B33; }
+.nm-pick { border-color: #5A6B33; color: #46542A; }
+.nm-pick:active { background: #F1F3EA; }
+.nm-sv-go, .nm-pano-go { background: linear-gradient(90deg, #46542A, #6B7D3E); color: #fff; box-shadow: 0 10px 24px rgba(0,0,0,.35); }
+.nm-racts button { background: #F1F3EA; color: #46542A; }
+.nm-racts .nm-cancel { background: #fff; }

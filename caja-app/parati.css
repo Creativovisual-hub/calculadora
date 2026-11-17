@@ -1,0 +1,89 @@
+/* ================= Para ti: beneficios según gustos ================= */
+.c-comida { color: #C2410C; } .c-educacion { color: #084AFE; }
+.pt-body { padding-bottom: 40px; }
+
+/* Onboarding de gustos */
+.pt-onb { padding-top: 8px; }
+.pt-step { font-size: 10.5px; font-weight: 800; letter-spacing: 1px; color: #084AFE; }
+.pt-h { margin-top: 6px; font-size: 24px; font-weight: 900; letter-spacing: -.6px; line-height: 1.15; color: #131252; }
+.pt-h.sm { margin: 0; font-size: 20px; }
+.pt-lead { margin-top: 6px; font-size: 13.5px; line-height: 1.5; color: #5b6078; }
+.pt-likes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+.pt-like { position: relative; height: 112px; border-radius: 18px; overflow: hidden; background: #1c2a3a; text-align: left; border: 0; box-shadow: 0 6px 16px rgba(19,18,82,.1); transition: transform .25s cubic-bezier(.32,.72,0,1), box-shadow .25s; }
+.pt-like:last-child:nth-child(odd) { grid-column: 1 / -1; height: 96px; }
+.pt-like img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s cubic-bezier(.32,.72,0,1), filter .3s; }
+.pt-like::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,12,40,.05) 20%, rgba(10,12,40,.78)); transition: background .3s; }
+.pt-like b { position: absolute; z-index: 1; left: 12px; right: 12px; bottom: 10px; color: #fff; font-size: 15px; font-weight: 800; line-height: 1.2; text-shadow: 0 1px 6px rgba(0,0,0,.4); }
+.pt-like-ck { position: absolute; z-index: 2; top: 10px; right: 10px; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.28); border: 2px solid #fff; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: background .2s, transform .3s cubic-bezier(.34,1.56,.64,1); }
+.pt-like-ck svg { opacity: 0; transition: opacity .2s; }
+.pt-like[aria-pressed="true"] { box-shadow: 0 0 0 3px #084AFE, 0 10px 22px rgba(8,74,254,.3); }
+.pt-like[aria-pressed="true"]::after { background: linear-gradient(180deg, rgba(8,74,254,.25) 10%, rgba(10,12,56,.82)); }
+.pt-like[aria-pressed="true"] img { transform: scale(1.06); }
+.pt-like[aria-pressed="true"] .pt-like-ck { background: #084AFE; border-color: #fff; transform: scale(1.1); }
+.pt-like[aria-pressed="true"] .pt-like-ck svg { opacity: 1; }
+.pt-like.pop { animation: likePop .4s cubic-bezier(.34,1.56,.64,1); }
+@keyframes likePop { 40% { transform: scale(.95); } }
+.pt-go { width: 100%; height: 52px; min-height: 0; margin-top: 20px; font-size: 15px; }
+.pt-go:disabled { background: #D7DBE5; color: #5b6078; box-shadow: none; }
+.pt-skip { display: block; margin: 12px auto 0; padding: 10px; font-size: 13.5px; font-weight: 700; color: #084AFE; background: none; border: 0; }
+
+/* Feed */
+.pt-hello { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding-top: 6px; }
+.pt-hello .pt-lead { margin-top: 2px; }
+.pt-edit { flex: none; height: 40px; min-height: 0; padding: 0 14px; font-size: 13px; }
+.pt-match { display: block; margin-top: 16px; border-radius: 22px; overflow: hidden; background: #fff; border: 1px solid #E4E8F2; box-shadow: 0 2px 4px rgba(19,18,82,.04), 0 14px 30px rgba(19,18,82,.1); cursor: pointer; }
+.pt-match-media { position: relative; height: 170px; background: #1c2a3a; }
+.pt-match-media img { width: 100%; height: 100%; object-fit: cover; }
+.pt-match-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,12,40,.1), rgba(10,12,40,.7)); }
+.pt-match-tag { position: absolute; z-index: 1; top: 14px; left: 14px; font-size: 11px; font-weight: 900; letter-spacing: 1px; color: #FFC83D; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
+.pt-match-media strong { position: absolute; z-index: 1; left: 14px; bottom: 12px; color: #fff; font-size: 30px; font-weight: 900; letter-spacing: -.8px; text-shadow: 0 2px 8px rgba(0,0,0,.35); }
+.pt-match-body { padding: 14px 16px 16px; }
+.pt-match-body h3 { margin-top: 4px; font-size: 19px; font-weight: 900; letter-spacing: -.4px; color: #131252; }
+.pt-match-body p { margin-top: 4px; font-size: 13px; line-height: 1.5; color: #5b6078; }
+.pt-why { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; font-weight: 800; color: #084AFE; }
+.pt-why::before { content: "♥"; font-size: 12px; }
+.pt-code { display: block; margin-top: 6px; font-size: 12px; font-weight: 700; color: #0c6d42; }
+.pt-match-go { display: flex; align-items: center; justify-content: flex-end; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #EDF0F6; font-size: 14px; font-weight: 800; color: #084AFE; }
+.pt-match-go svg { color: #084AFE; }
+.pt-sec { margin: 24px 0 10px; font-size: 16px; font-weight: 800; color: #131252; }
+.pt-list { display: flex; flex-direction: column; gap: 10px; }
+.pt-item { display: flex; align-items: center; gap: 12px; padding: 10px; border-radius: 18px; background: #fff; border: 1px solid #E4E8F2; box-shadow: 0 1px 2px rgba(19,18,82,.04), 0 6px 14px rgba(19,18,82,.05); cursor: pointer; }
+.pt-item-media { flex: none; width: 76px; height: 76px; border-radius: 14px; overflow: hidden; background: #1c2a3a; }
+.pt-item-media img { width: 100%; height: 100%; object-fit: cover; }
+.pt-item-body { flex: 1; min-width: 0; }
+.pt-item-body h4 { margin-top: 2px; font-size: 15px; font-weight: 800; color: #131252; }
+.pt-item-body p { margin-top: 1px; font-size: 13px; color: #3e4466; }
+.pt-item .pt-why { margin-top: 4px; }
+.pt-chev { flex: none; margin-right: 4px; color: #9aa0b5; }
+
+/* Encabezado de la vitrina del inicio */
+.cv-head { display: flex; align-items: baseline; justify-content: space-between; }
+.cv-all { font-size: 13px; font-weight: 800; color: #084AFE; }
+
+/* ================= Recorrido guiado ================= */
+.gtour { position: fixed; inset: 0; z-index: 95; visibility: hidden; pointer-events: none; }
+.gtour.open { visibility: visible; pointer-events: auto; }
+.tour-spot { position: fixed; border-radius: 20px; box-shadow: 0 0 0 9999px rgba(10,12,56,.66), 0 0 0 3px rgba(6,194,250,.9) inset; transition: top .45s cubic-bezier(.32,.72,0,1), left .45s cubic-bezier(.32,.72,0,1), width .45s cubic-bezier(.32,.72,0,1), height .45s cubic-bezier(.32,.72,0,1), border-radius .45s; opacity: 0; }
+.gtour.open .tour-spot { opacity: 1; transition-property: top, left, width, height, border-radius, opacity; }
+.tour-tip { position: fixed; padding: 16px 16px 14px; border-radius: 20px; background: #fff; color: #131252; box-shadow: 0 18px 40px rgba(10,12,56,.35); opacity: 0; transform: translateY(8px) scale(.98); transition: opacity .25s, transform .35s cubic-bezier(.32,.72,0,1); }
+.tour-tip.in { opacity: 1; transform: none; }
+.tour-tip::before { content: ""; position: absolute; left: var(--ax, 40px); width: 16px; height: 16px; margin-left: -8px; background: #fff; transform: rotate(45deg); border-radius: 3px; }
+.tour-tip[data-side="below"]::before { top: -7px; }
+.tour-tip[data-side="above"]::before { bottom: -7px; }
+.tour-count { font-size: 11px; font-weight: 800; letter-spacing: .8px; color: #084AFE; }
+.tour-tip h2 { margin-top: 4px; font-size: 18px; font-weight: 900; letter-spacing: -.3px; }
+.tour-tip p { margin-top: 4px; font-size: 13.5px; line-height: 1.5; color: #3e4466; }
+.tour-foot { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+.tour-dots { flex: 1; display: flex; gap: 5px; }
+.tour-dots i { width: 6px; height: 6px; border-radius: 3px; background: #D3D9E8; transition: width .3s, background .3s; }
+.tour-dots i.on { width: 16px; background: #084AFE; }
+.tour-skip { height: 44px; padding: 0 12px; background: none; border: 0; font-size: 14px; font-weight: 700; color: #5b6078; }
+.tour-next { height: 44px; min-height: 0; padding: 0 18px; font-size: 14.5px; }
+.dp-tour { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 12px; border-radius: 16px; background: #F2F6FF; border: 1px solid #D9E4FF; color: #131252; text-decoration: none; }
+.dp-tour .dp-txt { flex: 1; }
+@media (prefers-reduced-motion: reduce) { .tour-spot, .tour-tip, .pt-like, .pt-like img { transition: none; animation: none; } }
+
+/* "Para ti" con la vitrina pública */
+.pt-feed .search-row { margin-top: 16px; }
+.pt-feed .near { margin-top: 18px; }
+.pt-feed .cats { margin-top: 2px; }

@@ -1,0 +1,138 @@
+/* =====================================================================
+   SISTEMA DE DISEÑO — Caja Los Andes (se carga al final y homologa todo)
+   Tipografía: Rawson Pro · Paleta oficial · Botones con radio 16px
+   ===================================================================== */
+
+/* ---------- Tipografía oficial ---------- */
+@font-face { font-family: "Rawson Pro"; src: url("assets/fonts/RawsonPro-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Rawson Pro"; src: url("assets/fonts/RawsonPro-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Rawson Pro"; src: url("assets/fonts/RawsonPro-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Rawson Pro"; src: url("assets/fonts/RawsonPro-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Rawson Pro"; src: url("assets/fonts/RawsonPro-ExtraBold.woff2") format("woff2"); font-weight: 800; font-style: normal; font-display: swap; }
+@font-face { font-family: "Rawson Pro"; src: url("assets/fonts/RawsonPro-Black.woff2") format("woff2"); font-weight: 900; font-style: normal; font-display: swap; }
+
+:root {
+  /* Paleta oficial */
+  --c-navy: #191467;        /* Azul Navy */
+  --c-blue: #094AFF;        /* Azul — color de acción */
+  --c-blue-press: #0739C8;
+  --c-cyan: #00C2FA;        /* Celeste */
+  --c-ground: #F2F2F2;      /* Blanco grisáceo */
+  --c-gray-dark: #848484;   /* Gris oscuro: solo bordes/estados, no texto (contraste 3,7:1) */
+  --c-gray-light: #AFAFAF;  /* Gris claro */
+  --c-text-2: #5b6078;      /* texto secundario (6,3:1) */
+  --c-text-3: #6b7089;      /* texto terciario (4,9:1) */
+  --c-danger: #C62F34;
+  --c-success: #0B8457;
+  /* Botones */
+  --btn-radius: 16px;
+  --btn-lg: 54px;           /* principal de pantalla */
+  --btn-md: 48px;
+  --btn-sm: 40px;           /* compacto dentro de tarjetas (sigue ≥ 24px WCAG 2.2 AA) */
+  --font: "Rawson Pro", -apple-system, "SF Pro Text", system-ui, sans-serif;
+}
+html, body, button, input, select, textarea { font-family: var(--font); }
+body { -webkit-text-size-adjust: 100%; text-rendering: optimizeLegibility; }
+
+/* ---------- Botón principal: Azul sólido ---------- */
+.btn-primary, .login-cta, .fid-btn, .ob-main, .bd-cta, .btn-blue, .pf-save, .cr-pay,
+.wz-go, .wz-take, .mc-go, .mf-route {
+  background: var(--c-blue); color: #fff; border: 0; border-radius: var(--btn-radius);
+  font-weight: 800; letter-spacing: .1px;
+  box-shadow: 0 10px 22px rgba(9,74,255,.28);
+  transition: background .2s, transform .2s cubic-bezier(.32,.72,0,1), box-shadow .25s;
+}
+.btn-primary:hover:not(:disabled), .ob-main:hover, .bd-cta:not(.done):hover, .btn-blue:hover, .cr-pay:not(.paid):hover,
+.wz-go:hover, .wz-take:hover, .mc-go:hover, .mf-route:hover { background: var(--c-blue-press); }
+.btn-primary:disabled, .fid-btn:disabled:not([aria-busy]) { background: #D7DBE5; color: var(--c-text-2); box-shadow: none; opacity: 1; }
+.fid-btn:disabled { background: var(--c-blue); color: #fff; opacity: .78; }
+.ob-main svg, .cr-pay svg { color: #fff; }
+.cr-pay .cp-idle svg { stroke: #fff; }
+.cr-pay .cp-load i { background: #fff; }
+/* Estados de éxito conservan el verde oficial de confirmación */
+.bd-cta.done, .cr-pay.paid { background: var(--c-success); box-shadow: 0 10px 22px rgba(11,132,87,.3); }
+
+/* ---------- Botón secundario: blanco con borde y texto Azul ---------- */
+.ob-alt, .btn-outline, .btn-soft, .wz-detail, .help-btn, .pill-btn, .map-expand, .wz-cancel {
+  background: #fff; color: var(--c-blue); border: 1.5px solid var(--c-blue); border-radius: var(--btn-radius);
+  font-weight: 800; box-shadow: none;
+  transition: background .2s, transform .2s cubic-bezier(.32,.72,0,1);
+}
+.ob-alt:hover, .btn-soft:hover, .wz-detail:hover, .help-btn:hover, .pill-btn:hover, .map-expand:hover, .wz-cancel:hover { background: #EEF3FF; }
+.map-expand { box-shadow: 0 4px 12px rgba(25,20,103,.14); }
+.map-expand svg path, .btn-soft svg, .pill-btn svg { stroke: currentColor; color: var(--c-blue); }
+
+/* ---------- Destructivo ---------- */
+.pf-logout, .wz-end { border-radius: var(--btn-radius); color: var(--c-danger); font-weight: 800; }
+
+/* ---------- Radio 16px en todos los controles rectangulares ---------- */
+.btn, .ob-btn, .cta, .portal, .pc-btn, .bd-cta, .btn-blue, .btn-soft, .cr-pay, .pf-logout,
+.wz-go, .wz-take, .wz-detail, .wz-cancel, .wz-end, .wz-modes button, .mc-go, .mf-route, .mf-pick,
+.help-btn, .pill-btn, .map-expand, .map-tools button, .pop, .cat-chip, .cats-ind, .seg button, .seg-ind,
+.pill, .pf-emo, .acc, .pq, .tr, .nav button, .face-id, .mc-body { border-radius: var(--btn-radius); }
+
+/* Tamaños homologados (se mantienen los tamaños de texto de cada botón) */
+.btn, .ob-btn, .bd-cta, .btn-blue, .wz-go, .wz-take, .wz-detail, .wz-cancel { min-height: var(--btn-md); }
+.ob-btn { height: var(--btn-lg); }
+.mc-go { height: var(--btn-sm); padding: 0 14px; }
+.help-btn, .pill-btn { min-height: var(--btn-sm); }
+.map-expand { height: 36px; }
+.btn-soft { height: var(--btn-md); }
+
+/* ---------- Foco visible y accesible ---------- */
+:focus-visible { outline: 3px solid var(--c-blue); outline-offset: 2px; }
+.header :focus-visible, .ph-header :focus-visible, .slide :focus-visible, .portal-card :focus-visible,
+.ph-saldo:focus-visible, .nav :focus-visible, .wz-instr :focus-visible, .sp-curtain :focus-visible { outline-color: var(--c-cyan); }
+.btn-primary:focus-visible, .ob-main:focus-visible, .bd-cta:focus-visible, .btn-blue:focus-visible, .wz-go:focus-visible,
+.wz-take:focus-visible, .cr-pay:focus-visible { outline: 3px solid var(--c-navy); outline-offset: 3px; }
+
+/* ---------- En un iPhone real: idéntico al Figma ----------
+   La fila de la barra de estado simulada (44px del diseño) queda como espacio
+   invisible del alto real de la zona de la hora + isla dinámica (59px en iPhone 15 Pro).
+   Todo lo demás conserva las medidas del diseño. */
+@media (hover: none) and (pointer: coarse) {
+  /* --sx: lo que la zona de la hora real supera a la del diseño (15px en iPhone 15 Pro)
+     --air: margen bajo la franja que iOS 26 difumina debajo de la hora (igual en todas las pantallas) */
+  :root { --sat: env(safe-area-inset-top, 0px); --sx: max(0px, calc(var(--sat) - 44px)); --air: 40px; }
+  .status { visibility: hidden; height: calc(max(44px, var(--sat)) + var(--air)); }
+  .home-ind, .drawer-ind, .tabbar::after { display: none; }
+  .home .header { height: calc(132px + var(--sx) + var(--air)); }
+  .ph-header { height: calc(186px + var(--sx) + var(--air)); }
+  .back { top: calc(62px + var(--sx) + var(--air)); }
+  .ob-brand { top: calc(54px + var(--sx) + var(--air)); }
+  .toast { top: calc(54px + var(--sx) + var(--air)); }
+}
+/* Toques nativos: sin resaltado gris ni rebote de página */
+html { -webkit-tap-highlight-color: transparent; }
+body { overscroll-behavior-y: none; }
+/* Alto real de pantalla en iOS (evita que la barra de Safari tape el contenido) */
+@supports (height: 100dvh) {
+  .screen { min-height: 100dvh; }
+  .splash, .onboarding, .login { height: 100dvh; }
+  .mf-map { height: calc(100dvh - 330px); }
+}
+.nav { bottom: calc(22px + env(safe-area-inset-bottom, 0px)); }
+.sheet { padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
+
+/* Sombra del header en el mismo azul del degradado (antes se veía grisácea) */
+.home .header, .ph-header { box-shadow: 0 14px 30px -8px rgba(8,74,254,.45), inset 0 -1.5px 0 rgba(6,194,250,.4); }
+.home .header.scrolled, .ph-header.scrolled { box-shadow: 0 16px 34px -8px rgba(8,74,254,.55), inset 0 -1.5px 0 rgba(6,194,250,.4); }
+
+/* ---------- Comportamiento de app nativa ---------- */
+/* Sin selección de texto ni menú de mantener presionado (copiar, abrir imagen…) */
+html { touch-action: manipulation; }             /* sin zoom por doble toque */
+body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+img, svg, a { -webkit-user-drag: none; -webkit-touch-callout: none; }
+/* Los campos de formulario sí permiten escribir, seleccionar y pegar */
+input, textarea, [contenteditable="true"] { -webkit-user-select: text; user-select: text; -webkit-touch-callout: default; }
+/* iOS amplía la pantalla al enfocar campos con letra menor a 16px: en el teléfono se usa 16px */
+@media (hover: none) and (pointer: coarse) {
+  input, textarea, select { font-size: 16px !important; }
+}
+
+/* Sin barra de scroll visible (como app nativa); el desplazamiento sigue funcionando */
+html, body, * { scrollbar-width: none; -ms-overflow-style: none; }
+html::-webkit-scrollbar, body::-webkit-scrollbar, *::-webkit-scrollbar { display: none; width: 0; height: 0; background: transparent; }
+
+/* El atributo hidden siempre oculta, aunque la clase defina display */
+[hidden] { display: none !important; }

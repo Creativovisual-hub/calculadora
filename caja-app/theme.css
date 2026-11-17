@@ -1,0 +1,209 @@
+/* ================= Configuración: Apariencia (menú público) ================= */
+.cfg { margin: 10px 0 18px; padding: 14px; border-radius: 16px; background: #fff; border: 1px solid #e1e5ef; }
+.cfg-row { display: flex; align-items: center; gap: 12px; }
+.cfg-ico { flex: none; width: 38px; height: 38px; border-radius: 11px; background: #EEF3FF; display: grid; place-items: center; }
+.cfg-row b { display: block; font-size: 14px; font-weight: 800; color: #131252; }
+.cfg-row small { font-size: 12px; color: #5b6078; }
+.cfg-seg { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 12px; padding: 4px; border-radius: 16px; background: #EEF1F7; }
+.cfg-seg::before { content: ""; position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / 3); border-radius: 12px; background: #fff; box-shadow: 0 2px 8px rgba(19,18,82,.14); transform: translateX(calc(var(--i, 0) * 100%)); transition: transform .4s cubic-bezier(.32,.72,0,1); }
+.cfg-seg button { position: relative; z-index: 1; height: 40px; border-radius: 12px; font-size: 13px; font-weight: 700; color: #5b6078; background: none; border: 0; }
+.cfg-seg button[aria-checked="true"] { color: #084AFE; font-weight: 800; }
+
+/* Transición suave al cambiar de tema */
+.theme-anim .home, .theme-anim .home *, .theme-anim #drawer, .theme-anim #drawer * { transition: background-color .45s ease, color .45s ease, border-color .45s ease, box-shadow .45s ease !important; }
+
+/* ================= home-new + NavigationDrawer-new (Figma 3115-3999) ================= */
+/* Botón "Ingresar" del header */
+.portal-in { height: 38px; padding: 0 5px 0 16px; gap: 12px; border-radius: 19px; font-size: 14.5px; font-weight: 700; color: #fff; }
+.portal-in .chev { width: 26px; height: 26px; background: #0E2BB8; box-shadow: inset 0 0 0 1px rgba(255,255,255,.18); }
+
+/* Trámites frecuentes (reemplaza a Accesos directos) */
+.tf { margin-top: 26px; }
+.tf-head { display: flex; align-items: center; justify-content: space-between; }
+.tf-link { display: inline-flex; align-items: center; min-height: 44px; margin: -12px -4px; padding: 0 4px; font-size: 12.5px; font-weight: 800; letter-spacing: .6px; text-transform: uppercase; color: var(--blue-link); }
+.tf-row { gap: 12px; padding-top: 8px; padding-bottom: 22px; }
+.tf-card { flex: 0 0 148px; scroll-snap-align: start; display: flex; flex-direction: column; padding: 16px 14px 14px; min-height: 150px; border-radius: 18px; background: var(--card); border: 1px solid var(--card-line); box-shadow: var(--elev-1); color: var(--text); transition: transform .15s; }
+.tf-card:active { transform: scale(.97); }
+.tf-card .tr-ico { width: 30px; height: 30px; }
+.tf-card strong { margin-top: 14px; font-size: 14.5px; font-weight: 800; line-height: 1.2; color: var(--navy); }
+.tf-card small { margin-top: 4px; font-size: 12px; line-height: 1.35; color: #5B6080; }
+.tf-cta { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 12px; font-size: 13px; font-weight: 800; color: var(--blue-link); }
+.tf-cta svg { color: var(--blue-link); }
+
+/* Etiquetas sobre foto/tarjetas como texto (no parecen botones) */
+.news-kicker { display: block; font-size: 10.5px; font-weight: 800; letter-spacing: 1px; color: #7FE3FF; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
+.chip-cyan { padding: 0; background: none; border-radius: 0; font-size: 10.5px; font-weight: 800; letter-spacing: .8px; }
+
+/* Barra inferior de 4 ítems: activo en bloque azul con ícono arriba (Figma) */
+.nav { width: min(350px, calc(100% - 28px)); height: 70px; padding: 0 8px; gap: 2px; border-radius: 26px; }
+.nav button { height: 54px; border-radius: 16px; font-size: 11px; gap: 4px; }
+.nav button.on { flex: 1 1 0; flex-direction: column; gap: 4px; padding: 0; font-size: 12px; border-radius: 16px; }
+.nav button.on svg { width: 17px; height: 17px; }
+
+/* Menú: logo completo y etiqueta "TOP" */
+.drawer-logo { width: 116px; height: 38px; margin-left: 2px; }
+.tr-chip.top { background: #FBB917; color: #131252; letter-spacing: .4px; }
+
+/* Configuración al final del menú */
+#drawer .cfg { margin-bottom: 26px; }
+
+/* ================= Modo oscuro — inicio público, su menú y el mapa ampliado =================
+   Tokens (contraste WCAG AA verificado sobre --d-s1):
+   --d-bg fondo · --d-s1 tarjetas · --d-s2 elementos elevados · --d-line bordes
+   --d-t1 texto principal (≈15:1) · --d-t2 secundario (≈8:1) · --d-link enlaces (≈7:1) */
+.theme-dark .home, .theme-dark #drawer, .map-full.is-dark {
+  --d-bg: #0B0F2A; --d-s1: #151A3F; --d-s2: #1D2352; --d-line: #2A3166;
+  --d-t1: #EEF0FA; --d-t2: #B4BADD; --d-link: #8DB2FF; --d-cyan: #7FE3FF;
+  --card: var(--d-s1); --card-line: var(--d-line); --text: var(--d-t1); --navy: var(--d-t1); --blue-link: var(--d-link);
+  --b-navy: #3A4AB8; --b-line: var(--d-line); --b-gray: var(--d-t2);
+  --elev-1: 0 1px 2px rgba(0,0,0,.35), 0 6px 16px rgba(0,0,0,.3);
+  --elev-2: 0 2px 4px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.38);
+  color-scheme: dark;
+}
+
+/* ---------- Superficies y texto ---------- */
+.theme-dark .home { background: var(--d-bg); color: var(--d-t1); }
+.theme-dark .home h1, .theme-dark .home h2, .theme-dark .home h3, .theme-dark .home .h2, .theme-dark .home strong { color: var(--d-t1); }
+.theme-dark .home p, .theme-dark .home .pager, .theme-dark .home small { color: var(--d-t2); }
+.theme-dark .home .slide h1, .theme-dark .home .slide p, .theme-dark .home .slide strong, .theme-dark .home .news-cap *, .theme-dark .home .stamp { color: #fff; }
+.theme-dark .home .acc, .theme-dark .home .news, .theme-dark .home .coupon, .theme-dark .home .tour, .theme-dark .home .near { background: var(--d-s1); border-color: var(--d-line); box-shadow: var(--elev-1); }
+.theme-dark .home .acc { color: var(--d-t1); }
+.theme-dark .home .coupon-foot { border-color: var(--d-line); }
+.theme-dark .home .coupon-foot span { color: var(--d-t2); }
+.theme-dark .home .eyebrow, .theme-dark .home .link, .theme-dark .home .tour .kicker, .theme-dark .home .tour a, .theme-dark .home .coupon-foot a { color: var(--d-link); }
+.theme-dark .home .chip-cyan { background: rgba(6,194,250,.14); color: var(--d-cyan); }
+/* Íconos de línea: el azul de marca se aclara para mantener contraste 3:1 */
+.theme-dark .home .acc svg [stroke="#084AFE"], .theme-dark #drawer svg [stroke="#084AFE"] { stroke: #7FA8FF; }
+.theme-dark .home .acc svg [stroke="#1a2fa8"] { stroke: #0B0F2A; }
+
+/* La "A" de marca tras el carrusel: su recorte toma el color del fondo (antes quedaba blanco) */
+.theme-dark .home .hero-a circle[fill="#F3F5FA"] { fill: var(--d-bg); }
+.theme-dark .home .carousel { box-shadow: 0 18px 36px rgba(0,0,0,.45); }
+
+/* ---------- Tarjeta "Cerca de ti" y mapa (inicio y ampliado) ---------- */
+.theme-dark .home .eyebrow-blue, .map-full.is-dark .eyebrow-blue { color: var(--d-link); }
+.theme-dark .home .near h2, .map-full.is-dark h2, .map-full.is-dark .mf-list-title, .map-full.is-dark .mf-txt strong { color: var(--d-t1); }
+.theme-dark .home .seg button, .map-full.is-dark .seg button { background: var(--d-s2); color: var(--d-t2); }
+.theme-dark .home .seg button.on, .map-full.is-dark .seg button.on { background: transparent; color: #fff; }
+.theme-dark .home .seg-ind, .map-full.is-dark .seg-ind { background: #084AFE; }
+.theme-dark .home .pill-btn, .theme-dark .home .map-expand, .map-full.is-dark .map-expand { background: var(--d-s2); color: #CFE0FF; border-color: var(--d-link); box-shadow: none; }
+.theme-dark .home .pill-btn svg, .theme-dark .home .map-expand svg path, .map-full.is-dark .map-expand svg path { stroke: #CFE0FF; color: #CFE0FF; }
+.theme-dark .home .map, .map-full.is-dark .map { background: #121838; }
+/* Mundo del mapa */
+.theme-dark .home .w-land, .map-full.is-dark .w-land { fill: #121838; }
+.theme-dark .home .w-road, .map-full.is-dark .w-road { stroke: #262E63; }
+.theme-dark .home .w-park, .map-full.is-dark .w-park { fill: #13302B; }
+.theme-dark .home .w-river, .map-full.is-dark .w-river { stroke: #1B3A66; }
+.theme-dark .home .w-canal, .map-full.is-dark .w-canal { stroke: #3C6FA8; }
+.theme-dark .home .st-lbl, .map-full.is-dark .st-lbl { fill: #8A92C0; }
+.theme-dark .home .zn-lbl, .map-full.is-dark .zn-lbl { fill: #7CC4A0; }
+.theme-dark .home .rv-lbl, .map-full.is-dark .rv-lbl { fill: #7FB4E6; }
+.theme-dark .home .me, .map-full.is-dark .me { border-color: #0B0F2A; box-shadow: 0 0 0 2px #8DB2FF, 0 2px 8px rgba(0,0,0,.4); }
+/* Pines y tarjeta del local */
+.theme-dark .home .pin, .map-full.is-dark .pin { background: var(--d-s2); color: var(--d-t1); box-shadow: 0 4px 12px rgba(0,0,0,.45); }
+.theme-dark .home .pin::after, .map-full.is-dark .pin::after { background: var(--d-s2); }
+.theme-dark .home .map-world .pin.off, .map-full.is-dark .map-world .pin.off { background: var(--c); border-color: #0B0F2A; }
+.theme-dark .home .map-world .pin.off.sel, .map-full.is-dark .map-world .pin.off.sel { background: var(--d-s2); }
+.theme-dark .home .map-card, .map-full.is-dark .map-card { background: var(--d-s1); border: 1px solid var(--d-line); box-shadow: 0 10px 26px rgba(0,0,0,.45); color: var(--d-t1); }
+.theme-dark .home .mc-txt strong, .map-full.is-dark .mc-txt strong { color: var(--d-t1); }
+.theme-dark .home .mc-txt small, .map-full.is-dark .mc-txt small { color: var(--d-t2); }
+.theme-dark .home .mc-off, .map-full.is-dark .mc-off { background: rgba(141,178,255,.16); color: #CFE0FF; }
+.theme-dark .home .mc-body:active, .map-full.is-dark .mc-body:active { background: var(--d-s2); }
+.map-full.is-dark .map-tools button { background: var(--d-s2); color: var(--d-t1); box-shadow: 0 4px 14px rgba(0,0,0,.45); }
+.map-full.is-dark .map-tools svg [stroke="#131252"], .map-full.is-dark .map-tools svg [fill="#131252"] { stroke: var(--d-t1); }
+
+/* ---------- Mapa ampliado ---------- */
+.map-full.is-dark { background: var(--d-bg); color: var(--d-t1); }
+.map-full.is-dark .mf-top { background: rgba(11,15,42,.86); }
+.map-full.is-dark .dark-text { color: #fff; }
+.map-full.is-dark .mf-close { background: var(--d-s2); border-color: var(--d-line); box-shadow: none; }
+.map-full.is-dark .mf-close svg { stroke: var(--d-t1); }
+.map-full.is-dark .near { background: var(--d-s1); border-color: var(--d-line); box-shadow: none; }
+.map-full.is-dark .mf-item, .map-full.is-dark .mf-pick { background: var(--d-s2); border-color: var(--d-line); color: var(--d-t1); }
+.map-full.is-dark .mf-txt small, .map-full.is-dark .mf-empty { color: var(--d-t2); }
+.map-full.is-dark .mf-empty { border-color: var(--d-line); }
+
+/* ---------- Menú público ---------- */
+.theme-dark #drawer { background: var(--d-bg); color: var(--d-t1); }
+.theme-dark #drawer .dark-text { color: #fff; }
+.theme-dark #drawer .close { background: var(--d-s2); }
+.theme-dark #drawer .close svg { stroke: var(--d-t1); }
+.theme-dark #drawer .drawer-a { --logo-t: #fff; }
+.theme-dark #drawer .dr-head h3 { color: var(--d-t1); }
+.theme-dark #drawer .dr-head a { color: var(--d-link); }
+.theme-dark #drawer .dr-head.muted > span { color: var(--d-t2); }
+.theme-dark #drawer .tr, .theme-dark #drawer .cat, .theme-dark .cfg { background: var(--d-s1); border-color: var(--d-line); box-shadow: none; }
+.theme-dark #drawer .tr strong, .theme-dark #drawer .cat-txt strong, .theme-dark .cfg-row b { color: var(--d-t1); }
+.theme-dark #drawer .tr small, .theme-dark #drawer .cat-txt small, .theme-dark .cfg-row small { color: var(--d-t2); }
+.theme-dark #drawer .cat.open .cat-head { background: var(--d-s2); border-color: var(--d-line); }
+.theme-dark #drawer .cat-chev path { stroke: var(--d-t2); }
+.theme-dark #drawer .pill { border-color: var(--d-line); color: #D9DDF3; background: transparent; }
+.theme-dark #drawer .pill.on { background: #1E2766; border-color: #5A70E0; color: #fff; }
+.theme-dark #drawer .pill i { background: #6A72A0; }
+.theme-dark #drawer .pill.on i { background: #06C2FA; }
+/* Etiquetas de color en fondo oscuro */
+.theme-dark #drawer .tr-chip.green { background: rgba(34,197,120,.16); color: #7BE3AE; }
+.theme-dark #drawer .tr-chip.yellow { background: rgba(251,185,23,.16); color: #FFD37A; }
+.theme-dark #drawer .tr-chip.blue { background: rgba(141,178,255,.16); color: #BFD3FF; }
+.theme-dark #drawer .tr-chip.lightblue { background: rgba(6,194,250,.14); color: var(--d-cyan); }
+.theme-dark #drawer .tr-chip.purple { background: rgba(167,120,255,.18); color: #D2BBFF; }
+.theme-dark .cfg-ico { background: var(--d-s2); }
+.theme-dark .cfg-seg { background: #0F1435; }
+.theme-dark .cfg-seg::before { background: #2A3590; box-shadow: none; }
+.theme-dark .cfg-seg button { color: var(--d-t2); }
+.theme-dark .cfg-seg button[aria-checked="true"] { color: #fff; }
+
+/* ---------- Foco visible en oscuro (el azul de marca no contrasta con el fondo) ---------- */
+.theme-dark .home :focus-visible, .theme-dark #drawer :focus-visible, .map-full.is-dark :focus-visible { outline-color: var(--d-cyan); }
+
+/* Respeta "Reducir movimiento" */
+@media (prefers-reduced-motion: reduce) { .theme-anim .home, .theme-anim .home *, .theme-anim #drawer, .theme-anim #drawer * { transition: none !important; } }
+
+
+.drawer-acts { display: flex; gap: 8px; }
+.theme-quick .tq-sun { display: none; }
+.theme-dark .theme-quick .tq-sun { display: block; }
+.theme-dark .theme-quick .tq-moon { display: none; }
+.cfg { margin-top: 0; }
+
+/* Ajustes de contraste AA también en modo claro */
+.pager { color: #5B6080; }
+.chip-cyan { color: #0A6A80; }
+.theme-dark .home .pager { color: var(--d-t2); }
+.theme-dark .home .chip-cyan { color: var(--d-cyan); }
+
+/* home-new en oscuro */
+.theme-dark .home .tf-card small { color: var(--d-t2); }
+.theme-dark .home .tf-card strong { color: var(--d-t1); }
+.theme-dark .home .tf-card .tr-ico [stroke="#084AFE"] { stroke: #7FA8FF; }
+.theme-dark .home .tf-link, .theme-dark .home .tf-cta, .theme-dark .home .tf-cta svg { color: var(--d-link); }
+.theme-dark #drawer .drawer-logo { --logo-t: #fff; }
+.theme-dark #drawer .tr-chip.top { background: #FBB917; color: #131252; }
+
+/* Tipografía única: Rawson Pro en toda la app (incluye barra simulada y código del cupón) */
+.status, .status *, .bat-num { font-family: "Rawson Pro", system-ui, sans-serif; }
+.cpn-code strong { font-family: "Rawson Pro", system-ui, sans-serif; font-variant-numeric: tabular-nums; letter-spacing: 3px; }
+
+/* Onboarding: imagen según el mensaje, con fundido suave */
+.ob-photo .ob-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .8s ease; }
+.ob-photo .ob-img.on { opacity: 1; }
+.ob-photo .ob-img:nth-of-type(1) { object-position: center 20%; }
+.ob-photo .ob-img:nth-of-type(2) { object-position: 45% center; }
+.ob-photo .ob-img:nth-of-type(4) { object-position: 56% center; }
+.ob-photo::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(180deg, rgba(8,30,120,.45) 0%, rgba(8,30,120,0) 34%); }
+@media (prefers-reduced-motion: reduce) { .ob-photo .ob-img { transition: none; } }
+.ob-photo .ob-img:nth-of-type(2) { object-position: 30% center; }
+.ob-photo .ob-img:nth-of-type(3) { object-position: center 18%; }
+
+/* Headers y carrusel como la referencia: sin anillos de línea decorativos */
+.header::after, .ph-header::after { display: none; }
+.photo-ring { display: none; }
+.ob-photo .ob-img:nth-of-type(2) { object-position: 55% center; }
+/* Pensionados: las caras quedan bajo el logo, sin taparse */
+.ob-photo .ob-img:nth-of-type(3) { object-position: center 0%; transform-origin: 50% 0; top: 0; height: 100%; }
+.ob-photo { background: linear-gradient(180deg, #0E2BB8, #2d6fd6); }
+.ob-photo .ob-img:nth-of-type(2) { object-position: 42% center; }
+/* Logo del onboarding sin la cápsula difuminada; la legibilidad la da el degradado superior */
+.ob-brand { background: none; -webkit-backdrop-filter: none; backdrop-filter: none; border: 0; box-shadow: none; padding: 0; }
+.ob-brand svg { width: 112px; height: 36px; filter: drop-shadow(0 2px 8px rgba(0,0,0,.35)); }
+.ob-photo::after { background: linear-gradient(180deg, rgba(8,20,90,.55) 0%, rgba(8,20,90,.18) 24%, rgba(8,20,90,0) 40%); }

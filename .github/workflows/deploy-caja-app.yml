@@ -1,0 +1,40 @@
+# Publica la carpeta caja-app en Firebase Hosting (https://caja-app-demo.web.app)
+# cada vez que cambia algo dentro de ella.
+# La llave la guarda en GitHub el comando `firebase init hosting:github`
+# como secreto FIREBASE_SERVICE_ACCOUNT_CAJA_APP_DEMO.
+name: Publicar caja-app en Firebase
+
+on:
+  push:
+    branches: [main, claude/app-local-storage-1zrl7t]
+    paths:
+      - 'caja-app/**'
+      - '.github/workflows/deploy-caja-app.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-caja-app
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Revisar que exista la llave de Firebase
+        env:
+          SA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CAJA_APP_DEMO }}
+        run: |
+          if [ -z "$SA" ]; then
+            echo "::error::Falta el secreto FIREBASE_SERVICE_ACCOUNT_CAJA_APP_DEMO. Ejecuta 'firebase init hosting:github' una vez desde tu PC."
+            exit 1
+          fi
+
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CAJA_APP_DEMO }}
+          projectId: caja-app-demo
+          channelId: live
+          entryPoint: caja-app
