@@ -154,4 +154,4 @@ Página "App · Centro de ayuda" `21:63` · componentes `21:3`.
 - Al terminar un flujo, marcarlo en esta tabla y moverlo a "Ready for Dev" con el encabezado de ejemplo.
 
 ### Loader · V4 Buscándote en tu Caja (`309:24801`)
-Bucle de 2,4 s mientras se valida el RUT: el isotipo outline se dibuja y se borra (path trim, línea que viaja); halos con dos ondas tipo sonar; arco azul que gira alrededor del centro y se alarga y acorta (estilo loader nativo); el isotipo central late, su punto celeste salta y la "A" respira. Respaldo: `318:7778`.
+Bucle de 2,4 s mientras se valida el RUT: el isotipo outline se dibuja y se borra (path trim, línea que viaja); halos con dos ondas tipo sonar; arco azul que gira alrededor del centro y se alarga y acorta (estilo loader nativo); el isotipo central queda fijo (sin animación). Respaldo: `318:7778`.
