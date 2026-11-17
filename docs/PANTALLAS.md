@@ -152,3 +152,6 @@ Página "App · Centro de ayuda" `21:63` · componentes `21:3`.
 - Usar componentes e instancias existentes (Clave, Sucursales, Notificaciones, Tarjeta vitrina, Pictogramas); no desacoplar.
 - Nombrar frames como `<n.º> · <Nombre>` (ej. `2.3 · RUT sin clave`) dentro de la sección de su flujo.
 - Al terminar un flujo, marcarlo en esta tabla y moverlo a "Ready for Dev" con el encabezado de ejemplo.
+
+### Loader · V4 Buscándote en tu Caja (`309:24801`)
+Bucle de 2,4 s mientras se valida el RUT: el isotipo outline se dibuja y se borra (path trim, línea que viaja); halos con dos ondas tipo sonar; el punto celeste del isotipo central salta y la "A" respira. Respaldo: `318:7778`.
