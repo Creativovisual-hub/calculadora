@@ -70,3 +70,24 @@ m.add(zampona(E6, .16), .62, .5); m.add(zampona(C6, .6), .80, .5)
 m.add(bombo(), .80, .4); rasgueo(m, .80, [C5, E5, G5, C6], .14, .5)
 m.save('bienvenida-c-beneficios')
 print('ok')
+
+# ---------- Tonos de interfaz (estilo apps de movilidad: cortos, limpios, sutiles)
+def marimba(f, dur=0.35):
+    n = int(SR*dur); t = np.arange(n)/SR
+    return (np.sin(2*np.pi*f*t)+0.25*np.sin(2*np.pi*4*f*t)*np.exp(-t*40))*np.exp(-t*9)*np.clip(t/0.003, 0, 1)
+def cristal(f, dur=0.5):            # FM suave tipo campana de vidrio
+    n = int(SR*dur); t = np.arange(n)/SR
+    mod = 1.2*np.exp(-t*12)*np.sin(2*np.pi*f*3.5*t)
+    return np.sin(2*np.pi*f*t+mod)*np.exp(-t*6)*np.clip(t/0.004, 0, 1)
+def soplo(f, dur=0.35):             # tono redondo con un poco de aire (guiño a la zampoña)
+    n = int(SR*dur); t = np.arange(n)/SR
+    env = np.clip(t/0.03, 0, 1)*np.exp(-t*5)
+    return env*(np.sin(2*np.pi*f*t)+0.12*np.sin(4*np.pi*f*t)+0.08*bandnoise(n, f, f*0.25))
+
+m = Mix(0.55); m.add(marimba(C6), 0, .6); m.add(marimba(G6), .11, .7)
+m.save('tono-1-pulso')            # dos notas que suben: "listo"
+m = Mix(0.7); [m.add(cristal(f), t, a) for f, t, a in [(E6, 0, .5), (G6, .07, .5), (C6*2, .14, .6)]]
+m.save('tono-2-brillo')           # tres destellos rápidos: "algo bueno pasó"
+m = Mix(0.6); m.add(soplo(E6, .3), 0, .6); m.add(soplo(C6, .5), .13, .7)
+m.save('tono-3-andes')            # "AN-des" en dos notas, suave
+print('tonos ok')
