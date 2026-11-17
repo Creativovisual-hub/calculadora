@@ -92,7 +92,8 @@ Faltan: resultado **pensionado** y resultado **"no tengo liquidación"**.
 |---|---|
 | 5.1 Términos | `140:7596` |
 | Política de privacidad | `106:3977`, `106:4164` |
-| 5.3 Cuenta creada | `117:6618` · variante blanca `122:4031` · opción C `123:4058` |
+| 5.3 Cuenta creada | `262:7468` · variante blanca `122:4031` · opción C `123:4058` |
+| 5.3 Cuenta creada — pictograma animado (pictograma clave, fondo con ondas y destellos, sonido `sonidos/exito-clave-creada.mp3`) | `117:6618` |
 | 5.3 Propuesta animada A · "Lluvia de challa" | `219:7090` |
 | 5.3 Propuesta animada B · "Fiesta azul" | `223:7117` |
 
