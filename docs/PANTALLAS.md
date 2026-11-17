@@ -98,6 +98,7 @@ Faltan: resultado **pensionado** y resultado **"no tengo liquidación"**.
 | 5.3 Bienvenida animada · C Beneficios al vuelo (`sonidos/bienvenida-c-beneficios.mp3`) | `270:7536` |
 | 5.3 Bienvenida animada · D Minimal (revelado circular azul; tonos cortos `sonidos/tono-1-pulso`, `tono-2-brillo`, `tono-3-andes`) | `273:7609` |
 | 5.3 Bienvenida animada · E Bienestar activado (fondo D + beneficios C + switch; `melodia-1-caja-los-andes` + `switch-bienestar`) | `281:7616` |
+| 5.3 Bienvenida animada · F Switch bienestar (switch glass al centro, destello + beneficios; `sonidos/melodia-real-*.mp3`) | `284:7662` |
 | 5.3 Propuesta animada A · "Lluvia de challa" | `219:7090` |
 | 5.3 Propuesta animada B · "Fiesta azul" | `223:7117` |
 
