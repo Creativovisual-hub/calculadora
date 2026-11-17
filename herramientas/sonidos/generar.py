@@ -110,3 +110,10 @@ melodia('melodia-2-subida', [(G5, 0, .45), (A5, .08, .45), (C6, .16, .5), (E6, .
 # 3 · Ta-da: pregunta y respuesta
 melodia('melodia-3-tada', [(E6, 0, .55), (G6, .12, .6), (D6, .30, .5), (C7, .44, .75)], 1.0, ([C6, E6, G6], .55))
 print('melodias ok')
+
+# ---------- Switch "activando tu bienestar": clic suave + dos notas que suben
+def clic(dur=0.03):
+    n = int(SR*dur); t = np.arange(n)/SR; return bandnoise(n, 3500, 1500)*np.exp(-t*250)
+m = Mix(0.45); m.add(clic(), 0, .5); m.add(marimba(G6, .3), .02, .45); m.add(marimba(C7, .35), .09, .55)
+m.save('switch-bienestar')
+print('switch ok')
