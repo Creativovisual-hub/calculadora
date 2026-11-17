@@ -93,11 +93,13 @@ Faltan: resultado **pensionado** y resultado **"no tengo liquidación"**.
 | 5.1 Términos | `140:7596` |
 | Política de privacidad | `106:3977`, `106:4164` |
 | 5.3 Cuenta creada | `262:7468` · variante blanca `122:4031` · opción C `123:4058` |
-| 5.3 Cuenta creada — pictograma animado (pictograma regalo, fondo con ondas y destellos, sonido `sonidos/exito-clave-creada.mp3`) | `117:6618` |
+| 5.3 Bienvenida animada · A Regalo sorpresa (`sonidos/bienvenida-a-regalo.mp3`) | `117:6618` |
+| 5.3 Bienvenida animada · B Fiesta andina (`sonidos/bienvenida-b-fiesta-andina.mp3`) | `268:7502` |
+| 5.3 Bienvenida animada · C Beneficios al vuelo (`sonidos/bienvenida-c-beneficios.mp3`) | `270:7536` |
 | 5.3 Propuesta animada A · "Lluvia de challa" | `219:7090` |
 | 5.3 Propuesta animada B · "Fiesta azul" | `223:7117` |
 
-Ajustar textos: no es "cuenta creada" sino **"clave creada"** (regla 1). Falta elegir propuesta A o B.
+Ajustar textos: no es "cuenta creada" sino **"clave creada"** (regla 1). Las bienvenidas animadas no tienen botón ni info extra: solo pictograma + título, y pasan solas al Home (2,5 s). Falta elegir entre A, B y C. Sonidos: `herramientas/sonidos/generar.py`.
 
 ### 3.7 Reconexión 🟡
 2.1 `113:6231` · 2.2 `115:3977` · 2.3 `115:4217` · 2.4 `115:4457`. Falta el estado **cancelar**.
