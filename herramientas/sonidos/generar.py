@@ -91,3 +91,22 @@ m.save('tono-2-brillo')           # tres destellos rápidos: "algo bueno pasó"
 m = Mix(0.6); m.add(soplo(E6, .3), 0, .6); m.add(soplo(C6, .5), .13, .7)
 m.save('tono-3-andes')            # "AN-des" en dos notas, suave
 print('tonos ok')
+
+# ---------- Melodías cortas con timbre limpio de app
+def nota(f, dur=0.4): return 0.75*marimba(f, dur) + 0.35*cristal(f, dur)
+def pad(fs, dur):                    # colchón suave para el final
+    n = int(SR*dur); t = np.arange(n)/SR; env = np.clip(t/0.08, 0, 1)*np.exp(-t*3)
+    return env*sum(np.sin(2*np.pi*f*t) for f in fs)/len(fs)
+def melodia(nombre, notas, dur, final_acorde=None):
+    m = Mix(dur)
+    for f, t, a in notas: m.add(nota(f, 0.6), t, a)
+    if final_acorde: m.add(pad(*final_acorde), notas[-1][1], .18)
+    m.save(nombre)
+C7 = 2093.0
+# 1 · "Ca-ja Los AN-des": la melodía del sello, ahora con timbre de app
+melodia('melodia-1-caja-los-andes', [(C6, 0, .5), (E6, .10, .5), (G6, .20, .5), (E6*2, .34, .6), (C7, .50, .7)], 1.1, ([C6, E6, G6], .6))
+# 2 · Subida: arpegio pentatónico que sube y brilla
+melodia('melodia-2-subida', [(G5, 0, .45), (A5, .08, .45), (C6, .16, .5), (E6, .24, .55), (G6, .32, .6), (C7, .44, .7)], 1.0, ([C6, G6], .5))
+# 3 · Ta-da: pregunta y respuesta
+melodia('melodia-3-tada', [(E6, 0, .55), (G6, .12, .6), (D6, .30, .5), (C7, .44, .75)], 1.0, ([C6, E6, G6], .55))
+print('melodias ok')
