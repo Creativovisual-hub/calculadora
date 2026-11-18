@@ -1,5 +1,20 @@
 # Mi Perfil · Mi Cuenta (hub privado)
 
+> **Versión vigente: v2 (estilo app).** Sección «Mi Perfil · v2 (estilo app)» → https://www.figma.com/design/KYkGyj4aPR543B9RTYtMZq/?node-id=419-8405 · prototipo «Mi Perfil v2».
+> Estilo tomado de «31 Mi perfil · completa» y «32 Certificados · completa»: fondo lavanda claro, contenedores blancos (radio 20, borde #E6EAF4, sombra suave), botón volver circular, baldosas de ícono celestes, héroe en degradado navy→azul, enlaces «Acción ›».
+>
+> | ID | Pantalla |
+> |---|---|
+> | MP-01 | Mi Perfil (hub): avatar, perfil 80 % completo, «Para ti» (acción requerida), trámites con barra de pasos, accesos rápidos, configuración |
+> | MP-02 | Mis trámites en curso (resumen, filtros, tarjetas con pasos; vista clásica para dominios no migrados) |
+> | MP-03 | Detalle del trámite (resumen, acción requerida, «Así va tu trámite», ayuda) |
+> | MP-04 / MP-11 | Accesibilidad (100 %) y (150 % + alto contraste) |
+> | MP-05 / 06 / 07 | Seguridad · Notificaciones · Consentimientos |
+> | MP-08 / 09 / 10 | Vacío «Todo al día» · Error parcial por dominio · Cargando |
+> | 31 / 32 | «Mis datos» y «Certificados» = pantallas de referencia existentes |
+>
+> La versión anterior (sección `404-7795`, P-01 a P-14) queda como **wireframe**; su tablero de handoff (estados, escalado, App Shell y eventos) sigue vigente.
+
 **Figma:** sección «Mi Perfil · Mi Cuenta (hub privado)» → https://www.figma.com/design/KYkGyj4aPR543B9RTYtMZq/?node-id=404-7795
 **Prototipo:** flujo «Mi Perfil» (inicia en P-01).
 
