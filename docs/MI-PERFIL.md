@@ -1,6 +1,8 @@
 # Mi Perfil · Mi Cuenta (hub privado)
 
-> **Versión vigente: v2 (estilo app).** Sección «Mi Perfil · v2 (estilo app)» → https://www.figma.com/design/KYkGyj4aPR543B9RTYtMZq/?node-id=419-8405 · prototipo «Mi Perfil v2».
+> **Versión vigente: v3 (fondo blanco · estilo Centro de ayuda iOS)** → https://www.figma.com/design/KYkGyj4aPR543B9RTYtMZq/?node-id=428-9224 · prototipo «Mi Perfil v3». Mismas 11 pantallas que la v2, con fondo blanco, encabezado azul y barra flotante del Centro de ayuda, tipografía Lexend, tarjetas blancas con sombra suave (radio 18) y destacados en gris #F2F4F9 (radio 20) con botón píldora azul.
+>
+> **Versión anterior: v2 (estilo app).** Sección «Mi Perfil · v2 (estilo app)» → https://www.figma.com/design/KYkGyj4aPR543B9RTYtMZq/?node-id=419-8405 · prototipo «Mi Perfil v2».
 > Estilo tomado de «31 Mi perfil · completa» y «32 Certificados · completa»: fondo lavanda claro, contenedores blancos (radio 20, borde #E6EAF4, sombra suave), botón volver circular, baldosas de ícono celestes, héroe en degradado navy→azul, enlaces «Acción ›».
 >
 > | ID | Pantalla |
