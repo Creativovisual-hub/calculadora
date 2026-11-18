@@ -27,3 +27,13 @@ Sin esos archivos se usa Figtree, que es muy parecida.
 ## Publicar en Vercel
 
 Importa el repositorio en Vercel y en "Root Directory" elige `equipo-dxd` (Framework: Other, sin comando de build). `vercel.json` aplica las mismas cabeceras que `netlify.toml`.
+
+## Mostrarlo dentro de Google Sites
+
+1. Publica el sitio en Vercel (o Netlify) como siempre.
+2. En Google Sites: **Insertar → Insertar → Por URL** y pega el link del sitio
+   (puedes agregar `?estilo=claro` al final).
+3. Agranda el recuadro para que se vea completo.
+
+El sitio solo permite mostrarse dentro de Google Sites (cabecera `frame-ancestors`);
+cualquier otra página que intente incrustarlo será bloqueada.
