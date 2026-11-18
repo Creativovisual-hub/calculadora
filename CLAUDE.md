@@ -5,6 +5,7 @@ Trabajo de diseño UX/UI. El diseño vive en Figma; este repo guarda documentaci
 ## Leer primero
 - `docs/PANTALLAS.md` — flujos, nodos de Figma, estado y pendientes.
 - `docs/ICONOS.md` — sistema de pictogramas y catálogo.
+- `docs/MI-PERFIL.md` — hub privado Mi Perfil / Mi Cuenta (US-01 a US-05).
 - Skills del proyecto: `.claude/skills/diseno-caja-los-andes` (pantallas) y `.claude/skills/pictograma-caja-los-andes` (íconos).
 
 ## Figma

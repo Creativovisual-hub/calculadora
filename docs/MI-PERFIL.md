@@ -1,0 +1,115 @@
+# Mi Perfil · Mi Cuenta (hub privado)
+
+**Figma:** sección «Mi Perfil · Mi Cuenta (hub privado)» → https://www.figma.com/design/KYkGyj4aPR543B9RTYtMZq/?node-id=404-7795
+**Prototipo:** flujo «Mi Perfil» (inicia en P-01).
+
+**Objetivo de negocio:**
+- Bajar las llamadas al Call Center y las visitas a sucursal por estado de trámites.
+- Subir la autogestión, sobre las 214.649 visitas/mes actuales a «Actualización de perfil».
+- Mejorar el SNEX y cumplir accesibilidad AA/AAA.
+
+## Pantallas
+
+| ID | Pantalla | Historia | Nodo |
+|---|---|---|---|
+| P-01 | Mi perfil (hub) | US-01 | ver sección |
+| P-02 | Mis datos | US-01 | |
+| P-03 | Editar teléfono (validación) | US-01 / US-05 | |
+| P-04 | Cargas familiares | US-01 | |
+| P-05 | Accesibilidad (100 %) | US-02 | |
+| P-06 | Accesibilidad (150 % + alto contraste) | US-02 | |
+| P-07 | Mis solicitudes en curso | US-03 | |
+| P-08 | Detalle de solicitud (línea de tiempo) | US-03 | |
+| P-09 | Sin solicitudes (vacío) | US-03 / US-05 | |
+| P-10 | Error parcial por dominio | US-03 / US-05 | |
+| P-11 | Cargando (skeleton) | US-05 | |
+| P-12 | Seguridad y dispositivos | US-04 | |
+| P-13 | Notificaciones | US-04 | |
+| P-14 | Consentimientos | US-04 | |
+| — | Tablero «US-05 · Handoff Mi Perfil» | US-05 | |
+
+## Decisiones de diseño
+
+- **Hub por bloques:** tarjeta del afiliado y luego Mi cuenta → Seguimiento → Configuración. Si hay un trámite que requiere acción, aparece un aviso arriba con acceso directo.
+- **Mis datos:** paridad AS-IS. Nombre y RUT se muestran bloqueados y se indica que se corrigen en sucursal. Correo, teléfono y dirección se editan con verificación.
+- **Cargas familiares:** solo lectura. La app no crea afiliaciones, así que agregar o quitar cargas lo hace el empleador o una sucursal.
+- **Accesibilidad:**
+  - Vista previa en vivo con una tarjeta real de solicitud y el contraste calculado.
+  - Escala de texto en 100 / 115 / 130 / 150 %.
+  - Ajustes: seguir el tamaño del teléfono, alto contraste, reducir animaciones y modo lector de pantalla.
+- **Solicitudes:**
+  - Filtros por dominio con contador.
+  - Tarjeta con pictograma, trámite, etiqueta de estado, folio y fecha.
+  - Detalle con resumen, alerta de acción requerida con su llamado a la acción, y línea de tiempo de 5 pasos.
+- **Etiquetas de estado:** se distinguen por ícono, texto y color, nunca solo por color. Sin verde ni amarillo, por regla de marca; el rojo se usa solo para «Rechazada».
+
+  | Estado | Colores | Contraste |
+  |---|---|---|
+  | En revisión | Navy sobre celeste 10 % | 15,6:1 |
+  | Aprobada | Blanco sobre azul #094AFF | 6,1:1 |
+  | Requiere acción | Azul con borde | 6,1:1 |
+  | Rechazada | Rojo oscuro #B0102A sobre rosa | 6,1:1 |
+
+- **Excepciones:**
+  - Vacío: invita a explorar beneficios.
+  - Error parcial: solo falla el dominio afectado, que tiene su propio «Reintentar» que recarga solo ese dominio.
+  - Skeleton: replica la forma real de la pantalla.
+- **Seguridad:**
+  - Ingreso con huella o rostro (soft login).
+  - Cambio de clave.
+  - Un dispositivo activo a la vez, con la opción «Cambiar de dispositivo», que pide validar la identidad.
+- **Notificaciones:** push por categoría, más correo y SMS. La campanita muestra siempre todo, y los avisos de seguridad no se pueden apagar.
+- **Consentimientos:** los opcionales se activan y desactivan con un switch. Los obligatorios se muestran con su fecha de aceptación y un enlace para verlos.
+
+## Reglas para casos borde
+
+**Convivencia entre módulos AS-IS y evolucionados**
+- Mi Perfil es un App Shell: encabezado, barra inferior, fondo y espaciados.
+- Cada módulo es un plugin que se pinta dentro del shell.
+- Los dominios aún no migrados se abren como «Vista clásica ↗», embebida dentro del shell, con el mismo encabezado y botón volver.
+
+| Módulo | Ene 2027 | Desde feb 2027 |
+|---|---|---|
+| Mis datos / Actualización de perfil | AS-IS | Evolucionado |
+| Licencias médicas | Nativo | Nativo |
+| Centro de notificaciones | Nativo | Nativo |
+| Créditos, Seguros, Ahorro | Vista clásica | Nativo |
+
+**Accesibilidad del SO y de la app al mismo tiempo**
+- Escala efectiva = escala del SO × escala de la app, con tope de 1,5.
+- Las tarjetas crecen en alto (nunca tienen alto fijo) y los títulos no se truncan.
+- Desde 130 %, la tarjeta de solicitud pasa a layout vertical.
+- El área táctil mínima es 48 px.
+
+| Token | Base | Máximo |
+|---|---|---|
+| `text/title` | 17/24 | 26/36 |
+| `text/heading` | 18/24 | 27/36 |
+| `text/body` | 16/22 | 24/33 |
+| `text/caption` | 13/18 | 19,5/27 |
+| `text/tag` | 12/16 | 18/24 |
+
+## Analítica (hiper-taggeo)
+
+16 eventos en snake_case, iguales en App y Web y sin datos personales (el folio va con hash). El detalle de cada evento está en el tablero de handoff:
+
+`perfil_view`, `perfil_menu_click`, `datos_editar_click`, `datos_guardar`, `accesibilidad_cambio`, `solicitudes_view`, `solicitudes_filtro`, `solicitud_detalle_view`, `solicitud_accion_click`, `solicitudes_error_dominio`, `solicitudes_reintentar`, `solicitudes_vacio_cta`, `seguridad_biometria`, `dispositivo_cambio_inicio`, `notificaciones_toggle`, `consentimiento_toggle`.
+
+## Componentes nuevos (frame «Componentes · Mi Perfil»)
+
+- `Solicitud/Estado`: 4 variantes.
+- `Solicitud/Tarjeta`: con pictograma intercambiable.
+- `Perfil/Fila menú`: con etiqueta, detalle, contador y pictograma intercambiable.
+- `Control/Switch`: activo e inactivo.
+- `Privado/Encabezado`: título como propiedad.
+- `Privado/Barra inferior`.
+
+Se reutilizan `Login/Botón`, `Login/Campo` y los pictogramas.
+
+## Pendientes y supuestos para validar
+
+- **Versión Web (desktop) del hub:** no está diseñada. Propuesta: menú lateral con los mismos bloques y contenido a dos columnas.
+- **Datos de ejemplo:** folios, fechas y nombres son ficticios. Falta confirmar el formato real de folio por dominio.
+- **Pasos de la línea de tiempo:** confirmar con negocio los pasos por dominio. Por ahora solo está la licencia médica.
+- **Código por SMS:** falta la pantalla de ingreso del código al editar el teléfono.
+- **Tokens del Design System Runtime:** los colores y textos están como valores, no como variables. Hay que conectarlos cuando exista la librería.
