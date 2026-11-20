@@ -317,6 +317,17 @@ html[data-skin=claro] .viewsw{background:#eef1f8}html[data-skin=claro] .viewsw b
 .stkform{display:flex;flex-direction:column;gap:12px}
 html[data-skin=claro] .node:hover{background:var(--acc-soft)}html[data-skin=claro] .node em{background:var(--acc-soft);color:var(--acc)}html[data-skin=claro] .sav{background:#dfe5ff;color:var(--acc)}html[data-skin=claro] :is(.orgsec h3,.node b){color:var(--text)}
 @media (max-width:640px){.tree ul{margin-left:12px;padding-left:16px}.tree ul>li::before{left:-16px;width:14px}}
+/* espacial: vidrio y accesibilidad */
+html:not([data-skin=claro]):not([data-theme=hc]){--muted:#cfcce9;--g4:#8e8bf2;--g3:#5552e6}
+html:not([data-skin=claro]):not([data-theme=hc]) :is(.glass,.tf,.folder,.stp,.carnet,.authcard,.node){background:rgba(16,14,46,.48);border:1px solid rgba(255,255,255,.14);border-top-color:rgba(255,255,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.10),inset 0 0 0 1px rgba(255,255,255,.02),0 12px 32px rgba(3,2,20,.35)}
+html:not([data-skin=claro]):not([data-theme=hc]) :is(.tf,.folder,.authcard)::before{background:rgba(16,14,46,.48);border-color:rgba(255,255,255,.14);border-top-color:rgba(255,255,255,.28)}
+html:not([data-skin=claro]):not([data-theme=hc]) :is(.tile,.folder,.node,.cp,.ups li button,.month li button):hover{background:rgba(32,28,84,.62);border-top-color:rgba(255,255,255,.4)}
+html:not([data-skin=claro]):not([data-theme=hc]) .cal td{background:rgba(16,14,46,.35);border-color:rgba(255,255,255,.08)}html:not([data-skin=claro]):not([data-theme=hc]) .cal td.has{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.34)}
+html:not([data-skin=claro]):not([data-theme=hc]) .in{background:rgba(8,7,28,.55);border-color:rgba(255,255,255,.22)}html:not([data-skin=claro]):not([data-theme=hc]) .in::placeholder{color:rgba(255,255,255,.62)}
+html:not([data-skin=claro]):not([data-theme=hc]) .icons span.off{opacity:.55}html:not([data-skin=claro]):not([data-theme=hc]) .month li button.past{opacity:.85}
+html:not([data-skin=claro]):not([data-theme=hc]) .tag,html:not([data-skin=claro]):not([data-theme=hc]) .gs button,html:not([data-skin=claro]):not([data-theme=hc]) .glist li{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
+html:not([data-skin=claro]):not([data-theme=hc]) .drawer{background:#12102e;border:1px solid rgba(255,255,255,.14)}
+html:not([data-skin=claro]):not([data-theme=hc]) :focus-visible{outline:3px solid #fff;outline-offset:3px;box-shadow:0 0 0 7px rgba(10,8,48,.9)}
 /* administración */
 .admgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:22px;align-items:start}
 .panel{padding:22px}.panel h3{font-family:var(--mono);font-size:16px;margin:0 0 14px}
