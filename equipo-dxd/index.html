@@ -280,6 +280,20 @@ html[data-skin=claro] .authmain{background:var(--bg2)}html[data-skin=claro] #aut
 
 html[data-skin=claro] .tile .ti{background:var(--acc-soft);color:var(--acc)}
 html[data-skin=claro] .month{background:#fff}
+/* organigrama */
+.org{max-width:1200px;margin:0 auto;padding:30px 0 20px;display:flex;flex-direction:column;gap:40px}
+.orgsec h3{font-size:24px;font-weight:600;margin:0 0 6px}.arealab{margin:22px 0 10px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.stkhd{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap}
+.node{display:flex;align-items:center;gap:12px;padding:12px 16px 12px 12px;border-radius:18px;cursor:pointer;color:inherit;text-align:left;min-width:0}.node::before{display:none!important}
+.node:hover{background:rgba(255,255,255,.12)}.node .tx{flex:1;min-width:0}.node b{display:block;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.node .tx span{display:block;color:var(--muted);font-size:13px}
+.node em{font-style:normal;font-size:12px;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.12);white-space:nowrap}.node .own{margin-top:2px}
+.orggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.tree,.tree ul{list-style:none;margin:0;padding:0}.tree{margin-top:16px}.tree .node{display:inline-flex;max-width:420px;width:100%}
+.tree ul{margin-left:28px;padding-left:24px;border-left:2px solid var(--edge)}.tree li{position:relative;margin:12px 0}.tree ul>li::before{content:"";position:absolute;left:-24px;top:32px;width:22px;border-top:2px solid var(--edge)}
+.sav{width:42px;height:42px;font-size:14px;background:#2a2f55;color:#fff;border-radius:12px!important}
+.stkform{display:flex;flex-direction:column;gap:12px}
+html[data-skin=claro] .node:hover{background:var(--acc-soft)}html[data-skin=claro] .node em{background:var(--acc-soft);color:var(--acc)}html[data-skin=claro] .sav{background:#dfe5ff;color:var(--acc)}html[data-skin=claro] :is(.orgsec h3,.node b){color:var(--text)}
+@media (max-width:640px){.tree ul{margin-left:12px;padding-left:16px}.tree ul>li::before{left:-16px;width:14px}}
 /* administración */
 .admgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:22px;align-items:start}
 .panel{padding:22px}.panel h3{font-family:var(--mono);font-size:16px;margin:0 0 14px}
@@ -335,6 +349,7 @@ html[data-skin=claro] .month{background:#fff}
       <button type="button" data-v="start" aria-current="true"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Inicio</button>
       <button type="button" data-v="home" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Cumpleaños</button>
       <button type="button" data-v="dir" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg>Directorio</button>
+      <button type="button" data-v="org" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6v5H9zM3 16h6v5H3zM15 16h6v5h-6zM12 8v4M6 16v-2h12v2"/></svg>Organigrama</button>
       <button type="button" data-v="me" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg>Mi ficha</button>
       <button type="button" data-v="adm" aria-current="false" data-admin><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>Administración</button>
     </nav>
@@ -359,6 +374,7 @@ html[data-skin=claro] .month{background:#fff}
       <div class="toolbar"><input class="in" id="q" type="search" placeholder="Buscar por nombre, cargo o correo" aria-label="Buscar"><span class="hint" id="dirCount"></span></div>
       <div class="folders" id="dir"></div>
     </section>
+    <section id="v-org" hidden aria-labelledby="hOrgT"><h2 class="title" id="hOrgT">Organigrama</h2><div class="org" id="org"></div></section>
     <section id="v-me" hidden>
       <h2 class="title">Mi ficha</h2>
       <form id="meForm" novalidate></form>
@@ -386,6 +402,7 @@ html[data-skin=claro] .month{background:#fff}
       <button data-v="start" aria-current="true" title="Inicio" aria-label="Inicio"><svg class="i" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span class="lb" aria-hidden="true">Inicio</span></button>
       <button data-v="home" aria-current="false" title="Cumpleaños" aria-label="Cumpleaños"><svg class="i" viewBox="0 0 24 24"><path d="M4 21h16M5 21v-7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7M5 16c2 1.2 3.5 1.2 5 0s3.5-1.2 5 0 3 1.2 4 0M12 12V8M12 5.5c.8 0 1.2-.6 1.2-1.2S12 2 12 2s-1.2 1.7-1.2 2.3.4 1.2 1.2 1.2z"/></svg><span class="lb" aria-hidden="true">Cumpleaños</span></button>
       <button data-v="dir" title="Directorio" aria-label="Directorio"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg><span class="lb" aria-hidden="true">Directorio</span></button>
+      <button data-v="org" title="Organigrama" aria-label="Organigrama"><svg class="i" viewBox="0 0 24 24"><path d="M9 3h6v5H9zM3 16h6v5H3zM15 16h6v5h-6zM12 8v4M6 16v-2h12v2"/></svg><span class="lb" aria-hidden="true">Organigrama</span></button>
       <button data-v="me" title="Mi ficha" aria-label="Mi ficha"><svg class="i" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg><span class="lb" aria-hidden="true">Mi ficha</span></button>
       <button data-v="adm" title="Administración" aria-label="Administración" data-admin><svg class="i" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg><span class="lb" aria-hidden="true">Admin</span></button>
     </nav>
@@ -464,13 +481,61 @@ const ICON={mail:'<path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/>',phone:'<pat
 const svg=k=>'<svg class="i" viewBox="0 0 24 24">'+ICON[k]+'</svg>';
 function copyBtn(v,lab){const b=el('button','copy','Copiar');b.type='button';b.setAttribute('aria-label','Copiar '+lab);b.onclick=e=>{e.stopPropagation();navigator.clipboard&&navigator.clipboard.writeText(v).then(()=>toast('Copiado: '+v))};return b}
 // ---------- datos ----------
-async function load(){try{team=await rpc('equipo_list')||[]}catch(e){team=[];toast('No se pudo cargar el equipo')}
+async function load(){try{team=await rpc('equipo_list')||[]}catch(e){team=[];toast('No se pudo cargar el equipo')}try{stakes=await rpc('equipo_stakeholders_list')||[]}catch(e){stakes=[]}
   const mp=team.find(x=>x.username===me.user)||{username:me.user};$('meAv').textContent='';$('meAv').appendChild(avatar(mp,44));$('meName').textContent=nm(mp)+(me.is_admin?' · Admin':'');renderAll()}
-function renderAll(){renderStart();renderHome();renderDir();renderMe();if(me.is_admin)renderAdm()}
+function renderAll(){renderStart();renderHome();renderOrg();renderDir();renderMe();if(me.is_admin)renderAdm()}
 function bdays(){return team.filter(p=>p.birthday).map(p=>({p,nb:nextBday(p.birthday)})).sort((a,b)=>a.nb.days-b.nb.days)}
 const QN=['Ene – Mar','Abr – Jun','Jul – Sep','Oct – Dic'];
 const cnt=items=>{const c=el('div','cnt');for(const[k,v,t]of items){const s=el('span');s.title=t;s.innerHTML=svg(k);s.append(String(v));c.appendChild(s)}return c};
 ICON.user='<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M18 8v6M15 11h6"/>';
+// ---------- organigrama y stakeholders ----------
+let stakes=[];
+const KINDS=['Cliente','Partner','Proveedor','Interno','Otro'];
+const AREAS=['APP','WEB','BBSS','LLMM','Seguros','Turismo','Asignación familiar','TAPP APP','TAPP WEB','Leap','Beneficios'];
+function renderOrg(){const root=$('org');if(!root)return;root.textContent='';
+  const by={},ids=new Set(team.map(p=>p.username));for(const p of team){const k=p.reports_to&&ids.has(p.reports_to)?p.reports_to:'';(by[k]=by[k]||[]).push(p)}
+  const hasTree=team.some(p=>p.reports_to&&ids.has(p.reports_to));
+  const s1=el('section','orgsec');s1.setAttribute('aria-labelledby','hOrg');const h=el('h3',null,'Equipo');h.id='hOrg';s1.appendChild(h);
+  const node=p=>{const b=el('button','tf node');b.type='button';b.appendChild(avatar(p,42));const t=el('span','tx');t.append(el('b',null,nm(p)),el('span',null,[p.role_title,p.area].filter(Boolean).join(' · ')||'Equipo DXD'));b.appendChild(t);
+    const n=(by[p.username]||[]).length;if(n)b.appendChild(el('em',null,n+(n===1?' persona':' personas')));b.setAttribute('aria-label',nm(p)+', '+(p.role_title||'Equipo DXD')+(n?', a cargo de '+n:'')+'. Ver ficha');b.onclick=()=>openPerson(p);return b};
+  const tree=(list,seen)=>{const ul=el('ul');for(const p of list){if(seen.has(p.username))continue;seen.add(p.username);const li=el('li');li.appendChild(node(p));const ch=by[p.username];if(ch&&ch.length)li.appendChild(tree(ch,seen));ul.appendChild(li)}return ul};
+  if(hasTree){const t=tree((by['']||[]).filter(p=>by[p.username]),new Set());t.className='tree';s1.appendChild(t);const solos=(by['']||[]).filter(p=>!by[p.username]);
+    if(solos.length){s1.appendChild(el('p','hint','Sin jefatura asignada'));const g=el('div','orggrid');solos.forEach(p=>g.appendChild(node(p)));s1.appendChild(g)}}
+  else{s1.appendChild(el('p','hint','Administración arma el organigrama: abre la ficha de cada persona → Editar ficha → Área y Reporta a. Por ahora el equipo se muestra por área.'));
+    const ar={};for(const p of team)(ar[p.area||'Sin área']=ar[p.area||'Sin área']||[]).push(p);
+    for(const a of Object.keys(ar).sort()){s1.appendChild(el('h4','arealab',a));const g=el('div','orggrid');ar[a].forEach(p=>g.appendChild(node(p)));s1.appendChild(g)}}
+  if(me.is_admin&&hasTree)s1.appendChild(el('p','hint','Para cambiar el organigrama: haz clic en una persona → Editar ficha → Área y Reporta a.'));
+  root.appendChild(s1);
+  // stakeholders
+  const s2=el('section','orgsec');s2.setAttribute('aria-labelledby','hStk');const hd=el('div','stkhd');const h2=el('h3',null,'Stakeholders');h2.id='hStk';hd.appendChild(h2);
+  if(me.is_admin){const a=el('button','btn white sm','+ Agregar stakeholder');a.type='button';a.onclick=()=>editStake({});hd.appendChild(a)}s2.appendChild(hd);
+  if(!stakes.length)s2.appendChild(el('p','empty',me.is_admin?'Aún no hay stakeholders. Agrega clientes, partners o contactos clave.':'Aún no hay stakeholders cargados.'));
+  const orgs={};for(const k of stakes)(orgs[k.org||'Sin organización']=orgs[k.org||'Sin organización']||[]).push(k);
+  for(const o of Object.keys(orgs).sort()){s2.appendChild(el('h4','arealab',o));const g=el('div','orggrid');
+    for(const k of orgs[o]){const b=el('button','tf node stk');b.type='button';const ini=el('span','av sav',k.name.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase());ini.setAttribute('aria-hidden','true');b.appendChild(ini);
+      const t=el('span','tx');t.append(el('b',null,k.name),el('span',null,[k.role,k.kind].filter(Boolean).join(' · ')));const ow=team.find(p=>p.username===k.owner);if(ow)t.appendChild(el('span','own','Responsable DXD: '+nm(ow)));b.appendChild(t);
+      b.setAttribute('aria-label',k.name+(k.org?', '+k.org:'')+'. Ver detalle');b.onclick=()=>openStake(k);g.appendChild(b)}s2.appendChild(g)}
+  root.appendChild(s2)}
+function openStake(k){const d=$('drawer');d.textContent='';const h=el('div','head');const t=el('div');t.append(el('h3',null,k.name),el('div','role',[k.role,k.org].filter(Boolean).join(' · ')));h.appendChild(t);
+  const x=el('button','ico','✕');x.type='button';x.style.marginLeft='auto';x.setAttribute('aria-label','Cerrar');x.onclick=closePerson;h.appendChild(x);d.appendChild(h);
+  const b=el('div','box');b.appendChild(el('h4',null,'Contacto'));const dl=el('dl','kv');const row=(a,v,cp)=>{dl.append(el('dt',null,a));const dd=el('dd');if(v){dd.append(v);if(cp)dd.appendChild(copyBtn(v,a))}else dd.append('—');dl.appendChild(dd)};
+  row('Tipo',k.kind);row('Correo',k.email,true);row('Teléfono',k.phone,true);const ow=team.find(p=>p.username===k.owner);row('Responsable',ow?nm(ow):'');b.appendChild(dl);d.appendChild(b);
+  if(k.notes){const n=el('div','box');n.appendChild(el('h4',null,'Notas'));const p=el('div',null,k.notes);p.style.whiteSpace='pre-wrap';n.appendChild(p);d.appendChild(n)}
+  if(me.is_admin){const r=el('div','savebar');const del=el('button','btn danger','Eliminar');del.type='button';del.onclick=async()=>{if(!confirm('¿Eliminar a '+k.name+'?'))return;try{await rpc('equipo_stakeholder_delete',{p_id:k.id});toast('Stakeholder eliminado');closePerson();await loadStakes()}catch(e){toast('No se pudo eliminar')}};
+    const ed=el('button','btn white','Editar');ed.type='button';ed.onclick=()=>editStake(k);r.append(del,ed);d.appendChild(r)}
+  openDrawer(k.name)}
+function editStake(k){const d=$('drawer');d.textContent='';const f=el('form','stkform');f.noValidate=true;d.appendChild(f);const h=el('div','head');h.appendChild(el('h3',null,k.id?'Editar stakeholder':'Nuevo stakeholder'));const x=el('button','ico','✕');x.type='button';x.style.marginLeft='auto';x.setAttribute('aria-label','Cerrar');x.onclick=closePerson;h.appendChild(x);f.appendChild(h);
+  const fld=(n,l,ty,mx)=>{const lb=el('label','f');lb.append(l);const i=ty==='area'?el('textarea','in'):el('input','in');if(ty!=='area')i.type=ty;i.name=n;i.maxLength=mx;i.value=k[n]||'';lb.appendChild(i);f.appendChild(lb);return i};
+  fld('name','NOMBRE *','text',80);fld('org','ORGANIZACIÓN','text',80);fld('role','CARGO','text',80);
+  const kl=el('label','f');kl.append('TIPO');const ks=el('select','in');ks.name='kind';for(const v of['',...KINDS]){const o=el('option',null,v||'Elegir…');o.value=v;ks.appendChild(o)}ks.value=k.kind||'';kl.appendChild(ks);f.appendChild(kl);
+  fld('email','CORREO','email',120);fld('phone','TELÉFONO','tel',40);
+  const ol=el('label','f');ol.append('RESPONSABLE EN DXD');const os=el('select','in');os.name='owner';const o0=el('option',null,'Sin responsable');o0.value='';os.appendChild(o0);for(const p of team){const o=el('option',null,nm(p));o.value=p.username;os.appendChild(o)}os.value=k.owner||'';ol.appendChild(os);f.appendChild(ol);
+  fld('notes','NOTAS','area',300);const msg=el('div','err');msg.setAttribute('role','alert');f.appendChild(msg);const bar=el('div','savebar');const c=el('button','btn','Cancelar');c.type='button';c.onclick=closePerson;const sv=el('button','btn white','Guardar');sv.type='submit';bar.append(c,sv);f.appendChild(bar);
+  f.onsubmit=async e=>{e.preventDefault();const data={};for(const n of['name','org','role','kind','email','phone','owner','notes'])data[n]=(f.elements[n].value||'').trim();
+    if(!data.name){msg.textContent='Falta el nombre.';f.elements.name.focus();return}if(data.email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)){msg.textContent='El correo no parece válido.';f.elements.email.focus();return}
+    sv.disabled=true;try{await rpc('equipo_stakeholder_save',{p_id:k.id||null,p_data:data});toast('Stakeholder guardado');closePerson();await loadStakes()}catch(err){msg.textContent='No se pudo guardar.'}sv.disabled=false};
+  openDrawer(k.id?'Editar stakeholder':'Nuevo stakeholder')}
+async function loadStakes(){try{stakes=await rpc('equipo_stakeholders_list')||[]}catch(e){stakes=[]}renderOrg()}
 // ---------- inicio con accesos directos ----------
 const DSEM=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
 function fichaPct(p){const x=p.extra||{},it=[p.full_name,p.role_title,p.birthday,p.email,p.phone,p.gift_ideas,p.fun_fact,Object.keys(x).length,p.address,p.emergency_name&&p.emergency_phone];return Math.round(it.filter(Boolean).length/it.length*100)}
@@ -488,6 +553,7 @@ function renderStart(){const root=$('start');root.textContent='';const now=new D
   const I={cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',dir:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/>',me:'<path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/>',adm:'<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/>',key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/>',a11y:'<circle cx="12" cy="4.5" r="1.8"/><path d="M5 8.5l7 1.5 7-1.5M12 10v4.5M12 14.5l-3.5 6.5M12 14.5l3.5 6.5"/>'};
   tile(I.cal,'Cumpleaños',nx?(nx.nb.days===0?'¡Hoy está de cumpleaños '+nm(nx.p).split(' ')[0]+'!':'Próximo: '+nm(nx.p).split(' ')[0]+' · en '+nx.nb.days+(nx.nb.days===1?' día':' días')):'Calendario del equipo',()=>go('home'));
   tile(I.dir,'Directorio',team.length+' personas del equipo',()=>go('dir'));
+  tile('<path d="M9 3h6v5H9zM3 16h6v5H3zM15 16h6v5h-6zM12 8v4M6 16v-2h12v2"/>','Organigrama','Equipo y '+stakes.length+' stakeholders',()=>go('org'));
   const pct=fichaPct(mp),bar=el('span','pbar');bar.setAttribute('role','progressbar');bar.setAttribute('aria-label','Tu ficha');bar.setAttribute('aria-valuemin','0');bar.setAttribute('aria-valuemax','100');bar.setAttribute('aria-valuenow',pct);const fi=el('i');fi.style.width=pct+'%';bar.appendChild(fi);
   tile(I.me,'Mi ficha',pct===100?'Completa. ¡Gracias!':'Completa al '+pct+'%',()=>go('me'),bar);
   if(me.is_admin)tile(I.adm,'Administración','Agregar personas y claves',()=>go('adm'));
@@ -610,7 +676,7 @@ function buildForm(f,p,isMe,onDone){f.textContent='';const id=++fid,gifts=giftLi
   const card=el('aside','glass carnet');card.setAttribute('aria-label','Vista previa de la ficha');wrap.appendChild(card);
   const steps=el('div','steps');wrap.appendChild(steps);
   if(!isMe)steps.appendChild(el('h3','edt','Editar ficha de '+nm(p)));
-  const s1=sec(1,'Quién eres','Así te verá el equipo en el directorio.');s1.append(inp('full_name','NOMBRE COMPLETO','text',80,{full:1,ac:'name'}),inp('role_title','CARGO','text',60,{full:1,ph:'Ej: Diseñadora UX',ac:'organization-title'}),pick('color','TU COLOR',COLORS,true));steps.appendChild(s1);
+  const s1=sec(1,'Quién eres','Así te verá el equipo en el directorio.');s1.append(inp('full_name','NOMBRE COMPLETO','text',80,{full:1,ac:'name'}),inp('role_title','CARGO','text',60,{full:1,ph:'Ej: Diseñadora UX',ac:'organization-title'}),...(me.is_admin?[(()=>{const l=el('label','f');l.append('ÁREA');const se=el('select','in');se.name='area';for(const v of ['',...AREAS]){const o=el('option',null,v||'Sin área');o.value=v;se.appendChild(o)}if(p.area&&!AREAS.includes(p.area)){const o=el('option',null,p.area);o.value=p.area;se.appendChild(o)}se.value=p.area||'';l.appendChild(se);return l})(),(()=>{const l=el('label','f');l.append('REPORTA A');const se=el('select','in');se.name='reports_to';const o0=el('option',null,'Nadie (encabeza el equipo)');o0.value='';se.appendChild(o0);for(const x of team){if(x.username===p.username)continue;const o=el('option',null,nm(x));o.value=x.username;se.appendChild(o)}se.value=p.reports_to||'';l.appendChild(se);return l})(),el('p','hint full','Área y jefatura las define administración; con esto se arma el organigrama.')]:[]),pick('color','TU COLOR',COLORS,true));steps.appendChild(s1);
   const s2=sec(2,'Tu día especial','Para que nadie se olvide de celebrarte.');const bd=inp('birthday','CUMPLEAÑOS','date');s2.appendChild(bd);const live=el('output','live');live.setAttribute('aria-live','polite');s2.appendChild(live);
   const gfs=el('div','full gbox');const gl=el('p','glab','IDEAS DE REGALO · toca para agregar o quitar');gl.id='gl'+id;gfs.appendChild(gl);const gs=el('div','gs');gs.setAttribute('role','group');gs.setAttribute('aria-labelledby',gl.id);gfs.appendChild(gs);
   const addRow=el('div','addg');const gi=el('input','in');gi.placeholder='Otra idea (ej: libros de diseño)';gi.maxLength=60;gi.setAttribute('aria-label','Escribe otra idea de regalo');const gb=el('button','btn','Agregar');gb.type='button';addRow.append(gi,gb);gfs.appendChild(addRow);
@@ -631,7 +697,7 @@ function buildForm(f,p,isMe,onDone){f.textContent='';const id=++fid,gifts=giftLi
   gb.onclick=addGift;gi.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addGift()}});
   // vista previa en vivo
   const val=k=>{const e=f.elements[k];return e?(e.value||'').trim():''};
-  const data=()=>{const d={};for(const k of['full_name','role_title','birthday','email','phone','fun_fact','address','emergency_name','emergency_relation','emergency_phone'])d[k]=val(k);
+  const data=()=>{const d={};for(const k of['full_name','role_title','area','reports_to','birthday','email','phone','fun_fact','address','emergency_name','emergency_relation','emergency_phone'])d[k]=val(k);
     const r=k=>{const c=f.querySelector('input[name='+k+']:checked');return c?c.value:''};d.emoji='';d.extra={};for(const[k]of REFS){const v=val('x_'+k);if(v)d.extra[k]=v}d.color=r('color');d.gift_ideas=gifts.join(', ');return d};
   let lastPct=-1;
   function refresh(){const d=data(),q=Object.assign({username:p.username},d);card.textContent='';card.appendChild(avatar(q,108));card.append(el('h3',null,d.full_name||p.username),el('div','role',d.role_title||'Equipo DXD'));
@@ -668,7 +734,7 @@ function renderAdm(){const box=$('admRows');box.textContent='';for(const p of te
 $('csv').onclick=()=>{const cols=['username','full_name','role_title','birthday','email','phone','address','emergency_name','emergency_relation','emergency_phone','gift_ideas'],q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
   const csv=[cols.join(',')].concat(team.map(p=>cols.map(c=>q(p[c])).join(','))).join('\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv'}));a.download='equipo-dxd.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
 // ---------- navegación ----------
-const NAMES={start:'Inicio',home:'Cumpleaños',dir:'Directorio',me:'Mi ficha',adm:'Administración'};
+const NAMES={start:'Inicio',home:'Cumpleaños',dir:'Directorio',org:'Organigrama',me:'Mi ficha',adm:'Administración'};
 function moveInd(){const n=document.querySelector('#app .pills'),a=n&&n.querySelector('button[aria-current=true]'),i=n&&n.querySelector('.ind');if(!i)return;if(!a||!a.offsetWidth){i.style.width='0';return}i.style.width=a.offsetWidth+'px';i.style.transform='translateX('+a.offsetLeft+'px)'}
 addEventListener('resize',moveInd);if(document.fonts)document.fonts.ready.then(moveInd);
 function go(v){cur=v;for(const b of document.querySelectorAll('.pills button'))b.setAttribute('aria-current',b.dataset.v===v);for(const b of document.querySelectorAll('.dock nav button'))b.setAttribute('aria-current',b.dataset.v===v);
