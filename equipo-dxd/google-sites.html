@@ -281,6 +281,11 @@ html[data-skin=claro] .authmain{background:var(--bg2)}html[data-skin=claro] #aut
 html[data-skin=claro] .tile .ti{background:var(--acc-soft);color:var(--acc)}
 html[data-skin=claro] .month{background:#fff}
 /* organigrama */
+.treewrap:not(.vert) .tree ul.col{flex-direction:column;align-items:center;gap:10px}
+.treewrap:not(.vert) .tree ul.col>li{padding:0}.treewrap:not(.vert) .tree ul.col>li::before,.treewrap:not(.vert) .tree ul.col>li::after{display:none}
+.treewrap:not(.vert) .tree ul:not(.leafs)>li>.orgn,.treewrap:not(.vert) .tree ul.col>li>.stk{width:228px!important}.treewrap:not(.vert) .tree ul:not(.leafs)>li>.orgn{width:228px!important}
+.rootn,.orgn{cursor:default}.rootn:hover,.orgn:hover{background:inherit}
+
 .leafgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
 .viewsw{display:inline-flex;gap:4px;padding:4px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid var(--edge);margin-top:8px}.viewsw button{border:0;background:none;color:inherit;padding:7px 14px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600}.viewsw button[aria-pressed=true]{background:#fff;color:#000}
 html[data-skin=claro] .viewsw{background:#eef1f8}html[data-skin=claro] .viewsw button[aria-pressed=true]{background:var(--acc);color:#fff}
@@ -548,10 +553,15 @@ function renderOrg(){const root=$('org');if(!root)return;root.textContent='';
   if(me.is_admin){const a=el('button','btn white sm','+ Agregar stakeholder');a.type='button';a.onclick=()=>editStake({});hd.appendChild(a)}s2.appendChild(hd);
   if(!stakes.length)s2.appendChild(el('p','empty',me.is_admin?'Aún no hay stakeholders. Agrega clientes, partners o contactos clave.':'Aún no hay stakeholders cargados.'));
   const orgs={};for(const k of stakes)(orgs[k.org||'Sin organización']=orgs[k.org||'Sin organización']||[]).push(k);
-  for(const o of Object.keys(orgs).sort()){s2.appendChild(el('h4','arealab',o));const g=el('div','orggrid');
-    for(const k of orgs[o]){const b=el('button','tf node stk');b.type='button';const ini=el('span','av sav',k.name.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase());ini.setAttribute('aria-hidden','true');b.appendChild(ini);
-      const t=el('span','tx');t.append(el('b',null,k.name),el('span',null,[k.role,k.kind].filter(Boolean).join(' · ')));const ow=team.find(p=>p.username===k.owner);if(ow)t.appendChild(el('span','own','Responsable DXD: '+nm(ow)));b.appendChild(t);
-      b.setAttribute('aria-label',k.name+(k.org?', '+k.org:'')+'. Ver detalle');b.onclick=()=>openStake(k);g.appendChild(b)}s2.appendChild(g)}
+  const stkNode=k=>{const b=el('button','tf node stk');b.type='button';const ini=el('span','av sav',k.name.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase());ini.setAttribute('aria-hidden','true');b.appendChild(ini);
+    const t=el('span','tx');t.append(el('b',null,k.name),el('span',null,[k.role,k.kind].filter(Boolean).join(' · ')));const ow=team.find(p=>p.username===k.owner);if(ow)t.appendChild(el('span','own','Responsable DXD: '+nm(ow)));b.appendChild(t);
+    b.setAttribute('aria-label',k.name+(k.org?', '+k.org:'')+'. Ver detalle');b.onclick=()=>openStake(k);return b};
+  if(stakes.length){const t=el('ul','tree'),rl=el('li'),rn=el('div','tf node rootn');const lg=el('span','av sav');lg.innerHTML='<img src="'+(document.querySelector('.logo img')||{}).src+'" alt="" style="width:26px;height:26px">';lg.setAttribute('aria-hidden','true');
+    const rt=el('span','tx');rt.append(el('b',null,'DXD'),el('span',null,Object.keys(orgs).length+' organizaciones · '+stakes.length+' contactos'));rn.append(lg,rt);rl.appendChild(rn);
+    const uo=el('ul');for(const o of Object.keys(orgs).sort()){const li=el('li'),on=el('div','tf node orgn');const oi=el('span','av sav',o.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase());oi.setAttribute('aria-hidden','true');
+      const ot=el('span','tx');ot.append(el('b',null,o),el('span',null,orgs[o].length+(orgs[o].length===1?' contacto':' contactos')));on.append(oi,ot);li.appendChild(on);
+      const uc=el('ul','col');for(const k of orgs[o]){const l2=el('li');l2.appendChild(stkNode(k));uc.appendChild(l2)}li.appendChild(uc);uo.appendChild(li)}
+    rl.appendChild(uo);t.appendChild(rl);const tw=el('div','treewrap'+(orgVert?' vert':''));tw.appendChild(t);s2.appendChild(tw)}
   root.appendChild(s2)}
 function openStake(k){const d=$('drawer');d.textContent='';const h=el('div','head');const t=el('div');t.append(el('h3',null,k.name),el('div','role',[k.role,k.org].filter(Boolean).join(' · ')));h.appendChild(t);
   const x=el('button','ico','✕');x.type='button';x.style.marginLeft='auto';x.setAttribute('aria-label','Cerrar');x.onclick=closePerson;h.appendChild(x);d.appendChild(h);
