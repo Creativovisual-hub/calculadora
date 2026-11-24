@@ -787,6 +787,15 @@ html[data-theme=hc] .orb{display:none}
 #est .bg-shape-yellow,#est .bg-shape-sky,#est .app-navbar{display:none!important}
 @media (max-width:1023px){#est .panel-calculo{bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;z-index:19}html:not([data-skin=claro]) #est .panel-calculo{background:#14123a!important}html[data-skin=claro] #est .panel-calculo{background:#fff!important}#est{padding-bottom:160px}}
 #est .modal-overlay{z-index:50}
+#est .mini-tarea.off label{opacity:.72}#est .mini-tarea.off .stepper{opacity:.38}
+#est .stepper :disabled{cursor:not-allowed}
+#est .task-checkbox{width:20px;height:20px;cursor:pointer}
+html:not([data-skin=claro]) #est .task-checkbox{accent-color:#fff}
+html[data-skin=claro] #est .task-checkbox{accent-color:var(--acc)}
+html:not([data-skin=claro]) #est .form-tarea-botones button:first-child{background:#fff!important;color:#0b0a14!important}
+html:not([data-skin=claro]) #est .form-tarea-botones button:first-child:disabled{background:rgba(255,255,255,.16)!important;color:#ecebf7!important}
+html:not([data-skin=claro]) #est .btn-del-tarea{color:#fff}
+
 #est .stepper{display:inline-flex;align-items:center;gap:2px;padding:3px!important;border-radius:999px}
 #est .stepper input{width:38px!important;text-align:center;font-weight:700;font-size:15px;background:transparent;border:0;color:inherit;-moz-appearance:textfield;appearance:textfield;padding:0}
 #est .stepper input::-webkit-inner-spin-button,#est .stepper input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;opacity:0}
@@ -1914,12 +1923,12 @@ function renderExpedienteCard(exp) {
       const badge = razon ? `<span class="badge-ai" title="Sugerida: ${escapeHtml(razon)}">Sugerida</span>` : '';
       const diasActual = diasEfectivos(exp, t.id, t.dias);
       return `
-        <div class="mini-tarea">
+        <div class="mini-tarea${checked ? '' : ' off'}">
           <label>
-            <input type="checkbox" class="task-checkbox" data-exp-id="${exp.id}" data-task-id="${t.id}" ${checked}>
+            <input type="checkbox" class="task-checkbox" data-exp-id="${exp.id}" data-task-id="${t.id}" ${checked} aria-label="Incluir ${escapeHtml(t.label)} en la estimación">
             ${escapeHtml(t.label)}
           </label>
-          <div class="mini-right">${badge}<div class="tiempo-badge tiempo-editable stepper" data-html2canvas-ignore="true"><button type="button" class="stp-btn" data-step="-1" aria-label="Restar un día a ${escapeHtml(t.label||'la tarea')}">−</button><input type="number" inputmode="numeric" step="1" min="1" class="dias-input" data-exp-id="${exp.id}" data-task-id="${t.id}" value="${diasActual}" aria-label="Días para ${escapeHtml(t.label||'la tarea')}"><span class="stp-u" aria-hidden="true">días</span><button type="button" class="stp-btn" data-step="1" aria-label="Sumar un día a ${escapeHtml(t.label||'la tarea')}">+</button></div></div>
+          <div class="mini-right">${badge}<div class="tiempo-badge tiempo-editable stepper" data-html2canvas-ignore="true"><button type="button" class="stp-btn" data-step="-1" ${checked ? '' : 'disabled'} aria-label="Restar un día a ${escapeHtml(t.label||'la tarea')}">−</button><input type="number" inputmode="numeric" step="1" min="1" class="dias-input" data-exp-id="${exp.id}" data-task-id="${t.id}" value="${diasActual}" ${checked ? '' : 'disabled'} aria-label="Días para ${escapeHtml(t.label||'la tarea')}"><span class="stp-u" aria-hidden="true">días</span><button type="button" class="stp-btn" data-step="1" aria-label="Sumar un día a ${escapeHtml(t.label||'la tarea')}" ${checked ? '' : 'disabled'}>+</button></div></div>
         </div>`;
     }).join('');
 
@@ -1932,7 +1941,7 @@ function renderExpedienteCard(exp) {
           </label>
           <div class="mini-right" data-html2canvas-ignore="true">
             <div class="tiempo-badge tiempo-editable stepper" data-html2canvas-ignore="true"><button type="button" class="stp-btn" data-step="-1" aria-label="Restar un día a ${escapeHtml(t.label||t.nombre||'la tarea')}">−</button><input type="number" inputmode="numeric" step="1" min="1" class="dias-input-custom" data-exp-id="${exp.id}" data-custom-id="${t.id}" value="${t.dias}" aria-label="Días para ${escapeHtml(t.label||t.nombre||'la tarea')}"><span class="stp-u" aria-hidden="true">días</span><button type="button" class="stp-btn" data-step="1" aria-label="Sumar un día a ${escapeHtml(t.label||t.nombre||'la tarea')}">+</button></div>
-            <button class="btn-del-tarea" onclick="eliminarTareaCustom(${exp.id}, '${t.id}')">✕</button>
+            <button class="btn-del-tarea" aria-label="Quitar la tarea ${escapeHtml(t.label)}" title="Quitar tarea" onclick="eliminarTareaCustom(${exp.id}, '${t.id}')">✕</button>
           </div>
         </div>`).join('');
 
@@ -2121,6 +2130,12 @@ document.getElementById('pasteText').addEventListener('input', function() {
   autoGrow(this);
 });
 
+document.getElementById('expedientesList').addEventListener('change', function(e) {
+  if (!e.target.classList.contains('task-checkbox')) return;
+  const row = e.target.closest('.mini-tarea'); if (!row) return;
+  row.classList.toggle('off', !e.target.checked);
+  row.querySelectorAll('.stepper button, .stepper input').forEach(x => { x.disabled = !e.target.checked; });
+});
 document.getElementById('expedientesList').addEventListener('click', function(e) {
   const b = e.target.closest('.stp-btn'); if (!b) return;
   const inp = b.parentNode.querySelector('input'); if (!inp) return;
