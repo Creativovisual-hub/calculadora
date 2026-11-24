@@ -787,6 +787,15 @@ html[data-theme=hc] .orb{display:none}
 #est .bg-shape-yellow,#est .bg-shape-sky,#est .app-navbar{display:none!important}
 @media (max-width:1023px){#est .panel-calculo{bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;z-index:19}html:not([data-skin=claro]) #est .panel-calculo{background:#14123a!important}html[data-skin=claro] #est .panel-calculo{background:#fff!important}#est{padding-bottom:160px}}
 #est .modal-overlay{z-index:50}
+#est .stepper{display:inline-flex;align-items:center;gap:2px;padding:3px!important;border-radius:999px}
+#est .stepper input{width:38px!important;text-align:center;font-weight:700;font-size:15px;background:transparent;border:0;color:inherit;-moz-appearance:textfield;appearance:textfield;padding:0}
+#est .stepper input::-webkit-inner-spin-button,#est .stepper input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;opacity:0}
+#est .stp-btn{width:32px;height:32px;border-radius:50%;border:0;background:rgba(127,127,170,.16);color:inherit;font-size:18px;font-weight:700;line-height:1;cursor:pointer;display:grid;place-items:center}
+#est .stp-btn:hover{background:rgba(127,127,170,.3)}#est .stp-btn:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+#est .stp-u{font-size:13px;margin:0 6px 0 2px;opacity:.85}
+html:not([data-skin=claro]) #est .stp-btn{background:rgba(255,255,255,.12);color:#fff}html:not([data-skin=claro]) #est .stp-btn:hover{background:rgba(255,255,255,.24)}
+html[data-skin=claro] #est .stp-btn{background:var(--acc-soft);color:var(--acc)}html[data-skin=claro] #est .stp-btn:hover{background:#dbe3ff}
+
 #est #pasteText{min-height:170px!important;resize:vertical!important;overflow:auto!important;font-size:15px!important;line-height:1.55;padding:16px!important}
 #est .btn-analizar{min-height:46px;font-size:15px}
 html:not([data-skin=claro]) #est #pasteText:focus{border-color:#fff!important;box-shadow:0 0 0 3px rgba(169,185,255,.45)!important}
@@ -1902,7 +1911,7 @@ function renderExpedienteCard(exp) {
     const items = tareasFase.map(t => {
       const checked = exp.marcado.has(t.id) ? 'checked' : '';
       const razon = exp.razones[t.id];
-      const badge = razon ? `<span class="badge-ai" title="${escapeHtml(razon)}">IA</span>` : '';
+      const badge = razon ? `<span class="badge-ai" title="Sugerida: ${escapeHtml(razon)}">Sugerida</span>` : '';
       const diasActual = diasEfectivos(exp, t.id, t.dias);
       return `
         <div class="mini-tarea">
@@ -1910,7 +1919,7 @@ function renderExpedienteCard(exp) {
             <input type="checkbox" class="task-checkbox" data-exp-id="${exp.id}" data-task-id="${t.id}" ${checked}>
             ${escapeHtml(t.label)}
           </label>
-          <div class="mini-right">${badge}<label class="tiempo-badge tiempo-editable" data-html2canvas-ignore="true"><input type="number" step="1" min="1" class="dias-input" data-exp-id="${exp.id}" data-task-id="${t.id}" value="${diasActual}">días</label></div>
+          <div class="mini-right">${badge}<div class="tiempo-badge tiempo-editable stepper" data-html2canvas-ignore="true"><button type="button" class="stp-btn" data-step="-1" aria-label="Restar un día a ${escapeHtml(t.label||'la tarea')}">−</button><input type="number" inputmode="numeric" step="1" min="1" class="dias-input" data-exp-id="${exp.id}" data-task-id="${t.id}" value="${diasActual}" aria-label="Días para ${escapeHtml(t.label||'la tarea')}"><span class="stp-u" aria-hidden="true">días</span><button type="button" class="stp-btn" data-step="1" aria-label="Sumar un día a ${escapeHtml(t.label||'la tarea')}">+</button></div></div>
         </div>`;
     }).join('');
 
@@ -1922,7 +1931,7 @@ function renderExpedienteCard(exp) {
             ${escapeHtml(t.label)}
           </label>
           <div class="mini-right" data-html2canvas-ignore="true">
-            <label class="tiempo-badge tiempo-editable"><input type="number" step="1" min="1" class="dias-input-custom" data-exp-id="${exp.id}" data-custom-id="${t.id}" value="${t.dias}">días</label>
+            <div class="tiempo-badge tiempo-editable stepper" data-html2canvas-ignore="true"><button type="button" class="stp-btn" data-step="-1" aria-label="Restar un día a ${escapeHtml(t.label||t.nombre||'la tarea')}">−</button><input type="number" inputmode="numeric" step="1" min="1" class="dias-input-custom" data-exp-id="${exp.id}" data-custom-id="${t.id}" value="${t.dias}" aria-label="Días para ${escapeHtml(t.label||t.nombre||'la tarea')}"><span class="stp-u" aria-hidden="true">días</span><button type="button" class="stp-btn" data-step="1" aria-label="Sumar un día a ${escapeHtml(t.label||t.nombre||'la tarea')}">+</button></div>
             <button class="btn-del-tarea" onclick="eliminarTareaCustom(${exp.id}, '${t.id}')">✕</button>
           </div>
         </div>`).join('');
@@ -2112,6 +2121,12 @@ document.getElementById('pasteText').addEventListener('input', function() {
   autoGrow(this);
 });
 
+document.getElementById('expedientesList').addEventListener('click', function(e) {
+  const b = e.target.closest('.stp-btn'); if (!b) return;
+  const inp = b.parentNode.querySelector('input'); if (!inp) return;
+  const v = Math.max(1, (Math.round(parseFloat(inp.value)) || 1) + parseInt(b.dataset.step, 10));
+  inp.value = v; inp.dispatchEvent(new Event('input', { bubbles: true }));
+});
 document.getElementById('expedientesList').addEventListener('input', function(e) {
   if (e.target.classList.contains('exp-textarea')) {
     autoGrow(e.target);
