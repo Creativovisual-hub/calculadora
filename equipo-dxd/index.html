@@ -880,6 +880,27 @@ html[data-skin=claro] .gpop{background:#fff;border-color:var(--line);box-shadow:
 .rft{display:flex;gap:8px;margin-top:auto;padding-top:6px}.btn.ghost{background:none}
 html[data-skin=claro] .rcard h3{color:var(--text)}
 @media (max-width:640px){.dock nav button{width:auto;min-width:52px}}
+/* navegación con estado */
+.pills .gsub:not(:empty)::before{content:"·";margin:0 6px 0 2px;opacity:.6}.pills .gsub{font-weight:600}
+.pills .gbtn[aria-current=true] .gl{opacity:.8}
+.gpop{min-width:340px;padding:10px}
+.gpop .gh{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.7;padding:6px 12px 8px}
+.gpop .gi{display:flex;align-items:center;gap:14px;padding:12px;position:relative}
+.gpop .gic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.1);flex:none}.gpop .gic svg{width:20px;height:20px}
+.gpop .gtx{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}.gpop .gtx b{font-size:15px}.gpop .gtx small{font-size:12.5px;opacity:.78;font-weight:400}
+.gpop .here2{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(0,0,0,.18);white-space:nowrap}
+.gpop .gi[aria-current=page] .gic{background:rgba(0,0,0,.14)}
+html[data-skin=claro] .gpop .gic{background:var(--acc-soft);color:var(--acc)}html[data-skin=claro] .gpop .gi[aria-current=page] .gic{background:rgba(255,255,255,.2);color:#fff}html[data-skin=claro] .gpop .here2{background:rgba(255,255,255,.22)}
+html[data-skin=claro] .gpop .gh{color:var(--muted)}
+.crumb{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:18px 0 0;font-size:13.5px;color:var(--muted)}
+.crumb .cl{border:0;background:none;color:inherit;font:inherit;padding:4px 6px;border-radius:8px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:transparent}
+.crumb .cl:hover{color:var(--text);text-decoration-color:currentColor}.crumb .sep{opacity:.6}.crumb .here{color:var(--text);font-weight:600;padding:4px 6px}
+html[data-skin=claro] .crumb .here{color:var(--text)}
+#v-start,#v-home,#v-dir,#v-org,#v-est,#v-tools,#v-wow,#v-dops,#v-gems,#v-me,#v-adm{animation:viewIn .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes viewIn{from{opacity:0;translate:0 8px}to{opacity:1;translate:0 0}}
+@media (prefers-reduced-motion:reduce){#v-start,#v-home,#v-dir,#v-org,#v-est,#v-tools,#v-wow,#v-dops,#v-gems,#v-me,#v-adm{animation:none}}
+@media (min-width:1101px){.page>section{padding-top:6px}}
+@media (max-width:1300px){.pills .gsub{display:none}}
 /* administración */
 .admgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:22px;align-items:start}
 .panel{padding:22px}.panel h3{font-family:var(--mono);font-size:16px;margin:0 0 14px}
@@ -933,8 +954,8 @@ html[data-skin=claro] .rcard h3{color:var(--text)}
     <div class="logo"><span class="mk"><img src="logo.svg" alt="" onerror="this.remove()"><span class="wm">DXD</span></span><div><b>Equipo</b><small>Directorio</small></div></div>
     <nav class="pills" aria-label="Secciones"><span class="ind" aria-hidden="true"></span>
       <button type="button" data-v="start" aria-current="true"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Inicio</button>
-      <button type="button" class="gbtn" data-g="persona" aria-haspopup="menu" aria-expanded="false" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Persona<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-      <button type="button" class="gbtn" data-g="workflow" aria-haspopup="menu" aria-expanded="false" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="7" height="7" rx="2"/><rect x="14" y="4" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><path d="M17.5 14v7M14 17.5h7"/></svg>Workflow<svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button type="button" class="gbtn" data-g="persona" aria-haspopup="menu" aria-expanded="false" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="gl">Persona</span><span class="gsub" aria-hidden="true"></span><svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <button type="button" class="gbtn" data-g="workflow" aria-haspopup="menu" aria-expanded="false" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="7" height="7" rx="2"/><rect x="14" y="4" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><path d="M17.5 14v7M14 17.5h7"/></svg><span class="gl">Workflow</span><span class="gsub" aria-hidden="true"></span><svg class="i chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
       <button type="button" data-v="me" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg>Mi ficha</button>
       <button type="button" data-v="adm" aria-current="false" data-admin><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>Administración</button>
     </nav>
@@ -948,6 +969,7 @@ html[data-skin=claro] .rcard h3{color:var(--text)}
   </header>
 
   <main class="page" id="main" tabindex="-1">
+    <nav class="crumb" id="crumb" aria-label="Estás en" hidden></nav>
     <div class="aurora" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <section id="v-start" aria-label="Inicio"><div class="start" id="start"></div></section>
     <section id="v-home" aria-labelledby="hHome" hidden>
@@ -1301,7 +1323,7 @@ function showPw(forced){$('app').hidden=true;$('auth').hidden=false;$('loginForm
 async function boot(){const s=getS();if(!s||!s.token){showLogin();return}token=s.token;
   try{me=await rpc('equipo_me')}catch(e){if(e.code!=='28000')showLogin('No se pudo conectar. Intenta de nuevo.');return}
   if(me.must_change){showPw(true);return}
-  $('auth').hidden=true;$('app').hidden=false;document.querySelectorAll('[data-admin]').forEach(b=>b.hidden=!me.is_admin);requestAnimationFrame(moveInd);await load()}
+  $('auth').hidden=true;$('app').hidden=false;document.querySelectorAll('[data-admin]').forEach(b=>b.hidden=!me.is_admin);requestAnimationFrame(moveInd);await load();go(viewFromHash()||'start',{replace:true,initial:true})}
 $('loginForm').addEventListener('submit',async e=>{e.preventDefault();const f=e.target,b=f.querySelector('button');$('loginErr').textContent='';
   if(!f.u.value.trim()||!f.p.value){$('loginErr').textContent='Escribe tu usuario y tu clave.';return}b.disabled=true;
   const r=await sb.rpc('equipo_login',{p_user:f.u.value,p_pass:f.p.value});b.disabled=false;
@@ -1595,22 +1617,43 @@ $('csv').onclick=()=>{const cols=['username','full_name','role_title','birthday'
 // ---------- navegación ----------
 const NAMES={start:'Inicio',home:'Cumpleaños',dir:'Directorio',org:'Organigrama',est:'Estimador',tools:'Herramientas',wow:'Nuevo Way of Working UX',dops:'Design Ops del Chapter UX',gems:'Gemas de Google',me:'Mi ficha',adm:'Administración'};
 const GROUPS={persona:{label:'Persona',items:['home','dir','org','est']},workflow:{label:'Workflow',items:['tools','wow','dops','gems']}};
+const META={home:['Calendario de cumpleaños del equipo','<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>'],
+  dir:['Contactos y fichas de cada persona','<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/>'],
+  org:['Equipo, roles y stakeholders','<path d="M9 3h6v5H9zM3 16h6v5H3zM15 16h6v5h-6zM12 8v4M6 16v-2h12v2"/>'],
+  est:['Estima el esfuerzo UX de cada historia','<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M8 15h2M12 15h2M8 18h8"/>'],
+  tools:['Las herramientas que usa el equipo','<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/>'],
+  wow:['Procesos, rituales y plantillas UX','<path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/>'],
+  dops:['Sistema de diseño, gobernanza y métricas','<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>'],
+  gems:['Asistentes de Gemini del equipo','<path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18M9 3l3 6 3-6M12 9v12"/>']};
+const SLUG={start:'inicio',home:'cumpleanos',dir:'directorio',org:'organigrama',est:'estimador',tools:'herramientas',wow:'way-of-working',dops:'design-ops',gems:'gemas',me:'mi-ficha',adm:'administracion'};
+const BYSLUG=Object.fromEntries(Object.entries(SLUG).map(([k,v])=>[v,k]));
+const scrollPos={};
+function viewFromHash(){const m=(location.hash||'').match(/^#\/([\w-]+)/);const v=m&&BYSLUG[m[1]];if(!v)return null;if(v==='adm'&&!(me&&me.is_admin))return 'start';return v}
 const groupOf=v=>Object.keys(GROUPS).find(g=>GROUPS[g].items.includes(v));
 function moveInd(){const n=document.querySelector('#app .pills'),a=n&&n.querySelector(':scope>button[aria-current=true]'),i=n&&n.querySelector('.ind');if(!i)return;if(!a||!a.offsetWidth){i.style.width='0';return}i.style.width=a.offsetWidth+'px';i.style.transform='translateX('+a.offsetLeft+'px)'}
 addEventListener('resize',moveInd);if(document.fonts)document.fonts.ready.then(moveInd);
-function go(v){cur=v;closeGroup(false);const g=groupOf(v);for(const b of document.querySelectorAll('.pills>button,.dock nav button'))b.setAttribute('aria-current',b.dataset.g?b.dataset.g===g:b.dataset.v===v);
-  for(const k of Object.keys(NAMES))$('v-'+k).hidden=k!==v;$('secName').textContent=NAMES[v];closePerson();scrollTo({top:0});moveInd()}
+function go(v,opt){opt=opt||{};if(v==='adm'&&!(me&&me.is_admin))v='start';if(cur&&cur!==v)scrollPos[cur]=scrollY;const changed=cur!==v;cur=v;closeGroup(false);const g=groupOf(v);for(const b of document.querySelectorAll('.pills>button,.dock nav button'))b.setAttribute('aria-current',b.dataset.g?b.dataset.g===g:b.dataset.v===v);
+  for(const k of Object.keys(NAMES))$('v-'+k).hidden=k!==v;$('secName').textContent=NAMES[v];closePerson();
+  for(const gb of document.querySelectorAll('.pills .gbtn')){const sub=gb.querySelector('.gsub'),on=gb.dataset.g===g;sub.textContent=on?NAMES[v]:'';gb.setAttribute('aria-label',GROUPS[gb.dataset.g].label+(on?', sección actual: '+NAMES[v]:''))}
+  const cr=$('crumb');cr.textContent='';cr.hidden=v==='start';if(v!=='start'){const h=el('button','cl','Inicio');h.type='button';h.onclick=()=>go('start');cr.appendChild(h);
+    if(g){cr.appendChild(el('span','sep','›'));const gb=el('button','cl',GROUPS[g].label);gb.type='button';gb.setAttribute('aria-haspopup','menu');gb.onclick=e=>{e.stopPropagation();openGroup([...document.querySelectorAll('.gbtn[data-g='+g+']')].find(x=>x.offsetParent)||gb,g)};cr.appendChild(gb)}
+    cr.appendChild(el('span','sep','›'));const here=el('span','here',NAMES[v]);here.setAttribute('aria-current','page');cr.appendChild(here)}
+  document.title=(v==='start'?'':NAMES[v]+' · ')+'Equipo DXD';
+  if(!opt.fromPop){try{const u='#/'+SLUG[v];if(location.hash!==u)history[opt.replace?'replaceState':'pushState']({v},'',u)}catch(e){}}
+  requestAnimationFrame(()=>{scrollTo({top:changed||opt.fromPop?(scrollPos[v]||0):scrollY,behavior:'instant'});moveInd();if(changed&&!opt.initial&&!opt.fromPop){const t=document.querySelector('#v-'+v+' h2');if(t){t.setAttribute('tabindex','-1');t.focus({preventScroll:true})}}})}
+addEventListener('popstate',()=>{if(!me)return;const v=viewFromHash()||'start';if(v!==cur)go(v,{fromPop:true})});
 for(const b of document.querySelectorAll('[data-v]'))b.addEventListener('click',()=>go(b.dataset.v));
 // ---- submenús Persona / Workflow ----
 let gOpener=null;
 function closeGroup(ret){const p=$('gpop');if(p.hidden)return;p.hidden=true;for(const b of document.querySelectorAll('.gbtn'))b.setAttribute('aria-expanded','false');if(ret&&gOpener)gOpener.focus();gOpener=null}
-function openGroup(btn){const g=btn.dataset.g,p=$('gpop');if(!p.hidden&&gOpener===btn){closeGroup(true);return}closeGroup(false);gOpener=btn;p.textContent='';p.setAttribute('aria-label',GROUPS[g].label);
-  for(const v of GROUPS[g].items){const it=el('button',null,NAMES[v]);it.type='button';it.setAttribute('role','menuitem');if(v===cur)it.setAttribute('aria-current','page');it.onclick=()=>go(v);p.appendChild(it)}
+function openGroup(btn,gForce){const g=gForce||btn.dataset.g,p=$('gpop');if(!p.hidden&&gOpener===btn){closeGroup(true);return}closeGroup(false);gOpener=btn;p.textContent='';p.setAttribute('aria-label',GROUPS[g].label);
+  p.appendChild(el('div','gh',GROUPS[g].label));for(const v of GROUPS[g].items){const it=el('button','gi');it.type='button';it.setAttribute('role','menuitem');const ic=el('span','gic');ic.innerHTML='<svg class="i" viewBox="0 0 24 24" aria-hidden="true">'+META[v][1]+'</svg>';
+    const tx=el('span','gtx');tx.append(el('b',null,NAMES[v]),el('small',null,META[v][0]));it.append(ic,tx);if(v===cur){it.setAttribute('aria-current','page');it.appendChild(el('span','here2','Estás aquí'))}it.onclick=()=>go(v);p.appendChild(it)}
   p.hidden=false;btn.setAttribute('aria-expanded','true');const r=btn.getBoundingClientRect(),inDock=!!btn.closest('.dock');
   p.style.left=Math.max(12,Math.min(r.left,innerWidth-p.offsetWidth-12))+'px';if(inDock){p.style.top='auto';p.style.bottom=(innerHeight-r.top+10)+'px'}else{p.style.bottom='auto';p.style.top=(r.bottom+8)+'px'}
-  (p.querySelector('[aria-current=page]')||p.firstChild).focus()}
+  (p.querySelector('[aria-current=page]')||p.querySelector('.gi')).focus()}
 for(const b of document.querySelectorAll('.gbtn'))b.addEventListener('click',e=>{e.stopPropagation();openGroup(b)});
-$('gpop').addEventListener('keydown',e=>{const items=[...$('gpop').children],i=items.indexOf(document.activeElement);
+$('gpop').addEventListener('keydown',e=>{const items=[...$('gpop').querySelectorAll('.gi')],i=items.indexOf(document.activeElement);
   if(e.key==='Escape'){e.preventDefault();e.stopPropagation();closeGroup(true)}else if(e.key==='ArrowDown'){e.preventDefault();items[(i+1)%items.length].focus()}else if(e.key==='ArrowUp'){e.preventDefault();items[(i-1+items.length)%items.length].focus()}
   else if(e.key==='Home'){e.preventDefault();items[0].focus()}else if(e.key==='End'){e.preventDefault();items[items.length-1].focus()}else if(e.key==='Tab')closeGroup(false)});
 document.addEventListener('click',e=>{if(!$('gpop').hidden&&!$('gpop').contains(e.target))closeGroup(false)});addEventListener('resize',()=>closeGroup(false));
