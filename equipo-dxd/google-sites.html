@@ -787,6 +787,16 @@ html[data-theme=hc] .orb{display:none}
 #est .bg-shape-yellow,#est .bg-shape-sky,#est .app-navbar{display:none!important}
 @media (max-width:1023px){#est .panel-calculo{bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;z-index:19}html:not([data-skin=claro]) #est .panel-calculo{background:#14123a!important}html[data-skin=claro] #est .panel-calculo{background:#fff!important}#est{padding-bottom:160px}}
 #est .modal-overlay{z-index:50}
+#est #pasteText{min-height:170px!important;resize:vertical!important;overflow:auto!important;font-size:15px!important;line-height:1.55;padding:16px!important}
+#est .btn-analizar{min-height:46px;font-size:15px}
+html:not([data-skin=claro]) #est #pasteText:focus{border-color:#fff!important;box-shadow:0 0 0 3px rgba(169,185,255,.45)!important}
+html:not([data-skin=claro]) #est .step-num{background:#fff!important;color:#0b0a14!important}
+html:not([data-skin=claro]) #est .btn-analizar{background:#fff!important;color:#0b0a14!important;border:0!important}
+html:not([data-skin=claro]) #est .btn-analizar:hover:not(:disabled){background:#e4e8ff!important}
+html:not([data-skin=claro]) #est .btn-analizar:disabled{background:rgba(255,255,255,.16)!important;color:#ecebf7!important;opacity:1!important;cursor:not-allowed}
+html:not([data-skin=claro]) #est .dropzone-icon{background:rgba(169,185,255,.18)!important;color:#fff!important;border:1px solid rgba(255,255,255,.28)}html:not([data-skin=claro]) #est .dropzone-icon::after{display:none}
+html:not([data-skin=claro]) #est .btn-select-files{color:#fff!important}
+html[data-skin=claro] #est .btn-analizar:disabled{background:#c9d3f5!important;color:#16204a!important;opacity:1!important}
 @media (min-width:1024px){#est .panel-calculo{position:static!important;max-height:none!important;overflow:visible!important}}
 html:not([data-skin=claro]) #est .info-footer .info-icon{color:#fff!important}
 html:not([data-skin=claro]) #est :is(.t-item .t-icon,.dropzone-icon,.btn-texto,.badge-ai,.exp-status.analizando,.panel-header-title-row svg){color:#c7d2ff!important}
@@ -1535,7 +1545,56 @@ boot();
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-var EST_API='https://estimador-ux.vercel.app/api/analyze';
+// ---- Análisis por reglas (sin IA, sin tokens) ----
+function analizarConReglas(textoOriginal) {
+  const t = ' ' + (textoOriginal || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '') + ' ';
+  const hay = re => re.test(t);
+  const sig = {
+    nuevo: hay(/\bnuev[oa]s?\b|desde cero|\bcrear\b|\blanzar|implementar|redisen|reemplaz|nueva funcionalidad|nuevo producto|nueva plataforma|nuevo modulo/),
+    ajuste: hay(/\bajust|corregir|\bbug|\berror(es)?\b|cambio menor|pequen[oa] cambio|cambiar (el |los |la |las )?(texto|copy|color|boton|label|icono)|actualizar (el )?(texto|copy)|agregar (un )?campo/),
+    complejo: hay(/\bflujo|onboarding|checkout|\bpago|registro|varios pasos|paso a paso|journey|\bproceso|tramite|solicitud|formulario|postulacion|contratacion|simulador|autenticacion|login/) || t.length > 700,
+    research: hay(/usuarios? reales|clientes reales|entrevist|research|investig|necesidad(es)? (de|del)|dolor(es)?|pain|hipotesis|descubr|comportamiento/),
+    competencia: hay(/competen|benchmark|mercado|referente|otros bancos|otras (apps|cajas|empresas)|mejores practicas/),
+    stake: hay(/stakeholder|\bnegocio|gerencia|\blegal|compliance|normativ|regulat|alinear|requerimiento|area de|areas de/),
+    datos: hay(/\bdatos?\b|metrica|analytics|\bkpi|conversion|tasa de|abandono|heuristic|auditor|reclamo|friccion/),
+    componentes: hay(/nuevo componente|componentes nuevos|nuevos componentes|design system|nuevo patron|nueva interfaz|nueva marca|rebrand|identidad visual/),
+    prototipo: hay(/prototip|\bdemo\b|maqueta|navegable|interactiv/),
+    pruebaMod: hay(/usuarios reales|clientes reales|moderad[ao]s? |test(s)? con usuarios|pruebas? con usuarios|presencial|usabilidad/),
+    pruebaNoMod: hay(/\bmaze\b|no moderad|remot[oa]|\ba\/b\b|encuesta|test rapido|validacion rapida/),
+    validar: hay(/\bvalid(ar|ado|ada|acion)|\bprobar\b|testear/)
+  };
+  const soloAjuste = sig.ajuste && !sig.nuevo && !sig.componentes;
+  const sel = [];
+  const add = (id, razon) => { if (!sel.some(s => s.id === id)) sel.push({ id, razon }); };
+
+  // Discovery
+  if (sig.competencia || (sig.nuevo && sig.complejo && !soloAjuste)) add('chk-bench', sig.competencia ? 'Menciona competencia o referentes del mercado' : 'Iniciativa nueva y compleja: conviene comparar referentes');
+  if (sig.stake || (sig.nuevo && !soloAjuste)) add('chk-stake', sig.stake ? 'Involucra negocio, áreas o requisitos a alinear' : 'Iniciativa nueva: alinear alcance con stakeholders');
+  if (sig.research) add('chk-user', 'Pide entender o validar con usuarios reales');
+  if (sig.datos || (hay(/redisen|reemplaz|mejorar/) && !soloAjuste)) add('chk-audit', sig.datos ? 'Menciona datos, métricas o fricciones actuales' : 'Mejora de algo existente: revisar estado actual');
+  // Arquitectura
+  if (sig.complejo && !soloAjuste) add('chk-flow', 'Incluye un flujo o proceso de varios pasos');
+  if (!soloAjuste || sig.complejo) {
+    if (sig.nuevo && sig.complejo) add('chk-wire-com', 'Flujo nuevo o complejo');
+    else add('chk-wire-sim', 'Cambio acotado sobre un flujo simple');
+  }
+  // Diseño UI
+  if (sig.componentes || (sig.nuevo && sig.complejo && !soloAjuste)) add('chk-ui-new', sig.componentes ? 'Requiere componentes o patrones nuevos' : 'Pantallas nuevas que pueden requerir componentes');
+  else add('chk-ui-act', 'Se puede resolver con el Design System actual');
+  if (sig.prototipo || (sig.validar && !soloAjuste) || (sig.nuevo && sig.complejo && !soloAjuste)) add('chk-proto', sig.prototipo ? 'Pide un prototipo o maqueta navegable' : 'Necesita prototipo para validar el flujo');
+  // Testing & Handoff
+  if (sig.pruebaMod || (sig.research && sig.validar)) add('chk-test-mod', 'Pide validar con usuarios reales');
+  if (sig.pruebaNoMod) add('chk-test-nomod', 'Menciona pruebas remotas, rápidas o encuestas');
+  else if (!sel.some(s => s.id === 'chk-test-mod') && sig.validar && !soloAjuste) add('chk-test-nomod', 'Validación rápida sin moderador');
+  add('chk-handoff', 'Toda historia termina en entrega a desarrollo');
+
+  const tipo = soloAjuste ? 'Ajuste acotado sobre algo existente'
+    : (sig.nuevo && sig.complejo) ? 'Iniciativa nueva con flujo complejo'
+    : sig.nuevo ? 'Iniciativa nueva de alcance medio'
+    : sig.complejo ? 'Mejora sobre un flujo existente'
+    : 'Cambio de alcance acotado';
+  return { resumen: tipo + ' (estimado por reglas, sin IA).', seleccion: sel };
+}
 
 // ---- Catálogo de tareas: fuente única de verdad ----
 const TAREAS = [
@@ -2209,7 +2268,7 @@ let colaProcesando = false;
 let colaCancelada = false;
 let colaTotal = 0;
 let colaCompletados = 0;
-const RETRASO_ENTRE_LLAMADAS = 2000; // ms de pausa entre iniciativas para no saturar el rate limit
+const RETRASO_ENTRE_LLAMADAS = 150; // ms de pausa entre iniciativas para no saturar el rate limit
 
 function encolarAnalisis(id) {
   const colaEstabaVacia = colaAnalisis.length === 0 && !colaProcesando;
@@ -2274,29 +2333,8 @@ async function analizarExpediente(id, intento) {
   renderAll();
 
   try {
-    const response = await fetch(EST_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        system: construirSystemPrompt(),
-        texto: exp.texto
-      })
-    });
-    if (response.status === 429 || response.status === 529) throw new Error('RATE_LIMIT');
-    if (!response.ok) {
-      let detalle = 'HTTP ' + response.status;
-      try {
-        const err = await response.json();
-        if (err && err.error) detalle = err.error;
-      } catch (e) { /* respuesta sin JSON, se deja el código de estado */ }
-      throw new Error(detalle);
-    }
-
-    const data = await response.json();
-    if (!data.text) throw new Error('El asistente no devolvió una respuesta de texto.');
-
-    const limpio = data.text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(limpio);
+    await new Promise(r => setTimeout(r, 250)); // breve pausa para que se vea el progreso
+    const parsed = analizarConReglas(exp.texto);
     const idsValidos = new Set(TAREAS.map(t => t.id));
 
     exp.marcado = new Set();
