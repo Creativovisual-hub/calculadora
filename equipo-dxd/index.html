@@ -183,7 +183,7 @@ fieldset.pick{grid-column:1/-1;border:0;padding:0;margin:0;min-width:0}.pick leg
 @media (max-width:900px){.mf{grid-template-columns:1fr}.carnet{position:static}}
 @media (max-width:640px){.stp{grid-template-columns:1fr}}
 /* panel de accesibilidad */
-.a11y{position:fixed;z-index:45;top:calc(var(--hh) + 8px);right:clamp(16px,4vw,48px);width:min(340px,calc(100vw - 32px));padding:20px;background:#141318;border-radius:22px;display:flex;flex-direction:column;gap:16px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.a11y{position:fixed;z-index:45;top:calc(var(--hh) + 8px);max-height:calc(100vh - var(--hh) - 24px);max-height:calc(100dvh - var(--hh) - 24px);overflow-y:auto;overscroll-behavior:contain;right:clamp(16px,4vw,48px);width:min(340px,calc(100vw - 32px));padding:20px;background:#141318;border-radius:22px;display:flex;flex-direction:column;gap:16px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
 .a11y h2{margin:0;font-size:18px}.a11y fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}.a11y legend{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted);margin-bottom:6px;padding:0}
 .a11y label.ch{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;cursor:pointer;background:rgba(255,255,255,.05);border:1px solid transparent;font-size:15px}
 .a11y label.ch:hover{background:rgba(255,255,255,.1)}.a11y label.ch:has(input:checked){border-color:#fff;background:rgba(255,255,255,.12)}
