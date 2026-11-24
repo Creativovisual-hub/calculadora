@@ -19,7 +19,8 @@
 | US-05 Handoff (estados, validación, tokens, App Shell, eventos) | Tablero «US-05 · Handoff Mi Perfil v2» |
 | Borde: legado embebido en el App Shell | MP-23 |
 | Borde: escalado SO × app | MP-11, MP-25 + tabla de tokens (tope 1,5) |
-| Omnicanal Web | MP-W1 (resumen), MP-W2 (trámites + detalle lateral) |
+
+> **Alcance: solo App** (iOS/Android). No se diseña versión Web.
 
 **Valor agregado para bajar llamadas y visitas:**
 - Fecha estimada del próximo paso en cada trámite.
