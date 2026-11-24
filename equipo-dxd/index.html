@@ -341,7 +341,7 @@ html[data-skin=claro] .refstage{position:relative;display:grid;grid-template-col
 html[data-skin=claro] .orb{position:absolute;left:50%;top:-10px;width:min(560px,60vw);aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:#e8edff;border:1px solid #d3dcff;box-shadow:inset 0 0 0 24px #eef2ff,inset 0 0 0 25px #dfe6ff,inset 0 0 0 70px #f2f5ff,inset 0 0 0 71px #e1e8ff;pointer-events:none;opacity:.75}
 html[data-skin=claro] .chipsx{position:absolute;inset:0 0 auto 0;height:240px}
 html[data-skin=claro] .chipx{position:absolute;display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border-radius:999px;background:#fff;border:1px solid var(--line);box-shadow:0 6px 16px rgba(22,32,74,.1);cursor:pointer;color:var(--text);white-space:nowrap}
-html[data-skin=claro] .chipx:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(22,32,74,.16)}html[data-skin=claro] .chipx b{font-size:13px;font-weight:600}html[data-skin=claro] .chipx .tg{font-size:11px;font-weight:700;color:#fff;padding:2px 8px;border-radius:999px}
+html[data-skin=claro] .chipx:hover{box-shadow:0 10px 22px rgba(22,32,74,.16)}html[data-skin=claro] .chipx b{font-size:13px;font-weight:600}html[data-skin=claro] .chipx .tg{font-size:11px;font-weight:700;color:#fff;padding:2px 8px;border-radius:999px}
 html[data-skin=claro] .refnum{position:relative;z-index:1}html[data-skin=claro] .refnum small{color:var(--muted);font-size:14px;display:flex;align-items:center;gap:8px}html[data-skin=claro] .bdg{background:var(--acc);color:#fff;font-weight:700;font-size:12px;padding:3px 10px;border-radius:999px}
 html[data-skin=claro] .refbig{font-size:clamp(56px,7vw,96px);font-weight:600;letter-spacing:-.04em;line-height:1;margin:12px 0 4px;color:var(--text)}html[data-skin=claro] .refbig span{font-size:.36em;color:var(--muted);letter-spacing:0;margin-left:10px;font-weight:500}
 html[data-skin=claro] .refstats{display:grid;grid-template-columns:repeat(2,minmax(0,160px));gap:14px 28px;margin:22px 0 0}html[data-skin=claro] .refstats dt{color:var(--muted);font-size:13px}html[data-skin=claro] .refstats dd{margin:2px 0 0;font-size:22px;font-weight:700;color:var(--text)}
@@ -362,7 +362,7 @@ html:not([data-skin=claro]) .refstage{position:relative;display:grid;grid-templa
 html:not([data-skin=claro]) .orb{position:absolute;left:50%;top:-10px;width:min(560px,60vw);aspect-ratio:1;transform:translateX(-50%);border-radius:50%;background:#e8edff;border:1px solid #d3dcff;box-shadow:inset 0 0 0 24px #eef2ff,inset 0 0 0 25px #dfe6ff,inset 0 0 0 70px #f2f5ff,inset 0 0 0 71px #e1e8ff;pointer-events:none;opacity:.75}
 html:not([data-skin=claro]) .chipsx{position:absolute;inset:0 0 auto 0;height:240px}
 html:not([data-skin=claro]) .chipx{position:absolute;display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border-radius:999px;background:#fff;border:1px solid var(--line);box-shadow:0 6px 16px rgba(22,32,74,.1);cursor:pointer;color:var(--text);white-space:nowrap}
-html:not([data-skin=claro]) .chipx:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(22,32,74,.16)}html:not([data-skin=claro]) .chipx b{font-size:13px;font-weight:600}html:not([data-skin=claro]) .chipx .tg{font-size:11px;font-weight:700;color:#fff;padding:2px 8px;border-radius:999px}
+html:not([data-skin=claro]) .chipx:hover{box-shadow:0 10px 22px rgba(22,32,74,.16)}html:not([data-skin=claro]) .chipx b{font-size:13px;font-weight:600}html:not([data-skin=claro]) .chipx .tg{font-size:11px;font-weight:700;color:#fff;padding:2px 8px;border-radius:999px}
 html:not([data-skin=claro]) .refnum{position:relative;z-index:1}html:not([data-skin=claro]) .refnum small{color:var(--muted);font-size:14px;display:flex;align-items:center;gap:8px}html:not([data-skin=claro]) .bdg{background:var(--acc);color:#fff;font-weight:700;font-size:12px;padding:3px 10px;border-radius:999px}
 html:not([data-skin=claro]) .refbig{font-size:clamp(56px,7vw,96px);font-weight:600;letter-spacing:-.04em;line-height:1;margin:12px 0 4px;color:var(--text)}html:not([data-skin=claro]) .refbig span{font-size:.36em;color:var(--muted);letter-spacing:0;margin-left:10px;font-weight:500}
 html:not([data-skin=claro]) .refstats{display:grid;grid-template-columns:repeat(2,minmax(0,160px));gap:14px 28px;margin:22px 0 0}html:not([data-skin=claro]) .refstats dt{color:var(--muted);font-size:13px}html:not([data-skin=claro]) .refstats dd{margin:2px 0 0;font-size:22px;font-weight:700;color:var(--text)}
@@ -814,6 +814,21 @@ html[data-skin=claro] #est{--card:#fff;--line:var(--line);--ui:var(--acc);--ai:v
 html[data-skin=claro] #est :is(.main-col-inner,.empty-state,.exp-card,.panel-calculo){box-shadow:0 1px 2px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.06)}
 html[data-theme=hc] #est :is(.btn-select-files,#pasteText,.exp-textarea,.mini-tarea,.tiempo-editable,.dropdown-content,.fase-stat,.form-tarea-inline,.modal-box,.main-col-inner,.empty-state,.exp-card,.panel-calculo,.panel){background:#000!important;border:2px solid #fff!important;box-shadow:none!important}
 
+/* inicio: animaciones */
+.chipx{animation:chipIn .6s cubic-bezier(.2,.8,.2,1) both,bob 5.5s ease-in-out infinite;animation-delay:calc(var(--i,0)*.12s),calc(var(--i,0)*-.7s)}
+@keyframes chipIn{from{opacity:0;translate:0 14px;scale:.92}to{opacity:1;translate:0 0;scale:1}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.orb{animation:breathe 7s ease-in-out infinite}
+@keyframes breathe{0%,100%{scale:1}50%{scale:1.035}}
+.orb::after{content:"";position:absolute;inset:-14px;border-radius:50%;border:2px dashed rgba(36,72,224,.18);animation:spin 40s linear infinite}
+html:not([data-skin=claro]) .orb::after{border-color:rgba(255,255,255,.16)}
+@keyframes spin{to{rotate:360deg}}
+.refbig{animation:fadeUp .8s cubic-bezier(.2,.8,.2,1) both .15s}.refstats,.reffeat,.refstrip{animation:fadeUp .8s cubic-bezier(.2,.8,.2,1) both .3s}
+@keyframes fadeUp{from{opacity:0;translate:0 12px}to{opacity:1;translate:0 0}}
+.bar2 i{animation:grow 1.2s cubic-bezier(.2,.8,.2,1) both .4s;transform-origin:left}@keyframes grow{from{scale:0 1}}
+html.still :is(.chipx,.orb,.orb::after,.refbig,.refstats,.reffeat,.refstrip,.bar2 i){animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){:is(.chipx,.orb,.orb::after,.refbig,.refstats,.reffeat,.refstrip,.bar2 i){animation:none!important}}
+@media (max-width:900px){.chipx{animation:chipIn .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*.08s)}}
 /* administración */
 .admgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:22px;align-items:start}
 .panel{padding:22px}.panel h3{font-family:var(--mono);font-size:16px;margin:0 0 14px}
@@ -1331,7 +1346,7 @@ function renderStart(){const root=$('start');root.textContent='';const now=new D
   // vista tipo referencia (solo estilo Claro)
   {const R=el('section','ref');R.setAttribute('aria-label','Resumen de cumpleaños');const st=el('div','refstage');const orb=el('div','orb');orb.setAttribute('aria-hidden','true');st.appendChild(orb);
    const ch=el('div','chipsx');const POS=[[14,4],[44,0],[70,8],[26,20],[58,22],[4,26],[84,30],[38,34]];const TC=['#2448e0','#7c3aed','#c2410c','#047857','#be185d','#0369a1','#a16207','#4338ca'];
-   list.slice(0,POS.length).forEach(({p,nb},i)=>{const c=el('button','chipx');c.type='button';c.style.left=POS[i][0]+'%';c.style.top=POS[i][1]+'%';c.appendChild(avatar(p,30));c.appendChild(el('b',null,nm(p).split(' ')[0]));const tg=el('span','tg',nb.days===0?'hoy':nb.short);tg.style.background=TC[i%TC.length];c.appendChild(tg);c.setAttribute('aria-label',nm(p)+', cumpleaños '+nb.label+'. Ver ficha');c.onclick=()=>openPerson(p);ch.appendChild(c)});st.appendChild(ch);
+   list.slice(0,POS.length).forEach(({p,nb},i)=>{const c=el('button','chipx');c.type='button';c.style.left=POS[i][0]+'%';c.style.top=POS[i][1]+'%';c.style.setProperty('--i',i);c.appendChild(avatar(p,30));c.appendChild(el('b',null,nm(p).split(' ')[0]));const tg=el('span','tg',nb.days===0?'hoy':nb.short);tg.style.background=TC[i%TC.length];c.appendChild(tg);c.setAttribute('aria-label',nm(p)+', cumpleaños '+nb.label+'. Ver ficha');c.onclick=()=>openPerson(p);ch.appendChild(c)});st.appendChild(ch);
    const L=el('div','refnum');const lb=el('small',null,'Próximo cumpleaños');if(nx)lb.appendChild(el('span','bdg',nx.nb.days===0?'¡Hoy!':nx.nb.days===1?'mañana':'en '+nx.nb.days+' días'));L.appendChild(lb);
    const big=el('div','refbig',nx?nm(nx.p).split(' ')[0]:'—');if(nx)big.appendChild(el('span',null,nx.nb.short));L.appendChild(big);
    const nowM=now.getMonth(),full=team.filter(p=>p.full_name&&p.birthday&&p.email).length,ss=el('dl','refstats');for(const[k,v]of[['Integrantes',team.length],['Este mes',list.filter(x=>x.nb.date.getMonth()===nowM&&x.nb.days<=31).length],['Fichas completas',full+'/'+team.length],['Sin fecha',team.length-list.length]]){const d=el('div');d.append(el('dt',null,k),el('dd',null,String(v)));ss.appendChild(d)}L.appendChild(ss);st.appendChild(L);
