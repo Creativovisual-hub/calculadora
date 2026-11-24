@@ -1,5 +1,41 @@
 # Mi Perfil · Mi Cuenta (hub privado)
 
+> **Versión vigente: v2 (estilo app)** → https://www.figma.com/design/KYkGyj4aPR543B9RTYtMZq/?node-id=419-8405 · prototipo «Mi Perfil v2 (completo)» (inicia en MP-12).
+> La v3 (fondo blanco, estilo Centro de ayuda) y la v1 (wireframe) quedan como referencia.
+
+## Cobertura de la HU (v2)
+
+| Requisito | Pantallas |
+|---|---|
+| US-01 Entrada desde Landing privado / menú de cuenta | MP-12, MP-13 |
+| US-01 Hub (minimalista) y variantes por arquetipo | MP-01 · MP-25 pensionado (texto 130 %) · MP-26 carga familiar |
+| US-01 Mis datos: ver y editar correo, teléfono, dirección | MP-14, MP-15 (validación), MP-16 (código SMS), MP-17 (dirección), MP-20 (guardado) |
+| US-01 Medio de pago y cargas familiares | MP-18, MP-19 |
+| US-02 Accesibilidad con vista previa y AA/AAA | MP-04, MP-11 |
+| US-03 Bandeja por dominio, detalle con línea de tiempo, folio, fecha, acción requerida | MP-02, MP-03, MP-22 |
+| US-03 Resolver la acción requerida en la app | MP-21 (subir documento), MP-22 (recibido + fecha estimada) |
+| US-04 Soft login, cambio de dispositivo, consentimientos, notificaciones (campanita y push) | MP-05, MP-24, MP-07, MP-06, MP-12 |
+| US-05 Vacío, skeleton, error parcial, validación | MP-08, MP-10, MP-09, MP-15 |
+| US-05 Handoff (estados, validación, tokens, App Shell, eventos) | Tablero «US-05 · Handoff Mi Perfil v2» |
+| Borde: legado embebido en el App Shell | MP-23 |
+| Borde: escalado SO × app | MP-11, MP-25 + tabla de tokens (tope 1,5) |
+| Omnicanal Web | MP-W1 (resumen), MP-W2 (trámites + detalle lateral) |
+
+**Valor agregado para bajar llamadas y visitas:**
+- Fecha estimada del próximo paso en cada trámite.
+- Subir el documento pedido desde la app.
+- Folio copiable y ayuda con el folio precargado.
+- «Avísame cuando avance».
+- Barra de perfil completo con atajo al dato que falta.
+- Hub adaptado al tipo de afiliado.
+
+Componente nuevo: `v2/Campo`, con 5 estados (Default, Foco, Error, Verificado, Deshabilitado).
+Respaldo del hub anterior: «MP-01 · versión anterior (respaldo)».
+
+---
+
+## Histórico
+
 > **Versión vigente: v3 (fondo blanco · estilo Centro de ayuda iOS)** → https://www.figma.com/design/KYkGyj4aPR543B9RTYtMZq/?node-id=428-9224 · prototipo «Mi Perfil v3». Mismas 11 pantallas que la v2, con fondo blanco, encabezado azul y barra flotante del Centro de ayuda, tipografía Lexend, tarjetas blancas con sombra suave (radio 18) y destacados en gris #F2F4F9 (radio 20) con botón píldora azul.
 >
 > **Versión anterior: v2 (estilo app).** Sección «Mi Perfil · v2 (estilo app)» → https://www.figma.com/design/KYkGyj4aPR543B9RTYtMZq/?node-id=419-8405 · prototipo «Mi Perfil v2».
