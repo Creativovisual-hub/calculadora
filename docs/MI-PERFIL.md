@@ -145,7 +145,7 @@ Respaldo del hub anterior: «MP-01 · versión anterior (respaldo)».
 
 ## Analítica (hiper-taggeo)
 
-16 eventos en snake_case, iguales en App y Web y sin datos personales (el folio va con hash). El detalle de cada evento está en el tablero de handoff:
+16 eventos en snake_case, iguales en iOS y Android y sin datos personales (el folio va con hash). El detalle de cada evento está en el tablero de handoff:
 
 `perfil_view`, `perfil_menu_click`, `datos_editar_click`, `datos_guardar`, `accesibilidad_cambio`, `solicitudes_view`, `solicitudes_filtro`, `solicitud_detalle_view`, `solicitud_accion_click`, `solicitudes_error_dominio`, `solicitudes_reintentar`, `solicitudes_vacio_cta`, `seguridad_biometria`, `dispositivo_cambio_inicio`, `notificaciones_toggle`, `consentimiento_toggle`.
 
@@ -162,7 +162,6 @@ Se reutilizan `Login/Botón`, `Login/Campo` y los pictogramas.
 
 ## Pendientes y supuestos para validar
 
-- **Versión Web (desktop) del hub:** no está diseñada. Propuesta: menú lateral con los mismos bloques y contenido a dos columnas.
 - **Datos de ejemplo:** folios, fechas y nombres son ficticios. Falta confirmar el formato real de folio por dominio.
 - **Pasos de la línea de tiempo:** confirmar con negocio los pasos por dominio. Por ahora solo está la licencia médica.
 - **Código por SMS:** falta la pantalla de ingreso del código al editar el teléfono.
