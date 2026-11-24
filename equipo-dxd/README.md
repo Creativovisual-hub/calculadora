@@ -37,3 +37,16 @@ Importa el repositorio en Vercel y en "Root Directory" elige `equipo-dxd` (Frame
 
 El sitio solo permite mostrarse dentro de Google Sites (cabecera `frame-ancestors`);
 cualquier otra página que intente incrustarlo será bloqueada.
+
+## Publicar en Firebase Hosting
+
+1. Crea un proyecto en https://console.firebase.google.com (o usa uno existente).
+2. En una terminal, dentro de esta carpeta (`equipo-dxd`):
+   ```bash
+   npm install -g firebase-tools
+   firebase login
+   firebase deploy --only hosting --project TU-PROYECTO
+   ```
+3. La URL queda como `https://TU-PROYECTO.web.app`.
+
+`firebase.json` aplica las mismas cabeceras que Netlify/Vercel (no indexar, solo incrustable en Google Sites).

@@ -1,0 +1,19 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": ["firebase.json", ".firebaserc", "netlify.toml", "vercel.json", "README.md", "google-sites.html", "fonts/LEEME.txt", "supabase-LICENSE.txt", "**/.*"],
+    "cleanUrls": true,
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+          { "key": "Content-Security-Policy", "value": "frame-ancestors 'self' https://sites.google.com https://*.googleusercontent.com" },
+          { "key": "Referrer-Policy", "value": "no-referrer" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "Cache-Control", "value": "no-store" }
+        ]
+      }
+    ]
+  }
+}
