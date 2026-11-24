@@ -382,10 +382,424 @@ html:not([data-skin=claro]) .refbig,html:not([data-skin=claro]) .refstats dd,htm
 html:not([data-skin=claro]) .bar2{background:rgba(255,255,255,.14)}html:not([data-skin=claro]) .bar2 i{background:#fff}html:not([data-skin=claro]) .mini2 em{color:#fff}html:not([data-skin=claro]) .bdg{background:#fff;color:#0b0a14}
 html:not([data-skin=claro]) .reffeat .btn.white{color:#0b0a14}
 html[data-theme=hc] .orb{display:none}
-/* estimador */
-.esthd{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:20px 0 12px}.esthd .hint{margin:0;max-width:760px}
-.estframe{display:block;width:100%;height:calc(100vh - var(--hh) - 190px);min-height:560px;border:1px solid var(--edge);border-radius:20px;background:#fff}
-@media (max-width:640px){.estframe{height:calc(100vh - var(--hh) - 220px);min-height:480px}}
+/* estimador integrado */
+#est{
+  --ink:#0a2540; --ink-soft:#475569; --bg:#f0f5fa; --card:#ffffff; --line:#e2edf8;
+  --discovery:#0088ff; --discovery-icon-bg:#eff6ff;
+  --arch:#ffb703; --arch-icon:#d97706; --arch-icon-bg:#fffbeb;
+  --ui:#0060df; --ui-icon-bg:#eff6ff;
+  --test:#00b4d8; --test-icon:#0096c7; --test-icon-bg:#ecfeff;
+  --ai:#0060df; --ai-soft:#ebf3ff; --ai-line:#dce7f3;
+  --export:#c0392b; --result:#16a34a;
+  --deco-yellow:#f7b928;
+  --brand-navy:#1d3f6e; --brand-amber:#f0a63c; --brand-tapp:#24a9c9;
+  --slate-900:#0f172a; --slate-700:#334155; --slate-600:#475569; --slate-500:#64748b; --slate-400:#94a3b8;
+}
+#est *{box-sizing:border-box;}
+#est{
+  margin:0; font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--ink);
+  padding:0 16px 28px; overflow-x:hidden; position:relative;
+}
+#est .bg-shape-yellow{
+  position:absolute; left:-90px; top:110px; width:180px; height:250px;
+  background-color:var(--deco-yellow); border-top-right-radius:125px; border-bottom-right-radius:125px;
+  z-index:0; pointer-events:none;
+}
+#est .bg-shape-sky{
+  position:absolute; right:0; top:60px; width:320px; height:180px;
+  background:radial-gradient(circle at 100% 0%, #bde3fa 0%, #d4eefd 45%, rgba(244,248,252,0) 75%);
+  border-bottom-left-radius:180px; z-index:0; pointer-events:none;
+}
+@media (max-width:767px){#est .bg-shape-yellow,#est .bg-shape-sky{ display:none; }}
+#est .app-navbar{ background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:100; margin:0 -16px; }
+#est .navbar-inner{ max-width:1180px; margin:0 auto; padding:14px 16px; display:flex; align-items:center; gap:28px; }
+#est .navbar-brand{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
+#est .navbar-logo-svg{ height:30px; width:auto; }
+#est .navbar-links{ display:flex; gap:6px; flex:1; }
+#est .nav-link{ color:var(--ink-soft); text-decoration:none; font-size:13.5px; font-weight:600; padding:8px 14px; border-radius:20px; }
+#est .nav-link:hover{ background:#f2f6fa; }
+#est .nav-link.active{ background:var(--ai-soft); color:var(--ai); }
+#est .navbar-account{ display:flex; align-items:center; gap:8px; font-size:13.5px; color:var(--slate-700); font-weight:600; flex-shrink:0; cursor:pointer; }
+#est .account-avatar{
+  width:32px; height:32px; border-radius:50%; background:#f1f6fc; border:1px solid #e2e8f0;
+  display:flex; align-items:center; justify-content:center; color:var(--ai); flex-shrink:0;
+}
+#est .chevron-small{ color:var(--slate-400); display:flex; align-items:center; }
+@media (max-width:720px){#est .navbar-links{ display:none; }}
+#est .page{ max-width:1180px; margin:0 auto; padding-top:24px; }
+#est h1,#est h2,#est h3{font-family:'Plus Jakarta Sans',sans-serif; color:var(--ink); margin:0;}
+#est h1{font-size:26px; font-weight:800; letter-spacing:-0.01em;}
+#est .eyebrow{
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:11.5px; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--ai); font-weight:600; margin-bottom:6px;
+}
+#est .subtitle{color:var(--ink-soft); font-size:14.5px; margin-top:6px; max-width:560px;}
+#est .page-header{
+  max-width:680px; margin-bottom:24px; position:relative; z-index:10;
+}
+#est .layout{ display:grid; grid-template-columns:7fr 5fr; align-items:start; gap:22px; position:relative; z-index:10; }
+#est .main-col{ min-width:0; display:flex; flex-direction:column; gap:16px; }
+#est .main-col-inner{
+  background:var(--card); border:1px solid var(--line); border-radius:16px; padding:26px;
+  box-shadow:0 4px 20px -4px rgba(0,40,120,0.05);
+}
+#est .step-block{ margin-bottom:18px; }
+#est .step-head{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px; }
+#est .step-head-title{ display:flex; align-items:center; gap:10px; }
+#est .step-num{
+  width:24px; height:24px; border-radius:50%; background:var(--ai); color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:12.5px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+#est .step-head h3{ font-size:15px; }
+#est .step-head-hint{ display:flex; align-items:center; gap:5px; color:var(--slate-400); font-size:12px; }
+#est .step-head-hint span{ color:var(--slate-500); }
+#est .dropzone{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+  border:2px dashed #b8d6f8; border-radius:14px; background:#f7faff;
+  padding:26px 20px; cursor:pointer; text-align:center;
+}
+#est .dropzone:hover{ background:#f1f7ff; }
+#est .dropzone-icon{
+  position:relative; width:56px; height:64px; background:#bce0fd; border-radius:12px;
+  display:flex; align-items:center; justify-content:center; color:var(--ai); margin-bottom:6px;
+}
+#est .dropzone-icon::after{
+  content:''; position:absolute; top:-6px; right:-6px; width:16px; height:16px;
+  background:#f7faff; transform:rotate(45deg);
+}
+#est .dropzone b{ font-family:'Plus Jakarta Sans',sans-serif; font-size:15px; color:var(--slate-900); margin-bottom:2px; }
+#est .dropzone-hint{ font-size:12px; color:var(--slate-500); margin-bottom:12px; max-width:380px; }
+#est .btn-select-files{
+  display:inline-flex; align-items:center; gap:7px; background:#fff; border:1px solid var(--ai);
+  color:var(--ai); font-weight:600; font-size:12.5px; padding:9px 18px; border-radius:24px;
+  box-shadow:0 1px 2px rgba(0,40,120,0.06);
+}
+#est input[type=file]{ display:none; }
+#est .step-divider{
+  display:flex; align-items:center; gap:10px; margin:20px 0; color:var(--slate-500); font-size:12.5px;
+}
+#est .step-divider::before,#est .step-divider::after{ content:''; flex:1; height:1px; background:var(--line); }
+#est .textarea-wrap{ position:relative; }
+#est #pasteText{
+  width:100%; padding:14px; border:1px solid #e2e8f0; border-radius:12px;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; resize:none; background:#fff;
+  color:var(--ink); overflow:hidden;
+}
+#est #pasteText:focus{ outline:none; border-color:#3b82f6; box-shadow:0 0 0 3px #dbeafe; }
+#est .char-counter{
+  display:block; text-align:right; margin-top:6px; font-size:11px; color:var(--slate-400); font-weight:500;
+}
+#est .btn-analizar{
+  background:var(--ai); color:#fff; border:none; padding:10px 22px; border-radius:24px;
+  cursor:pointer; font-weight:600; font-size:13.5px; font-family:'Plus Jakarta Sans',sans-serif;
+  display:inline-flex; align-items:center; gap:7px; margin-top:14px;
+  box-shadow:0 4px 10px rgba(0,96,223,0.2);
+}
+#est .btn-analizar:hover{ background:#0051bd; }
+#est .btn-analizar:active{ background:#004299; }
+#est .btn-analizar:disabled{ background:#9db1c2; cursor:progress; box-shadow:none; }
+#est .btn-texto{
+  background:transparent; border:1px solid #d7cff8; color:var(--ai); padding:9px 14px;
+  border-radius:8px; cursor:pointer; font-size:13px; font-weight:600;
+}
+#est .btn-texto:hover{ background:#faf8ff; }
+#est .btn-texto.danger{ border-color:#f3c6cf; color:#9f1239; }
+#est .btn-texto.danger:hover{ background:#fdf1f4; }
+#est .spinner{
+  width:13px; height:13px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff;
+  border-radius:50%; animation:spin .7s linear infinite; display:inline-block;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+#est .upload-error{
+  margin-top:10px; padding:10px 12px; background:#fdedf1; border:1px solid #f5c2cf;
+  color:#9f1239; border-radius:8px; font-size:13px;
+}
+#est #expedientesList{ display:flex; flex-direction:column; gap:14px; }
+#est .empty-state{
+  display:flex; align-items:center; gap:14px; text-align:left; padding:18px 20px;
+  background:var(--card); border:1px solid var(--line); border-radius:16px;
+  box-shadow:0 2px 10px -2px rgba(0,40,120,0.04);
+}
+#est .empty-state-icon{
+  width:44px; height:44px; border-radius:12px; background:#f0f6fc; border:1px solid #dbe8f7;
+  display:flex; align-items:center; justify-content:center; color:var(--slate-500); flex-shrink:0;
+}
+#est .empty-state b{ display:block; font-size:13.5px; color:var(--slate-900); margin-bottom:2px; }
+#est .empty-state-sub{ font-size:12.5px; color:var(--slate-500); }
+#est .exp-card{ border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+#est .exp-head{
+  display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
+  padding:14px 16px; background:#fafbfc; border-bottom:1px solid var(--line);
+}
+#est .exp-title{ display:flex; align-items:center; gap:10px; min-width:0; }
+#est .exp-title .name{
+  font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:14.5px; color:var(--ink);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:320px;
+}
+#est .exp-status{
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:10.5px; text-transform:uppercase;
+  letter-spacing:.04em; padding:3px 9px; border-radius:20px; font-weight:600; flex-shrink:0;
+}
+#est .exp-status.pendiente{ background:#eef0f2; color:var(--ink-soft); }
+#est .exp-status.analizando{ background:var(--ai-soft); color:var(--ai); }
+#est .exp-status.listo{ background:#e7f7ec; color:var(--result); }
+#est .exp-status.error{ background:#fdedf1; color:#9f1239; }
+#est .exp-actions{ display:flex; gap:8px; align-items:center; flex-shrink:0; }
+#est .exp-subtotal{ font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; color:var(--ink-soft); white-space:nowrap; }
+#est .exp-subtotal b{ color:var(--ink); font-size:15px; }
+#est .exp-body{ padding:16px; }
+#est .exp-textarea{
+  width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:13.5px; resize:none; color:var(--ink);
+  margin-bottom:12px; background:#fff; overflow:hidden;
+}
+#est .exp-summary{
+  font-size:13.3px; color:var(--ink); background:var(--ai-soft); border:1px solid var(--ai-line);
+  border-radius:8px; padding:10px 12px; margin-bottom:14px;
+}
+#est .exp-error-msg{
+  font-size:13px; color:#9f1239; background:#fdedf1; border:1px solid #f5c2cf;
+  border-radius:8px; padding:10px 12px; margin-bottom:14px;
+}
+#est .exp-fases{ display:flex; flex-direction:column; gap:10px; }
+#est .mini-fase{
+  border-radius:9px; border:1px solid var(--line); border-left:4px solid var(--phase-color,#999);
+  padding:10px 12px;
+}
+#est .mini-fase.discovery{ --phase-color:var(--discovery); background:var(--discovery-bg); }
+#est .mini-fase.arch{ --phase-color:var(--arch); background:var(--arch-bg); }
+#est .mini-fase.ui{ --phase-color:var(--ui); background:var(--ui-bg); }
+#est .mini-fase.test{ --phase-color:var(--test); background:var(--test-bg); }
+#est .mini-fase h4{
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; color:var(--phase-color);
+  text-transform:uppercase; letter-spacing:.03em; font-weight:700; margin:0 0 8px;
+}
+#est .mini-tarea{
+  display:flex; justify-content:space-between; align-items:center; gap:8px; padding:7px 9px;
+  background:#fff; border:1px solid var(--line); border-radius:7px; margin-bottom:6px; font-size:13px;
+}
+#est .mini-tarea:last-child{ margin-bottom:0; }
+#est .mini-tarea label{ display:flex; align-items:center; gap:8px; cursor:pointer; flex-grow:1; }
+#est .mini-tarea input[type=checkbox]{ width:15px; height:15px; accent-color:var(--phase-color, var(--ai)); flex-shrink:0; }
+#est .mini-right{ display:flex; align-items:center; gap:6px; flex-shrink:0; }
+#est .badge-ai{
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:10px; font-weight:600; background:var(--ai-soft);
+  color:var(--ai); border:1px solid var(--ai-line); padding:1px 6px; border-radius:20px;
+  cursor:help; white-space:nowrap;
+}
+#est .tiempo-badge{
+  font-family:'Plus Jakarta Sans',sans-serif; background:#f1f2f4; padding:2px 8px; border-radius:20px;
+  font-size:11.5px; color:var(--ink-soft); white-space:nowrap;
+}
+#est .tiempo-editable{
+  display:inline-flex; align-items:center; gap:4px; background:#fff;
+  border:1.5px solid var(--line); border-radius:20px; padding:3px 10px 3px 12px;
+  cursor:text; transition:border-color .15s, box-shadow .15s;
+}
+#est .tiempo-editable:hover{ border-color:var(--ai); }
+#est .tiempo-editable:focus-within{ border-color:var(--ai); box-shadow:0 0 0 3px var(--ai-line); }
+#est .tiempo-editable input{
+  width:34px; border:none; background:transparent; font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:12.5px; font-weight:700; color:var(--ink); text-align:right; padding:0;
+}
+#est .tiempo-editable input:focus{ outline:none; }
+#est .tiempo-editable input::-webkit-inner-spin-button{ opacity:1; }
+#est .panel-calculo{
+  min-width:0; align-self:flex-start; position:sticky; top:84px;
+  background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:16px; padding:22px;
+  box-shadow:0 4px 20px -4px rgba(0,40,120,0.05); max-height:calc(100vh - 104px); overflow-y:auto;
+}
+#est .panel-header{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:20px; cursor:pointer; }
+#est .panel-header-title{ display:flex; flex-direction:column; gap:4px; }
+#est .panel-header-title-row{ display:flex; align-items:center; gap:8px; color:var(--ai); }
+#est .panel-icon{ display:flex; flex-shrink:0; }
+#est .panel-header h3{ color:var(--slate-900); font-size:19px; font-weight:800; letter-spacing:-.01em; }
+#est .panel-subtitle{ font-size:12px; color:var(--slate-500); line-height:1.5; margin:0; }
+#est .dropdown{ position:relative; display:inline-block; }
+#est .btn-exportar{
+  background:var(--export); color:#fff; border:none; padding:9px 14px; font-size:13px;
+  border-radius:7px; cursor:pointer; font-weight:600; font-family:'Plus Jakarta Sans',sans-serif;
+  transition:background .2s; white-space:nowrap;
+}
+#est .btn-exportar:hover{ background:#a5311f; }
+#est .dropdown-content{
+  display:none; position:absolute; right:0; top:calc(100% + 6px); background:#fff;
+  min-width:190px; border:1px solid var(--line); box-shadow:0 10px 24px rgba(0,0,0,0.25);
+  z-index:60; border-radius:8px; overflow:hidden;
+}
+#est .dropdown-content a{ color:var(--ink); padding:11px 15px; text-decoration:none; display:block; font-size:13.5px; }
+#est .dropdown-content a:hover{ background:#f4f5f7; }
+#est .dropdown:hover .dropdown-content{ display:block; }
+#est .dropdown-content.mostrar{ display:block; }
+#est .panel-toggle-detalle{
+  display:none; width:100%; background:#f2f6fa; border:1px solid var(--line);
+  color:var(--ink); padding:9px 12px; border-radius:8px; font-size:12.5px; font-weight:600; cursor:pointer;
+  margin-bottom:12px; text-align:left;
+}
+#est .panel-toggle-full{
+  display:none; background:#f2f6fa; border:1px solid var(--line);
+  color:var(--ink-soft); width:30px; height:30px; border-radius:8px; font-size:14px; cursor:pointer;
+  flex-shrink:0; align-items:center; justify-content:center;
+}
+#est .panel-resumen-compacto{ display:none; color:var(--ink-soft); }
+#est .panel-resumen-compacto b{ color:var(--ink); }
+#est .fases-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+#est .fase-stat{
+  position:relative; overflow:hidden; border-radius:12px; padding:14px;
+  border:1px solid #e2e8f0; background:#fff;
+}
+#est .fase-stat::before{ content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--phase-color,#999); }
+#est .fase-stat-row{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+#est .fase-stat.discovery{ --phase-color:var(--discovery); --phase-icon-bg:var(--discovery-icon-bg); --phase-icon:var(--discovery); }
+#est .fase-stat.arch{ --phase-color:var(--arch); --phase-icon-bg:var(--arch-icon-bg); --phase-icon:var(--arch-icon); }
+#est .fase-stat.ui{ --phase-color:var(--ui); --phase-icon-bg:var(--ui-icon-bg); --phase-icon:var(--ui); }
+#est .fase-stat.test{ --phase-color:var(--test); --phase-icon-bg:var(--test-icon-bg); --phase-icon:var(--test-icon); }
+#est .fase-icon{
+  width:28px; height:28px; border-radius:8px; background:var(--phase-icon-bg,#f2f6fa); flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; color:var(--phase-icon,#666);
+}
+#est .fase-stat .fname{ font-size:12px; color:var(--slate-700); font-weight:600; margin-bottom:4px; display:block; }
+#est .fase-stat .fval{ font-family:'Plus Jakarta Sans',sans-serif; font-size:22px; font-weight:800; color:var(--slate-900); line-height:1; display:block; }
+#est .fase-stat .funit{ font-size:11px; color:var(--slate-500); margin-top:4px; display:block; }
+#est .capacidad-inline{
+  font-size:11.5px; color:var(--ink-soft); margin-top:10px; padding-top:10px;
+  border-top:1px solid var(--line); display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+}
+#est .capacidad-inline input{
+  width:44px; padding:3px 5px; border:1px solid var(--line); border-radius:5px;
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:11.5px; text-align:center;
+  background:#f7fbfe; color:var(--ink);
+}
+#est .totales-mini{
+  display:grid; grid-template-columns:repeat(3,1fr); padding:12px 0; margin-bottom:16px;
+  border-top:1px solid #f1f5f9; border-bottom:1px solid #f1f5f9; text-align:center;
+}
+#est .t-item{ padding:0 8px; border-left:1px solid #f1f5f9; }
+#est .t-item:first-child{ border-left:none; }
+#est .t-item .label{ display:block; font-size:11px; color:var(--slate-500); margin-bottom:5px; }
+#est .t-item .t-row{ display:flex; align-items:center; justify-content:center; gap:5px; }
+#est .t-item .t-icon{ color:var(--ai); display:flex; }
+#est .totales-mini .t-item .valor{ font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:800; color:var(--slate-900); }
+#est .totales-mini .t-item .valor.blanco{ color:var(--slate-900); }
+#est .roles-box{
+  background:#ebf4fd; border-radius:14px; padding:16px; display:flex; align-items:flex-start; gap:14px;
+}
+#est .roles-box.alerta{ background:#fff6e9; }
+#est .roles-icon{
+  width:48px; height:48px; border-radius:50%; background:#d6e8fa; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; color:var(--ai);
+}
+#est .roles-box.alerta .roles-icon{ background:#fde9c8; color:#c2740a; }
+#est .roles-box .label{ color:#003d82; font-size:12px; font-weight:700; }
+#est .roles-box.alerta .label{ color:#7a4a08; }
+#est .roles-valor{ font-family:'Plus Jakarta Sans',sans-serif; font-size:28px; font-weight:800; margin:2px 0 4px; color:#004fa8; line-height:1; }
+#est .roles-valor.ok{ color:#004fa8; }
+#est .roles-valor.alerta{ color:#c2740a; }
+#est .roles-msg{ font-size:11px; color:var(--slate-600); margin-top:2px; line-height:1.5; }
+#est .panel-export{ margin-top:14px; }
+#est .panel-export .btn-exportar{ width:100%; text-align:center; }
+#est .descarga-lista{ margin-top:10px; font-size:12.5px; color:var(--ink-soft); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+#est .btn-descarga-lista{
+  display:inline-block; background:var(--result); color:#fff; text-decoration:none;
+  font-weight:700; padding:8px 12px; border-radius:7px; font-size:12.5px;
+}
+#est .error-descarga{ color:#c2740a; }
+#est .sidebar-col{ display:flex; flex-direction:column; gap:16px; min-width:0; }
+#est .info-footer{
+  background:#ebf3ff; border:1px solid #dbeafe; border-radius:12px;
+  padding:14px; display:flex; gap:10px; font-size:11.5px; color:var(--slate-600); line-height:1.5;
+}
+#est .info-footer .info-icon{ flex-shrink:0; color:#2563eb; margin-top:2px; }
+#est .resumen-iniciativas{ margin-bottom:22px; }
+#est .resumen-iniciativas-head{
+  display:flex; align-items:center; justify-content:space-between; gap:10px; cursor:pointer;
+  padding:12px 14px; background:var(--ai-soft); border:1px solid var(--ai-line); border-radius:10px;
+}
+#est .resumen-iniciativas-head h3{ font-size:14px; color:var(--ai); }
+#est .resumen-iniciativas-head .chevron{ font-size:13px; color:var(--ai); transition:transform .15s; }
+#est .resumen-iniciativas.expandido .resumen-iniciativas-head .chevron{ transform:rotate(180deg); }
+#est .resumen-iniciativas-body{ display:none; margin-top:12px; }
+#est .resumen-iniciativas.expandido .resumen-iniciativas-body{ display:block; }
+#est .mini-tarea-custom{ border-style:dashed; }
+#est .badge-custom{
+  font-family:'Plus Jakarta Sans',sans-serif; font-size:10px; font-weight:600; background:#eef0f2;
+  color:var(--ink-soft); border:1px solid var(--line); padding:1px 6px; border-radius:20px; white-space:nowrap;
+}
+#est .btn-del-tarea{
+  background:transparent; border:1px solid #f3c6cf; color:#9f1239; border-radius:6px;
+  width:20px; height:20px; font-size:11px; cursor:pointer; flex-shrink:0; line-height:1;
+}
+#est .mini-fase-add{ margin-top:6px; }
+#est .btn-add-tarea{
+  background:transparent; border:1px dashed var(--phase-color, #999); color:var(--phase-color, #666);
+  padding:6px 10px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; width:100%;
+}
+#est .form-tarea-inline{
+  display:none; flex-direction:column; gap:6px; margin-top:8px; background:#fff;
+  border:1px solid var(--line); border-radius:8px; padding:10px;
+}
+#est .form-tarea-inline.visible{ display:flex; }
+#est .form-tarea-inline input{
+  padding:7px 9px; border:1px solid var(--line); border-radius:6px; font-family:'Plus Jakarta Sans',sans-serif; font-size:12.5px;
+}
+#est .form-tarea-botones{ display:flex; gap:8px; }
+#est .form-tarea-botones button{
+  flex:1; padding:6px 8px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; border:none;
+}
+#est .form-tarea-botones button:first-child{ background:var(--ai); color:#fff; }
+#est .form-tarea-botones button:last-child{ background:#eef0f2; color:var(--ink-soft); }
+@media (max-width:899px){#est .layout{ grid-template-columns:1fr; }
+#est .panel-calculo{
+    position:fixed; left:0; right:0; bottom:0; top:auto; width:100%;
+    border-radius:16px 16px 0 0; max-height:75vh; z-index:70;
+    padding:16px 18px calc(14px + env(safe-area-inset-bottom));
+  }
+#est{ padding-bottom:70px; }
+#est .panel-toggle-full{ display:flex; }
+#est .panel-full-content{ display:none; }
+#est .panel-calculo.expandido .panel-full-content{ display:block; }
+#est .panel-resumen-compacto{ display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:12.5px; color:var(--ink-soft); }
+#est .panel-calculo.expandido .panel-resumen-compacto{ display:none; }
+#est .panel-resumen-compacto b{ color:var(--ink); font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; }
+#est .panel-toggle-detalle{ display:block; }
+#est .panel-detalle{ display:none; }
+#est .panel-detalle.expanded{ display:block; }
+#est .exp-title .name{ max-width:150px; }}
+#est .modal-overlay{
+  position:fixed; inset:0; background:rgba(15,17,20,0.55); z-index:200;
+  display:flex; align-items:center; justify-content:center; padding:20px;
+}
+#est .modal-box{
+  background:#fff; border-radius:14px; padding:28px 26px; max-width:360px; width:100%;
+  text-align:center; box-shadow:0 20px 50px rgba(0,0,0,0.3);
+}
+#est .modal-spinner{
+  width:34px; height:34px; border:4px solid var(--ai-line); border-top-color:var(--ai);
+  border-radius:50%; margin:0 auto 16px; animation:spin .8s linear infinite;
+}
+#est .modal-box h3{ font-size:16px; margin-bottom:6px; }
+#est .modal-box p{ font-size:13.5px; color:var(--ink-soft); margin-bottom:16px; }
+#est .modal-barra{ height:8px; background:#eef0f2; border-radius:20px; overflow:hidden; margin-bottom:20px; }
+#est .modal-barra-relleno{ height:100%; background:var(--ai); transition:width .3s ease; }
+#est{--bg:transparent;--ink:var(--text);--ink-soft:var(--muted);--line:var(--edge);font-family:inherit;color:var(--text);padding:8px 0 40px;background:none;position:relative}
+#est *{font-family:inherit}
+#est .bg-shape-yellow,#est .bg-shape-sky,#est .app-navbar{display:none!important}
+@media (max-width:1023px){#est .panel-calculo{bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;z-index:19}html:not([data-skin=claro]) #est .panel-calculo{background:#14123a!important}html[data-skin=claro] #est .panel-calculo{background:#fff!important}#est{padding-bottom:160px}}
+#est .modal-overlay{z-index:50}
+html:not([data-skin=claro]) #est{--card:rgba(16,14,46,.48);--slate-900:#fff;--slate-700:#e2e0f5;--slate-600:#cfcce9;--slate-500:#bcb9dc;--slate-400:#a3a0c8;--discovery-icon-bg:rgba(0,136,255,.2);--ui-icon-bg:rgba(80,110,255,.22);--arch-icon-bg:rgba(255,183,3,.16);--test-icon-bg:rgba(0,180,216,.18);--ai-soft:rgba(80,110,255,.2);--ai-line:rgba(255,255,255,.13);--ui:#a9b9ff;--ai:#a9b9ff;--discovery:#7cc4ff;--line:rgba(255,255,255,.13)}
+html:not([data-skin=claro]) #est :is(.btn-select-files,#pasteText,.exp-textarea,.mini-tarea,.tiempo-editable,.dropdown-content,.fase-stat,.form-tarea-inline,.modal-box,.main-col-inner,.empty-state,.exp-card,.panel-calculo,.panel){background:rgba(16,14,46,.48)!important;color:var(--ink);border-color:rgba(255,255,255,.14)!important;border-top-color:rgba(255,255,255,.28)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 12px 32px rgba(3,2,20,.35)!important}
+html:not([data-skin=claro]) #est :is(.dropzone,.dropzone:hover,.dropzone-icon::after,.empty-state-icon,.exp-head,.tiempo-badge,.panel-toggle-detalle,.panel-toggle-full,.capacidad-inline input,.roles-box,.info-footer,.badge-custom,.dropdown-content a:hover,.modal-barra,.form-tarea-botones button:last-child,.exp-status.pendiente,.btn-texto:hover,.form-tarea-inline input){background:rgba(255,255,255,.07)!important;color:var(--ink);border-color:rgba(255,255,255,.14)!important}
+html:not([data-skin=claro]) #est .exp-status.listo{background:rgba(22,163,74,.22)!important;color:#bff5d0!important}
+html:not([data-skin=claro]) #est :is(.exp-status.error,.upload-error,.exp-error-msg){background:rgba(244,63,94,.18)!important;color:#ffd0da!important}
+html:not([data-skin=claro]) #est .roles-box.alerta{background:rgba(255,183,3,.14)!important}html:not([data-skin=claro]) #est .roles-box :is(div,span,p,strong,b,small,label){color:#e3e6ff!important}html:not([data-skin=claro]) #est .roles-icon{background:rgba(143,166,255,.22)!important;color:#fff!important}
+html:not([data-skin=claro]) #est :is(input,textarea,select){color:#fff}html:not([data-skin=claro]) #est ::placeholder{color:rgba(255,255,255,.6)!important}
+html:not([data-skin=claro]) #est :is(h1,h2,h3,h4,h5,.eyebrow,.panel-header-title-row,.panel-header h3,.resumen-iniciativas-head h3,.resumen-iniciativas-head .chevron,.exp-title .name,.dropzone b,.empty-state b,.fase-stat .fval,.totales-mini .t-item .valor){color:#fff!important}
+html:not([data-skin=claro]) #est :is(p,small,.hint,span){text-shadow:none}
+html[data-skin=claro] #est{--card:#fff;--line:var(--line);--ui:var(--acc);--ai:var(--acc);--discovery:var(--acc);--ai-soft:var(--acc-soft);--ui-icon-bg:var(--acc-soft);--discovery-icon-bg:var(--acc-soft)}
+html[data-skin=claro] #est :is(.main-col-inner,.empty-state,.exp-card,.panel-calculo){box-shadow:0 1px 2px rgba(16,24,40,.04),0 6px 18px rgba(16,24,40,.06)}
+html[data-theme=hc] #est :is(.btn-select-files,#pasteText,.exp-textarea,.mini-tarea,.tiempo-editable,.dropdown-content,.fase-stat,.form-tarea-inline,.modal-box,.main-col-inner,.empty-state,.exp-card,.panel-calculo,.panel){background:#000!important;border:2px solid #fff!important;box-shadow:none!important}
+
 /* administración */
 .admgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:22px;align-items:start}
 .panel{padding:22px}.panel h3{font-family:var(--mono);font-size:16px;margin:0 0 14px}
@@ -468,10 +882,263 @@ html[data-theme=hc] .orb{display:none}
       <div class="folders" id="dir"></div>
     </section>
     <section id="v-org" hidden aria-labelledby="hOrgT"><h2 class="title" id="hOrgT">Organigrama</h2><div class="org" id="org"></div></section>
-    <section id="v-est" hidden aria-labelledby="hEstT"><h2 class="title" id="hEstT">Estimador de esfuerzo</h2>
-      <div class="esthd"><p class="hint" id="estNote"></p><a class="btn sm" id="estOpen" target="_blank" rel="noopener">Abrir en pestaña nueva ↗</a></div>
-      <iframe id="estFrame" class="estframe" title="Estimador de Esfuerzo UX" loading="lazy"></iframe>
-    </section>
+    <section id="v-est" hidden aria-labelledby="hEstT"><h2 class="title" id="hEstT">Estimador de esfuerzo</h2><div id="est">
+
+
+
+
+
+
+<div class="modal-overlay" id="modalAnalisis" style="display:none;" data-html2canvas-ignore="true">
+  <div class="modal-box">
+    <div class="modal-spinner"></div>
+    <h3>Analizando iniciativas</h3>
+    <p id="modalProgresoTexto">Analizando 1 de 1</p>
+    <div class="modal-barra"><div class="modal-barra-relleno" id="modalBarraRelleno" style="width:0%;"></div></div>
+    <button class="btn-texto danger" id="btnCancelarAnalisis" style="width:100%; justify-content:center;">Cancelar y continuar manualmente</button>
+  </div>
+</div>
+
+<div class="page" id="contenido-pdf">
+  <div class="page-header">
+    <div class="eyebrow">Asistente de estimación</div>
+    <h1>Estimador de Esfuerzo UX</h1>
+    <p class="subtitle">Carga una o varias Historias de Usuario y el asistente estima el esfuerzo por fase, consolida el total del QBR y calcula cuántos roles de UX se necesitan.</p>
+  </div>
+
+  <div class="layout">
+    <div class="main-col">
+      <div class="main-col-inner">
+
+        <!-- Carga de HUs -->
+        <div data-html2canvas-ignore="true">
+          <div class="step-block">
+            <div class="step-head">
+              <div class="step-head-title">
+                <span class="step-num">1</span>
+                <h3>Carga tus Historias de Usuario</h3>
+              </div>
+              <div class="step-head-hint">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="12" x2="12.01" y1="17" y2="17"/>
+                </svg>
+                <span>Formatos soportados: .docx, .pdf, .txt, .md, .xlsx, .xls, .csv</span>
+              </div>
+            </div>
+            <label class="dropzone" for="fileInput">
+              <span class="dropzone-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 10l7-7m0 0l7 7m-7-7v18" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <b>Sube documentos</b>
+              <span class="dropzone-hint">Arrastra y suelta uno o varios archivos aquí</span>
+              <span class="btn-select-files">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Seleccionar archivos
+              </span>
+            </label>
+            <input type="file" id="fileInput" multiple accept=".txt,.md,.docx,.pdf,.xlsx,.xls,.csv">
+            <div id="uploadError" class="upload-error" style="display:none;"></div>
+          </div>
+
+          <div class="step-divider">o pega el texto de una HU</div>
+
+          <div class="step-block">
+            <div class="step-head">
+              <div class="step-head-title">
+                <span class="step-num">2</span>
+                <h3>Pega el texto de la Historia de Usuario</h3>
+              </div>
+            </div>
+            <div class="textarea-wrap">
+              <textarea id="pasteText" rows="4" maxlength="2000" placeholder="Ej: Como usuario quiero un nuevo flujo de pago seguro que reemplace al actual, validado con clientes reales antes de pasar a desarrollo..."></textarea>
+              <span class="char-counter" id="charCounter">0 / 2.000 caracteres</span>
+            </div>
+            <button id="btnAgregarTexto" class="btn-analizar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Agregar HU
+            </button>
+          </div>
+        </div>
+
+        <div class="resumen-iniciativas" id="resumenIniciativas" style="display:none;">
+          <div class="resumen-iniciativas-head" onclick="document.getElementById('resumenIniciativas').classList.toggle('expandido')">
+            <h3 id="resumenIniciativasTitulo">Resumen de Iniciativas</h3>
+            <span class="chevron">▾</span>
+          </div>
+          <div class="resumen-iniciativas-body">
+            <div style="overflow-x:auto;">
+              <table id="resumenTable" style="width:100%; border-collapse:collapse; font-size:13px;">
+                <thead>
+                  <tr style="text-align:left; border-bottom:2px solid var(--line);">
+                    <th style="padding:8px 10px;">Iniciativa</th>
+                    <th style="padding:8px 10px;">Resumen</th>
+                    <th style="padding:8px 10px; text-align:center;">Tareas</th>
+                    <th style="padding:8px 10px; text-align:center;">Días</th>
+                    <th style="padding:8px 10px; text-align:center;">HH</th>
+                    <th style="padding:8px 10px; text-align:center;">Semanas</th>
+                    <th style="padding:8px 10px; text-align:center;">Roles</th>
+                  </tr>
+                </thead>
+                <tbody id="resumenTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="expedientesList">
+          <div class="empty-state" id="emptyState">
+            <span class="empty-state-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span>
+              <b>Aún no has cargado ninguna HU.</b>
+              <span class="empty-state-sub">Sube un documento o pega texto arriba para empezar.</span>
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Módulo de cálculo: sidebar sticky en desktop / barra fija colapsable en mobile -->
+    <div class="sidebar-col">
+    <aside class="panel-calculo" id="panelCalculo">
+      <div class="panel-header" onclick="document.getElementById('panelCalculo').classList.toggle('expandido')">
+        <div class="panel-header-title">
+          <div class="panel-header-title-row">
+            <span class="panel-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zM16.2 13H19v6h-2.8z"/>
+              </svg>
+            </span>
+            <h3>Cálculo del QBR</h3>
+          </div>
+          <p class="panel-subtitle">El asistente consolida el esfuerzo total y calcula cuántos roles de UX se necesitan.</p>
+        </div>
+        <button class="panel-toggle-full" id="toggleFull" data-html2canvas-ignore="true">▾</button>
+      </div>
+
+      <div class="panel-resumen-compacto" data-html2canvas-ignore="true">
+        <span><b id="miniDias">0</b> días · <b id="miniSemanas">0.0</b> sem</span>
+        <span><b id="miniRoles">0</b> rol(es)</span>
+      </div>
+
+      <div class="panel-full-content" id="panelFullContent">
+        <button class="panel-toggle-detalle" id="toggleDetalle" data-html2canvas-ignore="true">Ver detalle por fase ▾</button>
+
+        <div class="panel-detalle" id="panelDetalle">
+          <div class="fases-grid">
+            <div class="fase-stat discovery">
+              <div class="fase-stat-row">
+                <div><span class="fname">Discovery</span><span class="fval" id="sub-discovery">0</span><span class="funit">días</span></div>
+                <span class="fase-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+                </span>
+              </div>
+            </div>
+            <div class="fase-stat arch">
+              <div class="fase-stat-row">
+                <div><span class="fname">Arquitectura</span><span class="fval" id="sub-arch">0</span><span class="funit">días</span></div>
+                <span class="fase-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+            </div>
+            <div class="fase-stat ui">
+              <div class="fase-stat-row">
+                <div><span class="fname">Diseño UI</span><span class="fval" id="sub-ui">0</span><span class="funit">días</span></div>
+                <span class="fase-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </div>
+            </div>
+            <div class="fase-stat test">
+              <div class="fase-stat-row">
+                <div><span class="fname">Testing</span><span class="fval" id="sub-test">0</span><span class="funit">días</span></div>
+                <span class="fase-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3"/></svg>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="totales-mini">
+          <div class="t-item">
+            <span class="label">Días hábiles</span>
+            <div class="t-row">
+              <span class="t-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect height="18" rx="2" ry="2" width="18" x="3" y="4"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg></span>
+              <span class="valor" id="totalDias">0</span>
+            </div>
+          </div>
+          <div class="t-item">
+            <span class="label">Semanas</span>
+            <div class="t-row">
+              <span class="t-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+              <span class="valor" id="totalSemanas">0.0</span>
+            </div>
+          </div>
+          <div class="t-item">
+            <span class="label">HUs</span>
+            <div class="t-row">
+              <span class="t-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg></span>
+              <span class="valor blanco" id="totalHus">0</span>
+            </div>
+          </div>
+          <span id="totalHH" style="display:none;">0</span>
+        </div>
+
+        <div class="roles-box" id="rolesBox">
+          <span class="roles-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              <path opacity="0.7" d="M19 8c1.66 0 3-1.34 3-3s-1.34-3-3-3c-.41 0-.79.08-1.15.23C18.42 3.02 19 4.43 19 6c0 1.57-.58 2.98-1.15 3.77.36.15.74.23 1.15.23zm0 2c-.96 0-1.88.22-2.73.6 1.63 1.19 2.73 3.04 2.73 5.4v2h4v-2c0-3.31-2.69-6-4-6z"/>
+            </svg>
+          </span>
+          <div>
+            <div class="label">Roles de UX necesarios</div>
+            <div class="roles-valor ok" id="rolesValor">0</div>
+            <div class="roles-msg" id="rolesMsg">Carga al menos una HU para calcular cuántos roles se necesitan.</div>
+            <div class="capacidad-inline">
+              Asumiendo <input type="number" id="capacidadInput" value="63" min="1" step="1"> días hábiles por rol en el QBR (3 meses)
+            </div>
+            <div class="capacidad-inline">
+              y <input type="number" id="horasPorDiaInput" value="8" min="1" step="1"> horas por día hábil (para el cálculo de HH)
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-export" data-html2canvas-ignore="true">
+          <button class="btn-exportar" id="btnDescargarExcel">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px; margin-right:6px;"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Descargar Excel
+          </button>
+          <div class="descarga-lista" id="descargaLista" style="display:none;"></div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="info-footer">
+      <svg class="info-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+      <span>El cálculo se basa en el análisis de tus Historias de Usuario y en la distribución de esfuerzo por fase.</span>
+    </div>
+    </div>
+
+  </div>
+</div>
+
+
+</div></section>
     <section id="v-me" hidden>
       <h2 class="title">Mi ficha</h2>
       <form id="meForm" novalidate></form>
@@ -759,7 +1426,7 @@ function setStill(on){const d=document.documentElement,b=$('motion');d.classList
   const save=()=>{try{localStorage.setItem('equipo-a11y',JSON.stringify({theme:d.dataset.theme||'',size:d.dataset.size||'',skin:d.dataset.skin||''}))}catch(e){}};
   const sync=()=>{for(const r of panel.querySelectorAll('input[name=theme]'))r.checked=r.value===(d.dataset.theme||'');for(const r of panel.querySelectorAll('input[name=size]'))r.checked=r.value===(d.dataset.size||'');for(const r of panel.querySelectorAll('input[name=skin]'))r.checked=r.value===(d.dataset.skin||'')};
   panel.addEventListener('change',e=>{const t=e.target;if(t.name==='theme'){if(t.value)d.dataset.theme=t.value;else delete d.dataset.theme;save();if(me)renderAll();toast('Colores: '+t.parentNode.querySelector('span').firstChild.textContent)}
-    if(t.name==='skin'){if(t.value)d.dataset.skin=t.value;else delete d.dataset.skin;save();if($('estFrame').src)setupEst();requestAnimationFrame(moveInd);toast('Estilo: '+(t.value?'Claro':'Espacial'))}
+    if(t.name==='skin'){if(t.value)d.dataset.skin=t.value;else delete d.dataset.skin;save();requestAnimationFrame(moveInd);toast('Estilo: '+(t.value?'Claro':'Espacial'))}
     if(t.name==='size'){if(t.value)d.dataset.size=t.value;else delete d.dataset.size;save();requestAnimationFrame(moveInd);if(me&&cur==='home')renderHome()}});
   const close=()=>{if(panel.hidden)return;panel.hidden=true;for(const b of document.querySelectorAll('.a11yBtn'))b.setAttribute('aria-expanded','false');if(opener)opener.focus()};
   for(const b of document.querySelectorAll('.a11yBtn'))b.onclick=e=>{e.stopPropagation();if(!panel.hidden){close();return}opener=b;sync();panel.hidden=false;b.setAttribute('aria-expanded','true');setTimeout(()=>(panel.querySelector('input:checked')||panel.querySelector('input')).focus(),30)};
@@ -854,14 +1521,1021 @@ $('csv').onclick=()=>{const cols=['username','full_name','role_title','birthday'
 const NAMES={start:'Inicio',home:'Cumpleaños',dir:'Directorio',org:'Organigrama',est:'Estimador',me:'Mi ficha',adm:'Administración'};
 function moveInd(){const n=document.querySelector('#app .pills'),a=n&&n.querySelector('button[aria-current=true]'),i=n&&n.querySelector('.ind');if(!i)return;if(!a||!a.offsetWidth){i.style.width='0';return}i.style.width=a.offsetWidth+'px';i.style.transform='translateX('+a.offsetLeft+'px)'}
 addEventListener('resize',moveInd);if(document.fonts)document.fonts.ready.then(moveInd);
-const EST_URL='https://estimador-ux.vercel.app';
-function estTema(){return document.documentElement.dataset.skin==='claro'?'claro':'espacial'}
-function setupEst(){const f=$('estFrame');if(f.src){try{f.contentWindow.postMessage({tipo:'dxd-tema',tema:estTema()},'*')}catch(e){}return}f.src=EST_URL+'/?embed=1&tema='+estTema();$('estOpen').href=EST_URL;$('estNote').textContent='Estimador de Esfuerzo UX: carga historias de usuario y calcula el esfuerzo por fase.'}
-function go(v){cur=v;if(v==='est')setupEst();for(const b of document.querySelectorAll('.pills button'))b.setAttribute('aria-current',b.dataset.v===v);for(const b of document.querySelectorAll('.dock nav button'))b.setAttribute('aria-current',b.dataset.v===v);
+function go(v){cur=v;for(const b of document.querySelectorAll('.pills button'))b.setAttribute('aria-current',b.dataset.v===v);for(const b of document.querySelectorAll('.dock nav button'))b.setAttribute('aria-current',b.dataset.v===v);
   for(const k of Object.keys(NAMES))$('v-'+k).hidden=k!==v;$('secName').textContent=NAMES[v];closePerson();scrollTo({top:0});moveInd()}
 for(const b of document.querySelectorAll('[data-v]'))b.addEventListener('click',()=>go(b.dataset.v));
 boot();
 })();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+var EST_API='https://estimador-ux.vercel.app/api/analyze';
+
+// ---- Catálogo de tareas: fuente única de verdad ----
+const TAREAS = [
+  { id:'chk-bench', label:'Benchmarking (Análisis competitivo)', fase:'Discovery', dias:5, slug:'discovery' },
+  { id:'chk-stake', label:'Entrevistas con Stakeholders', fase:'Discovery', dias:3, slug:'discovery' },
+  { id:'chk-user', label:'Entrevistas con Usuarios (Research)', fase:'Discovery', dias:7, slug:'discovery' },
+  { id:'chk-audit', label:'Auditoría Heurística / Data', fase:'Discovery', dias:2, slug:'discovery' },
+  { id:'chk-flow', label:'Mapeo de flujos (User Journeys)', fase:'Arquitectura y Wireframes', dias:3, slug:'arch' },
+  { id:'chk-wire-sim', label:'Wireframes (Flujo simple)', fase:'Arquitectura y Wireframes', dias:2, slug:'arch' },
+  { id:'chk-wire-com', label:'Wireframes (Flujo complejo / Nuevo)', fase:'Arquitectura y Wireframes', dias:5, slug:'arch' },
+  { id:'chk-ui-act', label:'Diseño UI (Usando Design System actual)', fase:'Diseño UI', dias:3, slug:'ui' },
+  { id:'chk-ui-new', label:'Diseño UI (Nuevos componentes)', fase:'Diseño UI', dias:8, slug:'ui' },
+  { id:'chk-proto', label:'Prototipo Interactivo', fase:'Diseño UI', dias:2, slug:'ui' },
+  { id:'chk-test-mod', label:'Pruebas de Usabilidad Moderadas', fase:'Testing & Handoff', dias:5, slug:'test' },
+  { id:'chk-test-nomod', label:'Pruebas No Moderadas (Maze, etc.)', fase:'Testing & Handoff', dias:3, slug:'test' },
+  { id:'chk-handoff', label:'Handoff y Documentación Devs', fase:'Testing & Handoff', dias:2, slug:'test' }
+];
+
+const FASES_ORDEN = [
+  { nombre:'Discovery', slug:'discovery' },
+  { nombre:'Arquitectura y Wireframes', slug:'arch' },
+  { nombre:'Diseño UI', slug:'ui' },
+  { nombre:'Testing & Handoff', slug:'test' }
+];
+
+let expedientes = [];
+let nextId = 1;
+let nextCustomId = 1;
+let formsTareaAbiertos = new Set(); // claves "expId-faseSlug" cuyo formulario debe seguir abierto tras un re-render
+let formsTareaDraft = {}; // claves "expId-faseSlug" -> { nombre, dias } escritos hasta el momento
+
+// ---- Toggle del detalle en mobile ----
+document.getElementById('toggleDetalle').addEventListener('click', function() {
+  const detalle = document.getElementById('panelDetalle');
+  const expandido = detalle.classList.toggle('expanded');
+  this.textContent = expandido ? 'Ocultar detalle por fase ▴' : 'Ver detalle por fase ▾';
+});
+
+// ---- Utilidades de archivo ----
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+async function extraerTextoPDF(arrayBuffer) {
+  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  const paginas = [];
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const pagina = await pdf.getPage(i);
+    const contenido = await pagina.getTextContent();
+    paginas.push(contenido.items.map(item => item.str).join(' '));
+  }
+  return paginas.join('\n\n');
+}
+
+function leerArchivo(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    if (ext === 'docx') {
+      reader.onload = async (e) => {
+        try {
+          const result = await mammoth.extractRawText({ arrayBuffer: e.target.result });
+          resolve(result.value);
+        } catch (err) { reject(err); }
+      };
+      reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+      reader.readAsArrayBuffer(file);
+    } else if (ext === 'pdf') {
+      reader.onload = async (e) => {
+        try {
+          const texto = await extraerTextoPDF(e.target.result);
+          if (!texto.trim()) throw new Error('El PDF no tiene texto extraíble (¿es un escaneo de imagen?).');
+          resolve(texto);
+        } catch (err) { reject(err); }
+      };
+      reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+      reader.readAsArrayBuffer(file);
+    } else if (ext === 'txt' || ext === 'md') {
+      reader.onload = (e) => resolve(e.target.result);
+      reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+      reader.readAsText(file);
+    } else {
+      reject(new Error('Formato no soportado: .' + ext + '. Usa .docx, .pdf, .txt o .md, o pega el texto directamente.'));
+    }
+  });
+}
+
+// ---- Planillas (.xlsx, .xls, .csv): una HU por fila ----
+function leerArchivoBinario(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => resolve(e.target.result);
+    reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function mapRowToInitData(row) {
+  const keys = Object.keys(row);
+  const buscar = (patrones) => {
+    const k = keys.find(k => patrones.some(p => k.toLowerCase().includes(p)));
+    return k ? String(row[k]).trim() : '';
+  };
+  let titulo = buscar(['iniciativa', 'título', 'titulo', 'nombre', 'hu']);
+  let descripcion = buscar(['descripci', 'detalle', 'detail']);
+
+  // Si no hay columnas reconocibles, usar la primera celda como título y el resto como descripción
+  if (!titulo && keys.length) {
+    titulo = String(row[keys[0]] || '').trim();
+    descripcion = keys.slice(1).map(k => row[k]).filter(v => String(v).trim()).join(' · ');
+  }
+  return { titulo, descripcion };
+}
+
+async function procesarPlanilla(file) {
+  const ext = file.name.split('.').pop().toLowerCase();
+  let wb;
+  if (ext === 'csv') {
+    const arrayBuffer = await leerArchivoBinario(file);
+    const texto = new TextDecoder('utf-8').decode(arrayBuffer);
+    wb = XLSX.read(texto, { type: 'string' });
+  } else {
+    const arrayBuffer = await leerArchivoBinario(file);
+    wb = XLSX.read(arrayBuffer, { type: 'array' });
+  }
+
+  const hoja = wb.Sheets[wb.SheetNames[0]];
+
+  // Intento 1: planilla plana con encabezados reconocibles (una HU por fila)
+  const filasObj = XLSX.utils.sheet_to_json(hoja, { defval: '' });
+  const nuevos = [];
+  filasObj.forEach(fila => {
+    const { titulo, descripcion } = mapRowToInitData(fila);
+    if (!titulo) return;
+    const texto = descripcion ? (titulo + '\n\n' + descripcion) : titulo;
+    nuevos.push(crearExpediente(titulo, texto));
+  });
+  if (nuevos.length) return nuevos;
+
+  // Intento 2: planilla jerárquica sin encabezados, con celdas combinadas
+  // (Categoría > Subcategoría > ... > Iniciativa > Equipo/Responsable).
+  // Se rellenan hacia abajo las columnas vacías (herencia de celda combinada)
+  // y se asume que la iniciativa real está en la penúltima columna,
+  // dejando la última como equipo/responsable.
+  const filasArr = XLSX.utils.sheet_to_json(hoja, { header: 1, defval: '' });
+  const filasLimpias = filasArr.filter(r => r.some(c => String(c).trim() !== ''));
+  if (!filasLimpias.length) return [];
+
+  const numCols = Math.max(...filasLimpias.map(r => r.length));
+  const rellenas = filasLimpias.map(r => {
+    const row = r.slice();
+    while (row.length < numCols) row.push('');
+    return row;
+  });
+
+  const ultimaCol = numCols - 1;
+  for (let c = 0; c < ultimaCol; c++) {
+    let ultimoValor = '';
+    for (let f = 0; f < rellenas.length; f++) {
+      const val = String(rellenas[f][c] || '').trim();
+      if (val) ultimoValor = val;
+      else rellenas[f][c] = ultimoValor;
+    }
+  }
+
+  const idxTitulo = numCols >= 2 ? numCols - 2 : 0;
+  rellenas.forEach(row => {
+    const titulo = String(row[idxTitulo] || '').trim();
+    if (!titulo) return;
+    const contexto = row.slice(0, idxTitulo).map(v => String(v).trim()).filter(Boolean).join(' > ');
+    const responsable = ultimaCol > idxTitulo ? String(row[ultimaCol] || '').trim() : '';
+    let texto = titulo;
+    if (contexto) texto += '\n\nContexto: ' + contexto;
+    if (responsable) texto += '\nEquipo/Responsable: ' + responsable;
+    nuevos.push(crearExpediente(titulo, texto));
+  });
+
+  return nuevos;
+}
+
+document.getElementById('fileInput').addEventListener('change', async function(e) {
+  const files = Array.from(e.target.files || []);
+  const errorBox = document.getElementById('uploadError');
+  errorBox.style.display = 'none';
+  const errores = [];
+  const paraAnalizar = [];
+
+  for (const file of files) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    try {
+      if (ext === 'xlsx' || ext === 'xls' || ext === 'csv') {
+        const nuevos = await procesarPlanilla(file);
+        if (!nuevos.length) throw new Error('No se encontraron filas con un título reconocible.');
+        paraAnalizar.push(...nuevos);
+      } else {
+        const texto = await leerArchivo(file);
+        paraAnalizar.push(crearExpediente(file.name, texto));
+      }
+    } catch (err) {
+      errores.push(file.name + ': ' + err.message);
+    }
+  }
+
+  renderAll();
+  paraAnalizar.forEach(exp => encolarAnalisis(exp.id));
+
+  if (errores.length) {
+    errorBox.textContent = errores.join(' · ');
+    errorBox.style.display = 'block';
+  }
+  e.target.value = '';
+});
+
+const charCounterEl = document.getElementById('charCounter');
+document.getElementById('pasteText').addEventListener('input', function() {
+  charCounterEl.textContent = `${this.value.length} / 2.000 caracteres`;
+});
+
+document.getElementById('btnAgregarTexto').addEventListener('click', function() {
+  const textarea = document.getElementById('pasteText');
+  const texto = textarea.value.trim();
+  if (texto.length < 10) {
+    const errorBox = document.getElementById('uploadError');
+    errorBox.textContent = 'Escribe al menos una frase describiendo la HU antes de agregarla.';
+    errorBox.style.display = 'block';
+    return;
+  }
+  document.getElementById('uploadError').style.display = 'none';
+  const nombre = 'HU manual ' + (expedientes.filter(x => x.origen === 'manual').length + 1);
+  const exp = crearExpediente(nombre, texto, 'manual');
+  textarea.value = '';
+  charCounterEl.textContent = '0 / 2.000 caracteres';
+  renderAll();
+  encolarAnalisis(exp.id);
+});
+
+function crearExpediente(nombre, texto, origen) {
+  const exp = {
+    id: nextId++,
+    nombre: nombre,
+    texto: texto,
+    origen: origen || 'archivo',
+    estado: 'pendiente',
+    marcado: new Set(),
+    razones: {},
+    resumen: '',
+    error: null,
+    tareasExtra: [],
+    diasOverride: {}
+  };
+  expedientes.push(exp);
+  return exp;
+}
+
+function eliminarExpediente(id) {
+  expedientes = expedientes.filter(x => x.id !== id);
+  renderAll();
+  recalcularTotales();
+}
+
+// ---- Render de la lista de expedientes ----
+function renderAll() {
+  const list = document.getElementById('expedientesList');
+  const empty = document.getElementById('emptyState');
+  if (!expedientes.length) {
+    list.innerHTML = '';
+    list.appendChild(empty);
+    return;
+  }
+  list.innerHTML = expedientes.map(exp => renderExpedienteCard(exp)).join('');
+  list.querySelectorAll('.exp-textarea').forEach(autoGrow);
+}
+
+function renderExpedienteCard(exp) {
+  const subtotal = calcularSubtotal(exp);
+  const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
+  const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
+  const rolesInic = rolesFraccion(subtotal, capacidad);
+
+  let bodyContent = '';
+  if (exp.estado === 'error') {
+    bodyContent += `<div class="exp-error-msg">No se pudo analizar automáticamente (${escapeHtml(exp.error || '')}). Puedes seleccionar las tareas manualmente abajo.</div>`;
+  }
+  if (exp.resumen) {
+    bodyContent += `<div class="exp-summary"><strong>Resumen:</strong> ${escapeHtml(exp.resumen)}</div>`;
+  }
+
+  const fasesHtml = FASES_ORDEN.map(fase => {
+    const tareasFase = TAREAS.filter(t => t.fase === fase.nombre);
+    const items = tareasFase.map(t => {
+      const checked = exp.marcado.has(t.id) ? 'checked' : '';
+      const razon = exp.razones[t.id];
+      const badge = razon ? `<span class="badge-ai" title="${escapeHtml(razon)}">IA</span>` : '';
+      const diasActual = diasEfectivos(exp, t.id, t.dias);
+      return `
+        <div class="mini-tarea">
+          <label>
+            <input type="checkbox" class="task-checkbox" data-exp-id="${exp.id}" data-task-id="${t.id}" ${checked}>
+            ${escapeHtml(t.label)}
+          </label>
+          <div class="mini-right">${badge}<label class="tiempo-badge tiempo-editable" data-html2canvas-ignore="true"><input type="number" step="1" min="1" class="dias-input" data-exp-id="${exp.id}" data-task-id="${t.id}" value="${diasActual}">días</label></div>
+        </div>`;
+    }).join('');
+
+    const tareasExtraFase = (exp.tareasExtra || []).filter(t => t.slug === fase.slug);
+    const itemsExtra = tareasExtraFase.map(t => `
+        <div class="mini-tarea mini-tarea-custom">
+          <label style="cursor:default;">
+            <span class="badge-custom">Manual</span>
+            ${escapeHtml(t.label)}
+          </label>
+          <div class="mini-right" data-html2canvas-ignore="true">
+            <label class="tiempo-badge tiempo-editable"><input type="number" step="1" min="1" class="dias-input-custom" data-exp-id="${exp.id}" data-custom-id="${t.id}" value="${t.dias}">días</label>
+            <button class="btn-del-tarea" onclick="eliminarTareaCustom(${exp.id}, '${t.id}')">✕</button>
+          </div>
+        </div>`).join('');
+
+    const formKey = `${exp.id}-${fase.slug}`;
+    const formAbierto = formsTareaAbiertos.has(formKey);
+    const draft = formsTareaDraft[formKey] || { nombre: '', dias: '' };
+    const formTarea = `
+        <div class="mini-fase-add" data-html2canvas-ignore="true">
+          <button class="btn-add-tarea" onclick="mostrarFormTarea(${exp.id}, '${fase.slug}')">＋ Agregar tarea</button>
+          <div class="form-tarea-inline ${formAbierto ? 'visible' : ''}" id="formTarea-${exp.id}-${fase.slug}">
+            <input type="text" placeholder="Nombre de la tarea" id="tareaNombre-${exp.id}-${fase.slug}" value="${escapeHtml(draft.nombre)}" oninput="guardarDraftTarea(${exp.id}, '${fase.slug}', 'nombre', this.value)">
+            <input type="text" inputmode="decimal" placeholder="Días (ej: 2 o 2.5)" id="tareaDias-${exp.id}-${fase.slug}" value="${escapeHtml(draft.dias)}" oninput="this.value = sanearDias(this.value); guardarDraftTarea(${exp.id}, '${fase.slug}', 'dias', this.value)">
+            <div class="form-tarea-botones">
+              <button onclick="agregarTareaCustom(${exp.id}, '${fase.slug}')">Agregar</button>
+              <button onclick="ocultarFormTarea(${exp.id}, '${fase.slug}')">Cancelar</button>
+            </div>
+          </div>
+        </div>`;
+
+    return `<div class="mini-fase ${fase.slug}"><h4>${fase.nombre}</h4>${items}${itemsExtra}${formTarea}</div>`;
+  }).join('');
+
+  return `
+    <div class="exp-card">
+      <div class="exp-head">
+        <div class="exp-title">
+          <span class="exp-status ${exp.estado}">${estadoLabel(exp.estado)}</span>
+          <span class="name" title="${escapeHtml(exp.nombre)}">${escapeHtml(exp.nombre)}</span>
+        </div>
+        <div class="exp-actions" data-html2canvas-ignore="true">
+          <span class="exp-subtotal" data-exp-id="${exp.id}">
+            <span class="es-tareas">${contarTareas(exp)}</span> tareas ·
+            <b class="es-dias">${subtotal}</b> días ·
+            <span class="es-hh">${(subtotal * horasPorDia).toFixed(0)}</span> HH ·
+            <span class="es-semanas">${(subtotal/5).toFixed(1)}</span> sem ·
+            <span class="es-roles" title="Proporción de la capacidad de un rol en el trimestre (no redondeado a mínimo 1)">${rolesInic}</span> rol(es)
+          </span>
+          <button class="btn-texto" onclick="encolarAnalisis(${exp.id})" ${exp.estado === 'analizando' ? 'disabled' : ''}>
+            ${exp.estado === 'analizando' ? '<span class="spinner"></span>' : (exp.estado === 'listo' || exp.estado === 'error' ? '↻ Reanalizar' : '✨ Analizar')}
+          </button>
+          <button class="btn-texto danger" onclick="eliminarExpediente(${exp.id})">✕</button>
+        </div>
+      </div>
+      <div class="exp-body">
+        <textarea class="exp-textarea" rows="2" data-html2canvas-ignore="true" onchange="actualizarTextoExpediente(${exp.id}, this.value)">${escapeHtml(exp.texto)}</textarea>
+        ${bodyContent}
+        <div class="exp-fases">${fasesHtml}</div>
+      </div>
+    </div>`;
+}
+
+// ---- Tareas manuales agregadas por el equipo ----
+function sanearDias(valor) {
+  // Solo dígitos y un único punto decimal (acepta también coma y la convierte a punto)
+  let limpio = String(valor || '').replace(',', '.').replace(/[^0-9.]/g, '');
+  const partes = limpio.split('.');
+  if (partes.length > 2) limpio = partes[0] + '.' + partes.slice(1).join('');
+  return limpio;
+}
+
+function guardarDraftTarea(expId, faseSlug, campo, valor) {
+  const key = `${expId}-${faseSlug}`;
+  if (!formsTareaDraft[key]) formsTareaDraft[key] = { nombre: '', dias: '' };
+  formsTareaDraft[key][campo] = valor;
+}
+
+function mostrarFormTarea(expId, faseSlug) {
+  formsTareaAbiertos.add(`${expId}-${faseSlug}`);
+  const el = document.getElementById(`formTarea-${expId}-${faseSlug}`);
+  if (el) el.classList.add('visible');
+}
+
+function ocultarFormTarea(expId, faseSlug) {
+  const key = `${expId}-${faseSlug}`;
+  formsTareaAbiertos.delete(key);
+  delete formsTareaDraft[key];
+  const el = document.getElementById(`formTarea-${expId}-${faseSlug}`);
+  if (el) el.classList.remove('visible');
+}
+
+function agregarTareaCustom(expId, faseSlug) {
+  const exp = expedientes.find(x => x.id === expId);
+  if (!exp) return;
+  const fase = FASES_ORDEN.find(f => f.slug === faseSlug);
+  const nombreInput = document.getElementById(`tareaNombre-${expId}-${faseSlug}`);
+  const diasInput = document.getElementById(`tareaDias-${expId}-${faseSlug}`);
+  const nombre = (nombreInput.value || '').trim();
+  const dias = parseFloat(diasInput.value);
+
+  if (!nombre || !dias || dias <= 0) {
+    alert('Ingresa un nombre y una cantidad de días válida (mayor a 0) para la tarea.');
+    return;
+  }
+
+  exp.tareasExtra = exp.tareasExtra || [];
+  exp.tareasExtra.push({
+    id: 'custom-' + expId + '-' + (nextCustomId++),
+    label: nombre,
+    dias: dias,
+    fase: fase ? fase.nombre : faseSlug,
+    slug: faseSlug
+  });
+
+  ocultarFormTarea(expId, faseSlug);
+  renderAll();
+  recalcularTotales();
+}
+
+function eliminarTareaCustom(expId, taskId) {
+  const exp = expedientes.find(x => x.id === expId);
+  if (!exp) return;
+  exp.tareasExtra = (exp.tareasExtra || []).filter(t => t.id !== taskId);
+  renderAll();
+  recalcularTotales();
+}
+
+function estadoLabel(estado) {
+  return { pendiente:'Pendiente', analizando:'Analizando…', listo:'Analizado', error:'Sin analizar' }[estado] || estado;
+}
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function actualizarTextoExpediente(id, valor) {
+  const exp = expedientes.find(x => x.id === id);
+  if (exp) exp.texto = valor;
+}
+
+// ---- Días efectivos de una tarea del catálogo: el override manual del usuario, si existe, o el valor por defecto ----
+function diasEfectivos(exp, taskId, diasBase) {
+  const override = exp.diasOverride ? exp.diasOverride[taskId] : undefined;
+  return (override !== undefined && !isNaN(override) && override > 0) ? override : diasBase;
+}
+
+function calcularSubtotal(exp) {
+  let total = 0;
+  exp.marcado.forEach(taskId => {
+    const t = TAREAS.find(x => x.id === taskId);
+    if (t) total += diasEfectivos(exp, taskId, t.dias);
+  });
+  (exp.tareasExtra || []).forEach(t => { total += t.dias; });
+  return total;
+}
+
+function contarTareas(exp) {
+  return exp.marcado.size + (exp.tareasExtra ? exp.tareasExtra.length : 0);
+}
+
+function actualizarSubtotalCard(exp, card) {
+  card = card || document.querySelector(`.exp-subtotal[data-exp-id="${exp.id}"]`)?.closest('.exp-card');
+  if (!card) return;
+  const subtotal = calcularSubtotal(exp);
+  const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
+  const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
+  const roles = rolesFraccion(subtotal, capacidad);
+  const setText = (sel, val) => { const el = card.querySelector(sel); if (el) el.textContent = val; };
+  setText('.es-tareas', contarTareas(exp));
+  setText('.es-dias', subtotal);
+  setText('.es-hh', (subtotal * horasPorDia).toFixed(0));
+  setText('.es-semanas', (subtotal/5).toFixed(1));
+  setText('.es-roles', roles);
+}
+
+// ---- Delegación de eventos para checkboxes e inputs de días dinámicos ----
+document.getElementById('expedientesList').addEventListener('change', function(e) {
+  if (!e.target.classList.contains('task-checkbox')) return;
+  const expId = parseInt(e.target.dataset.expId, 10);
+  const taskId = e.target.dataset.taskId;
+  const exp = expedientes.find(x => x.id === expId);
+  if (!exp) return;
+
+  if (e.target.checked) exp.marcado.add(taskId); else exp.marcado.delete(taskId);
+
+  actualizarSubtotalCard(exp, e.target.closest('.exp-card'));
+  recalcularTotales();
+});
+
+// ---- Textareas que crecen mientras se escribe, para no tener que hacer scroll dentro de ellas ----
+function autoGrow(textarea) {
+  textarea.style.height = 'auto';
+  textarea.style.height = textarea.scrollHeight + 'px';
+}
+document.querySelectorAll('.exp-textarea, #pasteText').forEach(autoGrow);
+document.getElementById('pasteText').addEventListener('input', function() {
+  autoGrow(this);
+});
+
+document.getElementById('expedientesList').addEventListener('input', function(e) {
+  if (e.target.classList.contains('exp-textarea')) {
+    autoGrow(e.target);
+    return;
+  }
+  const esCatalogo = e.target.classList.contains('dias-input');
+  const esCustom = e.target.classList.contains('dias-input-custom');
+  if (!esCatalogo && !esCustom) return;
+
+  const expId = parseInt(e.target.dataset.expId, 10);
+  const exp = expedientes.find(x => x.id === expId);
+  if (!exp) return;
+  const valor = Math.round(parseFloat(e.target.value));
+
+  if (esCatalogo) {
+    const taskId = e.target.dataset.taskId;
+    exp.diasOverride = exp.diasOverride || {};
+    if (!isNaN(valor) && valor > 0) exp.diasOverride[taskId] = valor;
+    else delete exp.diasOverride[taskId];
+  } else {
+    const customId = e.target.dataset.customId;
+    const tarea = (exp.tareasExtra || []).find(t => t.id === customId);
+    if (tarea && !isNaN(valor) && valor > 0) tarea.dias = valor;
+  }
+
+  actualizarSubtotalCard(exp, e.target.closest('.exp-card'));
+  recalcularTotales();
+});
+
+// ---- Roles necesarios para una cantidad de días dada (global: redondeado hacia arriba, mínimo 1) ----
+function rolesParaDias(dias, capacidad) {
+  if (!dias || dias <= 0) return 0;
+  return Math.max(1, Math.ceil(dias / capacidad));
+}
+
+// ---- Proporción real de un rol que consume una iniciativa (redondeado al 0.5 más cercano) ----
+// A diferencia de rolesParaDias, esto NO fuerza un mínimo de 1: una iniciativa que usa
+// poco de la capacidad trimestral puede mostrar 0.5, 1, 1.5, etc.
+function rolesFraccion(dias, capacidad) {
+  if (!dias || dias <= 0) return 0;
+  return Math.round((dias / capacidad) * 2) / 2;
+}
+
+// ---- Tabla de Resumen de Iniciativas (para pantalla, PDF y referencia rápida) ----
+function renderResumenIniciativas() {
+  const box = document.getElementById('resumenIniciativas');
+  const tbody = document.getElementById('resumenTableBody');
+  const titulo = document.getElementById('resumenIniciativasTitulo');
+  if (!expedientes.length) { box.style.display = 'none'; tbody.innerHTML = ''; return; }
+
+  const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
+  const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
+  box.style.display = 'block';
+  if (titulo) titulo.textContent = `Resumen de Iniciativas (${expedientes.length})`;
+
+  tbody.innerHTML = expedientes.map(exp => {
+    const dias = calcularSubtotal(exp);
+    const hh = dias * horasPorDia;
+    const semanas = (dias / 5).toFixed(1);
+    const roles = rolesFraccion(dias, capacidad);
+    return `<tr>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); font-weight:600;">${escapeHtml(exp.nombre)}</td>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); color:var(--ink-soft);">${escapeHtml(exp.resumen || '—')}</td>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:center;">${contarTareas(exp)}</td>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:center;">${dias}</td>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:center;">${hh.toFixed(0)}</td>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:center;">${semanas}</td>
+      <td style="padding:8px 10px; border-bottom:1px solid var(--line); text-align:center;">${roles}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ---- Totales consolidados ----
+function recalcularTotales() {
+  let total = 0;
+  const porFase = { discovery:0, arch:0, ui:0, test:0 };
+
+  expedientes.forEach(exp => {
+    exp.marcado.forEach(taskId => {
+      const t = TAREAS.find(x => x.id === taskId);
+      if (t) { const d = diasEfectivos(exp, taskId, t.dias); total += d; porFase[t.slug] += d; }
+    });
+    (exp.tareasExtra || []).forEach(t => {
+      total += t.dias;
+      if (porFase[t.slug] !== undefined) porFase[t.slug] += t.dias;
+    });
+  });
+
+  document.getElementById('totalDias').textContent = total;
+  document.getElementById('totalSemanas').textContent = (total / 5).toFixed(1);
+  document.getElementById('totalHus').textContent = expedientes.length;
+  renderResumenIniciativas();
+  document.getElementById('sub-discovery').textContent = porFase.discovery;
+  document.getElementById('sub-arch').textContent = porFase.arch;
+  document.getElementById('sub-ui').textContent = porFase.ui;
+  document.getElementById('sub-test').textContent = porFase.test;
+
+  const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
+  const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
+  const totalHH = total * horasPorDia;
+
+  document.getElementById('totalDias').textContent = total;
+  document.getElementById('totalHH').textContent = totalHH.toFixed(0);
+  document.getElementById('totalSemanas').textContent = (total / 5).toFixed(1);
+  document.getElementById('totalHus').textContent = expedientes.length;
+  renderResumenIniciativas();
+  document.getElementById('sub-discovery').textContent = porFase.discovery;
+  document.getElementById('sub-arch').textContent = porFase.arch;
+  document.getElementById('sub-ui').textContent = porFase.ui;
+  document.getElementById('sub-test').textContent = porFase.test;
+
+  const rolesBox = document.getElementById('rolesBox');
+  const rolesValor = document.getElementById('rolesValor');
+  const rolesMsg = document.getElementById('rolesMsg');
+  let rolesActual = 0;
+
+  if (total === 0) {
+    rolesValor.textContent = '0';
+    rolesValor.className = 'roles-valor ok';
+    rolesMsg.textContent = 'Carga al menos una HU para calcular cuántos roles se necesitan.';
+    rolesBox.classList.remove('alerta');
+  } else {
+    const roles = Math.max(1, Math.ceil(total / capacidad));
+    rolesActual = roles;
+    rolesValor.textContent = roles;
+    const utilizacion = Math.round((total / (roles * capacidad)) * 100);
+    if (roles > 1) {
+      rolesValor.className = 'roles-valor alerta';
+      rolesBox.classList.add('alerta');
+      rolesMsg.textContent = `El esfuerzo total (${total} días / ${totalHH.toFixed(0)} HH) supera la capacidad de un rol en el QBR (${capacidad} días). Se necesitan ${roles} roles de UX en paralelo (usando ~${utilizacion}% de su capacidad conjunta), o repriorizar el alcance. Revisa el detalle por iniciativa abajo: no todas necesitan un rol completo.`;
+    } else {
+      rolesValor.className = 'roles-valor ok';
+      rolesBox.classList.remove('alerta');
+      rolesMsg.textContent = `1 rol de UX alcanza a cubrir este QBR (usa ${total} de ${capacidad} días disponibles, ${totalHH.toFixed(0)} HH — ${utilizacion}% de su capacidad).`;
+    }
+  }
+
+  // Barra compacta visible en mobile cuando el panel está colapsado
+  const miniDias = document.getElementById('miniDias');
+  const miniSemanas = document.getElementById('miniSemanas');
+  const miniRoles = document.getElementById('miniRoles');
+  if (miniDias) miniDias.textContent = total;
+  if (miniSemanas) miniSemanas.textContent = (total / 5).toFixed(1);
+  if (miniRoles) miniRoles.textContent = rolesActual;
+}
+
+document.getElementById('capacidadInput').addEventListener('input', recalcularTotales);
+document.getElementById('horasPorDiaInput').addEventListener('input', recalcularTotales);
+
+// ---- Cola de análisis: evita disparar todas las llamadas a la API en paralelo ----
+function construirSystemPrompt() {
+  const catalogo = TAREAS.map(t => `- id:"${t.id}" | fase:"${t.fase}" | tarea:"${t.label}"`).join('\n');
+  return `Eres un Lead de UX evaluando el alcance de una Historia de Usuario (HU) o iniciativa de QBR para estimar qué tareas de diseño se necesitan.
+
+Catálogo de tareas disponibles (usa EXACTAMENTE estos ids, no inventes otros):
+${catalogo}
+
+Instrucciones:
+1. Lee el texto del usuario y decide, con criterio de diseño real, qué tareas del catálogo son necesarias. No selecciones por coincidencia de palabras: razona sobre el alcance real (¿es un flujo nuevo o un ajuste?, ¿hay research previo o hace falta?, ¿usa componentes existentes o requiere nuevos?, ¿necesita validación con usuarios?, ¿hay handoff a desarrollo?).
+2. Sé conservador: solo marca una tarea si el texto realmente la justifica. No selecciones todo el catálogo por defecto.
+3. Responde ÚNICAMENTE con un objeto JSON válido, sin texto adicional, sin markdown, sin backticks. Formato exacto:
+{"resumen":"una frase breve describiendo el tipo de iniciativa detectada","seleccion":[{"id":"chk-xxx","razon":"justificación breve de máximo 12 palabras"}]}
+
+Solo incluye en "seleccion" las tareas que SÍ deben marcarse.`;
+}
+
+let colaAnalisis = [];
+let colaProcesando = false;
+let colaCancelada = false;
+let colaTotal = 0;
+let colaCompletados = 0;
+const RETRASO_ENTRE_LLAMADAS = 2000; // ms de pausa entre iniciativas para no saturar el rate limit
+
+function encolarAnalisis(id) {
+  const colaEstabaVacia = colaAnalisis.length === 0 && !colaProcesando;
+  if (colaEstabaVacia) {
+    colaTotal = 0;
+    colaCompletados = 0;
+    colaCancelada = false;
+  }
+  if (!colaAnalisis.includes(id)) {
+    colaAnalisis.push(id);
+    colaTotal++;
+  }
+  procesarCola();
+}
+
+async function procesarCola() {
+  if (colaProcesando) return;
+  colaProcesando = true;
+  mostrarModalAnalisis();
+
+  while (colaAnalisis.length) {
+    if (colaCancelada) { colaAnalisis = []; break; }
+    const id = colaAnalisis.shift();
+    actualizarModalAnalisis(colaCompletados + 1, colaTotal);
+    await analizarExpediente(id);
+    colaCompletados++;
+    if (colaAnalisis.length && !colaCancelada) await new Promise(r => setTimeout(r, RETRASO_ENTRE_LLAMADAS));
+  }
+
+  colaProcesando = false;
+  ocultarModalAnalisis();
+}
+
+// ---- Modal de progreso ----
+function mostrarModalAnalisis() {
+  const modal = document.getElementById('modalAnalisis');
+  if (modal) modal.style.display = 'flex';
+}
+function ocultarModalAnalisis() {
+  const modal = document.getElementById('modalAnalisis');
+  if (modal) modal.style.display = 'none';
+}
+function actualizarModalAnalisis(actual, total) {
+  const texto = document.getElementById('modalProgresoTexto');
+  const barra = document.getElementById('modalBarraRelleno');
+  if (texto) texto.textContent = `Analizando ${actual} de ${total}`;
+  if (barra) barra.style.width = total > 0 ? `${Math.round(((actual - 1) / total) * 100)}%` : '0%';
+}
+document.getElementById('btnCancelarAnalisis').addEventListener('click', function() {
+  colaCancelada = true;
+  colaAnalisis = [];
+  ocultarModalAnalisis();
+});
+
+async function analizarExpediente(id, intento) {
+  intento = intento || 0;
+  const exp = expedientes.find(x => x.id === id);
+  if (!exp) return;
+
+  exp.estado = 'analizando';
+  exp.error = null;
+  renderAll();
+
+  try {
+    const response = await fetch(EST_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: construirSystemPrompt(),
+        texto: exp.texto
+      })
+    });
+    if (response.status === 429 || response.status === 529) throw new Error('RATE_LIMIT');
+    if (!response.ok) {
+      let detalle = 'HTTP ' + response.status;
+      try {
+        const err = await response.json();
+        if (err && err.error) detalle = err.error;
+      } catch (e) { /* respuesta sin JSON, se deja el código de estado */ }
+      throw new Error(detalle);
+    }
+
+    const data = await response.json();
+    if (!data.text) throw new Error('El asistente no devolvió una respuesta de texto.');
+
+    const limpio = data.text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(limpio);
+    const idsValidos = new Set(TAREAS.map(t => t.id));
+
+    exp.marcado = new Set();
+    exp.razones = {};
+    (parsed.seleccion || []).forEach(item => {
+      if (!idsValidos.has(item.id)) return;
+      exp.marcado.add(item.id);
+      exp.razones[item.id] = item.razon || '';
+    });
+    exp.resumen = parsed.resumen || '';
+    exp.estado = 'listo';
+  } catch (err) {
+    if (colaCancelada) {
+      // El usuario canceló: dejar la iniciativa lista para selección manual, sin marcarla como error
+      exp.estado = 'pendiente';
+      exp.error = null;
+      renderAll();
+      return;
+    }
+    const esRateLimit = err.message === 'RATE_LIMIT' || /rate limit/i.test(err.message);
+    if (esRateLimit && intento < 4) {
+      const espera = 2000 * Math.pow(2, intento); // 2s, 4s, 8s, 16s
+      exp.estado = 'analizando';
+      exp.error = `Límite de solicitudes alcanzado, reintentando en ${Math.round(espera / 1000)}s… (intento ${intento + 1}/4)`;
+      renderAll();
+      await new Promise(r => setTimeout(r, espera));
+      return analizarExpediente(id, intento + 1);
+    }
+    console.error('Error del asistente:', err);
+    exp.estado = 'error';
+    exp.error = esRateLimit
+      ? 'Se alcanzó el límite de solicitudes tras varios reintentos. Espera un momento y usa "↻ Reanalizar".'
+      : err.message;
+  }
+
+  renderAll();
+  recalcularTotales();
+}
+
+// ---- Utilidad: mostrar un enlace de descarga real para el archivo generado ----
+// (en vez de disparar la descarga de forma 100% automática, que en algunos
+// entornos con iframe restringido puede ser bloqueada silenciosamente)
+function mostrarEnlaceDescarga(blob, filename, etiqueta) {
+  const contenedor = document.getElementById('descargaLista');
+  const url = URL.createObjectURL(blob);
+  contenedor.style.display = 'flex';
+  contenedor.innerHTML = `<a href="${url}" download="${filename}" class="btn-descarga-lista">✅ ${etiqueta} — Descargar</a>`;
+}
+function mostrarErrorDescarga(mensaje) {
+  const contenedor = document.getElementById('descargaLista');
+  contenedor.style.display = 'flex';
+  contenedor.innerHTML = `<span class="error-descarga">${escapeHtml(mensaje)}</span>`;
+}
+
+// ---- Nombre de hoja válido y único para Excel (máx 31 caracteres, sin \ / ? * [ ] :) ----
+function generarNombreHoja(nombre, indice, usados) {
+  let limpio = String(nombre || 'Iniciativa').replace(/[\\\/?*\[\]:]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (!limpio) limpio = 'Iniciativa';
+  let base = `${indice}. ${limpio}`;
+  if (base.length > 31) base = base.slice(0, 31);
+
+  let candidato = base;
+  let sufijo = 2;
+  while (usados.has(candidato)) {
+    const extra = `(${sufijo})`;
+    candidato = base.slice(0, 31 - extra.length) + extra;
+    sufijo++;
+  }
+  usados.add(candidato);
+  return candidato;
+}
+
+// Filas fijas usadas en cada hoja de iniciativa, para que las fórmulas del
+// Resumen puedan apuntar siempre a la misma celda sin importar cuántas tareas tenga.
+const FILA_TAREAS_INICIO = 5;
+const FILA_TAREAS_FIN = FILA_TAREAS_INICIO + 299; // rango amplio reservado (hasta 300 tareas)
+const FILA_CANT = 306;
+const FILA_DIAS = 307;
+const FILA_SEMANAS = 308;
+const FILA_HORASPORDIA = 309;
+const FILA_HH = 310;
+const FILA_CAPACIDAD = 311;
+const FILA_ROLES = 312;
+
+function crearHojaIniciativa(exp, capacidad, horasPorDia) {
+  const filasTareas = [];
+  exp.marcado.forEach(taskId => {
+    const t = TAREAS.find(x => x.id === taskId);
+    if (!t) return;
+    const origen = exp.razones[taskId] !== undefined ? 'Sugerido por IA' : 'Manual (catálogo)';
+    filasTareas.push([t.label, t.fase, diasEfectivos(exp, taskId, t.dias), origen]);
+  });
+  (exp.tareasExtra || []).forEach(t => {
+    filasTareas.push([t.label, t.fase, t.dias, 'Manual (nueva)']);
+  });
+
+  const aoa = [];
+  aoa[0] = ['Iniciativa', exp.nombre];
+  aoa[1] = ['Resumen', exp.resumen || '(sin analizar aún)'];
+  aoa[2] = [];
+  aoa[3] = ['Tarea', 'Fase', 'Días', 'Origen'];
+  filasTareas.forEach((fila, idx) => { aoa[FILA_TAREAS_INICIO - 1 + idx] = fila; });
+
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+
+  const totalDias = filasTareas.reduce((s, f) => s + (parseFloat(f[2]) || 0), 0);
+  const cantTareas = filasTareas.length;
+  const roles = rolesFraccion(totalDias, capacidad);
+  const totalHH = totalDias * horasPorDia;
+
+  ws[`A${FILA_CANT}`] = { t: 's', v: 'Cantidad de Tareas' };
+  ws[`B${FILA_CANT}`] = { t: 'n', f: `COUNTA(A${FILA_TAREAS_INICIO}:A${FILA_TAREAS_FIN})`, v: cantTareas };
+
+  ws[`A${FILA_DIAS}`] = { t: 's', v: 'Total Días' };
+  ws[`B${FILA_DIAS}`] = { t: 'n', f: `SUM(C${FILA_TAREAS_INICIO}:C${FILA_TAREAS_FIN})`, v: totalDias };
+
+  ws[`A${FILA_SEMANAS}`] = { t: 's', v: 'Total Semanas' };
+  ws[`B${FILA_SEMANAS}`] = { t: 'n', f: `B${FILA_DIAS}/5`, v: totalDias / 5 };
+
+  ws[`A${FILA_HORASPORDIA}`] = { t: 's', v: 'Horas por Día Hábil' };
+  ws[`B${FILA_HORASPORDIA}`] = { t: 'n', f: `Parametros!B3`, v: horasPorDia };
+
+  ws[`A${FILA_HH}`] = { t: 's', v: 'Total HH' };
+  ws[`B${FILA_HH}`] = { t: 'n', f: `B${FILA_DIAS}*B${FILA_HORASPORDIA}`, v: totalHH };
+
+  ws[`A${FILA_CAPACIDAD}`] = { t: 's', v: 'Capacidad por Rol (días)' };
+  ws[`B${FILA_CAPACIDAD}`] = { t: 'n', f: `Parametros!B2`, v: capacidad };
+
+  ws[`A${FILA_ROLES}`] = { t: 's', v: 'Roles Necesarios (proporción real, sin mínimo 1)' };
+  ws[`B${FILA_ROLES}`] = {
+    t: 'n',
+    f: `IF(B${FILA_DIAS}=0,0,ROUND((B${FILA_DIAS}/B${FILA_CAPACIDAD})*2,0)/2)`,
+    v: roles
+  };
+
+  ws['!cols'] = [{ wch: 42 }, { wch: 24 }, { wch: 10 }, { wch: 20 }];
+  ws['!ref'] = XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: FILA_ROLES - 1, c: 3 } });
+
+  return { ws, meta: { cantTareas, totalDias, totalHH, roles } };
+}
+
+function construirLibroExcel() {
+  const capacidad = parseFloat(document.getElementById('capacidadInput').value) || 63;
+  const horasPorDia = parseFloat(document.getElementById('horasPorDiaInput').value) || 8;
+  const workbook = XLSX.utils.book_new();
+
+  // Hoja "Parametros": valores compartidos que las demás hojas referencian por fórmula
+  const wsParametros = XLSX.utils.aoa_to_sheet([
+    ['Parámetro', 'Valor'],
+    ['Capacidad por Rol (días/QBR)', capacidad],
+    ['Horas por Día Hábil', horasPorDia]
+  ]);
+  wsParametros['!cols'] = [{ wch: 30 }, { wch: 12 }];
+
+  // Generar nombres de hoja únicos y crear cada hoja de iniciativa
+  const usados = new Set(['Resumen', 'Parametros']);
+  const hojasIniciativa = expedientes.map((exp, idx) => {
+    const nombreHoja = generarNombreHoja(exp.nombre, idx + 1, usados);
+    const { ws, meta } = crearHojaIniciativa(exp, capacidad, horasPorDia);
+    return { exp, nombreHoja, ws, meta };
+  });
+
+  // Hoja "Resumen": todo por fórmula, apuntando a la hoja de cada iniciativa.
+  // "Roles Necesarios" aquí es la PROPORCIÓN real que consume cada iniciativa
+  // (puede ser 0.5, 1, 1.5...), no un mínimo forzado a 1 como el total global.
+  const resumenAoa = [["Iniciativa", "Resumen", "Cant. Tareas", "Días", "HH", "Semanas", "Roles (proporción individual)"]];
+  const wsResumen = XLSX.utils.aoa_to_sheet(resumenAoa);
+
+  let fila = 2;
+  hojasIniciativa.forEach(({ exp, nombreHoja, meta }) => {
+    const ref = `'${nombreHoja}'`;
+    wsResumen[`A${fila}`] = { t: 's', f: `${ref}!B1`, v: exp.nombre };
+    wsResumen[`B${fila}`] = { t: 's', f: `${ref}!B2`, v: exp.resumen || '(sin analizar aún)' };
+    wsResumen[`C${fila}`] = { t: 'n', f: `${ref}!B${FILA_CANT}`, v: meta.cantTareas };
+    wsResumen[`D${fila}`] = { t: 'n', f: `${ref}!B${FILA_DIAS}`, v: meta.totalDias };
+    wsResumen[`E${fila}`] = { t: 'n', f: `${ref}!B${FILA_HH}`, v: meta.totalHH };
+    wsResumen[`F${fila}`] = { t: 'n', f: `${ref}!B${FILA_SEMANAS}`, v: meta.totalDias / 5 };
+    wsResumen[`G${fila}`] = { t: 'n', f: `${ref}!B${FILA_ROLES}`, v: meta.roles };
+    fila++;
+  });
+
+  const primeraFilaDatos = 2;
+  const ultimaFilaDatos = fila - 1;
+  const filaTotal = fila + 1; // deja una fila en blanco antes del total
+
+  const totalDiasGlobal = hojasIniciativa.reduce((s, h) => s + h.meta.totalDias, 0);
+  const totalTareasGlobal = hojasIniciativa.reduce((s, h) => s + h.meta.cantTareas, 0);
+  const rolesGlobal = rolesParaDias(totalDiasGlobal, capacidad); // acá SÍ se redondea hacia arriba (mínimo 1): es la cifra para decidir cuánta gente contratar
+
+  wsResumen[`A${filaTotal}`] = { t: 's', v: 'TOTAL GLOBAL (redondeado, para dotación)' };
+  if (ultimaFilaDatos >= primeraFilaDatos) {
+    wsResumen[`C${filaTotal}`] = { t: 'n', f: `SUM(C${primeraFilaDatos}:C${ultimaFilaDatos})`, v: totalTareasGlobal };
+    wsResumen[`D${filaTotal}`] = { t: 'n', f: `SUM(D${primeraFilaDatos}:D${ultimaFilaDatos})`, v: totalDiasGlobal };
+  } else {
+    wsResumen[`C${filaTotal}`] = { t: 'n', v: 0 };
+    wsResumen[`D${filaTotal}`] = { t: 'n', v: 0 };
+  }
+  wsResumen[`E${filaTotal}`] = { t: 'n', f: `D${filaTotal}*Parametros!B3`, v: totalDiasGlobal * horasPorDia };
+  wsResumen[`F${filaTotal}`] = { t: 'n', f: `D${filaTotal}/5`, v: totalDiasGlobal / 5 };
+  wsResumen[`G${filaTotal}`] = {
+    t: 'n',
+    f: `IF(D${filaTotal}=0,0,MAX(1,ROUNDUP(D${filaTotal}/Parametros!B2,0)))`,
+    v: rolesGlobal
+  };
+
+  wsResumen['!cols'] = [{ wch: 28 }, { wch: 55 }, { wch: 12 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 26 }];
+  wsResumen['!ref'] = XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: filaTotal - 1, c: 6 } });
+
+  // Orden de pestañas: Resumen primero, luego Parámetros, luego cada iniciativa
+  XLSX.utils.book_append_sheet(workbook, wsResumen, 'Resumen');
+  XLSX.utils.book_append_sheet(workbook, wsParametros, 'Parametros');
+  hojasIniciativa.forEach(({ nombreHoja, ws }) => {
+    XLSX.utils.book_append_sheet(workbook, ws, nombreHoja);
+  });
+
+  return workbook;
+}
+
+// ---- Descargar Excel ----
+document.getElementById('btnDescargarExcel').addEventListener('click', function(e) {
+  e.preventDefault();
+  const contenedor = document.getElementById('descargaLista');
+  contenedor.style.display = 'flex';
+
+  if (!expedientes.length) {
+    mostrarErrorDescarga('Carga al menos una iniciativa antes de descargar el Excel.');
+    return;
+  }
+
+  contenedor.innerHTML = '<span class="spinner"></span> Generando Excel…';
+  try {
+    const workbook = construirLibroExcel();
+    const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    mostrarEnlaceDescarga(blob, 'Estimacion_Esfuerzo_UX_QBR.xlsx', 'Excel listo');
+  } catch (err) {
+    console.error('Error generando Excel:', err);
+    mostrarErrorDescarga('No se pudo generar el Excel: ' + err.message);
+  }
+});
+
+recalcularTotales();
+
 </script>
 </body>
 </html>
