@@ -787,6 +787,7 @@ html[data-theme=hc] .orb{display:none}
 #est .bg-shape-yellow,#est .bg-shape-sky,#est .app-navbar{display:none!important}
 @media (max-width:1023px){#est .panel-calculo{bottom:calc(84px + env(safe-area-inset-bottom,0px))!important;z-index:19}html:not([data-skin=claro]) #est .panel-calculo{background:#14123a!important}html[data-skin=claro] #est .panel-calculo{background:#fff!important}#est{padding-bottom:160px}}
 #est .modal-overlay{z-index:50}
+#est{overflow:visible!important;overflow-x:clip!important}
 #est .mini-tarea.off label{opacity:.72}#est .mini-tarea.off .stepper{opacity:.38}
 #est .stepper :disabled{cursor:not-allowed}
 #est .task-checkbox{width:20px;height:20px;cursor:pointer}
@@ -815,7 +816,7 @@ html:not([data-skin=claro]) #est .btn-analizar:disabled{background:rgba(255,255,
 html:not([data-skin=claro]) #est .dropzone-icon{background:rgba(169,185,255,.18)!important;color:#fff!important;border:1px solid rgba(255,255,255,.28)}html:not([data-skin=claro]) #est .dropzone-icon::after{display:none}
 html:not([data-skin=claro]) #est .btn-select-files{color:#fff!important}
 html[data-skin=claro] #est .btn-analizar:disabled{background:#c9d3f5!important;color:#16204a!important;opacity:1!important}
-@media (min-width:1024px){#est .panel-calculo{position:static!important;max-height:none!important;overflow:visible!important}}
+@media (min-width:1024px){#est .panel-calculo{position:static!important;max-height:none!important;overflow:visible!important}#est .sidebar-col{position:sticky;top:var(--qbr-top,calc(var(--hh) + 16px));align-self:start}}
 html:not([data-skin=claro]) #est .info-footer .info-icon{color:#fff!important}
 html:not([data-skin=claro]) #est :is(.t-item .t-icon,.dropzone-icon,.btn-texto,.badge-ai,.exp-status.analizando,.panel-header-title-row svg){color:#c7d2ff!important}
 html[data-skin=claro] #est .info-footer .info-icon{color:var(--acc)!important}
@@ -2623,6 +2624,12 @@ document.getElementById('btnDescargarExcel').addEventListener('click', function(
 
 recalcularTotales();
 
+
+// Panel QBR: acompaña el scroll sin scroll interno
+(function(){const pn=document.querySelector('#est .sidebar-col');if(!pn)return;
+  function ajustar(){if(innerWidth<1024)return;const hh=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hh'))||72;const dk=document.querySelector('#app .dock');const dh=dk?dk.offsetHeight:0;
+    const top=Math.min(hh+16,innerHeight-dh-pn.offsetHeight-16);pn.style.setProperty('--qbr-top',top+'px')}
+  addEventListener('resize',ajustar);if(window.ResizeObserver)new ResizeObserver(ajustar).observe(pn);ajustar()})();
 </script>
 </body>
 </html>
