@@ -9,6 +9,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>(function(){try{var q=new URLSearchParams(location.search),d=document.documentElement,t=q.get('tema');if(t==='espacial'||t==='claro')d.dataset.tema=t;if(q.get('embed')==='1')d.dataset.embed='1';
+addEventListener('message',function(e){var m=e.data;if(m&&m.tipo==='dxd-tema'&&(m.tema==='espacial'||m.tema==='claro'))d.dataset.tema=m.tema})}catch(e){}})();</script>
 <style>
 :root{
   --ink:#0a2540; --ink-soft:#475569; --bg:#f0f5fa; --card:#ffffff; --line:#e2edf8;
@@ -427,6 +429,22 @@ input[type=file]{ display:none; }
 .modal-box p{ font-size:13.5px; color:var(--ink-soft); margin-bottom:16px; }
 .modal-barra{ height:8px; background:#eef0f2; border-radius:20px; overflow:hidden; margin-bottom:20px; }
 .modal-barra-relleno{ height:100%; background:var(--ai); transition:width .3s ease; }
+
+/* ===== Temas del dashboard Equipo DXD (?tema=espacial|claro) ===== */
+html[data-embed] .app-navbar,html[data-embed] .bg-shape-yellow,html[data-embed] .bg-shape-sky{display:none!important}
+html[data-embed] body{padding-top:12px}
+html[data-tema=espacial]{color-scheme:dark;--ink:#f4f3ff;--ink-soft:#cfcce9;--bg:#0a0930;--card:#15133c;--line:rgba(255,255,255,.13);--slate-900:#f4f3ff;--slate-700:#e2e0f5;--slate-600:#cfcce9;--slate-500:#bcb9dc;--slate-400:#a3a0c8;--discovery-icon-bg:rgba(0,136,255,.2);--ui-icon-bg:rgba(80,110,255,.22);--arch-icon-bg:rgba(255,183,3,.16);--test-icon-bg:rgba(0,180,216,.18);--ai-soft:rgba(80,110,255,.2);--ai-line:rgba(255,255,255,.13);--ui:#8fa6ff;--ai:#8fa6ff;--discovery:#5cb4ff}
+html[data-tema=espacial] body{background:#0a0930;color:var(--ink)}
+html[data-tema=espacial] :is(.app-navbar,.btn-select-files,#pasteText,.exp-textarea,.mini-tarea,.tiempo-editable,.dropdown-content,.fase-stat,.form-tarea-inline,.modal-box,.main-col-inner,.empty-state,.exp-card){background:#15133c!important;color:var(--ink);border-color:rgba(255,255,255,.13)!important}
+html[data-tema=espacial] :is(.nav-link:hover,.account-avatar,.dropzone,.dropzone:hover,.dropzone-icon::after,.empty-state-icon,.exp-head,.tiempo-badge,.panel-toggle-detalle,.panel-toggle-full,.capacidad-inline input,.roles-box,.info-footer,.badge-custom,.dropdown-content a:hover,.modal-barra,.form-tarea-botones button:last-child,.exp-status.pendiente,.btn-texto:hover,.form-tarea-inline input){background:rgba(255,255,255,.07)!important;color:var(--ink);border-color:rgba(255,255,255,.13)!important}
+html[data-tema=espacial] :is(.exp-status.listo){background:rgba(22,163,74,.22)!important;color:#bff5d0!important}
+html[data-tema=espacial] :is(.exp-status.error,.upload-error,.exp-error-msg){background:rgba(244,63,94,.18)!important;color:#ffd0da!important}
+html[data-tema=espacial] .roles-box :is(div,span,p,strong,b,small,label){color:#e3e6ff!important}
+html[data-tema=espacial] .roles-box.alerta{background:rgba(255,183,3,.14)!important}
+html[data-tema=espacial] input,html[data-tema=espacial] textarea,html[data-tema=espacial] select{color:var(--ink)}html[data-tema=espacial] ::placeholder{color:rgba(255,255,255,.55)!important}
+html[data-tema=espacial] :is(h1,h2,h3,h4,strong,b,label){color:var(--ink)}
+html[data-tema=claro]{--bg:#f2f4fa;--ink:#16204a;--ink-soft:#5a6384;--line:#e6e9f3;--ui:#2448e0;--ai:#2448e0;--ai-soft:#e9eeff;--discovery:#2448e0;--ui-icon-bg:#e9eeff;--discovery-icon-bg:#e9eeff}
+html[data-tema=claro] body{background:#f2f4fa}
 </style>
 </head>
 <body>

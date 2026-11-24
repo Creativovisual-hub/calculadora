@@ -759,7 +759,7 @@ function setStill(on){const d=document.documentElement,b=$('motion');d.classList
   const save=()=>{try{localStorage.setItem('equipo-a11y',JSON.stringify({theme:d.dataset.theme||'',size:d.dataset.size||'',skin:d.dataset.skin||''}))}catch(e){}};
   const sync=()=>{for(const r of panel.querySelectorAll('input[name=theme]'))r.checked=r.value===(d.dataset.theme||'');for(const r of panel.querySelectorAll('input[name=size]'))r.checked=r.value===(d.dataset.size||'');for(const r of panel.querySelectorAll('input[name=skin]'))r.checked=r.value===(d.dataset.skin||'')};
   panel.addEventListener('change',e=>{const t=e.target;if(t.name==='theme'){if(t.value)d.dataset.theme=t.value;else delete d.dataset.theme;save();if(me)renderAll();toast('Colores: '+t.parentNode.querySelector('span').firstChild.textContent)}
-    if(t.name==='skin'){if(t.value)d.dataset.skin=t.value;else delete d.dataset.skin;save();requestAnimationFrame(moveInd);toast('Estilo: '+(t.value?'Claro':'Espacial'))}
+    if(t.name==='skin'){if(t.value)d.dataset.skin=t.value;else delete d.dataset.skin;save();if($('estFrame').src)setupEst();requestAnimationFrame(moveInd);toast('Estilo: '+(t.value?'Claro':'Espacial'))}
     if(t.name==='size'){if(t.value)d.dataset.size=t.value;else delete d.dataset.size;save();requestAnimationFrame(moveInd);if(me&&cur==='home')renderHome()}});
   const close=()=>{if(panel.hidden)return;panel.hidden=true;for(const b of document.querySelectorAll('.a11yBtn'))b.setAttribute('aria-expanded','false');if(opener)opener.focus()};
   for(const b of document.querySelectorAll('.a11yBtn'))b.onclick=e=>{e.stopPropagation();if(!panel.hidden){close();return}opener=b;sync();panel.hidden=false;b.setAttribute('aria-expanded','true');setTimeout(()=>(panel.querySelector('input:checked')||panel.querySelector('input')).focus(),30)};
@@ -855,7 +855,8 @@ const NAMES={start:'Inicio',home:'Cumpleaños',dir:'Directorio',org:'Organigrama
 function moveInd(){const n=document.querySelector('#app .pills'),a=n&&n.querySelector('button[aria-current=true]'),i=n&&n.querySelector('.ind');if(!i)return;if(!a||!a.offsetWidth){i.style.width='0';return}i.style.width=a.offsetWidth+'px';i.style.transform='translateX('+a.offsetLeft+'px)'}
 addEventListener('resize',moveInd);if(document.fonts)document.fonts.ready.then(moveInd);
 const EST_URL='https://estimador-ux.vercel.app';
-function setupEst(){const f=$('estFrame');if(f.src)return;f.src=EST_URL;$('estOpen').href=EST_URL;$('estNote').textContent='Estimador de Esfuerzo UX: carga historias de usuario y calcula el esfuerzo por fase.'}
+function estTema(){return document.documentElement.dataset.skin==='claro'?'claro':'espacial'}
+function setupEst(){const f=$('estFrame');if(f.src){try{f.contentWindow.postMessage({tipo:'dxd-tema',tema:estTema()},'*')}catch(e){}return}f.src=EST_URL+'/?embed=1&tema='+estTema();$('estOpen').href=EST_URL;$('estNote').textContent='Estimador de Esfuerzo UX: carga historias de usuario y calcula el esfuerzo por fase.'}
 function go(v){cur=v;if(v==='est')setupEst();for(const b of document.querySelectorAll('.pills button'))b.setAttribute('aria-current',b.dataset.v===v);for(const b of document.querySelectorAll('.dock nav button'))b.setAttribute('aria-current',b.dataset.v===v);
   for(const k of Object.keys(NAMES))$('v-'+k).hidden=k!==v;$('secName').textContent=NAMES[v];closePerson();scrollTo({top:0});moveInd()}
 for(const b of document.querySelectorAll('[data-v]'))b.addEventListener('click',()=>go(b.dataset.v));
