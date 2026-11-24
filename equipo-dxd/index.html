@@ -787,6 +787,8 @@ html[data-theme=hc] .orb{display:none}
 #est .bg-shape-yellow,#est .bg-shape-sky,#est .app-navbar{display:none!important}
 @media (max-width:1023px){#est .panel-calculo{position:static!important;top:auto!important;bottom:auto!important;left:auto!important;right:auto!important;width:auto!important;max-height:none!important;overflow:visible!important;border-radius:16px!important;z-index:auto!important;padding:22px!important}#est .panel-calculo .panel-full-content{display:block!important}#est .panel-toggle-full,#est .panel-resumen-compacto{display:none!important}#est{padding-bottom:40px!important}}
 #est .modal-overlay{z-index:50}
+#est .ocr-status{margin:10px 0 0;font-size:14px;font-weight:600;padding:8px 12px;border-radius:10px;background:rgba(127,127,170,.14)}
+
 #est{overflow:visible!important;overflow-x:clip!important}
 #est .mini-tarea.off label{opacity:.72}#est .mini-tarea.off .stepper{opacity:.38}
 #est .stepper :disabled{cursor:not-allowed}
@@ -972,7 +974,7 @@ html.still :is(.chipx,.orb,.orb::after,.refbig,.refstats,.reffeat,.refstrip,.bar
                   <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3" stroke-linecap="round" stroke-linejoin="round"/>
                   <line x1="12" x2="12.01" y1="17" y2="17"/>
                 </svg>
-                <span>Formatos soportados: .docx, .pdf, .txt, .md, .xlsx, .xls, .csv</span>
+                <span>Formatos soportados: .docx, .pdf (también escaneados), .txt, .md, .xlsx, .xls, .csv e imágenes (.png, .jpg)</span>
               </div>
             </div>
             <label class="dropzone" for="fileInput">
@@ -990,7 +992,8 @@ html.still :is(.chipx,.orb,.orb::after,.refbig,.refstats,.reffeat,.refstrip,.bar
                 Seleccionar archivos
               </span>
             </label>
-            <input type="file" id="fileInput" multiple accept=".txt,.md,.docx,.pdf,.xlsx,.xls,.csv">
+            <p id="ocrStatus" class="ocr-status" role="status" aria-live="polite" hidden></p>
+            <input type="file" id="fileInput" multiple accept=".txt,.md,.docx,.pdf,.xlsx,.xls,.csv,.png,.jpg,.jpeg,.webp">
             <div id="uploadError" class="upload-error" style="display:none;"></div>
           </div>
 
@@ -1683,6 +1686,17 @@ async function extraerTextoPDF(arrayBuffer) {
   return paginas.join('\n\n');
 }
 
+// ---- OCR en el navegador (gratis, sin tokens) para PDF escaneados e imágenes ----
+let _tessPromise=null;
+function cargarTesseract(){if(window.Tesseract)return Promise.resolve();if(_tessPromise)return _tessPromise;
+  _tessPromise=new Promise((ok,ko)=>{const sc=document.createElement('script');sc.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';sc.onload=()=>ok();sc.onerror=()=>{_tessPromise=null;ko(new Error('No se pudo cargar el lector de texto en imágenes (revisa tu conexión).'))};document.head.appendChild(sc)});return _tessPromise}
+function estadoOCR(msg){const el=document.getElementById('ocrStatus');if(!el)return;el.textContent=msg||'';el.hidden=!msg}
+async function leerConOCR(fuentes,nombre){await cargarTesseract();estadoOCR('Preparando lector de texto para '+nombre+'…');
+  let actual=0;const worker=await Tesseract.createWorker('spa',1,{logger:m=>{if(m.status==='recognizing text')estadoOCR('Leyendo '+nombre+(fuentes.length>1?' · página '+actual+' de '+fuentes.length:'')+' · '+Math.round(m.progress*100)+'%')}});
+  try{const textos=[];for(const f of fuentes){actual++;const r=await worker.recognize(f);textos.push(r.data.text)}return textos.join('\n\n')}finally{await worker.terminate();estadoOCR('')}}
+async function paginasPDFComoImagen(arrayBuffer){const pdf=await pdfjsLib.getDocument({data:arrayBuffer}).promise;const lienzos=[];
+  for(let i=1;i<=Math.min(pdf.numPages,15);i++){const pg=await pdf.getPage(i);const vp=pg.getViewport({scale:2});const c=document.createElement('canvas');c.width=vp.width;c.height=vp.height;await pg.render({canvasContext:c.getContext('2d'),viewport:vp}).promise;lienzos.push(c)}return lienzos}
+
 function leerArchivo(file) {
   const ext = file.name.split('.').pop().toLowerCase();
   return new Promise((resolve, reject) => {
@@ -1699,19 +1713,26 @@ function leerArchivo(file) {
     } else if (ext === 'pdf') {
       reader.onload = async (e) => {
         try {
-          const texto = await extraerTextoPDF(e.target.result);
-          if (!texto.trim()) throw new Error('El PDF no tiene texto extraíble (¿es un escaneo de imagen?).');
+          const buf = e.target.result.slice(0);
+          let texto = await extraerTextoPDF(e.target.result);
+          if (texto.replace(/\s/g, '').length < 20) {
+            // PDF escaneado: leer el texto de las imágenes con OCR
+            texto = await leerConOCR(await paginasPDFComoImagen(buf), file.name);
+          }
+          if (!texto.trim()) throw new Error('No se encontró texto en el PDF, ni siquiera leyendo las imágenes.');
           resolve(texto);
         } catch (err) { reject(err); }
       };
       reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
       reader.readAsArrayBuffer(file);
+    } else if (['png','jpg','jpeg','webp'].includes(ext)) {
+      leerConOCR([file], file.name).then(t => { if (!t.trim()) reject(new Error('No se encontró texto en la imagen.')); else resolve(t); }).catch(reject);
     } else if (ext === 'txt' || ext === 'md') {
       reader.onload = (e) => resolve(e.target.result);
       reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
       reader.readAsText(file);
     } else {
-      reject(new Error('Formato no soportado: .' + ext + '. Usa .docx, .pdf, .txt o .md, o pega el texto directamente.'));
+      reject(new Error('Formato no soportado: .' + ext + '. Usa .docx, .pdf, .txt, .md o una imagen, o pega el texto directamente.'));
     }
   });
 }
