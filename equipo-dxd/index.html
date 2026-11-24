@@ -382,6 +382,10 @@ html:not([data-skin=claro]) .refbig,html:not([data-skin=claro]) .refstats dd,htm
 html:not([data-skin=claro]) .bar2{background:rgba(255,255,255,.14)}html:not([data-skin=claro]) .bar2 i{background:#fff}html:not([data-skin=claro]) .mini2 em{color:#fff}html:not([data-skin=claro]) .bdg{background:#fff;color:#0b0a14}
 html:not([data-skin=claro]) .reffeat .btn.white{color:#0b0a14}
 html[data-theme=hc] .orb{display:none}
+/* estimador */
+.esthd{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:20px 0 12px}.esthd .hint{margin:0;max-width:760px}
+.estframe{display:block;width:100%;height:calc(100vh - var(--hh) - 190px);min-height:560px;border:1px solid var(--edge);border-radius:20px;background:#fff}
+@media (max-width:640px){.estframe{height:calc(100vh - var(--hh) - 220px);min-height:480px}}
 /* administración */
 .admgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:22px;align-items:start}
 .panel{padding:22px}.panel h3{font-family:var(--mono);font-size:16px;margin:0 0 14px}
@@ -438,6 +442,7 @@ html[data-theme=hc] .orb{display:none}
       <button type="button" data-v="home" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Cumpleaños</button>
       <button type="button" data-v="dir" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg>Directorio</button>
       <button type="button" data-v="org" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6v5H9zM3 16h6v5H3zM15 16h6v5h-6zM12 8v4M6 16v-2h12v2"/></svg>Organigrama</button>
+      <button type="button" data-v="est" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h8"/></svg>Estimador</button>
       <button type="button" data-v="me" aria-current="false"><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg>Mi ficha</button>
       <button type="button" data-v="adm" aria-current="false" data-admin><svg class="i pic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>Administración</button>
     </nav>
@@ -463,6 +468,10 @@ html[data-theme=hc] .orb{display:none}
       <div class="folders" id="dir"></div>
     </section>
     <section id="v-org" hidden aria-labelledby="hOrgT"><h2 class="title" id="hOrgT">Organigrama</h2><div class="org" id="org"></div></section>
+    <section id="v-est" hidden aria-labelledby="hEstT"><h2 class="title" id="hEstT">Estimador de esfuerzo</h2>
+      <div class="esthd"><p class="hint" id="estNote"></p><a class="btn sm" id="estOpen" target="_blank" rel="noopener">Abrir en pestaña nueva ↗</a></div>
+      <iframe id="estFrame" class="estframe" title="Estimador de Esfuerzo UX" loading="lazy"></iframe>
+    </section>
     <section id="v-me" hidden>
       <h2 class="title">Mi ficha</h2>
       <form id="meForm" novalidate></form>
@@ -491,6 +500,7 @@ html[data-theme=hc] .orb{display:none}
       <button data-v="home" aria-current="false" title="Cumpleaños" aria-label="Cumpleaños"><svg class="i" viewBox="0 0 24 24"><path d="M4 21h16M5 21v-7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v7M5 16c2 1.2 3.5 1.2 5 0s3.5-1.2 5 0 3 1.2 4 0M12 12V8M12 5.5c.8 0 1.2-.6 1.2-1.2S12 2 12 2s-1.2 1.7-1.2 2.3.4 1.2 1.2 1.2z"/></svg><span class="lb" aria-hidden="true">Cumpleaños</span></button>
       <button data-v="dir" title="Directorio" aria-label="Directorio"><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/></svg><span class="lb" aria-hidden="true">Directorio</span></button>
       <button data-v="org" title="Organigrama" aria-label="Organigrama"><svg class="i" viewBox="0 0 24 24"><path d="M9 3h6v5H9zM3 16h6v5H3zM15 16h6v5h-6zM12 8v4M6 16v-2h12v2"/></svg><span class="lb" aria-hidden="true">Organigrama</span></button>
+      <button data-v="est" title="Estimador" aria-label="Estimador"><svg class="i" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h8"/></svg><span class="lb" aria-hidden="true">Estimador</span></button>
       <button data-v="me" title="Mi ficha" aria-label="Mi ficha"><svg class="i" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></svg><span class="lb" aria-hidden="true">Mi ficha</span></button>
       <button data-v="adm" title="Administración" aria-label="Administración" data-admin><svg class="i" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg><span class="lb" aria-hidden="true">Admin</span></button>
     </nav>
@@ -658,6 +668,7 @@ function renderStart(){const root=$('start');root.textContent='';const now=new D
     const t=el('span','tt');t.append(el('b',null,title),el('span',null,sub));b.append(i,t);if(extra)b.appendChild(extra);const ar=el('span','ar','→');ar.setAttribute('aria-hidden','true');b.appendChild(ar);b.onclick=fn;g.appendChild(b);return b};
   const I={cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',dir:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M21.5 20a6.5 6.5 0 0 0-4-6"/>',me:'<path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/>',adm:'<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/>',key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/>',a11y:'<circle cx="12" cy="4.5" r="1.8"/><path d="M5 8.5l7 1.5 7-1.5M12 10v4.5M12 14.5l-3.5 6.5M12 14.5l3.5 6.5"/>'};
   tile(I.cal,'Cumpleaños',nx?(nx.nb.days===0?'¡Hoy está de cumpleaños '+nm(nx.p).split(' ')[0]+'!':'Próximo: '+nm(nx.p).split(' ')[0]+' · en '+nx.nb.days+(nx.nb.days===1?' día':' días')):'Calendario del equipo',()=>go('home'));
+  tile('<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h8"/>','Estimador de esfuerzo','Estima tareas UX por historia de usuario',()=>go('est'));
   tile(I.dir,'Directorio',team.length+' personas del equipo',()=>go('dir'));
   tile('<path d="M9 3h6v5H9zM3 16h6v5H3zM15 16h6v5h-6zM12 8v4M6 16v-2h12v2"/>','Organigrama','Equipo y '+stakes.length+' stakeholders',()=>go('org'));
   const pct=fichaPct(mp),bar=el('span','pbar');bar.setAttribute('role','progressbar');bar.setAttribute('aria-label','Tu ficha');bar.setAttribute('aria-valuemin','0');bar.setAttribute('aria-valuemax','100');bar.setAttribute('aria-valuenow',pct);const fi=el('i');fi.style.width=pct+'%';bar.appendChild(fi);
@@ -840,10 +851,12 @@ function renderAdm(){const box=$('admRows');box.textContent='';for(const p of te
 $('csv').onclick=()=>{const cols=['username','full_name','role_title','birthday','email','phone','address','emergency_name','emergency_relation','emergency_phone','gift_ideas'],q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
   const csv=[cols.join(',')].concat(team.map(p=>cols.map(c=>q(p[c])).join(','))).join('\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv'}));a.download='equipo-dxd.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
 // ---------- navegación ----------
-const NAMES={start:'Inicio',home:'Cumpleaños',dir:'Directorio',org:'Organigrama',me:'Mi ficha',adm:'Administración'};
+const NAMES={start:'Inicio',home:'Cumpleaños',dir:'Directorio',org:'Organigrama',est:'Estimador',me:'Mi ficha',adm:'Administración'};
 function moveInd(){const n=document.querySelector('#app .pills'),a=n&&n.querySelector('button[aria-current=true]'),i=n&&n.querySelector('.ind');if(!i)return;if(!a||!a.offsetWidth){i.style.width='0';return}i.style.width=a.offsetWidth+'px';i.style.transform='translateX('+a.offsetLeft+'px)'}
 addEventListener('resize',moveInd);if(document.fonts)document.fonts.ready.then(moveInd);
-function go(v){cur=v;for(const b of document.querySelectorAll('.pills button'))b.setAttribute('aria-current',b.dataset.v===v);for(const b of document.querySelectorAll('.dock nav button'))b.setAttribute('aria-current',b.dataset.v===v);
+const EST_URL='https://estimador-ux.vercel.app';
+function setupEst(){const f=$('estFrame');if(f.src)return;f.src=EST_URL;$('estOpen').href=EST_URL;$('estNote').textContent='Estimador de Esfuerzo UX: carga historias de usuario y calcula el esfuerzo por fase.'}
+function go(v){cur=v;if(v==='est')setupEst();for(const b of document.querySelectorAll('.pills button'))b.setAttribute('aria-current',b.dataset.v===v);for(const b of document.querySelectorAll('.dock nav button'))b.setAttribute('aria-current',b.dataset.v===v);
   for(const k of Object.keys(NAMES))$('v-'+k).hidden=k!==v;$('secName').textContent=NAMES[v];closePerson();scrollTo({top:0});moveInd()}
 for(const b of document.querySelectorAll('[data-v]'))b.addEventListener('click',()=>go(b.dataset.v));
 boot();
