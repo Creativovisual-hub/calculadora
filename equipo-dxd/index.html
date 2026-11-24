@@ -859,7 +859,7 @@ html[data-skin=claro] .nudge .pbar i{background:var(--acc)}html[data-skin=claro]
 @media (max-width:640px){.nudge{flex-direction:column;align-items:stretch}}
 
 .wtitle{margin:0 0 10px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.wtitle.wsec{margin:34px 0 12px}.reffeat .wtitle{margin:0 0 2px}
+.wtitle.wsec{margin:38px 0 34px;position:relative;z-index:2}.reffeat .wtitle{margin:0 0 2px}
 .ref .refstrip{margin-top:0}
 .pend{padding:20px 22px}.pend .hint{margin:0 0 12px}.pend ul{list-style:none;margin:0 0 12px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
 .pend li button{width:100%;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:12px;row-gap:6px;align-items:center;border:1px solid var(--edge);background:rgba(255,255,255,.05);color:inherit;border-radius:14px;padding:10px 12px;cursor:pointer;text-align:left}
@@ -1409,10 +1409,7 @@ function renderStart(){const root=$('start');root.textContent='';const now=new D
       const br=el('span','pbar');br.setAttribute('aria-hidden','true');const fi=el('i');fi.style.width=pct+'%';br.appendChild(fi);b.appendChild(br);b.setAttribute('aria-label','Completar la ficha de '+nm(p)+', '+pct+'% completa');b.onclick=()=>openEdit(p);li.appendChild(b);ul.appendChild(li)});W.appendChild(ul);
     if(pend.length>8){const mb=el('button','btn sm','Ver las '+pend.length+' personas');mb.type='button';mb.setAttribute('aria-expanded','false');mb.onclick=()=>{const open=mb.getAttribute('aria-expanded')==='true';W.querySelectorAll('li.more').forEach(x=>x.hidden=open);mb.setAttribute('aria-expanded',String(!open));mb.textContent=open?'Ver las '+pend.length+' personas':'Ver menos'};W.appendChild(mb)}
     root.appendChild(W)}}
-  root.appendChild(el('h3','wtitle wsec','Cumpleaños de este mes'));const sec=el('section','tf month');sec.setAttribute('aria-labelledby','hMes');const hh=el('h3','sr-only','Cumpleaños de '+MES[m]);hh.id='hMes';sec.appendChild(hh);
-  if(!mes.length)sec.appendChild(el('p','empty','Nadie está de cumpleaños este mes.'));
-  const ul=el('ul');for(const p of mes){const d=Number(p.birthday.slice(8)),li=el('li'),b=el('button');b.type='button';b.appendChild(avatar(p,44));const tx=el('span','tx');tx.append(el('b',null,nm(p)),el('span',null,d+' de '+MES[m]+(d===now.getDate()?' · hoy':d<now.getDate()?' · ya pasó':'')));b.appendChild(tx);b.onclick=()=>openPerson(p);if(d<now.getDate())b.classList.add('past');li.appendChild(b);ul.appendChild(li)}
-  sec.appendChild(ul);root.appendChild(sec)}
+}
 // ---------- cumpleaños en calendario ----------
 const MESC=MES.map(m=>m[0].toUpperCase()+m.slice(1)),DIAS=[['Lun','Lunes'],['Mar','Martes'],['Mié','Miércoles'],['Jue','Jueves'],['Vie','Viernes'],['Sáb','Sábado'],['Dom','Domingo']];
 let calM=null,calY=null;
