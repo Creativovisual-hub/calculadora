@@ -170,4 +170,5 @@ Sección `404:7795` · 14 pantallas P-01 a P-14 + tablero de handoff. Detalle en
 ### Splash de apertura (página «splash» `621:14220`) 🟡
 - **Splash · Switch (apertura de la app)** `629:12067`: basado en la bienvenida F2. El isotipo aparece, el switch se enciende y el isotipo pasa al logo completo (≈1,5 s, timeline de 3,2 s). Sin textos ni pictogramas de beneficios. Fondo blanco.
 - Pantalla de inicio nativa: blanca y vacía. Con «Reducir movimiento»: logo completo fijo. Notas para dev al lado del frame.
+- **Splash · Switch azul (apertura brutal)** `633:12067`: fondo navy, un círculo azul llena la pantalla, isotipo y logo en blanco (celeste se mantiene), switch glass sobre azul, 2 ondas de luz al encender, brillo celeste detrás del logo; el switch se retira y el logo queda centrado (2,9 s).
 - Splash anterior (azul, «Cargando…»): `621:14477`.
