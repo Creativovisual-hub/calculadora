@@ -173,3 +173,7 @@ Pantalla «Drawer privado · Mi cuenta» `538:11353` (Page 1, a la derecha de la
 - Grupo «Mi cuenta», fuera de Mi Perfil: Certificados (→ 32), Cargas familiares (→ MP-19), Solicitudes (→ MP-02, contador «en curso»), Configuración (notificaciones, accesibilidad y seguridad; pantalla interna pendiente).
 - «Tus productos» en grilla de 2 columnas (mismos íconos que «Panel del menú/Variant2») y «Cerrar sesión».
 - Sin amarillo ni verde: el botón amarillo y el punto verde del panel original se reemplazaron.
+- Opciones del drawer (para decidir):
+  - **Opción A** `543:11357`: todo en vertical con el diseño de filas original, en secciones Mi cuenta / Tus productos / ¿Necesitas ayuda?
+  - **Opción B** `543:11510`: por áreas: Mi cuenta / Mis finanzas (Créditos, Ahorro) / Salud (Licencias médicas, Seguros) / Bienestar (Beneficios, Pensionados) / Turismo / ¿Necesitas ayuda?
+  - La línea punteada celeste marca el pliegue de 812 px; bajo ella el drawer hace scroll.
