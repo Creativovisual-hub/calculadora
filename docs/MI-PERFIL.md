@@ -181,3 +181,12 @@ Pantalla «Drawer privado · Mi cuenta» `538:11353` (Page 1, a la derecha de la
 - **MP-27 v2 (experiencia y accesibilidad):** datos de contacto como filas tocables (ícono, etiqueta con «Verificado», valor de 16 px y flecha), sin el botón «Editar datos de contacto». La dirección pendiente es una fila destacada con borde punteado y botón «+» (→ MP-17). Medio de pago: «Cuenta RUT · BancoEstado · termina en 4521». Notas de accesibilidad en el frame `557:11294`. Respaldo: `556:11267`.
 - Íconos en Font Awesome Regular: `envelope` (correo), `message` (teléfono; `mobile` es Pro y el plugin no tiene Font Awesome Pro, así que se cambia en Figma), `location-dot` (dirección, instancia Pro), `credit-card` (medio de pago), `pen-to-square` (avatar).
 - Datos de contacto como lista limpia: ícono de 24 px | etiqueta de 14 px gris + valor de 16 px, con separadores. La dirección pendiente va en azul con su ayuda debajo. Medio de pago con el mismo patrón de ícono, sin baldosa.
+
+## Flujo Mi Perfil desde el drawer (sección `580:11461`, «Flujo · Mi Perfil (desde drawer)»)
+Pantallas conectadas con flechas estilo FigJam y con prototipo:
+- Drawer A → **MP-27 Mi Perfil**. Las filas de contacto tienen «Editar» o «Agregar» y abren hojas inferiores:
+  - MP-27c Cambiar correo · MP-27d Cambiar teléfono (→ código SMS MP-16)
+  - MP-27e Buscar dirección (buscador con sugerencias y «Usar mi ubicación actual») → MP-27f Confirmar dirección (depto e indicaciones)
+- **MP-29 Medio de pago:** lista de cuentas con el componente `Cuenta bancaria` (`584:11531`, Seleccionada Sí/No: radio, borde azul y etiqueta «Aquí recibes tus pagos»). Tocar otra cuenta lleva a MP-29c (selección cambiada + «Recibir mis pagos en…»). «Agregar otra cuenta» lleva a MP-29b (selectores de Banco y Tipo de cuenta, y Número). Banco abre la hoja MP-29d con buscador y la lista de todos los bancos. Se quitó «Último depósito».
+- **MP-30 Editar perfil:** avatar con pictogramas o foto, y nombre para saludarte (el nombre legal y el RUT no se editan).
+- **Biometría obligatoria:** todo guardado pasa por **MP-31 Confirmar con biometría** (huella o rostro, con alternativa «Usar mi clave») → **MP-27g** aviso «¡Listo! Guardamos tu cambio», que vuelve solo a Mi Perfil a los 2,5 s.
