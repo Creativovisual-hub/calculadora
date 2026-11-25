@@ -22,7 +22,7 @@ Trabajo de diseño UX/UI. El diseño vive en Figma; este repo guarda documentaci
 
 ## Reglas visuales
 - Solo colores de marca: `#094AFF`, `#131252`, `#06C2FA`. Pictogramas: trazo `#1C48F5`, acento `#58C0F7`.
-- Sin amarillo ni verde. Rojo solo para errores.
+- Sin amarillo ni verde de marca. Colores **funcionales de estado** (solo para estados, siempre con ícono + texto): éxito verde `#006E62`, error rojo `#B42318`.
 - Botones píldora. Tono humano y cercano (tuteo). Poco texto: baja carga cognitiva.
 - Animaciones coherentes con el significado de cada elemento.
 

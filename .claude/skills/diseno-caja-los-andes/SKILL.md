@@ -20,7 +20,7 @@ description: Diseñar, editar o revisar pantallas de la nueva app Caja Los Andes
 
 ## Checklist de revisión
 - [ ] No ofrece crear cuenta ni afiliarse (solo empresas y pensionados se afilian; solo el afiliado sin clave crea clave).
-- [ ] Solo `#094AFF`, `#131252`, `#06C2FA` (+ pictogramas `#1C48F5` / `#58C0F7`). Sin amarillo ni verde; rojo solo error.
+- [ ] Solo `#094AFF`, `#131252`, `#06C2FA` (+ pictogramas `#1C48F5` / `#58C0F7`). Sin amarillo ni verde de marca; estados funcionales: éxito verde `#006E62`, error rojo `#B42318` (con ícono + texto).
 - [ ] Botones píldora; una acción principal por pantalla.
 - [ ] Texto mínimo: título + una línea de apoyo. Tuteo, tono humano.
 - [ ] Accesos directos solo texto si la pantalla ya tiene ilustración.

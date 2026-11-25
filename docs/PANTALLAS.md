@@ -19,7 +19,7 @@ Guía para continuar el diseño de pantallas. Todo está en el mismo archivo de 
 | Tema | Regla |
 |---|---|
 | Colores | Solo marca: `#094AFF` (primario), `#131252` (texto/oscuro), `#06C2FA` (acento). Pictogramas: trazo `#1C48F5`, acento `#58C0F7` |
-| Prohibido | Amarillo y verde. **Rojo solo para errores** |
+| Prohibido | Amarillo y verde de marca. **Estados funcionales:** éxito verde `#006E62`, error rojo `#B42318`, siempre con ícono + texto |
 | Botones | Píldora (radio completo). Primario relleno `#094AFF`, secundario contorno |
 | Tipografía | Objetivo: **Averta**. Hoy los textos están en **Figtree** (Regular / Medium / Bold) porque Averta no carga en las herramientas. Alternativa libre: **Mulish**. Pendiente el cambio global |
 | Tono | Humano y cercano, tuteo ("Te damos la bienvenida", "¿Olvidaste tu clave?") |
