@@ -192,6 +192,6 @@ Pantallas conectadas con flechas estilo FigJam y con prototipo:
 - **Biometría obligatoria:** todo guardado pasa por **MP-31 Confirmar con biometría** (huella o rostro, con alternativa «Usar mi clave») → **MP-27g** aviso «¡Listo! Guardamos tu cambio», que vuelve solo a Mi Perfil a los 2,5 s.
 
 ### Resultados de guardado y alias
-- Componente **`Aviso de cambio`** (`594:12086`): Estado Éxito/Error × Tipo (Correo, Teléfono, Dirección, Cuenta nueva, Cuenta de pago, Perfil). Éxito en verde `#006E62` y Error en rojo `#B42318`, con ícono del tipo + check o x. Textos cortos y cercanos («¡Listo! Cambiamos tu correo» / «Ups, no pudimos…» + «Reintentar»). Éxito dura 4 s; Error no se cierra solo.
+- Componente **`Aviso de cambio`** (`594:12086`): Estado Éxito/Error × Tipo (Correo, Teléfono, Dirección, Cuenta nueva, Cuenta de pago, Perfil). Éxito en verde `#006E62` y Error en rojo `#B42318`, con un solo ícono transversal por estado (`circle-check` en éxito, `circle-xmark` en error), igual para todos los tipos. Textos cortos y cercanos («¡Listo! Cambiamos tu correo» / «Ups, no pudimos…» + «Reintentar»). Éxito dura 4 s; Error no se cierra solo.
 - Cada flujo tiene su biometría (MP-31a–f) y su pantalla de éxito con el dato nuevo destacado (MP-27g/h/i/j, MP-29f/g).
 - **Alias** («Te saludamos como …» en Mi Perfil, se edita en MP-30). Tablero «¿Dónde se ve tu alias?» (`597:11976`): inicio privado («Hola, Mari»), tarjeta del drawer y push/campanita. Nunca en documentos, certificados ni pagos (ahí va el nombre legal). Vacío = primer nombre legal; máx. 20 caracteres.
