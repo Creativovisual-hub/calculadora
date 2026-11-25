@@ -158,3 +158,10 @@ Bucle de 2,4 s mientras se valida el RUT: el isotipo outline se dibuja y se borr
 
 ### 3.13 Mi Perfil · Mi Cuenta (hub privado) 🟡
 Sección `404:7795` · 14 pantallas P-01 a P-14 + tablero de handoff. Detalle en `docs/MI-PERFIL.md`.
+
+### Stepper vertical (página «stepper v1» `513:11742`) ✅
+- `Stepper / Paso vertical` `514:11748`. Estado: Actual (azul), Pendiente (naranjo), Éxito (verde), Error (rojo) y Disable (gris). Textos: Título, Descripción y Fecha. Booleanos: Mostrar descripción, Mostrar fecha, Mostrar conector, **Mostrar mensaje 1** y **Mostrar mensaje 2**. Los dos mensajes son instancias expuestas: su Tipo y su Texto se editan desde el panel del paso.
+- `Stepper / Mensaje adicional` `514:11852`. Tipo: Información, Confirmación, En proceso y Advertencia. Texto editable y booleano «Mostrar ícono».
+- Ejemplo con instancias: sección «Casuísticas «En revisión» · con componentes» `524:11499`.
+- Duplicados y borradores archivados en «Archivo · no usar» `522:11472`.
+- Nota: Rawson Pro no carga en el plugin, así que los títulos y fechas de los ejemplos se escriben a mano en Figma.
