@@ -162,6 +162,7 @@ Sección `404:7795` · 14 pantallas P-01 a P-14 + tablero de handoff. Detalle en
 ### Stepper vertical (página «stepper v1» `513:11742`) ✅
 - `Stepper / Paso vertical` `514:11748`. Estado: Actual (azul), Pendiente (naranjo), Éxito (verde), Error (rojo) y Disable (gris). Textos: Título, Descripción y Fecha. Booleanos: Mostrar descripción, Mostrar fecha, Mostrar conector, **Mostrar mensaje 1** y **Mostrar mensaje 2**. Los dos mensajes son instancias expuestas: su Tipo y su Texto se editan desde el panel del paso.
 - `Stepper / Mensaje adicional` `514:11852`. Tipo: Información, Confirmación, En proceso y Advertencia. Texto editable y booleano «Mostrar ícono».
+- Alto libre: al estirar un paso (o fijar su alto) el conector se estira solo hasta el siguiente paso; con «Hug» vuelve al alto de su contenido.
 - Ejemplo con instancias: sección «Casuísticas «En revisión» · con componentes» `524:11499`.
 - Duplicados y borradores archivados en «Archivo · no usar» `522:11472`.
 - Nota: Rawson Pro no carga en el plugin, así que los títulos y fechas de los ejemplos se escriben a mano en Figma.
