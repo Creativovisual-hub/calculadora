@@ -166,3 +166,8 @@ Sección `404:7795` · 14 pantallas P-01 a P-14 + tablero de handoff. Detalle en
 - Ejemplo con instancias: sección «Casuísticas «En revisión» · con componentes» `524:11499`.
 - Duplicados y borradores archivados en «Archivo · no usar» `522:11472`.
 - Nota: Rawson Pro no carga en el plugin, así que los títulos y fechas de los ejemplos se escriben a mano en Figma.
+
+### Splash de apertura (página «splash» `621:14220`) 🟡
+- **Splash · Switch (apertura de la app)** `629:12067`: basado en la bienvenida F2. El isotipo aparece, el switch se enciende y el isotipo pasa al logo completo (≈1,5 s, timeline de 3,2 s). Sin textos ni pictogramas de beneficios. Fondo blanco.
+- Pantalla de inicio nativa: blanca y vacía. Con «Reducir movimiento»: logo completo fijo. Notas para dev al lado del frame.
+- Splash anterior (azul, «Cargando…»): `621:14477`.
