@@ -166,3 +166,10 @@ Se reutilizan `Login/Botón`, `Login/Campo` y los pictogramas.
 - **Pasos de la línea de tiempo:** confirmar con negocio los pasos por dominio. Por ahora solo está la licencia médica.
 - **Código por SMS:** falta la pantalla de ingreso del código al editar el teléfono.
 - **Tokens del Design System Runtime:** los colores y textos están como valores, no como variables. Hay que conectarlos cuando exista la librería.
+
+## Drawer privado (entrada a Mi Perfil)
+Pantalla «Drawer privado · Mi cuenta» `538:11353` (Page 1, a la derecha de la sección v2). Flujo de prototipo «Drawer privado → Mi Perfil».
+- Tarjeta del afiliado → **Mi Perfil** (datos y medios de pago) → hoy enlaza a MP-14.
+- Grupo «Mi cuenta», fuera de Mi Perfil: Certificados (→ 32), Cargas familiares (→ MP-19), Solicitudes (→ MP-02, contador «en curso»), Configuración (notificaciones, accesibilidad y seguridad; pantalla interna pendiente).
+- «Tus productos» en grilla de 2 columnas (mismos íconos que «Panel del menú/Variant2») y «Cerrar sesión».
+- Sin amarillo ni verde: el botón amarillo y el punto verde del panel original se reemplazaron.
