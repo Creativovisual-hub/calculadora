@@ -182,5 +182,5 @@ Sección `404:7795` · 14 pantallas P-01 a P-14 + tablero de handoff. Detalle en
 - El switch del splash sin imagen tiene efecto **glass** reforzado (refracción, reflejo, borde tornasol leve) en el riel y la perilla.
 - **Splash · C · se arma** `668:12067` (azul oscuro `#131252`): el arco celeste entra deslizándose, la «A» blanca sube a su lugar con un brillo celeste sutil detrás, y pasa al logo (2,6 s).
 - **Splash · D · trazo y relleno** `668:12296` (azul oscuro): el contorno del isotipo se dibuja (blanco y celeste), se rellena y pasa al logo blanco (2,8 s).
-- **Splash · E · trazo y relleno (degradado)** `670:12067` ⭐: animación de D sobre el degradado del Splash original (azul oscuro arriba → azul `#094AFF` abajo).
+- **Splash · E · trazo y relleno (degradado)** `670:12067` ⭐: animación de D sobre el degradado del Splash original (azul oscuro arriba → azul `#094AFF` abajo), logo, isotipo y trazo todo en blanco.
 - Splash anterior (azul, «Cargando…»): `621:14477`.
