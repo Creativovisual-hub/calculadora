@@ -168,9 +168,10 @@ Sección `404:7795` · 14 pantallas P-01 a P-14 + tablero de handoff. Detalle en
 - Nota: Rawson Pro no carga en el plugin, así que los títulos y fechas de los ejemplos se escriben a mano en Figma.
 
 ### Splash de apertura (página «splash» `621:14220`) ✅
+- **Splash · Visual Brand** `705:12178`: versión rápida (5,2 s) de los primeros 12 s del video de marca: triángulo con foto de montaña → círculo con foto de cielo → círculo celeste sólido → aparece el triángulo azul al lado → se superponen con guías de construcción → isotipo → logo completo. Fotos tomadas del video de marca.
 - ✅ **Splash elegido (2 versiones):**
-  - **Splash · sencillo blanco** `667:12466`: fondo blanco, logo original; el isotipo entra con fundido suave y pasa al logo completo (1,9 s).
-  - **Splash · sencillo degradado** `675:12067`: misma animación sobre el degradado del Splash original (azul oscuro → `#094AFF`), logo todo blanco.
+  - **Splash · sencillo blanco** `704:12178` (recreado): fondo blanco, logo original; el isotipo entra con fundido suave y pasa al logo completo (1,9 s).
+  - **Splash · sencillo degradado** `704:12581` (recreado): misma animación sobre el degradado del Splash original (azul oscuro → `#094AFF`), logo todo blanco.
   - **Splash · trazo y relleno blanco** `676:12067`: fondo blanco; el contorno del isotipo se dibuja (azul y celeste), se rellena con sus colores y pasa al logo original (2,8 s).
 
 - **Splash · Switch (apertura de la app)** `629:12067`: basado en la bienvenida F2. El isotipo aparece, el switch se enciende y el isotipo pasa al logo completo (≈1,5 s, timeline de 3,2 s). Sin textos ni pictogramas de beneficios. Fondo blanco.
