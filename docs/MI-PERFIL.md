@@ -201,3 +201,4 @@ Pantallas conectadas con flechas estilo FigJam y con prototipo:
   - B · Completo `738:12246`: CTA habilitado, aviso de biometría una sola vez.
   - C · Falta un dato `738:12340`: teléfono vacío en foco con «Falta tu teléfono para guardar», CTA deshabilitado.
   - D · Con errores `738:12430`: correo sin dominio, teléfono incompleto y dirección sin elegir de la lista, en rojo con mensaje claro; CTA deshabilitado y «Corrige los 3 datos marcados».
+- **Más de 1 medio de pago:** MP-27m `745:12296`. La tarjeta «Medios de pago» muestra el contador («2 cuentas»), la cuenta principal con la etiqueta «Aquí recibes tus pagos», las demás cuentas debajo y el enlace «Cambiar o agregar cuenta ›», que lleva a Medio de pago (MP-29). Con 1 sola cuenta se mantiene la fila simple de MP-27.
