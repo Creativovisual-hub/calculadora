@@ -167,13 +167,17 @@ Sección `404:7795` · 14 pantallas P-01 a P-14 + tablero de handoff. Detalle en
 - Duplicados y borradores archivados en «Archivo · no usar» `522:11472`.
 - Nota: Rawson Pro no carga en el plugin, así que los títulos y fechas de los ejemplos se escriben a mano en Figma.
 
-### Splash de apertura (página «splash» `621:14220`) 🟡
+### Splash de apertura (página «splash» `621:14220`) ✅
+- ✅ **Splash elegido (2 versiones):**
+  - **Splash · sencillo blanco** `667:12466`: fondo blanco, logo original; el isotipo entra con fundido suave y pasa al logo completo (1,9 s).
+  - **Splash · sencillo degradado** `675:12067`: misma animación sobre el degradado del Splash original (azul oscuro → `#094AFF`), logo todo blanco.
+
 - **Splash · Switch (apertura de la app)** `629:12067`: basado en la bienvenida F2. El isotipo aparece, el switch se enciende y el isotipo pasa al logo completo (≈1,5 s, timeline de 3,2 s). Sin textos ni pictogramas de beneficios. Fondo blanco.
 - Pantalla de inicio nativa: blanca y vacía. Con «Reducir movimiento»: logo completo fijo. Notas para dev al lado del frame.
 - **Splash · Switch azul (apertura brutal)** `633:12067`: fondo navy, un círculo azul llena la pantalla, isotipo y logo en blanco (celeste se mantiene), switch glass sobre azul, 2 ondas de luz al encender, brillo celeste detrás del logo; el switch se retira y el logo queda centrado (2,9 s).
 - **Splash · Activa tu Bienestar** `635:12067` (basado en el comercial «Activa tu Bienestar»): fondo azul, pastilla de vidrio con borde tornasol, la perilla se enciende como esfera de luz que florece y llena la pantalla de blanco; en blanco aparece el isotipo, se arma el logo completo, sale «Activa tu Bienestar» y se dibujan las líneas de marca celeste y azul (3,6 s).
 - **Splash · Activa tu Bienestar · ventana isotipo** `637:12067`: igual que el anterior, pero la luz del switch se convierte en el isotipo con una foto por dentro, que crece hasta llenar la pantalla (zoom a través de la «A»); luego barrido blanco curvo y cierre con logo y «Activa tu Bienestar» (5,6 s). Borde tornasol reforzado. Foto de prueba tomada del comercial: reemplazar en la capa «Foto». Sonido: `sonidos/splash-activa-tu-bienestar.mp3` (cierre musical del comercial, entra con el barrido blanco a los 2,9 s; confirmar derechos de uso de la música en la app).
-- **Splash · Activa tu Bienestar · final v3** `642:12398` ⭐ versión elegida: imagen a pantalla completa → se cierra en el isotipo sobre blanco → aparece el switch, se enciende y le da el color original al isotipo → pasa al logo + «Activa tu Bienestar» + líneas (4,6 s). Sonido entra con el switch (1,9 s). Foto: familia en el campo con cielo azul (recorte vertical).
+- **Splash · Activa tu Bienestar · final v3** `642:12398`: imagen a pantalla completa → se cierra en el isotipo sobre blanco → aparece el switch, se enciende y le da el color original al isotipo → pasa al logo + «Activa tu Bienestar» + líneas (4,6 s). Sonido entra con el switch (1,9 s). Foto: familia en el campo con cielo azul (recorte vertical).
 - **Splash · Activa tu Bienestar · final v2** `640:12067` (anterior, switch al inicio): switch de siempre → la imagen aparece a pantalla completa → la imagen se encierra en el isotipo y alrededor queda blanco → el isotipo toma sus colores → pasa al logo + «Activa tu Bienestar» + líneas (4,9 s). Sonido entra cuando la ventana se cierra (2 s).
 - **Splash · Activa tu Bienestar · final (blanco)** `639:12067` (anterior, zoom hacia adentro): switch de siempre (fondo blanco, isotipo original) → al encender, el isotipo se vuelve ventana con la foto y se atraviesa → barrido blanco → logo original + «Activa tu Bienestar» + líneas de marca (5,2 s). Sonido `sonidos/splash-activa-tu-bienestar.mp3` entra con el barrido (2,75 s).
 - Las 2 líneas de marca se reemplazaron por el **contorno del isotipo** (azul y celeste) recortado abajo a la derecha, que se dibuja con path trim.
@@ -182,6 +186,6 @@ Sección `404:7795` · 14 pantallas P-01 a P-14 + tablero de handoff. Detalle en
 - El switch del splash sin imagen tiene efecto **glass** reforzado (refracción, reflejo, borde tornasol leve) en el riel y la perilla.
 - **Splash · C · se arma** `668:12067` (azul oscuro `#131252`): el arco celeste entra deslizándose, la «A» blanca sube a su lugar con un brillo celeste sutil detrás, y pasa al logo (2,6 s).
 - **Splash · D · trazo y relleno** `668:12296` (azul oscuro): el contorno del isotipo se dibuja (blanco y celeste), se rellena y pasa al logo blanco (2,8 s).
-- **Splash · E · trazo y relleno (degradado)** `670:12067` ⭐: animación de D sobre el degradado del Splash original (azul oscuro arriba → azul `#094AFF` abajo), logo, isotipo y trazo todo en blanco.
-- **Splash · F · trazo, relleno y switch glass (degradado)** `672:12067` ⭐: como E (todo blanco, degradado), el contorno del isotipo se dibuja, aparece el switch glass abajo y **al encenderse rellena el isotipo**; el switch se retira y se arma el logo (4,1 s).
+- **Splash · E · trazo y relleno (degradado)** `670:12067`: animación de D sobre el degradado del Splash original (azul oscuro arriba → azul `#094AFF` abajo), logo, isotipo y trazo todo en blanco.
+- **Splash · F · trazo, relleno y switch glass (degradado)** `672:12067`: como E (todo blanco, degradado), el contorno del isotipo se dibuja, aparece el switch glass abajo y **al encenderse rellena el isotipo**; el switch se retira y se arma el logo (4,1 s).
 - Splash anterior (azul, «Cargando…»): `621:14477`.
