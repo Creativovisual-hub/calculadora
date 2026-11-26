@@ -196,3 +196,8 @@ Pantallas conectadas con flechas estilo FigJam y con prototipo:
 - Cada flujo tiene su biometría (MP-31a–f) y su pantalla de éxito con el dato nuevo destacado (MP-27g/h/i/j, MP-29f/g).
 - **Alias** («Te saludamos como …» en Mi Perfil, se edita en MP-30). Tablero «¿Dónde se ve tu alias?» (`597:11976`): inicio privado («Hola, Mari»), tarjeta del drawer y push/campanita. Nunca en documentos, certificados ni pagos (ahí va el nombre legal). Vacío = primer nombre legal; máx. 20 caracteres.
 - **Editar todo a la vez:** en MP-27 el título «Datos de contacto» tiene el enlace «Editar todo» → **MP-27k · Editar mis datos** `694:12068` (correo, teléfono, dirección con selector que abre el buscador MP-27e, y depto opcional; un solo «Guardar cambios») → **MP-31g** biometría una sola vez → **MP-27l** aviso «¡Listo! Guardamos tus datos». La edición por dato (hojas inferiores) se mantiene para cambios puntuales.
+- **Editar mis datos · un solo CTA y casos** (sin «Cancelar»; volver = salir sin guardar). «Guardar cambios» solo se habilita con todo completo y válido:
+  - A · Sin llenar `738:12165`: placeholders, CTA deshabilitado, «Completa correo, teléfono y dirección para guardar».
+  - B · Completo `738:12246`: CTA habilitado, aviso de biometría una sola vez.
+  - C · Falta un dato `738:12340`: teléfono vacío en foco con «Falta tu teléfono para guardar», CTA deshabilitado.
+  - D · Con errores `738:12430`: correo sin dominio, teléfono incompleto y dirección sin elegir de la lista, en rojo con mensaje claro; CTA deshabilitado y «Corrige los 3 datos marcados».
